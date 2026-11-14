@@ -27,10 +27,12 @@ const gameArgs: string[] = [];
 let outDir = 'shots';
 const steps: string[] = [];
 let trace = false;
+const puts: string[] = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--arg') gameArgs.push(argv[++i]);
   else if (argv[i] === '--out') outDir = argv[++i];
   else if (argv[i] === '--trace') trace = true;
+  else if (argv[i] === '--put') puts.push(argv[++i]);
   else steps.push(argv[i]);
 }
 fs.mkdirSync(outDir, { recursive: true });
@@ -41,6 +43,11 @@ for (const dir of [path.join(root, 'POOLRAD'), path.join(root, 'src', 'binaries'
     if (/\.(pdf|exe)$/i.test(name) && name !== 'START.EXE') continue;
     vfs.put('C:\\POOLRAD\\' + name, new Uint8Array(fs.readFileSync(path.join(dir, name))), Date.UTC(1988, 5, 1));
   }
+}
+
+// --put DIR: a folder of saved games (tests/scenarios/saves/...) into the game's folder
+for (const dir of puts) {
+  for (const name of fs.readdirSync(dir)) vfs.put('C:\\POOLRAD\\' + name, new Uint8Array(fs.readFileSync(path.join(dir, name))), Date.UTC(1988, 5, 1));
 }
 
 function png(name: string): void {
@@ -105,6 +112,7 @@ for (let i = 1; i <= 10; i++) NAMED['f' + i] = [0x3a + i, 0];
 
 let now = 0;
 let waitUntil = -1;
+let menuWaits = 0;
 let idleSince = -1;
 
 /** Take script steps until one puts a key in the buffer or asks for time to pass; false when the script is done. */
@@ -113,6 +121,23 @@ function step(): boolean {
     if (waitUntil >= 0) {
       if (now < waitUntil) return true;
       waitUntil = -1;
+    }
+    if (steps[0].startsWith('menu:')) {
+      // go on once the game's menu line holds this word
+      const want = steps[0].slice(5).toLowerCase();
+      const top = hooks.top();
+      const have = top && top.name === 'MenuCore.HorizontalMenu' ? String(top.args[0] + ' ' + top.args[1]).toLowerCase() : '';
+      if (!have.includes(want)) {
+        if (++menuWaits > 400) {
+          console.log(`[no menu with "${want}": the game shows "${have}"]`);
+          finish();
+        }
+        now += 5;
+        return true;
+      }
+      menuWaits = 0;
+      steps.shift();
+      continue;
     }
     const s = steps.shift()!;
     if (trace) console.log(`[step ${s} at ${Math.round(now)} ms]`);
@@ -167,6 +192,8 @@ host.platform = {
     if (waitUntil >= 0 && now < waitUntil) now = waitUntil;
     if (!keys.length && !step()) finish();
     if (!keys.length && waitUntil >= 0) now = waitUntil;
+    // waiting for a menu while the game waits for any key: a key no menu takes, and the game looks again
+    if (!keys.length && steps.length && steps[0].startsWith('menu:')) pushKey(0, 0xff);
   },
   idle: async () => {
     // the game polls: a millisecond passes each time, and after a fifth of a second of polling the next step is due
@@ -176,7 +203,7 @@ host.platform = {
       if (now >= waitUntil) step();
       return;
     }
-    if (now - idleSince >= 200) {
+    if (now - idleSince >= 200 || (steps.length && steps[0].startsWith('menu:'))) {
       idleSince = -1;
       if (!step()) finish();
     }

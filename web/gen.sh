@@ -8,4 +8,4 @@ mkdir -p ../obj
 node tools/pas2ts/main.ts ../src/fixmain.pas src/game --dir pas --dir ../src --dir ../src/includes --dir ../src/native \
   --inc pas --inc ../src/includes --inc ../obj \
   --hook MenuCore.HorizontalMenu --hook MenuCore.MenuVertical --hook TextRend.ReadString --hook TextRend.ReadNumber \
-  --tap TextRend.RenderChar --tap TextRend.ClearScreen
+  --tap TextRend.RenderChar --tap TextRend.ClearScreen --tap SndSeq.SoundTimerTicks

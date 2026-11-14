@@ -87,11 +87,12 @@ function layout(cw: number, ch: number, split: Split | null): Blit[] {
     const hC = H - cY;
     const tc = cw / W;
     const room = ch - hC * tc;
-    // the picture pane first, the pane beside it at half as large again as the text when there is room for both
-    let vB = Math.min(cw / bW, tc * 1.5);
-    let vA = Math.min(cw / aW, (room - hA * vB) / hA);
+    // the picture pane as large as the width allows, leaving the pane beside it letters at least a little larger than
+    // the text's (a fight's tall panel, mostly empty, gets by with less); what is left over goes to that pane
+    const least = tc * (hA > 150 ? 0.9 : 1.25);
+    let vA = Math.min(cw / aW, (room - hA * least) / hA);
+    let vB = Math.min(cw / bW, (room - hA * vA) / hA);
     if (vA < vB) vA = vB = Math.min(room / (2 * hA), cw / Math.max(aW, bW));
-    else vB = Math.min(cw / bW, (room - hA * vA) / hA);
     if (vA >= tc * 1.1) {
       const total = hA * vA + hA * vB + hC * tc;
       let y = ch - total;

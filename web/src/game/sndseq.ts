@@ -4,6 +4,7 @@ import { U8, I8, S, r16, ri16, r32, ri32, w16, w32, rF64, wF64, rF32, wF32, rS, 
 import * as rt from '../rt/sys';
 import * as SysUtils from './sysutils';
 import * as C_SOUND from './c_sound';
+import * as $hooks from '../host/hooks';
 
 export const SND_ORG = 256;
 export const SND_IMAGE_BYTES = 11958;
@@ -108,11 +109,15 @@ export function SetSoundOutputEnabled(enabledValue: number) {
   LeaveSeq();
 }
 
-export function SoundTimerTicks() {
+function SoundTimerTicks$impl() {
   let $r0: number = 0;
   CatchUp();
   $r0 = r16(143323);
   return $r0;
+}
+export function SoundTimerTicks(...a) {
+  $hooks.tap("SndSeq.SoundTimerTicks", a);
+  return SoundTimerTicks$impl(...a);
 }
 
 export function SoundTimerHooked() {

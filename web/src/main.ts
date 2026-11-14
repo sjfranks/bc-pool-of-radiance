@@ -213,4 +213,6 @@ async function main(): Promise<void> {
 // for looking into the game from the browser's console
 (window as unknown as Record<string, unknown>).por = { units, hooks, U8 };
 
+if ('serviceWorker' in navigator && import.meta.env.PROD) void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
+
 void main();

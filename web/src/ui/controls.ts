@@ -254,6 +254,11 @@ function system(parent: HTMLElement): void {
   button(s, 'sysb', () => key(27)).textContent = 'Esc';
 }
 
+/** The prompt's letters: twice the game's size, or what fits the bar's width. */
+function headScale(s: string): number {
+  return Math.max(1, Math.min(2, Math.floor((bar.clientWidth - 16) / (s.length * 8) / 0.25) * 0.25));
+}
+
 function render(): void {
   const { menu, list, typing } = frames();
   const state = ifcState();
@@ -268,7 +273,7 @@ function render(): void {
 
   if (typing) {
     const q = String(hooks.stack.find((f) => f.name.startsWith('TextRend.Read'))?.args[0] ?? '');
-    put(head, q.trim(), () => text.color(13), 2);
+    put(head, q.trim(), () => text.color(13), headScale(q.trim()));
     if (typing === 'number') {
       opts.classList.add('keys');
       for (const d of '1234567890') button(opts, 'opt num', () => letter(d)).textContent = d;
@@ -293,7 +298,7 @@ function render(): void {
   const [query, menuText, , , hlCol, reinterpret] = menu.args as [string, string, number, number, number, boolean];
   const info = menu.info as MenuInfo;
   const options = parseMenu(menuText);
-  if (query.trim()) put(head, query.trim(), () => text.color(menu.args[2] || 13), 2);
+  if (query.trim()) put(head, query.trim(), () => text.color(menu.args[2] || 13), headScale(query.trim()));
 
   // the arrows, where the game takes them: all eight ways in a fight, the large four to walk the 3D view, and a small
   // four elsewhere (they step through the party, a list, a value)
@@ -310,7 +315,8 @@ function render(): void {
   const fit = (len: number, across: number) => Math.max(1, Math.min(2, Math.floor(((room - 6 * (across - 1)) / across - 10) / (len * 8) / 0.25) * 0.25));
   if (!options.length) {
     // "press enter to continue", or a list with nothing on its line
-    button(opts, 'opt wide ok', () => key(13)).textContent = list ? 'Select' : 'Continue';
+    // a prompt with no line of options (walking a fighter about, aiming) is ended with Enter
+    button(opts, 'opt wide ok', () => key(13)).textContent = list ? 'Select' : menuText.trim() === '' && query.trim() ? 'Done' : 'Continue';
   } else {
     const letters = options.every((o) => o.label.length === 1);
     const named = letters ? options.map((o) => screenLabel(o.key, hlCol)) : [];
