@@ -57,6 +57,8 @@ export class Compiler {
   staticTop = STATIC_BASE;
   image = new Uint8Array(1 << 20);
   procTable: FuncSym[] = [];
+  /** Routines held by typed constants: with the constant's procedural type, or null for a plain pointer. */
+  procTyped: [FuncSym, Ty | null][] = [];
   /** Typed constants that hold a routine: the table index is known now, the address to write it at. */
   funcCount = 0;
   allFuncs: FuncSym[] = [];
@@ -314,7 +316,7 @@ class Parser {
   parseUses(into: Unit[]): void {
     for (;;) {
       const n = this.ident();
-      const skip = ['overlay', 'cthreads', 'sdlhost', 'sdlsound', 'tpcompat', 'ownterm'].includes(n.v);
+      const skip = ['overlay', 'cthreads', 'sdlhost', 'tpcompat', 'ownterm'].includes(n.v);
       if (!skip) into.push(this.c.loadUnit(n.raw!, this.unit.name));
       if (!this.eatSym(',')) break;
     }
@@ -784,7 +786,10 @@ class Parser {
         const hadAt = this.eatSym('@');
         const e = this.expr();
         const s = this.symOfExpr(e);
-        if (s && s.k === 'func') c.pokeInt(addr, 4, c.procIndex(s));
+        if (s && s.k === 'func') {
+          c.procTyped.push([s, ty.k === 'proc' ? ty : null]);
+          c.pokeInt(addr, 4, c.procIndex(s));
+        }
         else if (s && s.k === 'var' && s.addr !== undefined && hadAt) c.pokeInt(addr, 4, s.addr);
         else c.pokeInt(addr, 4, Number(this.constEval(e).v));
         return;

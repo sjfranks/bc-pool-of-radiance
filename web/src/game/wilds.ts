@@ -31,7 +31,7 @@ export const WILD_SORCERERS_ISLAND = 8;
 export const WILD_PHLAN = 9;
 export const WILD_LAST_SITE = 9;
 
-export const $at = { wideWanted: 240358, wideShown: 240359 };
+export const $at = { wideWanted: 248550, wideShown: 248551 };
 
 export async function BuildWildernessMap(ulX: number, ulY: number, viewLast: number) {
   let viewX: number = 0, viewY: number = 0, k: number = 0, mapX: number = 0, mapY: number = 0, icon: number = 0, col: number = 0, row: number = 0;
@@ -45,42 +45,42 @@ export async function BuildWildernessMap(ulX: number, ulY: number, viewLast: num
       col = $i2;
       mapX = (col + ulX) << 24 >> 24;
       mapY = (row + ulY) << 24 >> 24;
-      icon = (U8[mapY * 44 + mapX + 138584] - 1) & 255;
+      icon = (U8[mapY * 44 + mapX + 224470] - 1) & 255;
       for (let $i3 = 1; $i3 <= 9; $i3++) {
         k = $i3;
-        if ((mapX === r16(k * 6 + 240354)) && (mapY === r16(k * 6 + 240356))) {
+        if ((mapX === r16(k * 6 + 248546)) && (mapY === r16(k * 6 + 248548))) {
           switch (k) {
             case 3: {
-              if (r16(r32(141147) + 792) !== 255) {
-                icon = (r16(k * 6 + 240358) - 1) & 255;
+              if (r16(r32(227033) + 792) !== 255) {
+                icon = (r16(k * 6 + 248550) - 1) & 255;
               }
               break;
             }
             case 4: {
-              if (((r16(r32(141147) + 932) !== 0) || ((r16(r32(141147) + 760) & 8) !== 0)) || (r16(r32(141147) + 830) === 0)) {
-                icon = (r16(k * 6 + 240358) - 1) & 255;
+              if (((r16(r32(227033) + 932) !== 0) || ((r16(r32(227033) + 760) & 8) !== 0)) || (r16(r32(227033) + 830) === 0)) {
+                icon = (r16(k * 6 + 248550) - 1) & 255;
               }
               break;
             }
             case 5: {
-              if ((r16(r32(141147) + 832) & 2) === 0) {
-                icon = (r16(k * 6 + 240358) - 1) & 255;
+              if ((r16(r32(227033) + 832) & 2) === 0) {
+                icon = (r16(k * 6 + 248550) - 1) & 255;
               }
               break;
             }
             case 6: {
-              icon = (r16(k * 6 + 240358) - 1) & 255;
+              icon = (r16(k * 6 + 248550) - 1) & 255;
               break;
             }
             case 7: {
-              if ((r16(r32(141147) + 832) & 1) === 0) {
-                icon = (r16(k * 6 + 240358) - 1) & 255;
+              if ((r16(r32(227033) + 832) & 1) === 0) {
+                icon = (r16(k * 6 + 248550) - 1) & 255;
               }
               break;
             }
             case 8: case 9: {
-              if (r16(r32(141147) + 870) > 253) {
-                icon = (r16(k * 6 + 240358) - 1) & 255;
+              if (r16(r32(227033) + 870) > 253) {
+                icon = (r16(k * 6 + 248550) - 1) & 255;
               }
               break;
             }
@@ -114,7 +114,7 @@ export function CenteredCorner(cell: number, last: number, viewLast: number) {
 
 export function ViewLast() {
   let $r0: number = 0;
-  if ((U8[240359] !== 0)) {
+  if ((U8[248551] !== 0)) {
     $r0 = 12;
   } else {
     $r0 = 4;
@@ -128,8 +128,8 @@ export async function DrawWildWindows() {
 }
 
 export async function DrawTopWindows() {
-  if ((U8[240359] !== 0)) {
-    (await Border.ClearBox(0, 0, 39, 16));
+  if ((U8[248551] !== 0)) {
+    Border.ClearBox(0, 0, 39, 16);
     (await Border.DrawWindow(1, 1, 38, 15, 0, 0, ""));
   } else {
     (await Border.DrawWindow(1, 1, 15, 15, 0, 0, ""));
@@ -138,18 +138,18 @@ export async function DrawTopWindows() {
 }
 
 export async function ShowWide(wide: boolean) {
-  if (wide === (U8[240359] !== 0)) {
+  if (wide === (U8[248551] !== 0)) {
     return;
   }
   if (wide) {
     (await MapTiles.LoadSecondSheet());
-    U8[240359] = (await WideView.Enter(120, 38)) ? 1 : 0;
-    if (!(U8[240359] !== 0)) {
-      U8[240358] = false ? 1 : 0;
+    U8[248551] = (await WideView.Enter(120, 38)) ? 1 : 0;
+    if (!(U8[248551] !== 0)) {
+      U8[248550] = false ? 1 : 0;
     }
   } else {
     (await WideView.Leave());
-    U8[240359] = false ? 1 : 0;
+    U8[248551] = false ? 1 : 0;
   }
 }
 
@@ -196,8 +196,8 @@ export function TileStep(tile: number, riverShut: boolean) {
 
 export function StepTo(x: number, y: number, dir: number, colOfs: number, riverShut: boolean, nx: number, ny: number) {
   let meets: number = 0, $r0: number = 0;
-  U8[nx] = x + I8[dir + 132927];
-  U8[ny] = y + I8[dir + 132936];
+  U8[nx] = x + I8[dir + 218813];
+  U8[ny] = y + I8[dir + 218822];
   if (I8[nx] < 0) {
     U8[nx] = 0;
   }
@@ -210,8 +210,8 @@ export function StepTo(x: number, y: number, dir: number, colOfs: number, riverS
   if (I8[ny] > 35) {
     U8[ny] = 35;
   }
-  meets = TileStep(U8[I8[ny] * 44 + (I8[nx] + colOfs) + 138584], riverShut) & 255;
-  if (((((meets === 0) && (I8[nx] !== x)) && (I8[ny] !== y)) && (TileStep(U8[y * 44 + (I8[nx] + colOfs) + 138584], riverShut) !== 0)) && (TileStep(U8[I8[ny] * 44 + (x + colOfs) + 138584], riverShut) !== 0)) {
+  meets = TileStep(U8[I8[ny] * 44 + (I8[nx] + colOfs) + 224470], riverShut) & 255;
+  if (((((meets === 0) && (I8[nx] !== x)) && (I8[ny] !== y)) && (TileStep(U8[y * 44 + (I8[nx] + colOfs) + 224470], riverShut) !== 0)) && (TileStep(U8[I8[ny] * 44 + (x + colOfs) + 224470], riverShut) !== 0)) {
     meets = 3;
   }
   $r0 = meets;
@@ -219,6 +219,6 @@ export function StepTo(x: number, y: number, dir: number, colOfs: number, riverS
 }
 
 export function $init() {
-  U8[240358] = false ? 1 : 0;
-  U8[240359] = false ? 1 : 0;
+  U8[248550] = false ? 1 : 0;
+  U8[248551] = false ? 1 : 0;
 }

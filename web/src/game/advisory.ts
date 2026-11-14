@@ -22,21 +22,21 @@ export const KEY_COLOR = 15;
 export const TEXT_COL = 1;
 export const PART_LINES = 4;
 
-export const $at = { speedClocks: 249061, AT_BITMAP: 249065 };
+export const $at = { speedClocks: 257253, AT_BITMAP: 257257 };
 
 export function Measure() {
-  w32(249061, 0);
+  w32(257253, 0);
 }
 
 export function SpeedText() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 21);
   let tenths: number = 0, $r0: string = "";
-  if (ri32(249061) === 0) {
+  if (ri32(257253) === 0) {
     $r0 = "N/A";
   } else {
-    tenths = Math.trunc(((ri32(249061) * 10) + 596) / 1193) | 0;
+    tenths = Math.trunc(((ri32(257253) * 10) + 596) / 1193) | 0;
     wS($f0, 20, StrUtil.Grouped(Math.trunc(tenths / 10)) + "." + String.fromCharCode((48 + (tenths % 10)) & 255) + " ms");
-    if (AdvPlan.SpeedSlow(ri32(249061))) {
+    if (AdvPlan.SpeedSlow(ri32(257253))) {
       wS($f0, 20, rS($f0) + " SLOW");
     }
     $r0 = rS($f0);
@@ -47,8 +47,8 @@ export function SpeedText() {
 
 export function CyclesText() {
   let cycles: number = 0, $r0: string = "";
-  cycles = AdvPlan.CyclesOf(ri32(249061)) | 0;
-  if (ri32(249061) === 0) {
+  cycles = AdvPlan.CyclesOf(ri32(257253)) | 0;
+  if (ri32(257253) === 0) {
     $r0 = "N/A";
   } else if (cycles === 0) {
     $r0 = "under 100";
@@ -63,16 +63,16 @@ export function DisplayText(col: number, row: number, color: number, s: string) 
   let i: number = 0, r: number = 0;
   for (let $i1 = 1, $e1 = s.length; $i1 <= $e1; $i1++) {
     i = $i1;
-    if ((rt.chAt(s, i) === 64) && (r32(143765) !== 0)) {
+    if ((rt.chAt(s, i) === 64) && (r32(229651) !== 0)) {
       for (let $i2 = 0; $i2 <= 7; $i2++) {
         r = $i2;
-        U8[$f0 + r] = U8[r32(143765) + r + 512];
-        U8[r32(143765) + r + 512] = U8[r + 249065];
+        U8[$f0 + r] = U8[r32(229651) + r + 512];
+        U8[r32(229651) + r + 512] = U8[r + 257257];
       }
       TextRend.RenderChar(col, row, color, 0, 1, 64, 0);
       for (let $i3 = 0; $i3 <= 7; $i3++) {
         r = $i3;
-        U8[r32(143765) + r + 512] = U8[$f0 + r];
+        U8[r32(229651) + r + 512] = U8[$f0 + r];
       }
     } else {
       TextRend.RenderChar(col, row, color, 0, 1, rt.chAt(s, i), 1);
@@ -84,15 +84,15 @@ export function DisplayText(col: number, row: number, color: number, s: string) 
 
 export async function Show() {
   let support: boolean = false, slow: boolean = false, row: number = 0, key: number = 0;
-  if ((U8[141208] !== 0) && !(U8[141210] !== 0)) {
+  if ((U8[227094] !== 0) && !(U8[227096] !== 0)) {
     return;
   }
   support = AdvPlan.SupportDue(Options.AdvisedVersion(), GameDefs.BUILD_VERSION);
-  slow = AdvPlan.SpeedSlow(ri32(249061));
+  slow = AdvPlan.SpeedSlow(ri32(257253));
   if (!support && !slow) {
     return;
   }
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   row = Math.trunc((21 - (5 * ((support ? 1 : 0) + (slow ? 1 : 0)))) / 2);
   TextRend.DisplayCentered(0, 39, row, 14, "POOL OF RADIANCE");
   TextRend.DisplayCentered(0, 39, row + 1, 11, "this version: UNKNOWN");
@@ -119,5 +119,5 @@ export async function Show() {
   if (support) {
     Options.SetAdvised(GameDefs.BUILD_VERSION);
   }
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
 }

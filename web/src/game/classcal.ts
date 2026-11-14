@@ -25,7 +25,7 @@ export const PRIME_STAT_THRESHOLD = 15;
 export const LEAVE_CLASS_SCORE = 15;
 export const TAKE_CLASS_SCORE = 17;
 
-export const $at = { wisBonusSpells: 229828, classesByRace: 229919, alignByClass: 230017, usabilityBit: 230187, primeRequisites: 230195, ssiLevelCaps: 230203, ageDice: 230211, hpDice: 230435 };
+export const $at = { wisBonusSpells: 238020, classesByRace: 238111, alignByClass: 238209, usabilityBit: 238379, primeRequisites: 238387, ssiLevelCaps: 238395, ageDice: 238403, hpDice: 238627 };
 
 export function RecalcBaseSkills(creature: number) {
   let i: number = 0, lvl: number = 0, tl: number = 0;
@@ -54,8 +54,8 @@ export function RecalcBaseSkills(creature: number) {
     } else if (tl > 10) {
       tl = 10;
     }
-    if (U8[i * 11 + tl + 140171] > U8[creature + 45]) {
-      U8[creature + 45] = U8[i * 11 + tl + 140171];
+    if (U8[i * 11 + tl + 226057] > U8[creature + 45]) {
+      U8[creature + 45] = U8[i * 11 + tl + 226057];
     }
     switch (i) {
       case 2: {
@@ -101,7 +101,7 @@ export function AwardWisdomBonus(creature: number) {
       for (let $i3 = 1; $i3 <= 5; $i3++) {
         lvl = $i3;
         if (CharHlp.SpellSlots(creature, 0, lvl) > 0) {
-          CharHlp.SetSpellSlots(creature, 0, lvl, CharHlp.SpellSlots(creature, 0, lvl) + U8[w * 7 + lvl + 229736]);
+          CharHlp.SetSpellSlots(creature, 0, lvl, CharHlp.SpellSlots(creature, 0, lvl) + U8[w * 7 + lvl + 237928]);
         }
       }
     }
@@ -122,17 +122,17 @@ export function StartingAge(race: number, charClass: number) {
   let p: number = 0, part: number = 0, oldest: number = 0, $r0: number = 0;
   if (charClass <= 7) {
     {
-      const $w1 = race * 32 + charClass * 4 + 230179;
+      const $w1 = race * 32 + charClass * 4 + 238371;
       $r0 = (Dice.RollDice(U8[$w1 + 2], U8[$w1 + 3]) + r16($w1)) & 65535;
     }
   } else {
     oldest = 0;
     for (let $i2 = 1; $i2 <= 3; $i2++) {
       p = $i2;
-      part = I8[charClass * 3 + p + 140376];
+      part = I8[charClass * 3 + p + 226262];
       if ((part >= 0) && (part <= 7)) {
         {
-          const $w3 = race * 32 + part * 4 + 230179;
+          const $w3 = race * 32 + part * 4 + 238371;
           if ((r16($w3) + (U8[$w3 + 3] * U8[$w3 + 2])) > oldest) {
             oldest = (r16($w3) + (U8[$w3 + 3] * U8[$w3 + 2])) & 65535;
           }
@@ -156,8 +156,8 @@ export function RecalcSaves(creature: number) {
         if (lvl > 9) {
           lvl = 9;
         }
-        if (U8[creature + i + 109] > U8[k * 45 + lvl * 5 + i + 230438]) {
-          U8[creature + i + 109] = U8[k * 45 + lvl * 5 + i + 230438];
+        if (U8[creature + i + 109] > U8[k * 45 + lvl * 5 + i + 238630]) {
+          U8[creature + i + 109] = U8[k * 45 + lvl * 5 + i + 238630];
         }
       }
     }
@@ -210,11 +210,11 @@ export function ThiefSkillParts(creature: number, j: number, base: number, racia
   } else if (tl > 9) {
     tl = 9;
   }
-  U8[base] = I8[tl * 8 + j + 230794];
-  U8[racial] = I8[r * 8 + j + 230866];
+  U8[base] = I8[tl * 8 + j + 238986];
+  U8[racial] = I8[r * 8 + j + 239058];
   U8[dexterity] = 0;
   if (j < 6) {
-    U8[dexterity] = I8[dex * 5 + j + 230885];
+    U8[dexterity] = I8[dex * 5 + j + 239077];
   }
 }
 
@@ -268,14 +268,14 @@ export function TurnValue(undeadLevel: number, lvl: number) {
   if (undeadLevel > 10) {
     undeadLevel = 10;
   }
-  $r0 = I8[undeadLevel * 10 + col + 231005];
+  $r0 = I8[undeadLevel * 10 + col + 239197];
   return $r0;
 }
 
 export function RaceAbilityMin(race: number, gender: number, ability: number) {
   let $r0: number = 0;
   {
-    const $w1 = race * 16 + 140249;
+    const $w1 = race * 16 + 226135;
     switch (ability) {
       case 0: {
         $r0 = U8[$w1 + gender];
@@ -308,7 +308,7 @@ export function RaceAbilityMin(race: number, gender: number, ability: number) {
 export function RaceAbilityMax(race: number, gender: number, ability: number) {
   let $r0: number = 0;
   {
-    const $w1 = race * 16 + 140249;
+    const $w1 = race * 16 + 226135;
     switch (ability) {
       case 0: {
         $r0 = U8[$w1 + gender + 2];
@@ -343,10 +343,10 @@ export function ClassAbilityMin(race: number, charClass: number, ability: number
   least = 0;
   for (let $i1 = 1; $i1 <= 3; $i1++) {
     p = $i1;
-    part = I8[charClass * 3 + p + 140376];
+    part = I8[charClass * 3 + p + 226262];
     if (part >= 0) {
-      if (I8[part * 6 + ability + 231116] > least) {
-        least = I8[part * 6 + ability + 231116] & 255;
+      if (I8[part * 6 + ability + 239308] > least) {
+        least = I8[part * 6 + ability + 239308] & 255;
       }
     }
   }
@@ -364,7 +364,7 @@ export function ConHpPerDie(cls: number, con: number) {
   } else if (con > 25) {
     con = 25;
   }
-  share = I8[con + 231161];
+  share = I8[con + 239353];
   if (((cls === 2) || (cls === 3)) || (cls === 4)) {
     switch (con) {
       case 17: {
@@ -423,7 +423,7 @@ export function HitDice(creature: number, cls: number) {
     }
   }
   if (before === 0) {
-    $r0 = ((lvl + U8[cls + 230435]) - 1) & 255;
+    $r0 = ((lvl + U8[cls + 238627]) - 1) & 255;
   } else if (lvl > before) {
     $r0 = (lvl - before) & 255;
   }
@@ -479,7 +479,7 @@ export function HpMaximum(creature: number) {
   sum = 0;
   for (let $i1 = 0; $i1 <= 7; $i1++) {
     cls = $i1;
-    sum = (sum + rt.mul(HitDice(creature, cls), U8[cls + 131910])) << 16 >> 16;
+    sum = (sum + rt.mul(HitDice(creature, cls), U8[cls + 217796])) << 16 >> 16;
   }
   $r0 = DivideAmongClasses(sum, DiceConBonus(creature, U8[creature + 20]), HpClassCount(creature)) & 255;
   return $r0;
@@ -495,15 +495,15 @@ export function RollFirstLevelHp(creature: number, mask: number) {
       roll = 0;
       for (let $i2 = 1, $e2 = DiceAtLevel(creature, cls); $i2 <= $e2; $i2++) {
         i = $i2;
-        die = Dice.RollDice(1, U8[cls + 131910]) & 255;
+        die = Dice.RollDice(1, U8[cls + 217796]) & 255;
         if (die < floor) {
           die = floor;
         }
         roll = (roll + die) & 255;
       }
       if (I8[creature + cls + 150] === 1) {
-        if (roll < Math.trunc((U8[cls + 131910] * 2) / 3)) {
-          roll = Math.trunc((U8[cls + 131910] * 2) / 3) & 255;
+        if (roll < Math.trunc((U8[cls + 217796] * 2) / 3)) {
+          roll = Math.trunc((U8[cls + 217796] * 2) / 3) & 255;
         }
       }
       sum = (sum + roll) & 255;
@@ -580,7 +580,7 @@ export function ItemLimitsFor(creature: number) {
   for (let $i1 = 0; $i1 <= 7; $i1++) {
     cls = $i1;
     if (CharHlp.GetClassLevel(creature, 1 << cls) > 0) {
-      limits = limits | U8[cls + 230187];
+      limits = limits | U8[cls + 238379];
     }
   }
   $r0 = limits;
@@ -621,7 +621,7 @@ export function FitSpellsToLevel(creature: number) {
         i = $i3;
         id = CharHlp.MemorizedAt(creature, i) & 127;
         if (CharHlp.IsSpell(id)) {
-          if ((U8[id * 16 + 136506] === kind) && (I8[id * 16 + 136507] === lvl)) {
+          if ((U8[id * 16 + 222392] === kind) && (I8[id * 16 + 222393] === lvl)) {
             have = (have + 1) & 255;
             if (have > room) {
               CharHlp.SetMemorizedAt(creature, i, 0);
@@ -655,7 +655,7 @@ export function PrimesAtLeast(creature: number, cls: number, score: number) {
   ok = true;
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     ab = $i1;
-    if ((U8[cls + 230195] & (1 << ab)) !== 0) {
+    if ((U8[cls + 238387] & (1 << ab)) !== 0) {
       if (ab === 0) {
         have = CharHlp.PermanentStrength(creature) & 255;
       } else {
@@ -681,9 +681,9 @@ export function CanTakeClass(creature: number, cls: number) {
   ok = (CanChangeClass(creature) && (cls !== I8[creature + 47])) && (I8[creature + cls + 150] <= 0);
   if (ok) {
     ok = false;
-    for (let $i1 = 1, $e1 = I8[230003]; $i1 <= $e1; $i1++) {
+    for (let $i1 = 1, $e1 = I8[238195]; $i1 <= $e1; $i1++) {
       i = $i1;
-      if (I8[i + 230003] === cls) {
+      if (I8[i + 238195] === cls) {
         ok = true;
       }
     }
@@ -702,7 +702,7 @@ export function CanTakeClass(creature: number, cls: number) {
   if (ok) {
     ok = false;
     {
-      const $w3 = cls * 10 + 230017;
+      const $w3 = cls * 10 + 238209;
       for (let $i4 = 1, $e4 = I8[$w3]; $i4 <= $e4; $i4++) {
         i = $i4;
         if (I8[$w3 + i] === U8[creature + 160]) {
@@ -738,7 +738,7 @@ export function SpellFailureChance(creature: number, spell: number) {
   let $r0: number = 0;
   $r0 = 0;
   if (CharHlp.IsSpell(spell)) {
-    if ((I8[spell * 16 + 136506] === 0) && (CharHlp.GetClassLevel(creature, 1) > 0)) {
+    if ((I8[spell * 16 + 222392] === 0) && (CharHlp.GetClassLevel(creature, 1) > 0)) {
       $r0 = AbilAdj.WisSpellFailure(U8[creature + 18]) & 255;
     }
   }
@@ -752,15 +752,15 @@ export function LevelXp(cls: number, lvl: number) {
   } else if (lvl > 9) {
     $r0 = -1;
   } else {
-    $r0 = ri32(cls * 72 + lvl * 4 + 140420);
+    $r0 = ri32(cls * 72 + lvl * 4 + 226306);
   }
   return $r0;
 }
 
 export function MaxLevel(cls: number) {
   let $r0: number = 0;
-  if (U8[141188] !== 0) {
-    $r0 = I8[cls + 230203];
+  if (U8[227074] !== 0) {
+    $r0 = I8[cls + 238395];
   } else {
     $r0 = 9;
   }
@@ -789,7 +789,7 @@ export function KnowClericSpells(creature: number) {
     m = $i1;
     if (CharHlp.IsSpell(m)) {
       {
-        const $w2 = m * 16 + 136506;
+        const $w2 = m * 16 + 222392;
         if ((U8[$w2] === 0) || (U8[$w2] === 2)) {
           if (CharHlp.SpellSlots(creature, U8[$w2], I8[$w2 + 1]) > 0) {
             CharHlp.SetSpellKnown(creature, m, true);
@@ -825,7 +825,7 @@ export function CasterSlots(creature: number) {
     }
     for (let $i1 = 1; $i1 <= 5; $i1++) {
       k = $i1;
-      U8[$f0 + k - 1] = U8[clr * 5 + k + 140449];
+      U8[$f0 + k - 1] = U8[clr * 5 + k + 226335];
     }
     if (U8[creature + 18] < 17) {
       U8[$f0 + 4] = 0;
@@ -838,7 +838,7 @@ export function CasterSlots(creature: number) {
     if (pal >= 9) {
       for (let $i2 = 1; $i2 <= 5; $i2++) {
         k = $i2;
-        U8[$f0 + k - 1] = U8[MinLevel(pal) * 5 + k + 140958];
+        U8[$f0 + k - 1] = U8[MinLevel(pal) * 5 + k + 226844];
       }
     }
     PutSlotRow(creature, 0, $f0, clr > 1);
@@ -849,7 +849,7 @@ export function CasterSlots(creature: number) {
     }
     for (let $i3 = 1; $i3 <= 5; $i3++) {
       k = $i3;
-      U8[$f0 + k - 1] = U8[mag * 5 + k + 140809];
+      U8[$f0 + k - 1] = U8[mag * 5 + k + 226695];
     }
     PutSlotRow(creature, 1, $f0, false);
   }
@@ -857,7 +857,7 @@ export function CasterSlots(creature: number) {
   if (rng >= 8) {
     for (let $i4 = 1; $i4 <= 5; $i4++) {
       k = $i4;
-      U8[$f0 + k - 1] = U8[MinLevel(rng) * 5 + k + 140978];
+      U8[$f0 + k - 1] = U8[MinLevel(rng) * 5 + k + 226864];
     }
   }
   if ((mag > 1) || ((mag <= 0) && (rng > 0))) {
@@ -867,7 +867,7 @@ export function CasterSlots(creature: number) {
   if (rng >= 8) {
     for (let $i5 = 1; $i5 <= 5; $i5++) {
       k = $i5;
-      U8[$f0 + k - 1] = U8[MinLevel(rng) * 5 + k + 140968];
+      U8[$f0 + k - 1] = U8[MinLevel(rng) * 5 + k + 226854];
     }
   }
   PutSlotRow(creature, 2, $f0, false);
@@ -879,7 +879,7 @@ export function CasterSlots(creature: number) {
 
 export function RollsHitDice(creature: number, cls: number, mask: number) {
   let $r0: boolean = false;
-  $r0 = ((I8[creature + cls + 150] > 0) && ((U8[cls + 131902] & mask) > 0)) && ((U8[creature + 285] & (1 << cls)) === 0);
+  $r0 = ((I8[creature + cls + 150] > 0) && ((U8[cls + 217788] & mask) > 0)) && ((U8[creature + 285] & (1 << cls)) === 0);
   return $r0;
 }
 
@@ -888,7 +888,7 @@ export function DiceAtLevel(creature: number, cls: number) {
   if (I8[creature + cls + 150] > 1) {
     $r0 = 1;
   } else {
-    $r0 = U8[cls + 230435];
+    $r0 = U8[cls + 238627];
   }
   return $r0;
 }

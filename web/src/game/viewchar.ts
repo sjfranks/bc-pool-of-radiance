@@ -47,36 +47,36 @@ export const PAGE_KILLS = 3;
 export const PAGE_THIEF = 4;
 export const PAGE_CLERIC = 5;
 
-export const $at = { tradeTarget: 247711 };
+export const $at = { tradeTarget: 255903 };
 
 export async function DisplayChar(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 265);
   let row: number = 0, i: number = 0, j: number = 0, multi: boolean = false;
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   CharDisp.DisplayCreatureName(creature, 1, 1, false);
   if (CharHlp.IsNpc(creature)) {
     TextRend.DisplayString(U8[creature] + 3, 1, 10, "(NPC)");
   }
   U8[$f0] = 1;
-  wS($f0 + 1, 255, rS(U8[creature + 158] * 7 + 132624));
+  wS($f0 + 1, 255, rS(U8[creature + 158] * 7 + 218510));
   TextRend.DisplayString(U8[$f0], 3, 15, rS($f0 + 1));
   U8[$f0] = (U8[$f0] + U8[$f0 + 1]) + 1;
-  wS($f0 + 1, 255, rS(I8[creature + 46] * 9 + 132408));
+  wS($f0 + 1, 255, rS(I8[creature + 46] * 9 + 218294));
   TextRend.DisplayString(U8[$f0], 3, 15, rS($f0 + 1));
   U8[$f0] = (U8[$f0] + U8[$f0 + 1]) + 1;
   TextRend.DisplayString(U8[$f0], 3, 15, "Age " + StrUtil.NumStr(r16(creature + 48)));
-  wS($f0 + 1, 255, rS(U8[creature + 160] * 16 + 132480));
+  wS($f0 + 1, 255, rS(U8[creature + 160] * 16 + 218366));
   TextRend.DisplayString(1, 4, 15, rS($f0 + 1));
   if (!CharHlp.IsDualClass(creature)) {
-    TextRend.DisplayString(1, 5, 15, rS(I8[creature + 47] * 26 + 131942));
+    TextRend.DisplayString(1, 5, 15, rS(I8[creature + 47] * 26 + 217828));
   }
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     i = $i1;
-    TextRend.DisplayString(1, i + 7, 10, rS(i * 4 + 132384) + " ");
-    (await PrintStat(i, false));
+    TextRend.DisplayString(1, i + 7, 10, rS(i * 4 + 218270) + " ");
+    PrintStat(i, false);
   }
-  (await PrintMoney());
+  PrintMoney();
   TextRend.DisplayString(1, 15, 15, "Level");
   Magic.DrainedByClass(creature, $f0 + 257);
   if (CharHlp.IsDualClass(creature)) {
@@ -113,10 +113,10 @@ export async function DisplayChar(creature: number) {
   }
   row = (row + 1) & 255;
   TextRend.DisplayString(1, row, 15, "Status");
-  wS($f0 + 1, 255, rS(U8[creature + 268] * 12 + 132701));
+  wS($f0 + 1, 255, rS(U8[creature + 268] * 12 + 218587));
   TextRend.DisplayString(8, row, 10, rS($f0 + 1));
   TextRend.DisplayString(8 + U8[$f0 + 1], row, 12, SecondaryStatus(creature));
-  if (((U8[141177] !== 0) && (U8[141178] !== 0)) && (await Portrait.PlayerPortraitsHere())) {
+  if (((U8[227063] !== 0) && (U8[227064] !== 0)) && (await Portrait.PlayerPortraitsHere())) {
     (await Portrait.DisplayCharPortrait());
   }
   S.sp = $sp;
@@ -140,7 +140,7 @@ export function SecondaryStatus(creature: number) {
 export function PrintCombatStats() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let p: number = 0, row: number = 0, col: number = 0, mv: number = 0;
-  p = r32(143749);
+  p = r32(229635);
   CharHlp.RecalcStats(p);
   row = 17;
   TextRend.DisplayString(1, row, 15, "AC    ");
@@ -170,7 +170,7 @@ export function PrintCombatStats() {
   S.sp = $sp;
 }
 
-export async function PrintStat(statIdx: number, modifying: boolean) {
+export function PrintStat(statIdx: number, modifying: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let col: number = 0, hlCol: number = 0;
   if (modifying) {
@@ -179,29 +179,29 @@ export async function PrintStat(statIdx: number, modifying: boolean) {
     hlCol = 10;
   }
   col = 5;
-  (await Border.ClearBox(col, statIdx + 7, 11, statIdx + 7));
-  if (U8[r32(143749) + statIdx + 16] < 10) {
+  Border.ClearBox(col, statIdx + 7, 11, statIdx + 7);
+  if (U8[r32(229635) + statIdx + 16] < 10) {
     col = (col + 1) & 255;
   }
-  TextRend.DisplayString(col, statIdx + 7, hlCol, StrUtil.NumStr(U8[r32(143749) + statIdx + 16]));
-  if (((statIdx === 0) && (U8[r32(143749) + 16] === 18)) && (U8[r32(143749) + 22] > 0)) {
-    wS($f0, 40, StrUtil.ZeroPad2(U8[r32(143749) + 22]));
+  TextRend.DisplayString(col, statIdx + 7, hlCol, StrUtil.NumStr(U8[r32(229635) + statIdx + 16]));
+  if (((statIdx === 0) && (U8[r32(229635) + 16] === 18)) && (U8[r32(229635) + 22] > 0)) {
+    wS($f0, 40, StrUtil.ZeroPad2(U8[r32(229635) + 22]));
     TextRend.DisplayString(7, 7, hlCol, "(" + rS($f0) + ")");
   }
   S.sp = $sp;
 }
 
-export async function PrintMoney() {
+export function PrintMoney() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let row: number = 0, m: number = 0;
-  (await Border.ClearBox(12, 7, 26, 14));
+  Border.ClearBox(12, 7, 26, 14);
   row = 7;
   for (let $i1 = 6; $i1 >= 0; $i1--) {
     m = $i1;
-    if (r16(r32(143749) + m * 2 + 136) > 0) {
-      wS($f0, 40, rS(m * 9 + 132638));
+    if (r16(r32(229635) + m * 2 + 136) > 0) {
+      wS($f0, 40, rS(m * 9 + 218524));
       TextRend.DisplayString(20 - U8[$f0], row, 10, rS($f0));
-      TextRend.DisplayString(21, row, 10, StrUtil.NumStr(r16(r32(143749) + m * 2 + 136)));
+      TextRend.DisplayString(21, row, 10, StrUtil.NumStr(r16(r32(229635) + m * 2 + 136)));
       row = (row + 1) & 255;
     }
   }
@@ -211,13 +211,13 @@ export async function PrintMoney() {
 export async function ViewCharMenu(done: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 45);
   let ch: number = 0, hasMoney: boolean = false, i: number = 0, j: number = 0, shown: number = 0;
-  if (U8[141176] === 5) {
-    (await CbtMap.SetNoncombatPalette());
+  if (U8[227062] === 5) {
+    CbtMap.SetNoncombatPalette();
   }
   ch = 32;
   U8[done] = false ? 1 : 0;
-  w32(247711, r32(143749));
-  shown = r32(143749);
+  w32(255903, r32(229635));
+  shown = r32(229635);
   (await DisplayChar(shown));
   DrawMoreInfoLabel();
   while (!(ch === 0 || ch === 69) && !(U8[done] !== 0)) {
@@ -242,10 +242,10 @@ export async function ViewCharMenu(done: number) {
     if ((U8[$f0 + 41] !== 0)) {
       wS($f0, 40, rS($f0) + "Spells ");
     }
-    if ((CharHlp.MayTrade(shown) && hasMoney) && (U8[141176] !== 5)) {
+    if ((CharHlp.MayTrade(shown) && hasMoney) && (U8[227062] !== 5)) {
       wS($f0, 40, rS($f0) + "Trade ");
     }
-    if (hasMoney && (U8[141176] === 8)) {
+    if (hasMoney && (U8[227062] === 8)) {
       wS($f0, 40, rS($f0) + "Deposit ");
     } else if (hasMoney) {
       wS($f0, 40, rS($f0) + "Drop ");
@@ -257,13 +257,13 @@ export async function ViewCharMenu(done: number) {
       wS($f0, 40, rS($f0) + "Cure ");
     }
     wS($f0, 40, rS($f0) + "Exit");
-    wS(227083, 16, "M");
-    U8[227105] = U8[141176] !== 5 ? 1 : 0;
+    wS(235275, 16, "M");
+    U8[235297] = U8[227062] !== 5 ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("", rS($f0), 13, 10, 15, false, false, $f0 + 42)) & 255;
     w16($f0 + 43, -1);
     if ((U8[$f0 + 42] !== 0)) {
       if ((await AltItems(ch))) {
-        shown = r32(143749);
+        shown = r32(229635);
         (await DisplayChar(shown));
         DrawMoreInfoLabel();
       }
@@ -284,7 +284,7 @@ export async function ViewCharMenu(done: number) {
       }
       case 68: {
         (await DropMoneyMenu());
-        (await PrintMoney());
+        PrintMoney();
         PrintCombatStats();
         break;
       }
@@ -306,13 +306,13 @@ export async function ViewCharMenu(done: number) {
       }
     }
     if (!(U8[done] !== 0) && (ch === 73 || ch === 83 || ch === 84 || ch === 72 || ch === 67 || ch === 77)) {
-      shown = r32(143749);
+      shown = r32(229635);
       (await DisplayChar(shown));
       DrawMoreInfoLabel();
     }
   }
-  if (U8[141176] === 5) {
-    (await CbtMap.SetCombatPalette());
+  if (U8[227062] === 5) {
+    CbtMap.SetCombatPalette();
   }
   (await CharDisp.DisplayNoncombatInterface());
   S.sp = $sp;
@@ -321,7 +321,7 @@ export async function ViewCharMenu(done: number) {
 export async function UseItemMenu(done: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 48);
   let ch: number = 0, needRedraw: boolean = false, p: number = 0, creature: number = 0, member: number = 0, itemCount: number = 0;
-  creature = r32(143749);
+  creature = r32(229635);
   ch = 32;
   w32($f0 + 42, r32(creature + 200));
   w16($f0 + 46, 0);
@@ -340,8 +340,8 @@ export async function UseItemMenu(done: number) {
       CharHlp.ItemLabel(p, true);
       p = r32(p + 42);
     }
-    if (needRedraw || (U8[144905] !== 0)) {
-      (await TextRend.ClearScreen());
+    if (needRedraw || (U8[230791] !== 0)) {
+      TextRend.ClearScreen();
       (await Border.DrawBorder(1, 1, 38, 22, 0));
       CharDisp.DisplayCreatureName(creature, 1, 1, true);
       TextRend.DisplayString(U8[creature] + 4, 1, 10, "Items");
@@ -352,19 +352,19 @@ export async function UseItemMenu(done: number) {
       }
       U8[$f0 + 41] = true ? 1 : 0;
       needRedraw = false;
-      U8[144905] = 0;
+      U8[230791] = 0;
     }
-    wS(227083, 16, "");
+    wS(235275, 16, "");
     if (TagsSets()) {
-      wS(227083, 16, "12");
+      wS(235275, 16, "12");
     }
-    if ((U8[141208] !== 0)) {
-      wS(227083, 16, rS(227083) + "V");
+    if ((U8[227094] !== 0)) {
+      wS(235275, 16, rS(235275) + "V");
     }
-    U8[227106] = true ? 1 : 0;
-    U8[227105] = U8[141176] !== 5 ? 1 : 0;
+    U8[235298] = true ? 1 : 0;
+    U8[235297] = U8[227062] !== 5 ? 1 : 0;
     ch = (await MenuCore.MenuVertical("", rS($f0), 13, 10, 15, 1, 5, 38, 22, r32(creature + 200), true, $f0 + 41, $f0 + 46, $f0 + 42)) & 255;
-    if ((U8[227107] !== 0)) {
+    if ((U8[235299] !== 0)) {
       ch = 32;
     } else if (Party.AltMember(ch) > 0) {
       member = Party.MemberAt(Party.AltMember(ch));
@@ -374,8 +374,8 @@ export async function UseItemMenu(done: number) {
           TextRend.ClearBottomLine();
         } else {
           creature = member;
-          w32(143749, member);
-          w32(247711, member);
+          w32(229635, member);
+          w32(255903, member);
           w16($f0 + 46, 0);
           needRedraw = true;
         }
@@ -384,7 +384,7 @@ export async function UseItemMenu(done: number) {
     } else if (r32($f0 + 42) !== 0) {
       switch (ch) {
         case 86: {
-          if ((U8[141208] !== 0)) {
+          if ((U8[227094] !== 0)) {
             (await ViewItemDetail(r32($f0 + 42)));
             needRedraw = true;
           }
@@ -407,7 +407,7 @@ export async function UseItemMenu(done: number) {
             ch = 32;
           } else if (CharHlp.ItemReadable(r32($f0 + 42)) || (CharHlp.ItemSpell(r32($f0 + 42)) !== 0)) {
             (await Magic.UseItem(r32($f0 + 42), done));
-            if (U8[141176] !== 5) {
+            if (U8[227062] !== 5) {
               U8[done] = false ? 1 : 0;
             }
             if (!(U8[done] !== 0)) {
@@ -428,9 +428,9 @@ export async function UseItemMenu(done: number) {
         case 68: {
           if (!(await CheckItemAvail(r32($f0 + 42)))) {
             ch = 32;
-          } else if (U8[141176] === 8) {
+          } else if (U8[227062] === 8) {
             if (Vault.HasRoom()) {
-              (await Vault.DepositItem(r32(143749), r32($f0 + 42)));
+              (await Vault.DepositItem(r32(229635), r32($f0 + 42)));
               U8[$f0 + 41] = true ? 1 : 0;
             } else {
               (await TextRend.DisplayAndPause(14, "The vault is full."));
@@ -439,10 +439,10 @@ export async function UseItemMenu(done: number) {
             CharHlp.ItemLabel(r32($f0 + 42), false);
             (await SayBelow(true, "Your " + rS(r32($f0 + 42)) + "will be gone forever"));
             if ((await MenuCore.YesNoMenu("Drop It? ", 13, 10, 15)) === 89) {
-              (await CharHlp.RemoveItem(r32(143749), r32($f0 + 42)));
+              (await CharHlp.RemoveItem(r32(229635), r32($f0 + 42)));
               U8[$f0 + 41] = true ? 1 : 0;
             }
-            (await Border.ClearBox(1, 21, 38, 22));
+            Border.ClearBox(1, 21, 38, 22);
           }
           break;
         }
@@ -451,7 +451,7 @@ export async function UseItemMenu(done: number) {
           break;
         }
         case 74: {
-          (await CharHlp.JoinStacks(r32(143749), r32($f0 + 42)));
+          (await CharHlp.JoinStacks(r32(229635), r32($f0 + 42)));
           break;
         }
         case 83: {
@@ -463,7 +463,7 @@ export async function UseItemMenu(done: number) {
           break;
         }
         case 73: {
-          if (U8[141176] === 1) {
+          if (U8[227062] === 1) {
             (await IdentifyItem(r32($f0 + 42), $f0 + 41));
           } else if (SpellInf.HasItemPage(r32($f0 + 42))) {
             (await ItemInfo(creature, r32($f0 + 42), $f0 + 46));
@@ -473,7 +473,7 @@ export async function UseItemMenu(done: number) {
         }
       }
     }
-    if (!(U8[227107] !== 0)) {
+    if (!(U8[235299] !== 0)) {
       CharHlp.RecalcStats(creature);
     }
     if (U8[creature + 199] !== itemCount) {
@@ -485,8 +485,8 @@ export async function UseItemMenu(done: number) {
 
 export async function MemberItems(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
-  w32(143749, creature);
-  w32(247711, creature);
+  w32(229635, creature);
+  w32(255903, creature);
   if ((U8[creature + 199] === 0) || (r32(creature + 200) === 0)) {
     (await TextRend.DisplayAndPause(14, rS(creature) + " has no items."));
   } else {
@@ -500,7 +500,7 @@ export async function MemberItems(creature: number) {
 export async function AltItems(c: number) {
   let member: number = 0, $r0: boolean = false;
   member = 0;
-  if ((U8[141176] !== 5) && (Party.AltMember(c) > 0)) {
+  if ((U8[227062] !== 5) && (Party.AltMember(c) > 0)) {
     member = Party.MemberAt(Party.AltMember(c));
   }
   if (member !== 0) {
@@ -539,7 +539,7 @@ export function CannotCarryItem(creature: number, item: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let $r0: boolean = false;
   CharHlp.RecalcStats(creature);
-  $r0 = ((U8[creature + 199] >= 16) && !((U8[141184] !== 0) && CharHlp.JoinsWhole(creature, item))) || Money.CheckOverload(creature, CharHlp.ItemWeight(item), $f0);
+  $r0 = ((U8[creature + 199] >= 16) && !((U8[227070] !== 0) && CharHlp.JoinsWhole(creature, item))) || Money.CheckOverload(creature, CharHlp.ItemWeight(item), $f0);
   S.sp = $sp;
   return $r0;
 }
@@ -551,10 +551,10 @@ export function ItemMenuLine(creature: number, item: number) {
   if (CharHlp.CanUseItems(creature)) {
     wS($f0, 255, rS($f0) + " Use");
   }
-  if (CharHlp.MayTrade(creature) && (U8[141176] !== 5)) {
+  if (CharHlp.MayTrade(creature) && (U8[227062] !== 5)) {
     wS($f0, 255, rS($f0) + " Trade");
   }
-  if (U8[141176] === 8) {
+  if (U8[227062] === 8) {
     wS($f0, 255, rS($f0) + " Deposit");
   } else {
     wS($f0, 255, rS($f0) + " Drop");
@@ -566,10 +566,10 @@ export function ItemMenuLine(creature: number, item: number) {
   if (CanJoin(item)) {
     wS($f0, 255, rS($f0) + " Join");
   }
-  if (CharHlp.MayTrade(creature) && (U8[141176] === 1)) {
+  if (CharHlp.MayTrade(creature) && (U8[227062] === 1)) {
     wS($f0, 255, rS($f0) + " Sell");
   }
-  if (U8[141176] === 1) {
+  if (U8[227062] === 1) {
     wS($f0, 255, rS($f0) + " Id");
   } else if (SpellInf.HasItemPage(item)) {
     wS($f0, 255, rS($f0) + " Info");
@@ -587,7 +587,7 @@ export function ItemMenuLine(creature: number, item: number) {
 
 export function TagsSets() {
   let $r0: boolean = false;
-  $r0 = (U8[141176] !== 8) && (U8[141176] !== 1);
+  $r0 = (U8[227062] !== 8) && (U8[227062] !== 1);
   return $r0;
 }
 
@@ -603,16 +603,16 @@ export async function TagSet(item: number, n: number) {
 
 export async function ItemTradeMenu(item: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
-  w32($f0, r32(247711));
+  w32($f0, r32(255903));
   (await CharDisp.DisplayNoncombatInterface());
   (await CharDisp.SelectChar("Trade with Whom?", true, $f0));
   if (r32($f0) !== 0) {
-    w32(247711, r32($f0));
+    w32(255903, r32($f0));
     if (CannotCarryItem(r32($f0), item)) {
       (await CharDisp.PrintBottomLine("Overloaded"));
     } else {
       (await CharHlp.AddToInventory(r32($f0), item));
-      (await CharHlp.RemoveItem(r32(143749), item));
+      (await CharHlp.RemoveItem(r32(229635), item));
       CharHlp.RecalcStats(r32($f0));
     }
   }
@@ -640,7 +640,7 @@ export function CanJoin(item: number) {
   let p: number = 0, $r0: boolean = false;
   $r0 = false;
   if (U8[item + 57] > 0) {
-    p = r32(r32(143749) + 200);
+    p = r32(r32(229635) + 200);
     while (p !== 0) {
       if (CharHlp.SameStack(item, p)) {
         $r0 = true;
@@ -658,10 +658,10 @@ export async function SellItem(item: number) {
   (await SayBelow(true, "I'll give you " + StrUtil.NumStr(price) + " gold pieces for your " + rS(item)));
   if ((await MenuCore.YesNoMenu("Is It a Deal? ", 13, 10, 15)) === 89) {
     (await CharDisp.PrintBottomLine("Sold!"));
-    (await CharHlp.RemoveItem(r32(143749), item));
-    (await Money.GiveCoins(r32(143749), Math.trunc(price / 5), price % 5));
+    (await CharHlp.RemoveItem(r32(229635), item));
+    (await Money.GiveCoins(r32(229635), Math.trunc(price / 5), price % 5));
   }
-  (await Border.ClearBox(1, 21, 38, 22));
+  Border.ClearBox(1, 21, 38, 22);
 }
 
 export async function IdentifyItem(item: number, newInfo: number) {
@@ -670,7 +670,7 @@ export async function IdentifyItem(item: number, newInfo: number) {
   CharHlp.ItemLabel(item, false);
   (await SayBelow(true, "For 200 gold pieces I'll identify your " + rS(item)));
   if ((await MenuCore.YesNoMenu("Is It a Deal? ", 13, 10, 15)) === 89) {
-    paid = (await Money.PayGold(r32(143749), 200));
+    paid = (await Money.PayGold(r32(229635), 200));
   }
   if (paid) {
     if (U8[item + 53] === 0) {
@@ -683,23 +683,23 @@ export async function IdentifyItem(item: number, newInfo: number) {
     }
     (await TextRend.PauseOnly());
   }
-  (await Border.ClearBox(1, 21, 38, 22));
+  Border.ClearBox(1, 21, 38, 22);
 }
 
 export async function TradeTreasureMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 264);
   let m: number = 0, mType: number = 0, prev: number = 0, amount: number = 0, exitOuter: boolean = false, exitInner: boolean = false, redraw: boolean = false;
   do {
-    w32($f0, r32(247711));
+    w32($f0, r32(255903));
     (await CharDisp.DisplayNoncombatInterface());
     (await CharDisp.SelectChar("Trade to?", true, $f0));
     if (r32($f0) === 0) {
       exitOuter = true;
     } else {
-      (await DisplayChar(r32(143749)));
+      (await DisplayChar(r32(229635)));
       do {
-        (await PrintMoney());
-        w32(247711, r32($f0));
+        PrintMoney();
+        w32(255903, r32($f0));
         prev = (await PickCoinType($f0 + 4));
         if (prev === 0) {
           exitInner = true;
@@ -708,13 +708,13 @@ export async function TradeTreasureMenu() {
           wS($f0 + 8, 255, "");
           mType = MoneyCal.ParseMoneyType(rS(prev), $f0 + 8) << 24 >> 24;
           wS($f0 + 8, 255, "How much " + rS($f0 + 8) + "will you trade? ");
-          amount = (await Money.InputNumberMax(r16(r32(143749) + mType * 2 + 136), rS($f0 + 8), 10)) & 65535;
-          (await Money.TradeMoney(r32(143749), r32($f0), amount, mType));
+          amount = (await Money.InputNumberMax(r16(r32(229635) + mType * 2 + 136), rS($f0 + 8), 10)) & 65535;
+          (await Money.TradeMoney(r32(229635), r32($f0), amount, mType));
           exitInner = true;
           exitOuter = true;
           for (let $i3 = 0; $i3 <= 6; $i3++) {
             m = $i3;
-            if (r16(r32(143749) + m * 2 + 136) > 0) {
+            if (r16(r32(229635) + m * 2 + 136) > 0) {
               exitOuter = false;
               exitInner = false;
             }
@@ -733,24 +733,24 @@ export async function DropMoneyMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 260);
   let m: number = 0, mType: number = 0, prev: number = 0, exitFlag: boolean = false, amount: number = 0;
   do {
-    (await PrintMoney());
+    PrintMoney();
     prev = (await PickCoinType($f0));
     if (prev === 0) {
       exitFlag = true;
     } else {
       wS($f0 + 4, 255, "");
       mType = MoneyCal.ParseMoneyType(rS(prev), $f0 + 4) << 24 >> 24;
-      if (U8[141176] === 8) {
+      if (U8[227062] === 8) {
         wS($f0 + 4, 255, "How much " + rS($f0 + 4) + "will you deposit? ");
       } else {
         wS($f0 + 4, 255, "How much " + rS($f0 + 4) + "will you drop? ");
       }
-      amount = (await Money.InputNumberMax(r16(r32(143749) + mType * 2 + 136), rS($f0 + 4), 10)) & 65535;
-      Money.DropMoney(r32(143749), amount, mType);
+      amount = (await Money.InputNumberMax(r16(r32(229635) + mType * 2 + 136), rS($f0 + 4), 10)) & 65535;
+      Money.DropMoney(r32(229635), amount, mType);
       exitFlag = true;
       for (let $i2 = 0; $i2 <= 6; $i2++) {
         m = $i2;
-        if (r16(r32(143749) + m * 2 + 136) > 0) {
+        if (r16(r32(229635) + m * 2 + 136) > 0) {
           exitFlag = false;
         }
       }
@@ -796,7 +796,7 @@ export function DrawLevel(creature: number, cls: number, drained: number, levelR
 export function DrawDualClass(creature: number, classRow: number, levelRow: number, drained: number, levelCol: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let col: number = 0, cls: number = 0;
-  wS($f0, 40, rS(I8[creature + 47] * 26 + 131942));
+  wS($f0, 40, rS(I8[creature + 47] * 26 + 217828));
   TextRend.DisplayString(1, classRow, 15, rS($f0));
   col = (1 + U8[$f0]) & 255;
   U8[levelCol] = 7;
@@ -806,11 +806,11 @@ export function DrawDualClass(creature: number, classRow: number, levelRow: numb
     if (((U8[creature + 285] & (1 << cls)) !== 0) && (I8[creature + cls + 150] > 0)) {
       if (CharHlp.ClassResting(creature, cls)) {
         DrawLevel(creature, cls, U8[drained + cls], levelRow, 8, " (", ")", levelCol);
-        wS($f0, 40, " (" + rS(cls * 26 + 131942) + ")");
+        wS($f0, 40, " (" + rS(cls * 26 + 217828) + ")");
         TextRend.DisplayString(col, classRow, 8, rS($f0));
       } else {
         DrawLevel(creature, cls, U8[drained + cls], levelRow, 15, "/", "", levelCol);
-        wS($f0, 40, " (" + rS(cls * 26 + 131942) + ")");
+        wS($f0, 40, " (" + rS(cls * 26 + 217828) + ")");
         TextRend.DisplayString(col, classRow, 15, rS($f0));
       }
       col = (col + U8[$f0]) & 255;
@@ -822,7 +822,7 @@ export function DrawDualClass(creature: number, classRow: number, levelRow: numb
 export async function LayOnHands(p: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   (await CharDisp.DisplayNoncombatInterface());
-  w32($f0, r32(143753));
+  w32($f0, r32(229639));
   (await CharDisp.SelectChar("Heal whom? ", true, $f0));
   if (r32($f0) === 0) {
     { S.sp = $sp; return; }
@@ -839,7 +839,7 @@ export async function CureDisease(p: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let ch: number = 0;
   (await CharDisp.DisplayNoncombatInterface());
-  w32($f0, r32(143753));
+  w32($f0, r32(229639));
   (await CharDisp.SelectChar("Cure whom? ", true, $f0));
   if (r32($f0) === 0) {
     { S.sp = $sp; return; }
@@ -848,7 +848,7 @@ export async function CureDisease(p: number) {
   if (!FxEngine.HasDisease(r32($f0))) {
     (await CharDisp.PrintNameString(r32($f0), "is not diseased", 0, false));
     ch = (await MenuCore.YesNoMenu("cure anyway: ", 13, 10, 15)) & 255;
-    (await CharDisp.ClearMessageWindow());
+    CharDisp.ClearMessageWindow();
   }
   if (ch !== 89) {
     { S.sp = $sp; return; }
@@ -859,7 +859,7 @@ export async function CureDisease(p: number) {
 }
 
 export async function MoreHeading(creature: number) {
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   TextRend.DisplayCentered(2, 37, 2, 11, rS(creature));
 }
@@ -880,10 +880,10 @@ export async function DrawGameStats(creature: number, b: number) {
       n = ri32(b + i * 4 - 4);
     }
     if (i === 9) {
-      n = Math.trunc(n / ri32(131934)) | 0;
+      n = Math.trunc(n / ri32(217820)) | 0;
     }
     wS($f0, 40, rt.fmtI(n, 0));
-    TextRend.DisplayString(3, 5 + i, 15, rS(i * 18 + 227127));
+    TextRend.DisplayString(3, 5 + i, 15, rS(i * 18 + 235319));
     TextRend.DisplayString(36 - U8[$f0], 5 + i, 10, rS($f0));
   }
   S.sp = $sp;
@@ -1132,7 +1132,7 @@ export async function DrawCleric(p: number) {
 export async function MorePage() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 95);
   let p: number = 0, page: number = 0, haveStats: boolean = false, top_: number = 0, ch: number = 0;
-  p = r32(143749);
+  p = r32(229635);
   CharHlp.RecalcStats(p);
   wS($f0, 40, "Saves sTats Kills");
   if (CharHlp.GetClassLevel(p, 64) > 0) {
@@ -1145,7 +1145,7 @@ export async function MorePage() {
   page = 1;
   haveStats = false;
   top_ = 1;
-  U8[145643] = 1;
+  U8[231529] = 1;
   do {
     switch (page) {
       case 2: {
@@ -1245,9 +1245,9 @@ export async function CheckItemAvail(item: number) {
   } else if (!CharHlp.ItemReadable(item)) {
     $r0 = true;
   } else if (((U8[item + 60] > 127) || (U8[item + 61] > 127)) || (U8[item + 62] > 127)) {
-    CharDisp.DisplayCreatureName(r32(143749), 1, 21, false);
-    U8[143769] = U8[r32(143749)] + 2;
-    U8[143770] = 21;
+    CharDisp.DisplayCreatureName(r32(229635), 1, 21, false);
+    U8[229655] = U8[r32(229635)] + 2;
+    U8[229656] = 21;
     (await SayBelow(false, " was going to scribe from that scroll"));
     if ((await MenuCore.YesNoMenu("is it Okay to lose it? ", 13, 10, 15)) === 89) {
       $r0 = true;
@@ -1255,7 +1255,7 @@ export async function CheckItemAvail(item: number) {
   } else {
     $r0 = true;
   }
-  (await Border.ClearBox(1, 21, 38, 22));
+  Border.ClearBox(1, 21, 38, 22);
   return $r0;
 }
 
@@ -1280,7 +1280,7 @@ export async function ViewItemDetail(it: number) {
     w32($f0 + 52, U8[CharHlp.BaseItem(U8[$w1 + 46]) + 2]);
     w32($f0 + 56, U8[CharHlp.BaseItem(U8[$w1 + 46]) + 3]);
   }
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   for (let $i2 = 1; $i2 <= 15; $i2++) {
     i = $i2;
@@ -1378,7 +1378,7 @@ export async function ItemInfo(creature: number, sel: number, idx: number) {
 export async function PickCoinType(list: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 7);
   let p: number = 0, ch: number = 0, $r0: number = 0;
-  p = Money.CoinMenu(r32(143749));
+  p = Money.CoinMenu(r32(229635));
   w32(list, p);
   w32($f0, 0);
   w16($f0 + 4, 0);

@@ -45,58 +45,58 @@ export const OPT_EXIT = 5;
 export const EXIT_KEY = 88;
 export const QUIT_KEY = 81;
 
-export const $at = { listed: 241393, count: 241405, used: 241406, descs: 241417, areas: 241758, clocks: 241967, dates: 242033, times: 242154, sel: 242198, top_: 242199 };
+export const $at = { listed: 249585, count: 249597, used: 249598, descs: 249609, areas: 249950, clocks: 250159, dates: 250225, times: 250346, sel: 250390, top_: 250391 };
 
 export async function ChooseSlot(saving: boolean, start: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 22);
   let i: number = 0, ch: number = 0, newest: number = 0, chosen: number = 0, $r0: number = 0;
   $r0 = 0;
   wS($f0 + 10, 11, SLOT_LETTERS);
-  U8[241405] = 0;
+  U8[249597] = 0;
   for (let $i1 = 1, $e1 = U8[$f0 + 10]; $i1 <= $e1; $i1++) {
     i = $i1;
-    ReadSlot(U8[241405] + 1, U8[$f0 + i + 10]);
-    if (saving || (U8[(U8[241405] + 1) + 241405] !== 0)) {
-      U8[241405] = U8[241405] + 1;
+    ReadSlot(U8[249597] + 1, U8[$f0 + i + 10]);
+    if (saving || (U8[(U8[249597] + 1) + 249597] !== 0)) {
+      U8[249597] = U8[249597] + 1;
     }
   }
-  U8[241393] = U8[241405];
-  if (U8[241405] === 0) {
+  U8[249585] = U8[249597];
+  if (U8[249597] === 0) {
     (await TextRend.FlashBottomLine(14, "No saved games found to load."));
     { S.sp = $sp; return $r0; }
   }
-  U8[242198] = 1;
+  U8[250390] = 1;
   newest = 0;
-  for (let $i2 = 1, $e2 = U8[241405]; $i2 <= $e2; $i2++) {
+  for (let $i2 = 1, $e2 = U8[249597]; $i2 <= $e2; $i2++) {
     i = $i2;
-    if ((U8[i + 241405] !== 0) && ((newest === 0) || (ri32(i * 4 + 242150) > newest))) {
-      newest = ri32(i * 4 + 242150);
-      U8[242198] = i;
+    if ((U8[i + 249597] !== 0) && ((newest === 0) || (ri32(i * 4 + 250342) > newest))) {
+      newest = ri32(i * 4 + 250342);
+      U8[250390] = i;
     }
   }
-  if (rt.Pos(String.fromCharCode(start), rS(241393)) > 0) {
-    U8[242198] = rt.Pos(String.fromCharCode(start), rS(241393));
+  if (rt.Pos(String.fromCharCode(start), rS(249585)) > 0) {
+    U8[250390] = rt.Pos(String.fromCharCode(start), rS(249585));
   }
-  U8[242199] = 1;
-  (await TextRend.ClearScreen());
+  U8[250391] = 1;
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 3, 38, 22, 0));
   (await Border.DrawBorder(1, 1, 38, 1, 0));
   TextRend.DisplayCentered(1, 38, 1, 15, "Load/Save Game Menu");
-  (await MoveTo(U8[242198]));
+  MoveTo(U8[250390]);
   if (saving) {
     wS($f0 + 1, 8, "Save");
   } else {
     wS($f0 + 1, 8, "Load");
   }
   chosen = 32;
-  U8[145643] = 3;
+  U8[231529] = 3;
   do {
-    wS(227083, 16, rS(241393) + "X");
-    rt.wSet(227100, 0, 3, rt.setR(5, 5));
-    U8[227082] = true ? 1 : 0;
+    wS(235275, 16, rS(249585) + "X");
+    rt.wSet(235292, 0, 3, rt.setR(5, 5));
+    U8[235274] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("Game: ", "Next Prev " + rS($f0 + 1) + " Quit Exit", 13, 10, 15, true, false, $f0)) & 255;
     if (!(U8[$f0] !== 0) && (ch === 13)) {
-      switch (U8[145643]) {
+      switch (U8[231529]) {
         case 1: {
           ch = 78;
           break;
@@ -121,26 +121,26 @@ export async function ChooseSlot(saving: boolean, start: number) {
     if ((U8[$f0] !== 0)) {
       switch (ch) {
         case 72: case 71: {
-          (await MoveTo(U8[242198] - 1));
+          MoveTo(U8[250390] - 1);
           break;
         }
         case 80: case 79: {
-          (await MoveTo(U8[242198] + 1));
+          MoveTo(U8[250390] + 1);
           break;
         }
         case 73: {
-          if (U8[242198] > 6) {
-            (await MoveTo(U8[242198] - 6));
+          if (U8[250390] > 6) {
+            MoveTo(U8[250390] - 6);
           } else {
-            (await MoveTo(1));
+            MoveTo(1);
           }
           break;
         }
         case 81: {
-          if ((U8[242198] + 6) < U8[241405]) {
-            (await MoveTo(U8[242198] + 6));
+          if ((U8[250390] + 6) < U8[249597]) {
+            MoveTo(U8[250390] + 6);
           } else {
-            (await MoveTo(U8[241405]));
+            MoveTo(U8[249597]);
           }
           break;
         }
@@ -151,14 +151,14 @@ export async function ChooseSlot(saving: boolean, start: number) {
       chosen = 0;
     } else if (ch === 81) {
       chosen = 33;
-    } else if ((ch !== 32) && (rt.Pos(String.fromCharCode(ch), rS(241393)) > 0)) {
+    } else if ((ch !== 32) && (rt.Pos(String.fromCharCode(ch), rS(249585)) > 0)) {
       chosen = ch;
     } else if (ch === 78) {
-      (await MoveTo(U8[242198] + 1));
+      MoveTo(U8[250390] + 1);
     } else if (ch === 80) {
-      (await MoveTo(U8[242198] - 1));
+      MoveTo(U8[250390] - 1);
     } else if (ch === U8[$f0 + 2]) {
-      chosen = U8[U8[242198] + 241393];
+      chosen = U8[U8[250390] + 249585];
     }
   } while (!(chosen !== 32));
   TextRend.ClearBottomLine();
@@ -170,7 +170,7 @@ export async function ChooseSlot(saving: boolean, start: number) {
 export async function AskDescription(letter: number, area: string, desc: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 62);
   let key: number = 0, $r0: boolean = false;
-  (await Border.ClearBox(1, 3, 38, 22));
+  Border.ClearBox(1, 3, 38, 22);
   wS($f0 + 31, 30, "SAVE GAME " + String.fromCharCode(letter));
   TextRend.DisplayString(2, 4, 10, rS($f0 + 31));
   TextRend.DisplayString(2, 5, 10, "Location: " + area);
@@ -232,7 +232,7 @@ export function SlotName(letter: number, ext: string) {
 
 export function SlotFile(letter: number, ext: string) {
   let $r0: string = "";
-  $r0 = rS(143235) + SlotName(letter, ext);
+  $r0 = rS(229121) + SlotName(letter, ext);
   return $r0;
 }
 
@@ -305,7 +305,7 @@ export function WriteSlotInfo(s: number, letter: number, desc: string, area: str
 
 export function SaveDiskMsg() {
   let $r0: string = "";
-  $r0 = "Put save disk in " + String.fromCharCode(U8[143236]) + ": (Esc gives up)";
+  $r0 = "Put save disk in " + String.fromCharCode(U8[229122]) + ": (Esc gives up)";
   return $r0;
 }
 
@@ -316,13 +316,13 @@ export async function AskSaveDisk(problem: string, name_: string) {
 }
 
 export async function CheckSaveDir() {
-  while (!FileUtil.MakeFolder(rS(143235)) && (await AskSaveDisk("Cannot create", rt.Copy(rS(143235), 1, U8[143235] - 1)))) {
+  while (!FileUtil.MakeFolder(rS(229121)) && (await AskSaveDisk("Cannot create", rt.Copy(rS(229121), 1, U8[229121] - 1)))) {
   }
 }
 
 export function SlotSet(s: number, letter: number) {
   let n: number = 0;
-  FileUtil.NewSet(s, rS(143235));
+  FileUtil.NewSet(s, rS(229121));
   FileUtil.AddToSet(s, SlotName(letter, ".dat"), false);
   FileUtil.AddToSet(s, SlotName(letter, ".inf"), false);
   FileUtil.AddToSet(s, SlotName(letter, ".sts"), false);
@@ -340,32 +340,32 @@ export function ReadSlot(i: number, letter: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 33);
   let ioRes: number = 0, n1: number = 0, n2: number = 0, recovered: boolean = false;
   recovered = RecoverSlot(letter);
-  U8[i + 241393] = letter;
-  U8[i + 241405] = false ? 1 : 0;
-  w32(i * 4 + 242150, 0);
-  wS(i * 6 + 241961, 5, "");
-  wS(i * 11 + 242022, 10, "");
-  wS(i * 31 + 241386, 30, "");
-  wS(i * 19 + 241739, 18, "");
+  U8[i + 249585] = letter;
+  U8[i + 249597] = false ? 1 : 0;
+  w32(i * 4 + 250342, 0);
+  wS(i * 6 + 250153, 5, "");
+  wS(i * 11 + 250214, 10, "");
+  wS(i * 31 + 249578, 30, "");
+  wS(i * 19 + 249931, 18, "");
   if (FileUtil.OpenReadOnly($f0, SlotFile(letter, ".dat"))) {
-    U8[i + 241405] = true ? 1 : 0;
+    U8[i + 249597] = true ? 1 : 0;
     Dos.GetFTime($f0, $f0 + 8);
     if (rt.IOResult() === 0) {
-      w32(i * 4 + 242150, ri32($f0 + 8));
+      w32(i * 4 + 250342, ri32($f0 + 8));
       Dos.UnpackTime(ri32($f0 + 8), $f0 + 12);
       wS($f0 + 24, 4, rt.fmtI(r16($f0 + 12), 0));
-      wS(i * 6 + 241961, 5, StrUtil.ZeroPad2(r16($f0 + 18)) + ":" + StrUtil.ZeroPad2(r16($f0 + 20)));
-      wS(i * 11 + 242022, 10, rS($f0 + 24) + "/" + StrUtil.ZeroPad2(r16($f0 + 14)) + "/" + StrUtil.ZeroPad2(r16($f0 + 16)));
+      wS(i * 6 + 250153, 5, StrUtil.ZeroPad2(r16($f0 + 18)) + ":" + StrUtil.ZeroPad2(r16($f0 + 20)));
+      wS(i * 11 + 250214, 10, rS($f0 + 24) + "/" + StrUtil.ZeroPad2(r16($f0 + 14)) + "/" + StrUtil.ZeroPad2(r16($f0 + 16)));
     }
-    if (!ReadSlotInfo(letter, i * 31 + 241386, i * 19 + 241739)) {
-      rt.Seek($f0, (1 + (r32(141147) + 484)) - (r32(141147)));
+    if (!ReadSlotInfo(letter, i * 31 + 249578, i * 19 + 249931)) {
+      rt.Seek($f0, (1 + (r32(227033) + 484)) - (r32(227033)));
       n1 = rt.BlockRead($f0, $f0 + 29, 2, true) & 65535;
-      rt.Seek($f0, (1 + (r32(141147) + 394)) - (r32(141147)));
+      rt.Seek($f0, (1 + (r32(227033) + 394)) - (r32(227033)));
       n2 = rt.BlockRead($f0, $f0 + 31, 2, true) & 65535;
       if (((rt.IOResult() === 0) && (n1 === 2)) && (n2 === 2)) {
-        wS(i * 19 + 241739, 18, AreaName.AreaFor(r16($f0 + 29) & 255, U8[$f0 + 31]));
+        wS(i * 19 + 249931, 18, AreaName.AreaFor(r16($f0 + 29) & 255, U8[$f0 + 31]));
       } else {
-        wS(i * 19 + 241739, 18, "UNKNOWN AREA");
+        wS(i * 19 + 249931, 18, "UNKNOWN AREA");
       }
     }
     rt.Close($f0);
@@ -374,57 +374,57 @@ export function ReadSlot(i: number, letter: number) {
   S.sp = $sp;
 }
 
-export async function DrawList() {
+export function DrawList() {
   let k: number = 0, i: number = 0, row: number = 0, color: number = 0;
-  (await Border.ClearBox(1, 3, 38, 22));
-  if (U8[242199] > 1) {
+  Border.ClearBox(1, 3, 38, 22);
+  if (U8[250391] > 1) {
     MenuCore.DrawMore(1, 38, 3);
   }
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     k = $i1;
-    i = (U8[242199] + k) & 255;
-    if (i <= U8[241405]) {
-      if (i === U8[242198]) {
+    i = (U8[250391] + k) & 255;
+    if (i <= U8[249597]) {
+      if (i === U8[250390]) {
         color = 15;
       } else {
         color = 10;
       }
       row = (4 + (3 * k)) & 255;
-      if (i === U8[242198]) {
-        TextRend.DisplayStringOn(2, row, 0, 15, String.fromCharCode(U8[i + 241393]) + ":");
+      if (i === U8[250390]) {
+        TextRend.DisplayStringOn(2, row, 0, 15, String.fromCharCode(U8[i + 249585]) + ":");
       } else {
-        TextRend.DisplayString(2, row, 15, String.fromCharCode(U8[i + 241393]));
+        TextRend.DisplayString(2, row, 15, String.fromCharCode(U8[i + 249585]));
         TextRend.DisplayString(3, row, color, ":");
       }
-      if ((U8[i + 241405] !== 0)) {
-        TextRend.DisplayString(5, row, color, rt.Copy(rS(i * 31 + 241386), 1, 27));
-        TextRend.DisplayString(38 - U8[i * 6 + 241961], row, color, rS(i * 6 + 241961));
-        TextRend.DisplayString(5, row + 1, color, rS(i * 19 + 241739));
-        TextRend.DisplayString(38 - U8[i * 11 + 242022], row + 1, color, rS(i * 11 + 242022));
+      if ((U8[i + 249597] !== 0)) {
+        TextRend.DisplayString(5, row, color, rt.Copy(rS(i * 31 + 249578), 1, 27));
+        TextRend.DisplayString(38 - U8[i * 6 + 250153], row, color, rS(i * 6 + 250153));
+        TextRend.DisplayString(5, row + 1, color, rS(i * 19 + 249931));
+        TextRend.DisplayString(38 - U8[i * 11 + 250214], row + 1, color, rS(i * 11 + 250214));
       } else {
         TextRend.DisplayString(5, row, color, "EMPTY");
       }
     }
   }
-  if (((U8[242199] + 6) - 1) < U8[241405]) {
+  if (((U8[250391] + 6) - 1) < U8[249597]) {
     MenuCore.DrawMore(1, 38, 22);
   }
 }
 
-export async function MoveTo(i: number) {
+export function MoveTo(i: number) {
   if (i < 1) {
-    i = U8[241405];
-  } else if (i > U8[241405]) {
+    i = U8[249597];
+  } else if (i > U8[249597]) {
     i = 1;
   }
-  U8[242198] = i;
-  if (U8[242198] < U8[242199]) {
-    U8[242199] = U8[242198];
+  U8[250390] = i;
+  if (U8[250390] < U8[250391]) {
+    U8[250391] = U8[250390];
   }
-  if (U8[242198] > ((U8[242199] + 6) - 1)) {
-    U8[242199] = (U8[242198] - 6) + 1;
+  if (U8[250390] > ((U8[250391] + 6) - 1)) {
+    U8[250391] = (U8[250390] - 6) + 1;
   }
-  (await DrawList());
+  DrawList();
 }
 
 export function DrawDescLine(shown: string) {

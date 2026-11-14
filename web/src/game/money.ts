@@ -40,13 +40,13 @@ export function CheckOverload(p: number, w: number, takable: number) {
 
 export function PoolMoney() {
   let p: number = 0, i: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if ((U8[p + 132] === 0) || (U8[p + 132] === 179)) {
       for (let $i2 = 0; $i2 <= 6; $i2++) {
         i = $i2;
         let $t3;
-        $t3 = i * 4 + 144862, w32($t3, ri32($t3) + r16(p + i * 2 + 136));
+        $t3 = i * 4 + 230748, w32($t3, ri32($t3) + r16(p + i * 2 + 136));
       }
       rt.fill(p + 136, 14, 0);
       CharHlp.RecalcStats(p);
@@ -58,15 +58,15 @@ export function PoolMoney() {
 export function ShareMoney() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 56);
   let p: number = 0, cnt: number = 0, takable: number = 0, i: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   cnt = CountSharers() & 255;
   if (cnt === 0) {
     { S.sp = $sp; return; }
   }
   for (let $i1 = 0; $i1 <= 6; $i1++) {
     i = $i1;
-    w32($f0 + i * 4, Math.trunc(ri32(i * 4 + 144862) / cnt));
-    w32($f0 + i * 4 + 28, ri32(i * 4 + 144862) % cnt);
+    w32($f0 + i * 4, Math.trunc(ri32(i * 4 + 230748) / cnt));
+    w32($f0 + i * 4 + 28, ri32(i * 4 + 230748) % cnt);
   }
   while (p !== 0) {
     if (!CharHlp.IsNpc(p)) {
@@ -99,7 +99,7 @@ export function ShareMoney() {
   for (let $i5 = 6; $i5 >= 0; $i5--) {
     i = $i5;
     if (ri32($f0 + i * 4 + 28) > 0) {
-      p = r32(143753);
+      p = r32(229639);
       while (p !== 0) {
         takable = Takable(p, i) & 65535;
         if (takable > ri32($f0 + i * 4 + 28)) {
@@ -117,7 +117,7 @@ export function ShareMoney() {
   }
   for (let $i7 = 0; $i7 <= 6; $i7++) {
     i = $i7;
-    w32(i * 4 + 144862, ri32($f0 + i * 4 + 28));
+    w32(i * 4 + 230748, ri32($f0 + i * 4 + 28));
   }
   S.sp = $sp;
 }
@@ -136,13 +136,13 @@ export async function TakeMoneyMenu() {
     if (!exitF) {
       mType = MoneyCal.ParseMoneyType(rS(r32($f0 + 4)), $f0 + 10) << 24 >> 24;
       wS($f0 + 10, 255, "How much " + rS($f0 + 10) + "will you take? ");
-      if (ri32(mType * 4 + 144862) > 65535) {
+      if (ri32(mType * 4 + 230748) > 65535) {
         n = 65535;
       } else {
-        n = ri32(mType * 4 + 144862) & 65535;
+        n = ri32(mType * 4 + 230748) & 65535;
       }
       n = (await InputNumberMax(n, rS($f0 + 10), 10)) & 65535;
-      (await TakeMoney(r32(143749), n, mType));
+      (await TakeMoney(r32(229635), n, mType));
       exitF = !PoolHasMoney();
     }
     MenuCore.FreeStringList($f0);
@@ -206,14 +206,14 @@ export async function TradeMoney(giver: number, rcv: number, qty: number, mType:
 export function DropMoney(p: number, qty: number, mType: number) {
   w16(p + mType * 2 + 136, r16(p + mType * 2 + 136) - qty);
   CharHlp.RecalcStats(p);
-  if (((U8[141176] === 6) || (U8[141176] === 1)) || (U8[141176] === 8)) {
-    w32(mType * 4 + 144862, ri32(mType * 4 + 144862) + qty);
+  if (((U8[227062] === 6) || (U8[227062] === 1)) || (U8[227062] === 8)) {
+    w32(mType * 4 + 230748, ri32(mType * 4 + 230748) + qty);
   }
 }
 
 export function DetermineTreasure(treasure: number, items: number) {
   U8[treasure] = PoolHasMoney() ? 1 : 0;
-  U8[items] = r32(144890) !== 0 ? 1 : 0;
+  U8[items] = r32(230776) !== 0 ? 1 : 0;
 }
 
 export function CoinMenu(creature: number) {
@@ -222,7 +222,7 @@ export function CoinMenu(creature: number) {
   for (let $i1 = 0; $i1 <= 6; $i1++) {
     m = $i1;
     if (creature === 0) {
-      amount = ri32(m * 4 + 144862);
+      amount = ri32(m * 4 + 230748);
     } else {
       amount = r16(creature + m * 2 + 136);
     }
@@ -230,7 +230,7 @@ export function CoinMenu(creature: number) {
       prev = p;
       p = rt.getMem(46);
       w32(p + 42, prev);
-      wS(p, 40, StrUtil.PadLeft(rS(m * 9 + 132638), 8) + " " + StrUtil.NumStr(amount));
+      wS(p, 40, StrUtil.PadLeft(rS(m * 9 + 218524), 8) + " " + StrUtil.NumStr(amount));
       U8[p + 41] = 0;
     }
   }
@@ -245,7 +245,7 @@ export async function GoBackForIt(said: string, ask: string) {
   if ((await EclMenu.MenuHorizontalCharacterSelect("", "~Yes ~No", 13, 10, 15, false, false)) === 1) {
     $r0 = false;
   } else {
-    (await TextRend.ClearRect(1, 17, 38, 22));
+    TextRend.ClearRect(1, 17, 38, 22);
     $r0 = true;
   }
   return $r0;
@@ -255,7 +255,7 @@ export function PayFromCreature(creature: number, gp: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 28);
   let i: number = 0;
   MoneyCal.CoinsOf(creature, $f0);
-  MoneyCal.MakeChange(MoneyCal.CopperValue($f0) - rt.mul(gp, ri32(131934)), 65535, $f0);
+  MoneyCal.MakeChange(MoneyCal.CopperValue($f0) - rt.mul(gp, ri32(217820)), 65535, $f0);
   for (let $i1 = 0; $i1 <= 4; $i1++) {
     i = $i1;
     w16(creature + i * 2 + 136, ri32($f0 + i * 4));
@@ -265,7 +265,7 @@ export function PayFromCreature(creature: number, gp: number) {
 }
 
 export function PayFromPool(gp: number) {
-  MoneyCal.MakeChange(MoneyCal.CopperValue(144862) - rt.mul(gp, ri32(131934)), 2147483647, 144862);
+  MoneyCal.MakeChange(MoneyCal.CopperValue(230748) - rt.mul(gp, ri32(217820)), 2147483647, 230748);
 }
 
 export async function GiveCoins(creature: number, pp: number, gp: number) {
@@ -282,8 +282,8 @@ export async function GiveCoins(creature: number, pp: number, gp: number) {
   w16(creature + 142, r16(creature + 142) + gpTaken);
   if ((ppTaken < pp) || (gpTaken < gp)) {
     (await CharDisp.PrintBottomLine("Overloaded.  Money will be put in Pool."));
-    w32(144878, ri32(144878) + (pp - ppTaken));
-    w32(144874, ri32(144874) + (gp - gpTaken));
+    w32(230764, ri32(230764) + (pp - ppTaken));
+    w32(230760, ri32(230760) + (gp - gpTaken));
   }
   CharHlp.RecalcStats(creature);
   Consolidate(creature);
@@ -326,13 +326,13 @@ export async function AppraiseMenu(ok: number) {
   async function SellOrKeep(nameId: number, worth: number) {
     let holder: number = 0, c: number = 0;
     holder = 0;
-    if (HasRoom(r32(143749))) {
-      holder = r32(143749);
+    if (HasRoom(r32(229635))) {
+      holder = r32(229635);
     } else {
-      TextRend.DisplayString(1, 14, 15, rS(r32(143749)) + " doesn't have space");
-      c = r32(143753);
+      TextRend.DisplayString(1, 14, 15, rS(r32(229635)) + " doesn't have space");
+      c = r32(229639);
       while ((c !== 0) && (holder === 0)) {
-        if (((c !== r32(143749)) && !CharHlp.IsNpc(c)) && HasRoom(c)) {
+        if (((c !== r32(229635)) && !CharHlp.IsNpc(c)) && HasRoom(c)) {
           holder = c;
         }
         c = r32(c + 260);
@@ -365,22 +365,22 @@ export async function AppraiseMenu(ok: number) {
       CharHlp.AppendItemCopy(holder + 200, $f0 + 166);
       CharHlp.RecalcStats(holder);
     } else {
-      (await GiveCoins(r32(143749), Math.trunc(worth / 5), 0));
+      (await GiveCoins(r32(229635), Math.trunc(worth / 5), 0));
     }
   }
   U8[ok] = true ? 1 : 0;
-  if ((r16(r32(143749) + 146) === 0) && (r16(r32(143749) + 148) === 0)) {
+  if ((r16(r32(229635) + 146) === 0) && (r16(r32(229635) + 148) === 0)) {
     (await CharDisp.PrintBottomLine("No Gems or Jewelry"));
     U8[ok] = false ? 1 : 0;
   } else {
     do {
-      if ((r16(r32(143749) + 146) === 0) && (r16(r32(143749) + 148) === 0)) {
+      if ((r16(r32(229635) + 146) === 0) && (r16(r32(229635) + 148) === 0)) {
         exitF = true;
       } else {
         exitF = false;
-        wS($f0, 40, rt.fmtI(r16(r32(143749) + 146), 0));
-        wS($f0 + 41, 40, rt.fmtI(r16(r32(143749) + 148), 0));
-        switch (r16(r32(143749) + 146)) {
+        wS($f0, 40, rt.fmtI(r16(r32(229635) + 146), 0));
+        wS($f0 + 41, 40, rt.fmtI(r16(r32(229635) + 148), 0));
+        switch (r16(r32(229635) + 146)) {
           case 0: {
             wS($f0, 40, "");
             break;
@@ -393,7 +393,7 @@ export async function AppraiseMenu(ok: number) {
             wS($f0, 40, rS($f0) + " Gems");
           }
         }
-        switch (r16(r32(143749) + 148)) {
+        switch (r16(r32(229635) + 148)) {
           case 0: {
             wS($f0 + 41, 40, "");
             break;
@@ -406,25 +406,25 @@ export async function AppraiseMenu(ok: number) {
             wS($f0 + 41, 40, rS($f0 + 41) + " pieces of Jewelry");
           }
         }
-        (await TextRend.ClearRect(1, 1, 38, 22));
-        CharDisp.DisplayCreatureName(r32(143749), 1, 1, false);
+        TextRend.ClearRect(1, 1, 38, 22);
+        CharDisp.DisplayCreatureName(r32(229635), 1, 1, false);
         TextRend.DisplayString(1, 7, 15, "You have a fine collection of:");
         TextRend.DisplayString(1, 9, 15, rS($f0));
         TextRend.DisplayString(1, 10, 15, rS($f0 + 41));
         wS($f0 + 82, 40, "");
-        if (r16(r32(143749) + 146) !== 0) {
+        if (r16(r32(229635) + 146) !== 0) {
           wS($f0 + 82, 40, "Gems ");
         }
-        if (r16(r32(143749) + 148) !== 0) {
+        if (r16(r32(229635) + 148) !== 0) {
           wS($f0 + 82, 40, rS($f0 + 82) + "Jewelry ");
         }
         wS($f0 + 82, 40, rS($f0 + 82) + "Exit");
         ch = (await MenuCore.MenuHorizontal("Appraise: ", rS($f0 + 82), 13, 10, 15, true, false, $f0 + 230)) & 255;
         switch (ch) {
           case 71: {
-            if (r16(r32(143749) + 146) !== 0) {
+            if (r16(r32(229635) + 146) !== 0) {
               let $t4;
-              $t4 = r32(143749) + 146, w16($t4, r16($t4) - 1);
+              $t4 = r32(229635) + 146, w16($t4, r16($t4) - 1);
               r = Dice.RollDice(1, 100) & 255;
               switch (r) {
                 case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12:
@@ -466,9 +466,9 @@ export async function AppraiseMenu(ok: number) {
             break;
           }
           case 74: {
-            if (r16(r32(143749) + 148) !== 0) {
+            if (r16(r32(229635) + 148) !== 0) {
               let $t5;
-              $t5 = r32(143749) + 148, w16($t5, r16($t5) - 1);
+              $t5 = r32(229635) + 148, w16($t5, r16($t5) - 1);
               r = Dice.RollDice(1, 100) & 255;
               switch (r) {
                 case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: {
@@ -515,7 +515,7 @@ export async function AppraiseMenu(ok: number) {
             break;
           }
         }
-        CharHlp.RecalcStats(r32(143749));
+        CharHlp.RecalcStats(r32(229635));
       }
     } while (!(exitF));
   }
@@ -555,7 +555,7 @@ export function Takable(p: number, mType: number) {
 export function Consolidate(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 28);
   let i: number = 0;
-  if (U8[141185] === 0) {
+  if (U8[227071] === 0) {
     { S.sp = $sp; return; }
   }
   MoneyCal.CoinsOf(creature, $f0);
@@ -570,7 +570,7 @@ export function Consolidate(creature: number) {
 
 export function CountSharers() {
   let p: number = 0, n: number = 0, $r0: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   n = 0;
   while (p !== 0) {
     if (!CharHlp.IsNpc(p)) {
@@ -586,10 +586,10 @@ export async function TakeMoney(p: number, qty: number, mType: number) {
   if (qty > Takable(p, mType)) {
     (await CharDisp.PrintBottomLine("Overloaded"));
   } else {
-    if (qty > ri32(mType * 4 + 144862)) {
-      qty = (ri32(mType * 4 + 144862) & 65535) & 65535;
+    if (qty > ri32(mType * 4 + 230748)) {
+      qty = (ri32(mType * 4 + 230748) & 65535) & 65535;
     }
-    w32(mType * 4 + 144862, ri32(mType * 4 + 144862) - qty);
+    w32(mType * 4 + 230748, ri32(mType * 4 + 230748) - qty);
     w16(p + mType * 2 + 136, r16(p + mType * 2 + 136) + qty);
     CharHlp.RecalcStats(p);
     Consolidate(p);
@@ -601,7 +601,7 @@ export function PoolHasMoney() {
   has = false;
   for (let $i1 = 0; $i1 <= 6; $i1++) {
     i = $i1;
-    if (ri32(i * 4 + 144862) !== 0) {
+    if (ri32(i * 4 + 230748) !== 0) {
       has = true;
     }
   }

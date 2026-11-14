@@ -10,12 +10,12 @@ export const MAX_AREAS = 64;
 export const SIG = "EXPL";
 export const VERSION = 1;
 
-export const $at = { rec: 238105 };
+export const $at = { rec: 246297 };
 
 export function Clear() {
-  rt.fill(238105, 2183, 0);
-  wS(238105, 4, SIG);
-  U8[238110] = 1;
+  rt.fill(246297, 2183, 0);
+  wS(246297, 4, SIG);
+  U8[246302] = 1;
 }
 
 export function Mark(x: number, y: number) {
@@ -23,19 +23,19 @@ export function Mark(x: number, y: number) {
   if (!Types.OnMap(x, y)) {
     return;
   }
-  script = U8[146747];
-  map = U8[r32(141147) + 394];
+  script = U8[232633];
+  map = U8[r32(227033) + 394];
   i = Find(script, map) & 255;
   if (i === 0) {
-    if (U8[238111] >= 64) {
+    if (U8[246303] >= 64) {
       return;
     }
-    U8[238111] = U8[238111] + 1;
-    i = U8[238111];
-    U8[i * 34 + 238078] = script;
-    U8[i * 34 + 238079] = map;
+    U8[246303] = U8[246303] + 1;
+    i = U8[246303];
+    U8[i * 34 + 246270] = script;
+    U8[i * 34 + 246271] = map;
   }
-  w16(i * 34 + y * 2 + 238080, r16(i * 34 + y * 2 + 238080) | (1 << x));
+  w16(i * 34 + y * 2 + 246272, r16(i * 34 + y * 2 + 246272) | (1 << x));
 }
 
 export function Visited(script: number, map: number, x: number, y: number) {
@@ -46,19 +46,19 @@ export function Visited(script: number, map: number, x: number, y: number) {
   }
   i = Find(script, map) & 255;
   if (i !== 0) {
-    $r0 = (r16(i * 34 + y * 2 + 238080) & (1 << x)) !== 0;
+    $r0 = (r16(i * 34 + y * 2 + 246272) & (1 << x)) !== 0;
   }
   return $r0;
 }
 
 export function WriteSlot(s: number, name_: string) {
   let $r0: boolean = false;
-  $r0 = FileUtil.WriteToSet(s, name_, 238105, 2183);
+  $r0 = FileUtil.WriteToSet(s, name_, 246297, 2183);
   return $r0;
 }
 
 export function ReadSlot(fn: string) {
-  if (((!FileUtil.ReadRecord(fn, 238105, 2183) || (rS(238105) !== SIG)) || (U8[238110] !== 1)) || (U8[238111] > 64)) {
+  if (((!FileUtil.ReadRecord(fn, 246297, 2183) || (rS(246297) !== SIG)) || (U8[246302] !== 1)) || (U8[246303] > 64)) {
     Clear();
   }
 }
@@ -66,9 +66,9 @@ export function ReadSlot(fn: string) {
 export function Find(script: number, map: number) {
   let i: number = 0, $r0: number = 0;
   $r0 = 0;
-  for (let $i1 = 1, $e1 = U8[238111]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[246303]; $i1 <= $e1; $i1++) {
     i = $i1;
-    if ((U8[i * 34 + 238078] === script) && (U8[i * 34 + 238079] === map)) {
+    if ((U8[i * 34 + 246270] === script) && (U8[i * 34 + 246271] === map)) {
       $r0 = i;
       return $r0;
     }

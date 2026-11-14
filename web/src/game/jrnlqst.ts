@@ -193,7 +193,7 @@ export function IsPosted(number: number) {
 
 export function Cell(address: number) {
   let $r0: number = 0;
-  $r0 = r16(r32(141147) + address * 2 - 37376);
+  $r0 = r16(r32(227033) + address * 2 - 37376);
   return $r0;
 }
 

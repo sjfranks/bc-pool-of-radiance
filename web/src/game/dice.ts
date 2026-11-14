@@ -21,17 +21,17 @@ export function RollDice(n: number, sides: number) {
 
 export function RollDamageDice(n: number, sides: number) {
   let $r0: number = 0;
-  U8[144901] = n;
+  U8[230787] = n;
   $r0 = RollDice(n, sides) & 255;
   return $r0;
 }
 
 export function ReduceDamagePerDie(perDie: number) {
-  if (U8[144897] > U8[144901]) {
-    if ((U8[144897] - U8[144901]) > (perDie * U8[144901])) {
-      U8[144897] = U8[144897] - (perDie * U8[144901]);
+  if (U8[230783] > U8[230787]) {
+    if ((U8[230783] - U8[230787]) > (perDie * U8[230787])) {
+      U8[230783] = U8[230783] - (perDie * U8[230787]);
     } else {
-      U8[144897] = U8[144901];
+      U8[230783] = U8[230787];
     }
   }
 }

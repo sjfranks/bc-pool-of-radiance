@@ -11,7 +11,7 @@ export const WALL_COST = 255;
 export const UNREACHED = 255;
 export const START = 8;
 
-export const $at = { TURNS: 227072 };
+export const $at = { TURNS: 235264 };
 
 export function SignOf(v: number) {
   let $r0: number = 0;
@@ -33,22 +33,22 @@ export function OnArena(x: number, y: number) {
 
 export function LastSlot() {
   let $r0: number = 0;
-  if (U8[144007] > 72) {
+  if (U8[229893] > 72) {
     $r0 = 72;
   } else {
-    $r0 = U8[144007];
+    $r0 = U8[229893];
   }
   return $r0;
 }
 
 export function SaveTargets(snap: number) {
-  mv(snap, 144646, 216);
-  U8[snap + 216] = U8[144645];
+  mv(snap, 230532, 216);
+  U8[snap + 216] = U8[230531];
 }
 
 export function RestoreTargets(snap: number) {
-  mv(144646, snap, 216);
-  U8[144645] = U8[snap + 216];
+  mv(230532, snap, 216);
+  U8[230531] = U8[snap + 216];
 }
 
 export function PathFind(req: number) {
@@ -111,7 +111,7 @@ export function NextPathStep(req: number) {
         $r0 = true;
       }
     }
-    U8[$w1 + 25] = U8[(dy8 + 1) * 3 + (dx8 + 1) + 227031];
+    U8[$w1 + 25] = U8[(dy8 + 1) * 3 + (dx8 + 1) + 235223];
   }
   return $r0;
 }
@@ -125,8 +125,8 @@ export function IsDirToward(x: number, y: number, tx: number, ty: number, dir: n
   if (dir > 8) {
     dir = 8;
   }
-  nx = (x + I8[dir + 132927]) << 24 >> 24;
-  ny = (y + I8[dir + 132936]) << 24 >> 24;
+  nx = (x + I8[dir + 218813]) << 24 >> 24;
+  ny = (y + I8[dir + 218822]) << 24 >> 24;
   if (((x === tx) && (y === ty)) || ((nx === tx) && (ny === ty))) {
     $r0 = true;
     return $r0;
@@ -198,7 +198,7 @@ export function WalkLine(x: number, y: number, tx: number, ty: number, dist: num
   PathFind($f0);
   done = false;
   do {
-    if (((U8[view + 6] === 0) && (U8[U8[view + ri16($f0 + 22) * 50 + ri16($f0 + 20) + 7] * 3 + 132943] > 0)) || (U8[$f0 + 24] > maxDist)) {
+    if (((U8[view + 6] === 0) && (U8[U8[view + ri16($f0 + 22) * 50 + ri16($f0 + 20) + 7] * 3 + 218829] > 0)) || (U8[$f0 + 24] > maxDist)) {
       U8[tx] = ri16($f0 + 20);
       U8[ty] = ri16($f0 + 22);
       w16(dist, U8[$f0 + 24]);
@@ -225,20 +225,20 @@ export function BuildTargetList(x: number, y: number, range: number, filter: num
       U8[$f0 + k + 4] = -1;
     }
   }
-  U8[144645] = 0;
+  U8[230531] = 0;
   last = LastSlot() & 255;
   for (let $i2 = 1, $e2 = last; $i2 <= $e2; $i2++) {
     i = $i2;
-    if (U8[i * 4 + 144007] > 0) {
+    if (U8[i * 4 + 229893] > 0) {
       found = false;
       bestDist = 0;
       bestK = 0;
       bestJ = 0;
       for (let $i3 = 0; $i3 <= 3; $i3++) {
         j = $i3;
-        if (GetIconTileDelta(U8[i * 4 + 144007], j, $f0 + 2, $f0 + 3)) {
-          U8[$f0 + j + 12] = I8[i * 4 + 144004] + I8[$f0 + 2];
-          U8[$f0 + j + 16] = I8[i * 4 + 144005] + I8[$f0 + 3];
+        if (GetIconTileDelta(U8[i * 4 + 229893], j, $f0 + 2, $f0 + 3)) {
+          U8[$f0 + j + 12] = I8[i * 4 + 229890] + I8[$f0 + 2];
+          U8[$f0 + j + 16] = I8[i * 4 + 229891] + I8[$f0 + 3];
         } else {
           U8[$f0 + j + 12] = -1;
         }
@@ -267,9 +267,9 @@ export function BuildTargetList(x: number, y: number, range: number, filter: num
         }
       }
       if (found) {
-        U8[144645] = U8[144645] + 1;
-        U8[U8[144645] * 3 + 144643] = i;
-        U8[U8[144645] * 3 + 144644] = bestDist;
+        U8[230531] = U8[230531] + 1;
+        U8[U8[230531] * 3 + 230529] = i;
+        U8[U8[230531] * 3 + 230530] = bestDist;
         bestDir = 0;
         if (filter < 8) {
           bestDir = filter;
@@ -278,7 +278,7 @@ export function BuildTargetList(x: number, y: number, range: number, filter: num
             bestDir = (bestDir + 1) & 255;
           }
         }
-        U8[U8[144645] * 3 + 144645] = bestDir;
+        U8[U8[230531] * 3 + 230531] = bestDir;
       }
     }
   }
@@ -292,8 +292,8 @@ export function GetIconTileDelta(size: number, idx: number, dx: number, dy: numb
   if ((size === 0) || (size > 4)) {
     return $r0;
   }
-  U8[dx] = I8[size * 8 + idx * 2 + 227032];
-  U8[dy] = I8[size * 8 + idx * 2 + 227033];
+  U8[dx] = I8[size * 8 + idx * 2 + 235224];
+  U8[dy] = I8[size * 8 + idx * 2 + 235225];
   if (I8[dx] >= 0) {
     $r0 = true;
   }
@@ -301,26 +301,26 @@ export function GetIconTileDelta(size: number, idx: number, dx: number, dy: numb
 }
 
 export function BuildAreaList(x: number, y: number, radius: number) {
-  BuildTargetList(x, y, radius, 255, 1, r32(144641));
+  BuildTargetList(x, y, radius, 255, 1, r32(230527));
 }
 
 export function TargetArea(x: number, y: number, radius: number) {
   let k: number = 0;
   BuildAreaList(x, y, radius);
-  for (let $i1 = 1, $e1 = U8[144645]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[230531]; $i1 <= $e1; $i1++) {
     k = $i1;
-    w32(k * 4 + 146157, r32(U8[k * 3 + 144643] * 4 + 144292));
+    w32(k * 4 + 232043, r32(U8[k * 3 + 230529] * 4 + 230178));
   }
-  U8[146160] = U8[144645];
+  U8[232046] = U8[230531];
 }
 
-export async function RouteStep(slot: number, goals: Uint8Array, open: Uint8Array, avoid: Uint8Array, occupant: number, dir: number, goal: number) {
+export function RouteStep(slot: number, goals: Uint8Array, open: Uint8Array, avoid: Uint8Array, occupant: number, dir: number, goal: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let marks: number = 0, near: number = 0, queue: number = 0, head: number = 0, tail: number = 0, sx: number = 0, sy: number = 0, x: number = 0, y: number = 0, nx: number = 0, ny: number = 0, size: number = 0, d: number = 0, k: number = 0, first: number = 0, reached: number = 0, $r0: boolean = false;
   $r0 = false;
-  sx = I8[slot * 4 + 144004];
-  sy = I8[slot * 4 + 144005];
-  size = U8[slot * 4 + 144007];
+  sx = I8[slot * 4 + 229890];
+  sy = I8[slot * 4 + 229891];
+  size = U8[slot * 4 + 229893];
   if (size === 0) {
     { S.sp = $sp; return $r0; }
   }
@@ -341,11 +341,11 @@ export async function RouteStep(slot: number, goals: Uint8Array, open: Uint8Arra
       head = (head + 1) & 65535;
       k = 0;
       while ((k <= 7) && (reached === 0)) {
-        d = (U8[$f0] + U8[k + 227072]) % 8;
-        nx = (x + I8[d + 132927]) << 24 >> 24;
-        ny = (y + I8[d + 132936]) << 24 >> 24;
+        d = (U8[$f0] + U8[k + 235264]) % 8;
+        nx = (x + I8[d + 218813]) << 24 >> 24;
+        ny = (y + I8[d + 218822]) << 24 >> 24;
         if (OnArena(nx, ny)) {
-          if ((U8[marks + ny * 50 + nx] === 255) && (await CanStand(nx, ny, size, slot, open, avoid, occupant))) {
+          if ((U8[marks + ny * 50 + nx] === 255) && CanStand(nx, ny, size, slot, open, avoid, occupant)) {
             first = U8[marks + y * 50 + x];
             if (first === 8) {
               first = d;
@@ -376,26 +376,26 @@ export async function RouteStep(slot: number, goals: Uint8Array, open: Uint8Arra
 export function SortTargets() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 3);
   let i: number = 0, j: number = 0, auxJ: number = 0, auxI: number = 0;
-  if (U8[144645] <= 1) {
+  if (U8[230531] <= 1) {
     { S.sp = $sp; return; }
   }
-  for (let $i1 = 1, $e1 = U8[144645] - 1; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[230531] - 1; $i1 <= $e1; $i1++) {
     i = $i1;
-    for (let $i2 = i + 1, $e2 = U8[144645]; $i2 <= $e2; $i2++) {
+    for (let $i2 = i + 1, $e2 = U8[230531]; $i2 <= $e2; $i2++) {
       j = $i2;
-      auxI = U8[i * 3 + 144645];
-      auxJ = U8[j * 3 + 144645];
-      if ((U8[j * 3 + 144644] < U8[i * 3 + 144644]) || (((U8[j * 3 + 144644] === U8[i * 3 + 144644]) && (auxJ < auxI)) && ((auxJ % 2) <= (auxI % 2)))) {
-        mv($f0, i * 3 + 144643, 3);
-        mv(i * 3 + 144643, j * 3 + 144643, 3);
-        mv(j * 3 + 144643, $f0, 3);
+      auxI = U8[i * 3 + 230531];
+      auxJ = U8[j * 3 + 230531];
+      if ((U8[j * 3 + 230530] < U8[i * 3 + 230530]) || (((U8[j * 3 + 230530] === U8[i * 3 + 230530]) && (auxJ < auxI)) && ((auxJ % 2) <= (auxI % 2)))) {
+        mv($f0, i * 3 + 230529, 3);
+        mv(i * 3 + 230529, j * 3 + 230529, 3);
+        mv(j * 3 + 230529, $f0, 3);
       }
     }
   }
   S.sp = $sp;
 }
 
-export async function CanStand(x: number, y: number, size: number, slot: number, open: Uint8Array, avoid: Uint8Array, occupant: number) {
+export function CanStand(x: number, y: number, size: number, slot: number, open: Uint8Array, avoid: Uint8Array, occupant: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let i: number = 0, cx: number = 0, cy: number = 0, t: number = 0, c: number = 0, $r0: boolean = false;
   $r0 = false;
@@ -407,11 +407,11 @@ export async function CanStand(x: number, y: number, size: number, slot: number,
       if (!OnArena(cx, cy)) {
         { S.sp = $sp; return $r0; }
       }
-      t = U8[r32(144641) + cy * 50 + cx + 7];
-      if (((t === 0) || rt.inS(avoid, t)) || (U8[t * 3 + 132942] === 255)) {
+      t = U8[r32(230527) + cy * 50 + cx + 7];
+      if (((t === 0) || rt.inS(avoid, t)) || (U8[t * 3 + 218828] === 255)) {
         { S.sp = $sp; return $r0; }
       }
-      c = (await rt.FT[occupant](cx, cy)) & 255;
+      c = rt.FT[occupant](cx, cy) & 255;
       if (((c !== 0) && (c !== slot)) && !rt.inS(open, c)) {
         { S.sp = $sp; return $r0; }
       }
@@ -448,13 +448,13 @@ export function MarkGoals(goals: Uint8Array, sx: number, sy: number, near: numbe
   ty = sy;
   for (let $i1 = 1; $i1 <= 72; $i1++) {
     s = $i1;
-    if (rt.inS(goals, s) && (U8[s * 4 + 144007] !== 0)) {
+    if (rt.inS(goals, s) && (U8[s * 4 + 229893] !== 0)) {
       for (let $i2 = 0; $i2 <= 3; $i2++) {
         i = $i2;
-        if (GetIconTileDelta(U8[s * 4 + 144007], i, $f0, $f0 + 1)) {
-          for (let $i3 = (I8[s * 4 + 144005] + I8[$f0 + 1]) - 1, $e3 = (I8[s * 4 + 144005] + I8[$f0 + 1]) + 1; $i3 <= $e3; $i3++) {
+        if (GetIconTileDelta(U8[s * 4 + 229893], i, $f0, $f0 + 1)) {
+          for (let $i3 = (I8[s * 4 + 229891] + I8[$f0 + 1]) - 1, $e3 = (I8[s * 4 + 229891] + I8[$f0 + 1]) + 1; $i3 <= $e3; $i3++) {
             y = $i3;
-            for (let $i4 = (I8[s * 4 + 144004] + I8[$f0]) - 1, $e4 = (I8[s * 4 + 144004] + I8[$f0]) + 1; $i4 <= $e4; $i4++) {
+            for (let $i4 = (I8[s * 4 + 229890] + I8[$f0]) - 1, $e4 = (I8[s * 4 + 229890] + I8[$f0]) + 1; $i4 <= $e4; $i4++) {
               x = $i4;
               if (OnArena(x, y)) {
                 if (U8[near + y * 50 + x] === 0) {
@@ -465,21 +465,21 @@ export function MarkGoals(goals: Uint8Array, sx: number, sy: number, near: numbe
           }
         }
       }
-      span = Math.abs(I8[s * 4 + 144004] - sx) << 16 >> 16;
-      if (Math.abs(I8[s * 4 + 144005] - sy) > span) {
-        span = Math.abs(I8[s * 4 + 144005] - sy) << 16 >> 16;
+      span = Math.abs(I8[s * 4 + 229890] - sx) << 16 >> 16;
+      if (Math.abs(I8[s * 4 + 229891] - sy) > span) {
+        span = Math.abs(I8[s * 4 + 229891] - sy) << 16 >> 16;
       }
       if (span < best) {
         best = span;
-        tx = I8[s * 4 + 144004];
-        ty = I8[s * 4 + 144005];
+        tx = I8[s * 4 + 229890];
+        ty = I8[s * 4 + 229891];
       }
     }
   }
   U8[heading] = 0;
   for (let $i5 = 0; $i5 <= 7; $i5++) {
     d = $i5;
-    if ((I8[d + 132927] === SignOf(tx - sx)) && (I8[d + 132936] === SignOf(ty - sy))) {
+    if ((I8[d + 218813] === SignOf(tx - sx)) && (I8[d + 218822] === SignOf(ty - sy))) {
       U8[heading] = d;
     }
   }

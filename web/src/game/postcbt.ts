@@ -35,47 +35,47 @@ import * as CbtActs from './cbtacts';
 import * as C_ITEM from './c_item';
 
 
-export const $at = { nonEscapedHostileFound: 249926, partyFled: 249927, nonSharerCount: 249928, expShare: 249929, combatWon: 249933 };
+export const $at = { nonEscapedHostileFound: 258118, partyFled: 258119, nonSharerCount: 258120, expShare: 258121, combatWon: 258125 };
 
 export async function PostCombat() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 362);
-  if ((U8[141212] !== 0)) {
+  if ((U8[227098] !== 0)) {
     CharHlp.CountTeams();
-    if ((U8[144894] > 0) && (U8[144895] === 0)) {
-      w16(r32(141151) + 1422, 0);
+    if ((U8[230780] > 0) && (U8[230781] === 0)) {
+      w16(r32(227037) + 1422, 0);
     } else {
-      w16(r32(141151) + 1422, 1);
+      w16(r32(227037) + 1422, 1);
     }
     PostCombatCreatureCleanup(false, $f0);
     Bestiary.NewEncounter();
     { S.sp = $sp; return; }
   }
-  w16(r32(141151) + 1422, 0);
-  U8[249926] = false ? 1 : 0;
-  U8[141176] = 6;
+  w16(r32(227037) + 1422, 0);
+  U8[258118] = false ? 1 : 0;
+  U8[227062] = 6;
   DetermineCombatResults();
-  PostCombatCreatureCleanup((((U8[249933] !== 0) && !(U8[249927] !== 0)) && !(U8[141224] !== 0)) && !(U8[146746] !== 0), $f0);
-  if (!(U8[141224] !== 0) || (U8[146746] !== 0)) {
+  PostCombatCreatureCleanup((((U8[258125] !== 0) && !(U8[258119] !== 0)) && !(U8[227110] !== 0)) && !(U8[232632] !== 0), $f0);
+  if (!(U8[227110] !== 0) || (U8[232632] !== 0)) {
     (await JoinRisen($f0));
     (await RetrieveThrownWeapons());
     (await NpcTreasureShare());
-    (await PostCombatSummary(ri32(249929)));
+    (await PostCombatSummary(ri32(258121)));
     (await LootMenu());
-    CharHlp.FreeItemList(144890);
+    CharHlp.FreeItemList(230776);
   } else {
-    w16(r32(141151) + 1422, 128);
+    w16(r32(227037) + 1422, 128);
     (await Border.DrawWindow(1, 1, 38, 22, 0, 15, "The END!"));
-    U8[143769] = 2;
-    U8[143770] = 6;
+    U8[229655] = 2;
+    U8[229656] = 6;
     (await TextRend.DisplayMessageWindow(2, 5, 37, 22, 10, true, "The monsters rejoice for the party has been destroyed"));
     (await TextRend.DisplayAndPause(13, "Press any key to continue"));
   }
-  U8[141225] = 1;
-  w16(r32(141151) + 1760, 0);
-  w16(r32(141151) + 1762, 0);
-  w16(r32(141151) + 1764, 0);
-  w16(r32(141151) + 1478, 0);
-  w16(r32(141151) + 1484, 0);
+  U8[227111] = 1;
+  w16(r32(227037) + 1760, 0);
+  w16(r32(227037) + 1762, 0);
+  w16(r32(227037) + 1764, 0);
+  w16(r32(227037) + 1478, 0);
+  w16(r32(227037) + 1484, 0);
   Bestiary.NewEncounter();
   BeastFil.Flush();
   S.sp = $sp;
@@ -85,9 +85,9 @@ export function PostCombatCreatureCleanup(won: boolean, risen: number) {
   let p: number = 0, next: number = 0, room: number = 0;
   U8[risen + 32] = 0;
   U8[risen + 361] = 0;
-  room = (8 - r16(r32(141151) + 1660)) << 16 >> 16;
-  w16(r32(141151) + 1424, 0);
-  p = r32(143753);
+  room = (8 - r16(r32(227037) + 1660)) << 16 >> 16;
+  w16(r32(227037) + 1424, 0);
+  p = r32(229639);
   while (p !== 0) {
     next = r32(p + 260);
     if ((won && RisenForParty(p)) && (U8[risen + 32] < room)) {
@@ -103,9 +103,9 @@ export function PostCombatCreatureCleanup(won: boolean, risen: number) {
       }
       if (U8[p + 269] !== 1) {
         let $t2;
-        $t2 = r32(141151) + 1424, w16($t2, r16($t2) + 1);
+        $t2 = r32(227037) + 1424, w16($t2, r16($t2) + 1);
       }
-      w32(143749, p);
+      w32(229635, p);
       SaveLoad.RemoveCreature(IsMonster(p), true);
       p = next;
     } else {
@@ -116,13 +116,13 @@ export function PostCombatCreatureCleanup(won: boolean, risen: number) {
         rt.freeMem(r32(p + 264));
         w32(p + 264, 0);
       }
-      if ((U8[141191] !== 0) && CharHlp.ComesUnderPlayer(p)) {
+      if ((U8[227077] !== 0) && CharHlp.ComesUnderPlayer(p)) {
         U8[p + 271] = 0;
       }
       p = r32(p + 260);
     }
   }
-  w32(143749, r32(143753));
+  w32(229635, r32(229639));
 }
 
 export async function LootTakeMenu(treasure: number, items: number) {
@@ -156,7 +156,7 @@ export async function LootTakeMenu(treasure: number, items: number) {
             }
           }
         }
-        (await CharDisp.DisplayParty(r32(143749)));
+        CharDisp.DisplayParty(r32(229635));
         Money.DetermineTreasure(treasure, items);
         if (!(U8[treasure] !== 0) || !(U8[items] !== 0)) {
           done = true;
@@ -174,30 +174,30 @@ export async function LootTakeMenu(treasure: number, items: number) {
 
 export function DetermineLootExp(share: number) {
   let p: number = 0, i: number = 0, expTotal: number = 0, q: number = 0, item: number = 0, cnt: number = 0, sharers: number = 0;
-  if ((U8[146746] !== 0) && (r16(r32(141151) + 1484) !== 0)) {
-    w32(share, I8[r32(143749) + 115] * 100);
+  if ((U8[232632] !== 0) && (r16(r32(227037) + 1484) !== 0)) {
+    w32(share, I8[r32(229635) + 115] * 100);
   } else {
     expTotal = 0;
-    p = r32(143753);
+    p = r32(229639);
     cnt = 0;
     while (p !== 0) {
       item = r32(p + 200);
       if ((I8[p + 270] === 1) && (U8[p + 268] !== 3)) {
-        U8[249926] = true ? 1 : 0;
+        U8[258118] = true ? 1 : 0;
         for (let $i2 = 0; $i2 <= 6; $i2++) {
           i = $i2;
           let $t3;
-          $t3 = i * 4 + 144862, w32($t3, ri32($t3) + r16(p + i * 2 + 136));
+          $t3 = i * 4 + 230748, w32($t3, ri32($t3) + r16(p + i * 2 + 136));
         }
         expTotal = ((expTotal + r16(p + 184)) + (U8[p + 186] * U8[p + 177])) | 0;
-        if (r16(r32(141151) + 1478) !== 1) {
+        if (r16(r32(227037) + 1478) !== 1) {
           while (item !== 0) {
             if ((r16(item + 58) > 0) || ((cnt < 8) && (Dice.RollDice(1, 10) <= 3))) {
               cnt = (cnt + 1) & 255;
               CharHlp.ItemLabel(item, false);
-              CharHlp.PrependItemCopy(144890, item);
-              U8[r32(144890) + 52] = 0;
-              U8[r32(144890) + 63] = 0;
+              CharHlp.PrependItemCopy(230776, item);
+              U8[r32(230776) + 52] = 0;
+              U8[r32(230776) + 63] = 0;
             }
             item = r32(item + 42);
           }
@@ -205,21 +205,21 @@ export function DetermineLootExp(share: number) {
       }
       p = r32(p + 260);
     }
-    expTotal = (expTotal + Math.trunc(ri32(144862) / 200)) | 0;
-    expTotal = (expTotal + Math.trunc(ri32(144866) / 20)) | 0;
-    expTotal = (expTotal + Math.trunc(ri32(144870) / 2)) | 0;
-    expTotal = (expTotal + ri32(144874)) | 0;
-    expTotal = (expTotal + (ri32(144878) * 5)) | 0;
-    expTotal = (expTotal + (ri32(144882) * 250)) | 0;
-    expTotal = (expTotal + (ri32(144886) * 2200)) | 0;
-    q = r32(144890);
-    while ((q !== 0) && (q !== r32(143761))) {
+    expTotal = (expTotal + Math.trunc(ri32(230748) / 200)) | 0;
+    expTotal = (expTotal + Math.trunc(ri32(230752) / 20)) | 0;
+    expTotal = (expTotal + Math.trunc(ri32(230756) / 2)) | 0;
+    expTotal = (expTotal + ri32(230760)) | 0;
+    expTotal = (expTotal + (ri32(230764) * 5)) | 0;
+    expTotal = (expTotal + (ri32(230768) * 250)) | 0;
+    expTotal = (expTotal + (ri32(230772) * 2200)) | 0;
+    q = r32(230776);
+    while ((q !== 0) && (q !== r32(229647))) {
       if (I8[q + 50] > 0) {
         expTotal = (expTotal + (I8[q + 50] * 400)) | 0;
       }
       q = r32(q + 42);
     }
-    sharers = (r16(r32(141151) + 1660) - U8[249928]) << 16 >> 16;
+    sharers = (r16(r32(227037) + 1660) - U8[258120]) << 16 >> 16;
     if (sharers > 0) {
       w32(share, Math.trunc(expTotal / sharers));
     } else {
@@ -230,7 +230,7 @@ export function DetermineLootExp(share: number) {
 
 export function AwardExperience(experience: number) {
   let p: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if ((U8[p + 269] !== 0) && (U8[p + 268] !== 1)) {
       w32(p + 172, ri32(p + 172) + ClassCal.ExperienceShare(p, experience));
@@ -247,44 +247,44 @@ export function IsMonster(p: number) {
 
 export function DetermineCombatResults() {
   let p: number = 0, nxt: number = 0, b: boolean = false;
-  U8[249928] = 0;
-  U8[141224] = true ? 1 : 0;
-  U8[249927] = false ? 1 : 0;
-  p = r32(143753);
+  U8[258120] = 0;
+  U8[227110] = true ? 1 : 0;
+  U8[258119] = false ? 1 : 0;
+  p = r32(229639);
   while ((p !== 0) && !IsMonster(p)) {
     if (U8[p + 268] === 3) {
-      U8[249927] = true ? 1 : 0;
+      U8[258119] = true ? 1 : 0;
     }
     p = r32(p + 260);
   }
-  if ((U8[146746] !== 0)) {
-    U8[141224] = false ? 1 : 0;
+  if ((U8[232632] !== 0)) {
+    U8[227110] = false ? 1 : 0;
   }
-  U8[249933] = false ? 1 : 0;
-  p = r32(143753);
-  if (!(U8[146746] !== 0)) {
+  U8[258125] = false ? 1 : 0;
+  p = r32(229639);
+  if (!(U8[232632] !== 0)) {
     while ((p !== 0) && !IsMonster(p)) {
-      if ((((((U8[p + 268] === 3) || (U8[p + 268] === 1)) || (U8[p + 268] === 0)) || (r16(r32(141151) + 1484) === 1)) && (I8[p + 270] === 0)) && !CharHlp.IsNpc(p)) {
-        U8[141224] = false ? 1 : 0;
+      if ((((((U8[p + 268] === 3) || (U8[p + 268] === 1)) || (U8[p + 268] === 0)) || (r16(r32(227037) + 1484) === 1)) && (I8[p + 270] === 0)) && !CharHlp.IsNpc(p)) {
+        U8[227110] = false ? 1 : 0;
       }
       if ((U8[p + 268] === 1) || (U8[p + 268] === 0)) {
-        U8[249933] = true ? 1 : 0;
-        U8[249927] = false ? 1 : 0;
+        U8[258125] = true ? 1 : 0;
+        U8[258119] = false ? 1 : 0;
       }
       if ((U8[p + 269] === 0) || (U8[p + 268] === 1)) {
-        U8[249928] = U8[249928] + 1;
+        U8[258120] = U8[258120] + 1;
       }
       p = r32(p + 260);
     }
-    if ((U8[249933] !== 0)) {
-      DetermineLootExp(249929);
-      AwardExperience(ri32(249929));
+    if ((U8[258125] !== 0)) {
+      DetermineLootExp(258121);
+      AwardExperience(ri32(258121));
     }
-    p = r32(143753);
-    if (!(U8[141224] !== 0)) {
+    p = r32(229639);
+    if (!(U8[227110] !== 0)) {
       while ((p !== 0) && !IsMonster(p)) {
         nxt = r32(p + 260);
-        if (!(U8[249927] !== 0)) {
+        if (!(U8[258119] !== 0)) {
           switch (U8[p + 268]) {
             case 3: {
               U8[p + 268] = 0;
@@ -304,45 +304,45 @@ export function DetermineCombatResults() {
             }
           }
         } else {
-          w16(r32(141151) + 1422, 129);
+          w16(r32(227037) + 1422, 129);
           if (U8[p + 268] === 3) {
             U8[p + 268] = 0;
             U8[p + 269] = 1;
           } else {
-            w32(143749, p);
+            w32(229635, p);
             SaveLoad.RemoveCreature(false, true);
           }
         }
         p = nxt;
       }
     } else {
-      p = r32(143753);
+      p = r32(229639);
       b = false;
       while ((p !== 0) && !b) {
         nxt = r32(p + 260);
         if (!IsMonster(p)) {
-          w32(143749, p);
+          w32(229635, p);
           SaveLoad.RemoveCreature(false, true);
         } else {
           b = true;
         }
         p = nxt;
       }
-      w16(r32(141151) + 1660, 0);
+      w16(r32(227037) + 1660, 0);
     }
   } else {
-    p = r32(143753);
+    p = r32(229639);
     while (p !== 0) {
       if (((U8[p + 269] === 1) && (U8[p + 268] === 0)) && (I8[p + 270] !== 1)) {
-        U8[249933] = true ? 1 : 0;
+        U8[258125] = true ? 1 : 0;
       }
       p = r32(p + 260);
     }
-    if ((U8[249933] !== 0)) {
-      DetermineLootExp(249929);
-      AwardExperience(ri32(249929));
+    if ((U8[258125] !== 0)) {
+      DetermineLootExp(258121);
+      AwardExperience(ri32(258121));
     }
-    p = r32(143753);
+    p = r32(229639);
     while (p !== 0) {
       if ((U8[p + 268] === 0) || (U8[p + 268] === 1)) {
         U8[p + 269] = 1;
@@ -360,17 +360,17 @@ export async function PostCombatSummary(experience: number) {
   let c: number = 0;
   U8[$f0 + 267] = 0;
   (await Border.DrawWindow(1, 1, 38, 22, 0, 15, ""));
-  if ((U8[249926] !== 0) || (U8[146746] !== 0)) {
-    if ((U8[146746] !== 0) && !(U8[249933] !== 0)) {
+  if ((U8[258118] !== 0) || (U8[232632] !== 0)) {
+    if ((U8[232632] !== 0) && !(U8[258125] !== 0)) {
       TextRend.DisplayString(1, 3, 10, "You have lost the duel.");
       experience = 0;
-    } else if ((U8[146746] !== 0)) {
+    } else if ((U8[232632] !== 0)) {
       TextRend.DisplayString(1, 3, 10, "You have won the duel.");
     } else {
       TextRend.DisplayString(1, 3, 10, "The party has won.");
     }
   } else {
-    if ((U8[249927] !== 0)) {
+    if ((U8[258119] !== 0)) {
       TextRend.DisplayString(1, 3, 10, "The party has fled.");
       experience = 0;
     } else {
@@ -378,7 +378,7 @@ export async function PostCombatSummary(experience: number) {
     }
   }
   wS($f0, 10, rt.fmtI(experience, 0));
-  if ((U8[146746] !== 0)) {
+  if ((U8[232632] !== 0)) {
     wS($f0 + 11, 255, "The duelist receives " + rS($f0));
   } else {
     wS($f0 + 11, 255, "Each character receives " + rS($f0));
@@ -394,9 +394,9 @@ export async function LootTakeItemSelection(c: number, itemToTake: number, curso
   let head: number = 0;
   U8[$f0] = true ? 1 : 0;
   (await Border.DrawWindow(1, 1, 38, 22, 0, 15, "Loot"));
-  CharHlp.LabelItems(r32(144890));
-  head = r32(144890);
-  U8[227105] = true ? 1 : 0;
+  CharHlp.LabelItems(r32(230776));
+  head = r32(230776);
+  U8[235297] = true ? 1 : 0;
   U8[c] = (await MenuCore.MenuVertical("Items: ", "Take", 13, 10, 15, 1, 4, 38, 22, head, true, $f0, idx, cursor));
   w32(itemToTake, r32(cursor));
   S.sp = $sp;
@@ -406,7 +406,7 @@ export async function LootTakeItemMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 12);
   let p: number = 0, done: boolean = false, opened: boolean = false;
   w32($f0, 0);
-  w32($f0 + 5, r32(144890));
+  w32($f0 + 5, r32(230776));
   w16($f0 + 9, 0);
   do {
     (await LootTakeItemSelection($f0 + 4, $f0, $f0 + 5, $f0 + 9));
@@ -419,13 +419,13 @@ export async function LootTakeItemMenu() {
       done = false;
       U8[r32($f0) + 63] = 0;
       (await Shop.GiveItemCopyToCreature(r32($f0), $f0 + 11));
-      if (!(U8[$f0 + 11] !== 0) && (U8[141176] === 6)) {
-        Stats.Count(r32(143749), 8, 1);
+      if (!(U8[$f0 + 11] !== 0) && (U8[227062] === 6)) {
+        Stats.Count(r32(229635), 8, 1);
       }
       if (!(U8[$f0 + 11] !== 0)) {
-        p = r32(144890);
+        p = r32(230776);
         if (p === r32($f0)) {
-          w32(144890, r32(r32($f0) + 42));
+          w32(230776, r32(r32($f0) + 42));
         } else {
           while (r32(p + 42) !== r32($f0)) {
             p = r32(p + 42);
@@ -434,7 +434,7 @@ export async function LootTakeItemMenu() {
         }
         w32(r32($f0) + 42, 0);
         rt.freeMem(r32($f0));
-        if (r32(144890) === 0) {
+        if (r32(230776) === 0) {
           done = true;
         }
       }
@@ -459,9 +459,9 @@ export async function LootMenu() {
     hasDetect = false;
     if ((U8[$f0 + 1] !== 0)) {
       while ((i <= 47) && !hasDetect) {
-        if (rt.inS(C_SPELL.DETECT_MAGIC, CharHlp.MemorizedAt(r32(143749), i))) {
+        if (rt.inS(C_SPELL.DETECT_MAGIC, CharHlp.MemorizedAt(r32(229635), i))) {
           hasDetect = true;
-          detectSpell = CharHlp.MemorizedAt(r32(143749), i) & 255;
+          detectSpell = CharHlp.MemorizedAt(r32(229635), i) & 255;
         }
         i = (i + 1) & 255;
       }
@@ -482,7 +482,7 @@ export async function LootMenu() {
       } else {
         Party.SelectPrevNextChar(c);
       }
-      (await CharDisp.DisplayParty(r32(143749)));
+      CharDisp.DisplayParty(r32(229635));
     } else {
       switch (c) {
         case 86: {
@@ -529,7 +529,7 @@ export function RisenForParty(p: number) {
 
 export function Unlink(p: number) {
   let prev: number = 0;
-  prev = r32(143753);
+  prev = r32(229639);
   while ((prev !== 0) && (r32(prev + 260) !== p)) {
     prev = r32(prev + 260);
   }
@@ -555,11 +555,11 @@ export function KeepRisen(p: number) {
 export async function RetrieveThrownWeapons() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 265);
   let n: number = 0, row: number = 0, c: number = 0;
-  if (U8[141195] === 0) {
+  if (U8[227081] === 0) {
     { S.sp = $sp; return; }
   }
   row = 0;
-  for (let $i1 = 1, $e1 = U8[247518]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[255710]; $i1 <= $e1; $i1++) {
     n = $i1;
     if ((await CbtActs.ReturnThrown(n, $f0, $f0 + 4, $f0 + 8))) {
       if ((row === 0) || (row > 19)) {
@@ -576,7 +576,7 @@ export async function RetrieveThrownWeapons() {
   if (row > 0) {
     c = (await MenuCore.MenuHorizontal("", C_MSG.CONTINUE_PROMPT, 15, 15, 15, true, false, $f0 + 264)) & 255;
   }
-  U8[247518] = 0;
+  U8[255710] = 0;
   S.sp = $sp;
 }
 
@@ -601,7 +601,7 @@ export async function JoinRisen(risen: number) {
     i = (i + 1) & 255;
   }
   c = (await MenuCore.MenuHorizontal("", C_MSG.CONTINUE_PROMPT, 15, 15, 15, true, false, $f0)) & 255;
-  w32(143749, r32(143753));
+  w32(229635, r32(229639));
   S.sp = $sp;
 }
 
@@ -609,7 +609,7 @@ export async function NpcTreasureShare() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let p: number = 0, npcShares: number = 0, total: number = 0, cut: number = 0, row: number = 0, i: number = 0, took: boolean = false, c: number = 0;
   took = false;
-  p = r32(143753);
+  p = r32(229639);
   npcShares = 0;
   total = 0;
   while (p !== 0) {
@@ -624,17 +624,17 @@ export async function NpcTreasureShare() {
   if (npcShares > 0) {
     for (let $i2 = 0; $i2 <= 6; $i2++) {
       i = $i2;
-      if (ri32(i * 4 + 144862) > 0) {
-        cut = Math.trunc(ri32(i * 4 + 144862) / total) | 0;
+      if (ri32(i * 4 + 230748) > 0) {
+        cut = Math.trunc(ri32(i * 4 + 230748) / total) | 0;
         let $t3;
-        $t3 = i * 4 + 144862, w32($t3, ri32($t3) - (npcShares * cut));
+        $t3 = i * 4 + 230748, w32($t3, ri32($t3) - (npcShares * cut));
         took = true;
       }
     }
   }
   if (took) {
     (await Border.DrawWindow(1, 1, 38, 22, 0, 15, ""));
-    p = r32(143753);
+    p = r32(229639);
     row = 0;
     while (p !== 0) {
       if ((CharHlp.IsNpc(p) && (U8[p + 268] === 0)) && (U8[p + 133] > 0)) {

@@ -122,7 +122,7 @@ export function StandardPrices(r: number, divisor: number) {
   }
   for (let $i1 = 0; $i1 <= 11; $i1++) {
     i = $i1;
-    w32(r + i * 4, Math.trunc(r16(i * 2 + 249765) / divisor));
+    w32(r + i * 4, Math.trunc(r16(i * 2 + 257957) / divisor));
   }
 }
 
@@ -301,11 +301,11 @@ export function NoWords(msg: number) {
   return $r0;
 }
 
-export async function TempleWords(io: number, msg: number) {
+export function TempleWords(io: number, msg: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 284);
   mv($f0 + 0, io, 28);
   let $r0: string = "";
-  wS($f0 + 28, 255, (await rt.FT[r32($f0 + 24)](msg)));
+  wS($f0 + 28, 255, rt.FT[r32($f0 + 24)](msg));
   if (rS($f0 + 28) === "") {
     wS($f0 + 28, 255, TempleText(msg));
   }
@@ -598,19 +598,19 @@ export async function TempleService(r: number, svc: number, io: number) {
   if (!Offers($f0, svc)) {
     { S.sp = $sp; return; }
   }
-  (await rt.FT[r32($f0 + 76)]($f0 + 104));
+  rt.FT[r32($f0 + 76)]($f0 + 104);
   why = TempleRefusal($f0, svc, $f0 + 104) & 255;
   if (why !== 0) {
-    (await rt.FT[r32($f0 + 88)]((await TempleWords($f0 + 76, why))));
+    (await rt.FT[r32($f0 + 88)](TempleWords($f0 + 76, why)));
     { S.sp = $sp; return; }
   }
   cost = ri32($f0 + svc * 4);
   why = TempleNeed(svc, $f0 + 104) & 255;
   if (why !== 0) {
     if (cost === 0) {
-      (await rt.FT[r32($f0 + 88)]((await TempleWords($f0 + 76, why))));
+      (await rt.FT[r32($f0 + 88)](TempleWords($f0 + 76, why)));
       { S.sp = $sp; return; }
-    } else if (!(await rt.FT[r32($f0 + 80)]((await TempleWords($f0 + 76, why))))) {
+    } else if (!(await rt.FT[r32($f0 + 80)](TempleWords($f0 + 76, why)))) {
       { S.sp = $sp; return; }
     }
   }
@@ -622,19 +622,19 @@ export async function TempleService(r: number, svc: number, io: number) {
   TempleDice($f0, svc, $f0 + 104, $f0 + 135, $f0 + 136, $f0 + 137);
   roll = ri16($f0 + 137);
   if (U8[$f0 + 135] > 0) {
-    roll = (roll + (await rt.FT[r32($f0 + 96)](U8[$f0 + 135], U8[$f0 + 136]))) << 16 >> 16;
+    roll = (roll + rt.FT[r32($f0 + 96)](U8[$f0 + 135], U8[$f0 + 136])) << 16 >> 16;
   }
   TempleDeed($f0, svc, $f0 + 104, roll, $f0 + 128);
   (await rt.FT[r32($f0 + 92)]($f0 + 128));
   if (U8[$f0 + 134] === 255) {
-    (await rt.FT[r32($f0 + 76)]($f0 + 116));
+    rt.FT[r32($f0 + 76)]($f0 + 116);
     if (ri16($f0 + 117) > ri16($f0 + 105)) {
       U8[$f0 + 134] = 25;
     } else {
       U8[$f0 + 134] = 2;
     }
   }
-  (await rt.FT[r32($f0 + 88)]((await TempleWords($f0 + 76, U8[$f0 + 134]))));
+  (await rt.FT[r32($f0 + 88)](TempleWords($f0 + 76, U8[$f0 + 134])));
   S.sp = $sp;
 }
 
@@ -768,26 +768,26 @@ export async function TempleRepair(r: number, p: number, io: number) {
         }
       } else {
         any = true;
-        (await rt.FT[r32($f0 + 89)]($f0 + 117));
+        rt.FT[r32($f0 + 89)]($f0 + 117);
         roll = 0;
         if (svc !== 5) {
           TempleDice($f0, svc, $f0 + 117, $f0 + 136, $f0 + 137, $f0 + 138);
           roll = ri16($f0 + 138);
           if (U8[$f0 + 136] > 0) {
-            roll = (roll + (await rt.FT[r32($f0 + 109)](U8[$f0 + 136], U8[$f0 + 137]))) << 16 >> 16;
+            roll = (roll + rt.FT[r32($f0 + 109)](U8[$f0 + 136], U8[$f0 + 137])) << 16 >> 16;
           }
         }
         TempleDeed($f0, svc, $f0 + 117, roll, $f0 + 129);
         (await rt.FT[r32($f0 + 105)]($f0 + 129));
         if ((U8[$f0 + 135] === 3) || (U8[$f0 + 135] === 4)) {
-          (await rt.FT[r32($f0 + 101)]((await TempleWords($f0 + 89, U8[$f0 + 135]))));
+          (await rt.FT[r32($f0 + 101)](TempleWords($f0 + 89, U8[$f0 + 135])));
           failed = true;
         }
       }
     }
   }
   if (any && !failed) {
-    (await rt.FT[r32($f0 + 101)]((await TempleWords($f0 + 89, 1))));
+    (await rt.FT[r32($f0 + 101)](TempleWords($f0 + 89, 1)));
   }
   $r0 = undone;
   S.sp = $sp;

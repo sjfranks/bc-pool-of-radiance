@@ -15,14 +15,14 @@ export const SCROLL_COUNT = 12;
 export const WARE_COUNT = 7;
 export const STOCK_COUNT = 19;
 
-export const $at = { scrolls: 253726, wares: 253762 };
+export const $at = { scrolls: 261918, wares: 261954 };
 
 export function ScrollPrice(n: number) {
   let i: number = 0, price: number = 0, $r0: number = 0;
   price = 0;
   for (let $i1 = 1; $i1 <= 3; $i1++) {
     i = $i1;
-    price = (price + (U8[U8[n * 3 + i + 253722] * 16 + 136507] * 1200)) & 65535;
+    price = (price + (U8[U8[n * 3 + i + 261914] * 16 + 222393] * 1200)) & 65535;
   }
   $r0 = price;
   return $r0;
@@ -33,7 +33,7 @@ export function MakeStockItem(n: number, item: number) {
   rt.fill(item, 64, 0);
   if (n <= 7) {
     {
-      const $w1 = n * 7 + 253755;
+      const $w1 = n * 7 + 261947;
       U8[item + 46] = U8[$w1];
       if (U8[$w1 + 1] !== 0) {
         RandItem.ApplyTemplate(item, U8[$w1 + 1]);
@@ -54,7 +54,7 @@ export function MakeStockItem(n: number, item: number) {
     w16(item + 55, 25);
     for (let $i2 = 1; $i2 <= 3; $i2++) {
       i = $i2;
-      U8[item + i + 59] = U8[(n - 7) * 3 + i + 253722];
+      U8[item + i + 59] = U8[(n - 7) * 3 + i + 261914];
     }
     w16(item + 58, ScrollPrice(n - 7));
   }
@@ -64,11 +64,11 @@ export function MakeStockItem(n: number, item: number) {
 export function StockShop() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 64);
   let n: number = 0;
-  CharHlp.FreeItemList(144890);
+  CharHlp.FreeItemList(230776);
   for (let $i1 = 1; $i1 <= 19; $i1++) {
     n = $i1;
     MakeStockItem(n, $f0);
-    CharHlp.AppendItemCopy(144890, $f0);
+    CharHlp.AppendItemCopy(230776, $f0);
   }
   S.sp = $sp;
 }

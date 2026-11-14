@@ -7,14 +7,14 @@ import * as GameVars from './gamevars';
 
 export const LAST_SCRIPT = 29;
 
-export const $at = { names: 240823 };
+export const $at = { names: 249015 };
 
 export function AreaFor(scriptId: number, mapId: number) {
   let $r0: string = "";
   if (scriptId > 29) {
     $r0 = "UNKNOWN AREA";
   } else {
-    $r0 = rS(scriptId * 19 + 240823);
+    $r0 = rS(scriptId * 19 + 249015);
     if ((scriptId === 3) && (mapId === 3)) {
       $r0 = "VALJEVO CASTLE NW";
     }
@@ -36,6 +36,6 @@ export function AreaFor(scriptId: number, mapId: number) {
 
 export function CurrentArea() {
   let $r0: string = "";
-  $r0 = AreaFor(r16(r32(141147) + 484) & 255, U8[r32(141147) + 394]);
+  $r0 = AreaFor(r16(r32(227033) + 484) & 255, U8[r32(227033) + 394]);
   return $r0;
 }

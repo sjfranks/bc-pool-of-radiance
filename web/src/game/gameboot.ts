@@ -23,7 +23,7 @@ import * as DataPick from './datapick';
 export const GFX_RESERVE_PARAS = 1024;
 export const OVERLAY_BUF_BYTES = 100352;
 
-export const $at = { cfgVideo: 226846, cfgSound: 226847, cfgIntro: 226848 };
+export const $at = { cfgVideo: 235038, cfgSound: 235039, cfgIntro: 235040 };
 
 export function ReadConfig() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 912);
@@ -32,17 +32,17 @@ export function ReadConfig() {
     rt.WriteT(65568, "POOL.CFG is missing or unreadable: playing with the defaults. Run poolcfg to set up the game." + "\n");
     CfgFile.PoolDefaults($f0, "");
   }
-  U8[226846] = U8[$f0];
-  U8[226847] = U8[$f0 + 1];
-  U8[226848] = U8[$f0 + 2];
-  wS(143491, 255, rS($f0 + 3));
-  wS(143235, 255, rS($f0 + 259));
+  U8[235038] = U8[$f0];
+  U8[235039] = U8[$f0 + 1];
+  U8[235040] = U8[$f0 + 2];
+  wS(229377, 255, rS($f0 + 3));
+  wS(229121, 255, rS($f0 + 259));
   S.sp = $sp;
 }
 
 export function NativeFolders(gameDir: number, saveDir: number) {
-  wS(saveDir, 255, CfgFile.NativeSaveFolder(rS(gameDir), rS(saveDir), rS(224894)));
-  wS(gameDir, 255, rS(224638));
+  wS(saveDir, 255, CfgFile.NativeSaveFolder(rS(gameDir), rS(saveDir), rS(233220)));
+  wS(gameDir, 255, rS(232964));
 }
 
 export function SwitchGiven(word: string) {
@@ -57,26 +57,26 @@ export function SwitchGiven(word: string) {
   return $r0;
 }
 
-export async function $init() {
-  U8[141208] = rt.ParamStr(1) === "STING" ? 1 : 0;
-  U8[141209] = rt.ParamStr(2) === "NORAND" ? 1 : 0;
-  U8[141210] = (U8[141208] !== 0) && SwitchGiven("ADVISE") ? 1 : 0;
-  U8[141211] = (rt.ParamStr(1) === "DEMO") || SwitchGiven("DEMO") ? 1 : 0;
+export function $init() {
+  U8[227094] = rt.ParamStr(1) === "STING" ? 1 : 0;
+  U8[227095] = rt.ParamStr(2) === "NORAND" ? 1 : 0;
+  U8[227096] = (U8[227094] !== 0) && SwitchGiven("ADVISE") ? 1 : 0;
+  U8[227097] = (rt.ParamStr(1) === "DEMO") || SwitchGiven("DEMO") ? 1 : 0;
   DataPick.FindGame();
-  U8[141219] = false ? 1 : 0;
+  U8[227105] = false ? 1 : 0;
   CbtLog.Startup();
-  U8[65792] = false ? 1 : 0;
+  U8[151678] = false ? 1 : 0;
   ReadConfig();
-  U8[141227] = 15;
-  Host.Intr(16, 141226);
-  U8[141247] = U8[141226];
-  U8[141248] = U8[141247];
+  U8[227113] = 15;
+  Host.Intr(16, 227112);
+  U8[227133] = U8[227112];
+  U8[227134] = U8[227133];
   VidVga.Install();
-  Blit.SetVideoMode(U8[141060]);
-  (await rt.FT[r32(141063)]());
+  Blit.SetVideoMode(U8[226946]);
+  rt.FT[r32(226949)]();
   SndDig.Install();
-  U8[143233] = U8[141140];
-  (await SoundDrv.SoundSuspend());
-  NativeFolders(143491, 143235);
-  U8[141146] = U8[226848] === 70 ? 1 : 0;
+  U8[229119] = U8[227026];
+  SoundDrv.SoundSuspend();
+  NativeFolders(229377, 229121);
+  U8[227032] = U8[235040] === 70 ? 1 : 0;
 }

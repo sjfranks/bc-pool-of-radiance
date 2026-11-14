@@ -14,7 +14,7 @@ export const Archive = 32;
 export const AnyFile = 63;
 export const FCarry = 1;
 
-export const $at = { DosError: 131603 };
+export const $at = { DosError: 217489 };
 
 export const Bind = $ext.Bind;
 export const GetDate = $ext.GetDate;
@@ -69,7 +69,7 @@ export function SwapVectors() {
 }
 
 export function Exec(path: string, cmd: string) {
-  w16(131603, 2);
+  w16(217489, 2);
 }
 
 export function GetIntVec(intNo: number, vec: number) {
@@ -104,5 +104,5 @@ export function FSplit(path: string, dir: number, name_: number, ext: number) {
 }
 
 export function $init() {
-  Bind(131603);
+  Bind(217489);
 }

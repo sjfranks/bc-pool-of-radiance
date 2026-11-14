@@ -33,11 +33,11 @@ import * as C_SPELL from './c_spell';
 
 export const ANY_SIDE = 255;
 
-export const $at = { effFlags: 240488, saveRoll: 240560, saveType: 240562, seenElements: 240563 };
+export const $at = { effFlags: 248680, saveRoll: 248752, saveType: 248754, seenElements: 248755 };
 
 export async function CallEffectHandler(effId: number, creature: number, p: number, removed: boolean) {
   if ((effId >= 1) && (effId <= 157)) {
-    (await rt.FT[r32(effId * 4 + 144909)](creature, p, removed));
+    (await rt.FT[r32(effId * 4 + 230795)](creature, p, removed));
   }
 }
 
@@ -99,7 +99,7 @@ export function HasDisease(creature: number) {
 export async function RemoveDiseases(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let cured: boolean = false, $r0: boolean = false;
-  U8[144903] = 1;
+  U8[230789] = 1;
   cured = (await RemoveAll(creature, 34));
   if ((await RemoveAll(creature, 43))) {
     cured = true;
@@ -116,7 +116,7 @@ export async function RemoveDiseases(creature: number) {
   if ((await RemoveAll(creature, 57))) {
     cured = true;
   }
-  U8[144903] = 0;
+  U8[230789] = 0;
   $r0 = cured;
   S.sp = $sp;
   return $r0;
@@ -413,7 +413,7 @@ export function FreeCloudNumber(caster: number) {
   n = 0;
   do {
     used = false;
-    node = r32(146453);
+    node = r32(232339);
     while (node !== 0) {
       if ((r32(node) === caster) && (U8[node + 28] === n)) {
         used = true;
@@ -476,9 +476,9 @@ export async function AttackRoll(attacker: number, defender: number, sixtyMinusA
 export function HitBonus(attacker: number) {
   let zmod: number = 0, $r0: number = 0;
   if (I8[attacker + 270] === 0) {
-    zmod = ((r16(r32(141151) + 1762) & 255) << 24 >> 24) << 24 >> 24;
+    zmod = ((r16(r32(227037) + 1762) & 255) << 24 >> 24) << 24 >> 24;
   } else {
-    zmod = ((r16(r32(141151) + 1760) & 255) << 24 >> 24) << 24 >> 24;
+    zmod = ((r16(r32(227037) + 1760) & 255) << 24 >> 24) << 24 >> 24;
   }
   $r0 = U8[attacker + 272] + zmod;
   return $r0;
@@ -489,8 +489,8 @@ export async function RollSavingThrow(creature: number, saveType: number, modifi
   if ((saveType < 0) || (saveType > 4)) {
     saveType = 4;
   }
-  w16(240560, Dice.RollDice(1, 20));
-  switch (ri16(240560)) {
+  w16(248752, Dice.RollDice(1, 20));
+  switch (ri16(248752)) {
     case 1: {
       $r0 = false;
       break;
@@ -500,10 +500,10 @@ export async function RollSavingThrow(creature: number, saveType: number, modifi
       break;
     }
     default: {
-      w16(240560, (ri16(240560) + I8[creature + 257]) + modifier);
-      U8[240562] = saveType;
+      w16(248752, (ri16(248752) + I8[creature + 257]) + modifier);
+      U8[248754] = saveType;
       (await TriggerEffectsWithCondition(12, creature));
-      if (U8[creature + saveType + 109] <= ri16(240560)) {
+      if (U8[creature + saveType + 109] <= ri16(248752)) {
         $r0 = true;
       } else {
         $r0 = false;
@@ -550,8 +550,8 @@ export async function PutOutOfPlayWithStatus(creature: number, status_: number, 
   }
   if (slot > 0) {
     (await CbtMap.UpdateCombatMapTile(0, 0, slot));
-    (await Blit.FlushView());
-    U8[slot * 4 + 144007] = 0;
+    Blit.FlushView();
+    U8[slot * 4 + 229893] = 0;
   }
   CbtMap.BuildArenaArrays();
   if (CharHlp.EndActions(creature)) {
@@ -585,7 +585,7 @@ export async function RemoveEffectsHp0(creature: number) {
   let i: number = 0;
   for (let $i1 = 1; $i1 <= 16; $i1++) {
     i = $i1;
-    (await RemoveEffect(creature, U8[i + 240634], 0));
+    (await RemoveEffect(creature, U8[i + 248826], 0));
   }
 }
 
@@ -593,7 +593,7 @@ export async function RemoveAiEffects(creature: number) {
   let i: number = 0;
   for (let $i1 = 1; $i1 <= 2; $i1++) {
     i = $i1;
-    (await RemoveEffect(creature, U8[i + 240650], 0));
+    (await RemoveEffect(creature, U8[i + 248842], 0));
   }
 }
 
@@ -659,17 +659,17 @@ export function FireShieldDamage(creature: number, saved: boolean) {
     own = 2;
     other = 1;
   }
-  if ((U8[144898] & other) !== 0) {
+  if ((U8[230784] & other) !== 0) {
     if (saved) {
-      U8[144897] = 0;
+      U8[230783] = 0;
     } else {
-      U8[144897] = Math.trunc(U8[144897] / 2);
+      U8[230783] = Math.trunc(U8[230783] / 2);
     }
-  } else if (((U8[144898] & own) !== 0) && !saved) {
-    if (U8[144897] > 127) {
-      U8[144897] = 255;
+  } else if (((U8[230784] & own) !== 0) && !saved) {
+    if (U8[230783] > 127) {
+      U8[230783] = 255;
     } else {
-      U8[144897] = U8[144897] * 2;
+      U8[230783] = U8[230783] * 2;
     }
   }
   S.sp = $sp;
@@ -687,10 +687,10 @@ export function DiseaseImmune(creature: number, effId: number) {
 
 export async function EffectImmune(creature: number, effId: number) {
   let $r0: boolean = false;
-  U8[144896] = effId;
+  U8[230782] = effId;
   (await TriggerEffectsWithCondition(9, creature));
-  $r0 = (U8[144896] === 0) || DiseaseImmune(creature, effId);
-  U8[144896] = 0;
+  $r0 = (U8[230782] === 0) || DiseaseImmune(creature, effId);
+  U8[230782] = 0;
   return $r0;
 }
 
@@ -707,7 +707,7 @@ export async function AddEffectWithMessage(creature: number, effId: number, minu
     AddEffect(creature, effId, minutes, strength, onRemove);
     if (msg.length !== 0) {
       (await CharDisp.PrintNameStringAnim(creature, true, msg));
-      (await CharDisp.ClearMessageWindow());
+      CharDisp.ClearMessageWindow();
     }
   }
   S.sp = $sp;
@@ -735,12 +735,12 @@ export async function RestoreHitPoints(creature: number, hp: number, bypassRot: 
   } else {
     U8[creature + 283] = U8[creature + 283] + hp;
   }
-  Stats.Healed(r32(143749), creature, U8[creature + 283] - hpBefore, false);
+  Stats.Healed(r32(229635), creature, U8[creature + 283] - hpBefore, false);
   if (U8[creature + 269] === 0) {
     if (U8[creature + 268] === 5) {
       U8[creature + 268] = 4;
     }
-    if ((U8[creature + 268] === 4) && (U8[141176] !== 5)) {
+    if ((U8[creature + 268] === 4) && (U8[227062] !== 5)) {
       (await CallEffectHandler(78, creature, 0, true));
     }
   }
@@ -756,7 +756,7 @@ export async function ReviveDeadCreature(creature: number, hp: number) {
     U8[creature + 268] = 0;
     U8[creature + 269] = 1;
     U8[creature + 283] = hp;
-    if (U8[141176] === 5) {
+    if (U8[227062] === 5) {
       (await CbtMap.DisplayMapViewCentered(creature, 3, false));
     }
     if (I8[creature + 270] === 1) {
@@ -777,7 +777,7 @@ export async function ReviveDeadCreature(creature: number, hp: number) {
 export async function ToggleReadyItem(item: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let err: number = 0, creature: number = 0;
-  creature = r32(143749);
+  creature = r32(229635);
   if (U8[item + 52] !== 0) {
     if (U8[item + 54] !== 0) {
       (await CharDisp.PrintBottomLine("It's Cursed"));
@@ -906,7 +906,7 @@ export async function AdvanceTime(amount: number, tUnit: number) {
   let i: number = 0, j: number = 0;
   for (let $i1 = 0; $i1 <= 6; $i1++) {
     i = $i1;
-    w16($f0 + i * 2, r16(r32(141147) + (18886 + i) * 2 - 37376));
+    w16($f0 + i * 2, r16(r32(227033) + (18886 + i) * 2 - 37376));
   }
   for (let $i2 = 1, $e2 = amount; $i2 <= $e2; $i2++) {
     j = $i2;
@@ -916,7 +916,7 @@ export async function AdvanceTime(amount: number, tUnit: number) {
   }
   for (let $i4 = 0; $i4 <= 6; $i4++) {
     i = $i4;
-    w16(r32(141147) + (18886 + i) * 2 - 37376, r16($f0 + i * 2));
+    w16(r32(227033) + (18886 + i) * 2 - 37376, r16($f0 + i * 2));
   }
   (await TimeOutEffects(amount, tUnit));
   S.sp = $sp;
@@ -927,23 +927,23 @@ export async function HoldTarget(creature: number, p: number, removed: boolean, 
   let $r0: number = 0;
   $r0 = 0;
   U8[released] = false ? 1 : 0;
-  if (((U8[p + 3] === 0) || (U8[p + 3] > U8[144007])) || (U8[p + 3] > 72)) {
+  if (((U8[p + 3] === 0) || (U8[p + 3] > U8[229893])) || (U8[p + 3] > 72)) {
     if (!removed) {
       U8[p + 4] = false ? 1 : 0;
       (await RemoveEffect(creature, effId, p));
     }
     { S.sp = $sp; return $r0; }
   }
-  w32(144909, r32(U8[p + 3] * 4 + 144292));
-  if (((removed || (U8[creature + 269] === 0)) || (U8[r32(144909) + 269] === 0)) || !CharHlp.HasEffect(r32(144909), 58, $f0)) {
-    (await RemoveEffect(r32(144909), 58, 0));
+  w32(230795, r32(U8[p + 3] * 4 + 230178));
+  if (((removed || (U8[creature + 269] === 0)) || (U8[r32(230795) + 269] === 0)) || !CharHlp.HasEffect(r32(230795), 58, $f0)) {
+    (await RemoveEffect(r32(230795), 58, 0));
     if (!removed) {
       U8[p + 4] = false ? 1 : 0;
       (await RemoveEffect(creature, effId, p));
     }
     U8[released] = true ? 1 : 0;
   } else {
-    $r0 = r32(144909);
+    $r0 = r32(230795);
   }
   S.sp = $sp;
   return $r0;
@@ -976,7 +976,7 @@ export function EffectSource(creature: number, effId: number, side: number, effe
     return $r1;
   }
   found = false;
-  p = r32(143753);
+  p = r32(229639);
   range = AuraRange(effId) & 255;
   if (Carries(creature)) {
     found = true;
@@ -985,11 +985,11 @@ export function EffectSource(creature: number, effId: number, side: number, effe
     slot = CbtMap.CombatSlot(creature) & 255;
     while ((p !== 0) && !found) {
       if ((Carries(p) && ((effId === 21) || (U8[p + 269] !== 0))) && ((effId === 21 || effId === 49) || (CharHlp.Team(p) === CharHlp.Team(creature)))) {
-        if (U8[141176] === 5) {
-          Pathing.BuildTargetList(CbtMap.CombatCellX(p), CbtMap.CombatCellY(p), range, 255, CbtMap.GetIconSize(p), r32(144641));
-          for (let $i2 = 1, $e2 = U8[144645]; $i2 <= $e2; $i2++) {
+        if (U8[227062] === 5) {
+          Pathing.BuildTargetList(CbtMap.CombatCellX(p), CbtMap.CombatCellY(p), range, 255, CbtMap.GetIconSize(p), r32(230527));
+          for (let $i2 = 1, $e2 = U8[230531]; $i2 <= $e2; $i2++) {
             i = $i2;
-            if (U8[i * 3 + 144643] === slot) {
+            if (U8[i * 3 + 230529] === slot) {
               found = true;
             }
           }
@@ -1037,19 +1037,19 @@ export async function TriggerProtection(creature: number, own: number, aura: num
 export async function RollToHit(attacker: number, defender: number, toHit: number, sixtyMinusAc: number) {
   let $r0: boolean = false;
   $r0 = false;
-  U8[144907] = false ? 1 : 0;
-  U8[144906] = Dice.RollDice(1, 20);
-  if (I8[144906] === 1) {
+  U8[230793] = false ? 1 : 0;
+  U8[230792] = Dice.RollDice(1, 20);
+  if (I8[230792] === 1) {
     SpendDisplacement(defender);
   } else {
-    if (I8[144906] === 20) {
-      U8[144906] = 100;
+    if (I8[230792] === 20) {
+      U8[230792] = 100;
     }
     if (attacker !== 0) {
       (await TriggerEffectsWithCondition(10, attacker));
     }
     (await TriggerEffectsWithCondition(16, defender));
-    if (!(U8[144907] !== 0) && ((I8[144906] + toHit) >= sixtyMinusAc)) {
+    if (!(U8[230793] !== 0) && ((I8[230792] + toHit) >= sixtyMinusAc)) {
       $r0 = true;
     }
   }
@@ -1063,32 +1063,32 @@ export async function NonWeaponDamage(creature: number, damage: number, saveRedu
   if (($t1 = U8[creature + 268], $t1 === 6 || $t1 === 7 || $t1 === 8)) {
     { S.sp = $sp; return; }
   }
-  if ((U8[141176] === 5) && (r32(143749) !== 0)) {
-    if (CharHlp.Team(r32(143749)) !== CharHlp.Team(creature)) {
-      slot = CbtMap.CombatSlot(r32(143749)) & 255;
+  if ((U8[227062] === 5) && (r32(229635) !== 0)) {
+    if (CharHlp.Team(r32(229635)) !== CharHlp.Team(creature)) {
+      slot = CbtMap.CombatSlot(r32(229635)) & 255;
       if (slot > 0) {
-        U8[slot + 240562] = U8[slot + 240562] | U8[144898];
+        U8[slot + 248754] = U8[slot + 248754] | U8[230784];
       }
     }
   }
-  U8[144897] = damage;
+  U8[230783] = damage;
   (await TriggerEffectsWithCondition(6, creature));
   if (saved) {
     switch (saveReduction) {
       case 1: {
-        U8[144897] = 0;
+        U8[230783] = 0;
         break;
       }
       case 2: {
-        U8[144897] = Math.trunc(U8[144897] / 2);
+        U8[230783] = Math.trunc(U8[230783] / 2);
         break;
       }
     }
   }
   FireShieldDamage(creature, saved);
-  if (U8[144897] > 0) {
-    wS($f0, 43, "takes " + StrUtil.Count(U8[144897], "point", "points") + " of damage ");
-    switch (U8[144898] & (-9)) {
+  if (U8[230783] > 0) {
+    wS($f0, 43, "takes " + StrUtil.Count(U8[230783], "point", "points") + " of damage ");
+    switch (U8[230784] & (-9)) {
       case 1: {
         wS($f0, 43, rS($f0) + "from Fire");
         break;
@@ -1118,7 +1118,7 @@ export async function NonWeaponDamage(creature: number, damage: number, saveRedu
         break;
       }
     }
-    if ((U8[144898] & 8) === U8[144898]) {
+    if ((U8[230784] & 8) === U8[230784]) {
       wS($f0, 43, rS($f0) + "from Magic");
     }
     if (shockItem === 0) {
@@ -1128,11 +1128,11 @@ export async function NonWeaponDamage(creature: number, damage: number, saveRedu
       (await CharDisp.MessageText(rS(shockItem), 10, true));
       (await CharDisp.MessageText("shocks ", 15, false));
       (await CharDisp.MessageText(rS(creature), 10, false));
-      (await CharDisp.MessageText(" for " + StrUtil.NumStr(U8[144897]) + " damage, and has been unequipped.", 15, false));
+      (await CharDisp.MessageText(" for " + StrUtil.NumStr(U8[230783]) + " damage, and has been unequipped.", 15, false));
       (await CharDisp.MessageWait());
     }
-    CharHlp.InflictDamage(creature, U8[144897]);
-    if (U8[141176] === 5) {
+    CharHlp.InflictDamage(creature, U8[230783]);
+    if (U8[227062] === 5) {
       U8[r32(creature + 264) + 1] = 0;
       if (U8[r32(creature + 264)] > 0) {
         (await CharDisp.PrintNameString(creature, "lost a spell", 12, true));
@@ -1149,8 +1149,8 @@ export async function NonWeaponDamage(creature: number, damage: number, saveRedu
       if (($t2 = U8[creature + 268], $t2 === 6 || $t2 === 7 || $t2 === 8)) {
         wS($f0, 43, "is killed");
       }
-      (await CharDisp.PrintNameString(creature, rS($f0), U8[143770] + 1, false));
-      if (U8[141176] !== 5) {
+      (await CharDisp.PrintNameString(creature, rS($f0), U8[229656] + 1, false));
+      if (U8[227062] !== 5) {
         (await TextRend.PauseOnly());
       } else {
         (await RemoveEffectsHp0(creature));
@@ -1162,7 +1162,7 @@ export async function NonWeaponDamage(creature: number, damage: number, saveRedu
         }
       }
     }
-    (await CharDisp.ClearMessageWindow());
+    CharDisp.ClearMessageWindow();
   }
   S.sp = $sp;
 }
@@ -1199,7 +1199,7 @@ export async function SayReadyError(creature: number, err: number, slot: number)
       break;
     }
     case 3: {
-      if ((U8[141176] !== 5) || (U8[creature + 271] === 0)) {
+      if ((U8[227062] !== 5) || (U8[creature + 271] === 0)) {
         (await CharDisp.PrintBottomLine("Your hands are full!"));
       }
       break;
@@ -1230,17 +1230,17 @@ export async function PutAwayForSet(creature: number, other: number, said: numbe
 export async function TimeOutEffects(count: number, tUnit: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 224);
   let u: number = 0, i: number = 0, k: number = 0, step: number = 0, total: number = 0, cur: number = 0, found: boolean = false, e: number = 0, nExpiring: number = 0, again: boolean = false;
-  if (U8[141176] !== 2) {
-    rt.fill(240488, 72, 1);
+  if (U8[227062] !== 2) {
+    rt.fill(248680, 72, 1);
   } else {
     found = false;
     i = 1;
     do {
-      if (U8[i + 240487] !== 0) {
+      if (U8[i + 248679] !== 0) {
         found = true;
       }
       i = (i + 1) & 255;
-    } while (!(found || (i > r16(r32(141151) + 1660))));
+    } while (!(found || (i > r16(r32(227037) + 1660))));
     if (!found) {
       { S.sp = $sp; return; }
     }
@@ -1248,10 +1248,10 @@ export async function TimeOutEffects(count: number, tUnit: number) {
   total = count;
   u = tUnit;
   if (u === 0) {
-    total = Math.trunc(total / r16(138570)) | 0;
+    total = Math.trunc(total / r16(224456)) | 0;
   }
   while (u > 1) {
-    total = (r16((u - 1) * 2 + 138570) * total) | 0;
+    total = (r16((u - 1) * 2 + 224456) * total) | 0;
     u = (u - 1) << 24 >> 24;
   }
   while (total > 0) {
@@ -1261,9 +1261,9 @@ export async function TimeOutEffects(count: number, tUnit: number) {
       step = total & 255;
     }
     i = 1;
-    cur = r32(143753);
+    cur = r32(229639);
     while (cur !== 0) {
-      if ((i > 72) || (U8[i + 240487] !== 0)) {
+      if ((i > 72) || (U8[i + 248679] !== 0)) {
         again = false;
         nExpiring = 0;
         e = r32(cur + 127);
@@ -1298,9 +1298,9 @@ export async function TimeOutEffects(count: number, tUnit: number) {
         }
         if (i <= 72) {
           if (again) {
-            U8[i + 240487] = 1;
+            U8[i + 248679] = 1;
           } else {
-            U8[i + 240487] = 0;
+            U8[i + 248679] = 0;
           }
         }
       }
@@ -1317,7 +1317,7 @@ export async function TimeOutEffects(count: number, tUnit: number) {
 }
 
 export function $init() {
-  rt.fill(240488, 72, 0);
-  w16(240560, 0);
-  U8[240562] = 0;
+  rt.fill(248680, 72, 0);
+  w16(248752, 0);
+  U8[248754] = 0;
 }

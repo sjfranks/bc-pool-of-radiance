@@ -15,13 +15,13 @@ export const MEM_SIG = "USPL";
 export const MEM_VERSION = 2;
 export const MEM_VERSION_1 = 1;
 
-export const $at = { usualOwner: 242201, usualName: 242233, usualSpells: 242361 };
+export const $at = { usualOwner: 250393, usualName: 250425, usualSpells: 250553 };
 
 export function GetUsualSpells(creature: number, spells: number) {
   let i: number = 0, $r0: boolean = false;
   i = FindUsualEntry(creature) & 255;
   if (i > 0) {
-    mv(spells, i * 48 + 242313, 48);
+    mv(spells, i * 48 + 250505, 48);
   }
   $r0 = i > 0;
   return $r0;
@@ -36,14 +36,14 @@ export function SetUsualSpells(creature: number, spells: number) {
   i = 0;
   for (let $i1 = 8; $i1 >= 1; $i1--) {
     j = $i1;
-    if (r32(j * 4 + 242197) === 0) {
+    if (r32(j * 4 + 250389) === 0) {
       i = j;
     }
   }
   if (i === 0) {
     for (let $i2 = 8; $i2 >= 1; $i2--) {
       j = $i2;
-      if (!Party.IsPartyMember(r32(j * 4 + 242197))) {
+      if (!Party.IsPartyMember(r32(j * 4 + 250389))) {
         i = j;
       }
     }
@@ -51,17 +51,17 @@ export function SetUsualSpells(creature: number, spells: number) {
   if (i === 0) {
     i = 1;
   }
-  w32(i * 4 + 242197, creature);
-  wS(i * 16 + 242217, 15, rS(creature));
-  mv(i * 48 + 242313, spells, 48);
+  w32(i * 4 + 250389, creature);
+  wS(i * 16 + 250409, 15, rS(creature));
+  mv(i * 48 + 250505, spells, 48);
 }
 
 export function ForgetUsualSpells(creature: number) {
   let i: number = 0;
   for (let $i1 = 1; $i1 <= 8; $i1++) {
     i = $i1;
-    if (r32(i * 4 + 242197) === creature) {
-      w32(i * 4 + 242197, 0);
+    if (r32(i * 4 + 250389) === creature) {
+      w32(i * 4 + 250389, 0);
     }
   }
 }
@@ -184,7 +184,7 @@ export function QueueUsualSpells(creature: number) {
           }
         }
         if (!found && CharHlp.KnowsSpell(creature, id)) {
-          if (SpellSlotsRemaining(creature, I8[id * 16 + 136507], I8[id * 16 + 136506]) > 0) {
+          if (SpellSlotsRemaining(creature, I8[id * 16 + 222393], I8[id * 16 + 222392]) > 0) {
             PutPending(creature, id, $f0 + 96);
           }
         }
@@ -201,7 +201,7 @@ export function FindUsualEntry(creature: number) {
   if (creature !== 0) {
     for (let $i1 = 1; $i1 <= 8; $i1++) {
       i = $i1;
-      if ((r32(i * 4 + 242197) === creature) && (rS(i * 16 + 242217) === rS(creature))) {
+      if ((r32(i * 4 + 250389) === creature) && (rS(i * 16 + 250409) === rS(creature))) {
         $r0 = i;
       }
     }
@@ -216,7 +216,7 @@ export function SlotsUsed(creature: number, lvl: number, typ: number) {
     i = $i1;
     id = CharHlp.MemorizedAt(creature, i) & 127;
     if (CharHlp.IsSpell(id)) {
-      if ((I8[id * 16 + 136507] === lvl) && (I8[id * 16 + 136506] === typ)) {
+      if ((I8[id * 16 + 222393] === lvl) && (I8[id * 16 + 222392] === typ)) {
         count = (count + 1) & 255;
       }
     }
@@ -226,5 +226,5 @@ export function SlotsUsed(creature: number, lvl: number, typ: number) {
 }
 
 export function $init() {
-  rt.fill(242201, 32, 0);
+  rt.fill(250393, 32, 0);
 }

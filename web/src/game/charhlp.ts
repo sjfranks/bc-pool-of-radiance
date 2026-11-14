@@ -52,7 +52,7 @@ export const HALFORC_THIEF_CAP = 8;
 export const HALFORC_THIEF_CAP_MAX = 11;
 export const HALFORC_CAP_SCORE = 14;
 
-export const $at = { faultHook: 227137, baseItems: 227141, FIGHTER_CAP: 231187 };
+export const $at = { faultHook: 235329, baseItems: 235333, FIGHTER_CAP: 239379 };
 
 export function WeaponAdjust(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
@@ -173,7 +173,7 @@ export function ItemLabel(item: number, isInv: boolean) {
     }
   }
   found = false;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !found) {
     if (HasEffect(p, 5, $f0)) {
       found = true;
@@ -232,7 +232,7 @@ export function ItemName(item: number, count: number) {
       if (rS($f0) !== "") {
         wS($f0, 255, rS($f0) + " ");
       }
-      wS($f0, 255, rS($f0) + rS(U8[item + i + 46] * 21 + 231181));
+      wS($f0, 255, rS($f0) + rS(U8[item + i + 46] * 21 + 239373));
       if ((count >= 2) && !appended) {
         if ((((((1 << (i - 1)) === mask) || (((i === 1) && (mask > 4)) && !ofName)) || ((i === 2) && !((mask & 1) !== 0))) || ((i === 3) && ofName)) || ((((U8[item + 46] === 73) || (U8[item + 46] === 28)) || (U8[item + 46] === 9)) && (U8[item + 49] !== 177))) {
           wS($f0, 255, rS($f0) + "s");
@@ -259,7 +259,7 @@ export function IsHelpless(creature: number) {
   $r0 = false;
   for (let $i1 = 1; $i1 <= 4; $i1++) {
     i = $i1;
-    if (HasEffect(creature, U8[i + 133142], $f0)) {
+    if (HasEffect(creature, U8[i + 219028], $f0)) {
       $r0 = true;
     }
   }
@@ -448,7 +448,7 @@ export function FindPartyItem(selector: number, owner: number) {
   let p: number = 0, item: number = 0, $r0: number = 0;
   $r0 = 0;
   w32(owner, 0);
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (r32(owner) === 0)) {
     item = r32(p + 200);
     while ((item !== 0) && (r32(owner) === 0)) {
@@ -497,8 +497,8 @@ export function PrependEffectCopy(list: number, effect: number) {
 }
 
 export function ClearTreasure() {
-  FreeItemList(144890);
-  rt.fill(144862, 28, 0);
+  FreeItemList(230776);
+  rt.fill(230748, 28, 0);
 }
 
 export function AppendItemCopy(list: number, item: number) {
@@ -572,7 +572,7 @@ export function JoinsWhole(creature: number, item: number) {
 export async function AddToInventory(creature: number, item: number) {
   let added: number = 0, p: number = 0;
   AppendItemCopy(creature + 200, item);
-  if ((U8[141184] === 0) || (U8[item + 57] === 0)) {
+  if ((U8[227070] === 0) || (U8[item + 57] === 0)) {
     return;
   }
   added = r32(creature + 200);
@@ -633,7 +633,7 @@ export function InflictDamage(creature: number, dmg: number) {
   hpBefore = U8[creature + 283];
   over = 0;
   remain = 0;
-  if ((U8[creature + 268] === 5) && (U8[141176] === 5)) {
+  if ((U8[creature + 268] === 5) && (U8[227062] === 5)) {
     over = U8[r32(creature + 264) + 14] + dmg;
   } else if (U8[creature + 283] >= dmg) {
     remain = (U8[creature + 283] - dmg) & 255;
@@ -644,7 +644,7 @@ export function InflictDamage(creature: number, dmg: number) {
     U8[creature + 268] = 6;
   } else if (over > 0) {
     U8[creature + 268] = 5;
-    if (U8[141176] === 5) {
+    if (U8[227062] === 5) {
       U8[r32(creature + 264) + 14] = over;
     }
   } else if (remain === 0) {
@@ -654,17 +654,17 @@ export function InflictDamage(creature: number, dmg: number) {
   if (!($t3 = U8[creature + 268], $t3 === 0 || $t3 === 1)) {
     U8[creature + 269] = 0;
     U8[creature + 283] = 0;
-    if (U8[141176] === 5) {
+    if (U8[227062] === 5) {
       if (wasUp) {
         let $t4;
-        $t4 = Team(creature) + 144894, U8[$t4] = U8[$t4] - 1;
+        $t4 = Team(creature) + 230780, U8[$t4] = U8[$t4] - 1;
       }
       U8[r32(creature + 264) + 3] = 0;
     }
   } else {
     U8[creature + 283] = remain;
   }
-  Stats.Damaged(r32(143749), creature, hpBefore - U8[creature + 283], wasUp);
+  Stats.Damaged(r32(229635), creature, hpBefore - U8[creature + 283], wasUp);
 }
 
 export function EnemyTeam(creature: number) {
@@ -681,13 +681,13 @@ export function Team(creature: number) {
 
 export function CountTeams() {
   let p: number = 0;
-  U8[144894] = 0;
-  U8[144895] = 0;
-  p = r32(143753);
+  U8[230780] = 0;
+  U8[230781] = 0;
+  p = r32(229639);
   while (p !== 0) {
     if (U8[p + 269] !== 0) {
       let $t2;
-      $t2 = Team(p) + 144894, U8[$t2] = U8[$t2] + 1;
+      $t2 = Team(p) + 230780, U8[$t2] = U8[$t2] + 1;
     }
     p = r32(p + 260);
   }
@@ -695,7 +695,7 @@ export function CountTeams() {
 
 export function SideEmpty() {
   let $r0: boolean = false;
-  $r0 = (U8[144894] === 0) || (U8[144895] === 0);
+  $r0 = (U8[230780] === 0) || (U8[230781] === 0);
   return $r0;
 }
 
@@ -711,19 +711,19 @@ export function EndActions(creature: number) {
 
 export function CanUseItems(creature: number) {
   let $r0: boolean = false;
-  $r0 = ((U8[creature + 269] !== 0) && !AntiMagicArea()) && ((((U8[141176] === 2) || (U8[141176] === 3)) || (U8[141176] === 4)) || ((U8[141176] === 5) && (U8[r32(creature + 264) + 2] !== 0)));
+  $r0 = ((U8[creature + 269] !== 0) && !AntiMagicArea()) && ((((U8[227062] === 2) || (U8[227062] === 3)) || (U8[227062] === 4)) || ((U8[227062] === 5) && (U8[r32(creature + 264) + 2] !== 0)));
   return $r0;
 }
 
 export function AntiMagicArea() {
   let $r0: boolean = false;
-  $r0 = r16(r32(141147) + 458) > 0;
+  $r0 = r16(r32(227033) + 458) > 0;
   return $r0;
 }
 
 export function PaladinReady(p: number) {
   let $r0: boolean = false;
-  $r0 = ((GetClassLevel(p, 8) > 0) && (U8[p + 268] === 0)) && (U8[141176] !== 5);
+  $r0 = ((GetClassLevel(p, 8) > 0) && (U8[p + 268] === 0)) && (U8[227062] !== 5);
   return $r0;
 }
 
@@ -759,19 +759,19 @@ export function GetCasterLevel(spell: number) {
   let own: number = 0, other: number = 0, $r0: number = 0;
   own = 0;
   other = 0;
-  switch (U8[spell * 16 + 136506]) {
+  switch (U8[spell * 16 + 222392]) {
     case 0: {
-      own = GetClassLevel(r32(143749), 1) << 16 >> 16;
-      other = (GetClassLevel(r32(143749), 8) - 8) << 16 >> 16;
+      own = GetClassLevel(r32(229635), 1) << 16 >> 16;
+      other = (GetClassLevel(r32(229635), 8) - 8) << 16 >> 16;
       break;
     }
     case 1: {
-      own = GetClassLevel(r32(143749), 32) << 16 >> 16;
-      other = (GetClassLevel(r32(143749), 16) - 8) << 16 >> 16;
+      own = GetClassLevel(r32(229635), 32) << 16 >> 16;
+      other = (GetClassLevel(r32(229635), 16) - 8) << 16 >> 16;
       break;
     }
     case 2: {
-      own = (GetClassLevel(r32(143749), 16) - 7) << 16 >> 16;
+      own = (GetClassLevel(r32(229635), 16) - 7) << 16 >> 16;
       break;
     }
     case 3: {
@@ -786,7 +786,7 @@ export function GetCasterLevel(spell: number) {
     own = 0;
   }
   $r0 = own & 255;
-  if ((U8[146457] !== 0) && (U8[spell * 16 + 136506] !== 3)) {
+  if ((U8[232343] !== 0) && (U8[spell * 16 + 222392] !== 3)) {
     $r0 = 6;
   }
   return $r0;
@@ -838,7 +838,7 @@ export function FindAmmo(creature: number, w: number, sel: number) {
 export function AtLevelCap(creature: number, cls: number) {
   let lvl: number = 0, band: number = 0, str: number = 0, $r0: boolean = false;
   $r0 = false;
-  if (U8[141187] === 0) {
+  if (U8[227073] === 0) {
     return $r0;
   }
   {
@@ -863,7 +863,7 @@ export function AtLevelCap(creature: number, cls: number) {
     } else if (I8[$w1 + 46] === 6) {
       $r0 = (HalfOrcCap(creature, cls) !== 0) && (lvl >= HalfOrcCap(creature, cls));
     } else if (($t2 = I8[$w1 + 46], ($t2 >= 1 && $t2 <= 5)) && ((cls === 2) || ((cls === 4) && (I8[$w1 + 46] === 4)))) {
-      $r0 = (I8[I8[$w1 + 46] * 3 + band + 231184] !== 0) && (lvl >= I8[I8[$w1 + 46] * 3 + band + 231184]);
+      $r0 = (I8[I8[$w1 + 46] * 3 + band + 239376] !== 0) && (lvl >= I8[I8[$w1 + 46] * 3 + band + 239376]);
     }
   }
   return $r0;
@@ -929,15 +929,15 @@ export function TrainClasses(creature: number, anyXp: boolean) {
 
 export function HallMask() {
   let cls: number = 0, mask: number = 0, $r0: number = 0;
-  if ((U8[141190] !== 0)) {
+  if ((U8[227076] !== 0)) {
     mask = 0;
     for (let $i1 = 0; $i1 <= 7; $i1++) {
       cls = $i1;
-      mask = mask | U8[cls + 131902];
+      mask = mask | U8[cls + 217788];
     }
     $r0 = mask;
   } else {
-    $r0 = r16(r32(141151) + 1360);
+    $r0 = r16(r32(227037) + 1360);
   }
   return $r0;
 }
@@ -1027,9 +1027,9 @@ export function CurrentClassLevel(creature: number) {
 export function BaseItem(itemType: number) {
   let $r0: number = 0;
   if (itemType > 127) {
-    $r0 = r32(227141) + 2048;
+    $r0 = r32(235333) + 2048;
   } else {
-    $r0 = r32(227141) + itemType * 16;
+    $r0 = r32(235333) + itemType * 16;
   }
   return $r0;
 }
@@ -1077,13 +1077,13 @@ export function IsPerson(creature: number) {
   named = false;
   for (let $i1 = 1; $i1 <= 9; $i1++) {
     i = $i1;
-    if (rS(creature) === rS(i * 16 + 131630)) {
+    if (rS(creature) === rS(i * 16 + 217516)) {
       named = true;
     }
   }
   for (let $i2 = 1; $i2 <= 2; $i2++) {
     i = $i2;
-    if (rS(creature) === rS(i * 16 + 236541)) {
+    if (rS(creature) === rS(i * 16 + 244733)) {
       named = true;
     }
   }
@@ -1150,7 +1150,7 @@ export function SleepMost(caught: number, enemy: number, foes: number, friends: 
     U8[$f0] = pool;
     for (let $i2 = 1, $e2 = U8[caught]; $i2 <= $e2; $i2++) {
       i = $i2;
-      cr = r32(U8[caught + i] * 4 + 144292);
+      cr = r32(U8[caught + i] * 4 + 230178);
       if (SleepTakes(cr, $f0)) {
         let $t3;
         $t3 = $f0 + (Team(cr) === enemy ? 1 : 0) + 1, U8[$t3] = U8[$t3] + 1;
@@ -1213,7 +1213,7 @@ export function IsSpell(id: number) {
   let $r0: boolean = false;
   $r0 = false;
   if ((id >= 1) && (id <= 100)) {
-    $r0 = U8[id * 16 + 136506] !== 3;
+    $r0 = U8[id * 16 + 222392] !== 3;
   }
   return $r0;
 }
@@ -1412,12 +1412,12 @@ export function HasScrollSpells(creature: number) {
 
 export function CalcSpellRange(spell: number) {
   let r: number = 0, $r0: number = 0;
-  if (!(U8[146457] !== 0)) {
-    r = (U8[spell * 16 + 136508] + rt.mul(U8[spell * 16 + 136509], GetCasterLevel(spell))) & 255;
+  if (!(U8[232343] !== 0)) {
+    r = (U8[spell * 16 + 222394] + rt.mul(U8[spell * 16 + 222395], GetCasterLevel(spell))) & 255;
   } else {
-    r = ((U8[spell * 16 + 136509] * 6) + U8[spell * 16 + 136508]) & 255;
+    r = ((U8[spell * 16 + 222395] * 6) + U8[spell * 16 + 222394]) & 255;
   }
-  if ((r === 0) && (U8[spell * 16 + 136512] !== 0)) {
+  if ((r === 0) && (U8[spell * 16 + 222398] !== 0)) {
     r = 1;
   }
   if (r === 255) {
@@ -1430,7 +1430,7 @@ export function CalcSpellRange(spell: number) {
 export function SpellArea(spell: number, size: number) {
   let mode: number = 0, $r0: number = 0;
   U8[size] = 0;
-  mode = U8[spell * 16 + 136512] & 15;
+  mode = U8[spell * 16 + 222398] & 15;
   if (spell === 84) {
     U8[size] = 6;
     $r0 = 6;
@@ -1466,8 +1466,8 @@ export function SpellArea(spell: number, size: number) {
           $r0 = 4;
         } else {
           U8[size] = mode & 7;
-          if (((spell === 47) || (spell === 64)) && (r32(141147) !== 0)) {
-            if (r16(r32(141147) + 460) === 0) {
+          if (((spell === 47) || (spell === 64)) && (r32(227033) !== 0)) {
+            if (r16(r32(227033) + 460) === 0) {
               U8[size] = 2;
             }
           }
@@ -1540,7 +1540,7 @@ export function SpellDuration(spell: number, d: number) {
       break;
     }
     case 63: {
-      if (U8[141176] === 5) {
+      if (U8[227062] === 5) {
         Rolled(2, 10, 0, 10);
       } else {
         Rolled(1, 10, 10, 10);
@@ -1553,7 +1553,7 @@ export function SpellDuration(spell: number, d: number) {
     }
     default: {
       {
-        const $w1 = spell * 16 + 136506;
+        const $w1 = spell * 16 + 222392;
         Rolled(0, 0, U8[$w1 + 4] + rt.mul(U8[$w1 + 5], GetCasterLevel(spell)), 1);
       }
     }
@@ -1578,8 +1578,8 @@ export function TheftChance(chance: number, weight: number) {
 }
 
 export async function Fault(msg: string) {
-  if (r32(227137) !== 0) {
-    (await rt.FT[r32(227137)](msg));
+  if (r32(235329) !== 0) {
+    (await rt.FT[r32(235329)](msg));
   }
 }
 
@@ -1622,6 +1622,6 @@ export function FollowedLevel(creature: number) {
 }
 
 export function $init() {
-  w32(227137, 0);
-  w32(227141, 0);
+  w32(235329, 0);
+  w32(235333, 0);
 }

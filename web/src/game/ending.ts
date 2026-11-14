@@ -23,35 +23,35 @@ import * as MapTiles from './maptiles';
 export async function WinGame() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 6);
   let savedIfc: number = 0, cycles: number = 0;
-  cycles = Math.trunc(rt.mul((10 - U8[141163]) & 65535, 5) / 2) & 255;
-  wS($f0 + 4, 1, rt.fmtI(U8[143234], 0));
-  savedIfc = U8[141176];
-  U8[141176] = 7;
+  cycles = Math.trunc(rt.mul((10 - U8[227049]) & 65535, 5) / 2) & 255;
+  wS($f0 + 4, 1, rt.fmtI(U8[229120], 0));
+  savedIfc = U8[227062];
+  U8[227062] = 7;
   w32($f0, 0);
   TextRend.ClearBottomLine();
-  (await TextRend.ClearRect(1, 17, 38, 22));
+  TextRend.ClearRect(1, 17, 38, 22);
   TextRend.DisplayString(1, 17, 10, "Mortally wounded, the dragon roars!");
   TextRend.DisplayString(1, 18, 10, "The spirit of Tyranthraxus flares up");
   TextRend.DisplayString(1, 19, 10, "from the dragon's body.");
   (await CharDisp.DisplayNoncombatInterface());
   (await Blit.LoadPic("FINAL" + rS($f0 + 4), 1, false, 0, $f0));
-  Blit.BlitTileClipped(0, 0, 0, 0, r32($f0), r32(141249));
+  Blit.BlitTileClipped(0, 0, 0, 0, r32($f0), r32(227135));
   (await PlayFinalAnim(3, 5, 2, cycles));
   (await Blit.LoadPic("FINAL" + rS($f0 + 4), 3, false, 0, $f0));
-  Blit.BlitTileClipped(0, 0, 0, 0, r32($f0), r32(141249));
-  if (r16(r32(141151) + 1660) > 1) {
+  Blit.BlitTileClipped(0, 0, 0, 0, r32($f0), r32(227135));
+  if (r16(r32(227037) + 1660) > 1) {
     (await Blit.LoadPic("FINAL" + rS($f0 + 4), 4, false, 0, $f0));
-    Blit.BlitTileClipped(0, 11, 0, 0, r32($f0), r32(141249));
+    Blit.BlitTileClipped(0, 11, 0, 0, r32($f0), r32(227135));
   }
-  if (r16(r32(141151) + 1660) > 2) {
+  if (r16(r32(227037) + 1660) > 2) {
     (await Blit.LoadPic("FINAL" + rS($f0 + 4), 5, false, 0, $f0));
-    Blit.BlitTileClipped(13, 9, 0, 0, r32($f0), r32(141249));
+    Blit.BlitTileClipped(13, 9, 0, 0, r32($f0), r32(227135));
   }
-  if (r16(r32(141151) + 1660) > 3) {
+  if (r16(r32(227037) + 1660) > 3) {
     (await Blit.LoadPic("FINAL" + rS($f0 + 4), 6, false, 0, $f0));
-    Blit.BlitTileClipped(0, 9, 0, 0, r32($f0), r32(141249));
+    Blit.BlitTileClipped(0, 9, 0, 0, r32($f0), r32(227135));
   }
-  (await TextRend.ClearRect(1, 17, 38, 22));
+  TextRend.ClearRect(1, 17, 38, 22);
   TextRend.DisplayString(1, 17, 10, "\"Fools, you have but slain the body");
   TextRend.DisplayString(1, 18, 10, "I possessed.  I cannot be defeated!\"");
   TextRend.DisplayString(1, 19, 10, "With the power of the pool of radiance");
@@ -59,7 +59,7 @@ export async function WinGame() {
   TextRend.DisplayString(1, 21, 10, "I will still rule, by possessing one");
   TextRend.DisplayString(1, 22, 10, "of you!\"");
   (await PlayFinalAnim(3, 1, 7, cycles));
-  (await TextRend.ClearRect(1, 17, 38, 22));
+  TextRend.ClearRect(1, 17, 38, 22);
   TextRend.DisplayString(1, 17, 10, "\"No Lord Bane!  I can still rule here!");
   TextRend.DisplayString(1, 18, 10, "I have not failed.  Do not call me back");
   TextRend.DisplayString(1, 19, 10, "through the pool!\"");
@@ -69,7 +69,7 @@ export async function WinGame() {
   (await TextRend.PauseOnly());
   (await TextRend.PauseOnly());
   Blit.FreePic($f0);
-  U8[141176] = savedIfc;
+  U8[227062] = savedIfc;
   (await CharDisp.DisplayNoncombatInterface());
   S.sp = $sp;
 }
@@ -79,40 +79,40 @@ export async function YarashComplete(animate: boolean) {
   let step: number = 0;
   async function RemapTile(tile: number, toT: number, dither: boolean) {
     if (tile > 127) {
-      (await Blit.RemapPic(132853, toT, tile & 127, dither, (await MapTiles.SecondSheet())));
+      (await Blit.RemapPic(218739, toT, tile & 127, dither, (await MapTiles.SecondSheet())));
     } else {
-      (await Blit.RemapPic(132853, toT, tile, dither, r32(143795)));
+      (await Blit.RemapPic(218739, toT, tile, dither, r32(229681)));
     }
   }
   async function RemapPyramid(dither: boolean) {
     let t: number = 0;
     for (let $i1 = 0; $i1 <= 10; $i1++) {
       t = $i1;
-      (await RemapTile(U8[t + 240776], $f0, dither));
+      (await RemapTile(U8[t + 248968], $f0, dither));
     }
     for (let $i2 = 0; $i2 <= 17; $i2++) {
       t = $i2;
-      (await RemapTile(U8[t + 240787], $f0 + 16, dither));
+      (await RemapTile(U8[t + 248979], $f0 + 16, dither));
     }
   }
-  mv($f0 + 16, 132853, 16);
+  mv($f0 + 16, 218739, 16);
   U8[$f0 + 23] = 2;
   mv($f0, $f0 + 16, 16);
   U8[$f0] = 1;
   if (animate) {
     (await Wilds.BuildWildernessMap(17, 15, 4));
-    (await Blit.FlushView());
+    Blit.FlushView();
     for (let $i3 = 0; $i3 <= 8; $i3++) {
       step = $i3;
       (await RemapPyramid(true));
-      (await Wilds.BuildWildernessMap(U8[step + 240805], U8[step + 240814], 4));
-      (await Blit.FlushView());
+      (await Wilds.BuildWildernessMap(U8[step + 248997], U8[step + 249006], 4));
+      Blit.FlushView();
     }
   }
   (await RemapPyramid(false));
   if (animate) {
     (await Wilds.BuildWildernessMap(23, 25, 4));
-    (await Blit.FlushView());
+    Blit.FlushView();
     (await TextRend.PauseOnly());
     (await TextRend.PauseOnly());
   }
@@ -130,12 +130,12 @@ export async function PlayFinalAnim(col: number, row: number, picId: number, nCy
     Portrait.FreeAnimation($f0);
     { S.sp = $sp; return; }
   }
-  Blit.BlitTileClipped(col - 1, row - 1, 0, 0, r32($f0 + 6), r32(141249));
-  (await Blit.FlushView());
+  Blit.BlitTileClipped(col - 1, row - 1, 0, 0, r32($f0 + 6), r32(227135));
+  Blit.FlushView();
   do {
-    (await Portrait.DisplayImageBuf(col, row, true, r32($f0 + U8[$f0 + 1] * 8 - 2)));
+    Portrait.DisplayImageBuf(col, row, true, r32($f0 + U8[$f0 + 1] * 8 - 2));
     tickNow = (await TextRend.GetTicks()) | 0;
-    if (((tickNow - tickLast) > (ri32($f0 + U8[$f0 + 1] * 8 - 6) * (U8[141163] + 3))) || (tickNow < tickLast)) {
+    if (((tickNow - tickLast) > (ri32($f0 + U8[$f0 + 1] * 8 - 6) * (U8[227049] + 3))) || (tickNow < tickLast)) {
       U8[$f0 + 1] = U8[$f0 + 1] + 1;
       if (U8[$f0 + 1] > U8[$f0]) {
         U8[$f0 + 1] = 1;

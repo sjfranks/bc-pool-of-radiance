@@ -12,9 +12,10 @@ import * as C_KEYS from './c_keys';
 import * as C_MSG from './c_msg';
 import * as Border from './border';
 import * as Host from './host';
+import * as $hooks from '../host/hooks';
 
 
-export const $at = { pageByDelay: 226089, pauseCount: 226090 };
+export const $at = { pageByDelay: 234415, pauseCount: 234416 };
 
 export async function LoadGameFont() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 6);
@@ -27,14 +28,14 @@ export async function LoadGameFont() {
   if (n > 1416) {
     n = 1416;
   }
-  mv(r32(143765), r32($f0 + 2), n);
+  mv(r32(229651), r32($f0 + 2), n);
   rt.freeMem(r32($f0 + 2));
   S.sp = $sp;
 }
 
-export function RenderChar(col: number, row: number, fg: number, bg: number, count: number, ch: number, isAscii: number) {
+function RenderChar$impl(col: number, row: number, fg: number, bg: number, count: number, ch: number, isAscii: number) {
   let i: number = 0, charIdx: number = 0;
-  if (((col > 39) || (row > 24)) || (r32(143765) === 0)) {
+  if (((col > 39) || (row > 24)) || (r32(229651) === 0)) {
     return;
   }
   if (isAscii !== 0) {
@@ -47,9 +48,13 @@ export function RenderChar(col: number, row: number, fg: number, bg: number, cou
   }
   for (let $i1 = 1, $e1 = count; $i1 <= $e1; $i1++) {
     i = $i1;
-    rt.FT[r32(141075)](col, row, fg, bg, charIdx);
+    rt.FT[r32(226961)](col, row, fg, bg, charIdx);
     col = (col + 1) & 255;
   }
+}
+export function RenderChar(...a) {
+  $hooks.tap("TextRend.RenderChar", a);
+  return RenderChar$impl(...a);
 }
 
 export function PrintSpaces(col: number, row: number, color: number, count: number) {
@@ -95,13 +100,13 @@ export function DisplayCentered(left: number, right: number, row: number, color:
 export async function DisplayMessageWindow(ulCol: number, ulRow: number, lrCol: number, lrRow: number, color: number, clearFirst: boolean, source: string) {
   let len: number = 0, width: number = 0, idx: number = 0, lineEnd: number = 0;
   async function PrintCharInWindow() {
-    while ((idx <= lineEnd) && (U8[143769] <= lrCol)) {
-      RenderChar(U8[143769], U8[143770], color, 0, 1, rt.chAt(source, idx), 1);
-      if (U8[141225] !== 0) {
-        (await Crt.Delay(U8[141163] * 10));
+    while ((idx <= lineEnd) && (U8[229655] <= lrCol)) {
+      RenderChar(U8[229655], U8[229656], color, 0, 1, rt.chAt(source, idx), 1);
+      if (U8[227111] !== 0) {
+        (await Crt.Delay(U8[227049] * 10));
       }
       idx = (idx + 1) << 16 >> 16;
-      U8[143769] = U8[143769] + 1;
+      U8[229655] = U8[229655] + 1;
     }
   }
   function FindNewIndex() {
@@ -112,14 +117,14 @@ export async function DisplayMessageWindow(ulCol: number, ulRow: number, lrCol: 
   if ((((ulCol > lrCol) || (ulRow > lrRow)) || (lrCol > 39)) || (lrRow > 24)) {
     return;
   }
-  if ((((U8[143769] < ulCol) || (U8[143769] > lrCol)) || (U8[143770] < ulRow)) || (U8[143770] > lrRow)) {
-    U8[143769] = ulCol;
-    U8[143770] = ulRow;
+  if ((((U8[229655] < ulCol) || (U8[229655] > lrCol)) || (U8[229656] < ulRow)) || (U8[229656] > lrRow)) {
+    U8[229655] = ulCol;
+    U8[229656] = ulRow;
   }
   if (clearFirst) {
-    (await ClearRect(ulCol, ulRow, lrCol, lrRow));
-    U8[143769] = ulCol;
-    U8[143770] = ulRow;
+    ClearRect(ulCol, ulRow, lrCol, lrRow);
+    U8[229655] = ulCol;
+    U8[229656] = ulRow;
   }
   idx = 1;
   len = source.length;
@@ -129,48 +134,48 @@ export async function DisplayMessageWindow(ulCol: number, ulRow: number, lrCol: 
   width = ((lrCol - ulCol) + 1) & 255;
   do {
     lineEnd = idx;
-    while ((lineEnd < len) && rt.inM(226101, 4, 4, rt.chAt(source, lineEnd))) {
+    while ((lineEnd < len) && rt.inM(234427, 4, 4, rt.chAt(source, lineEnd))) {
       lineEnd = (lineEnd + 1) << 16 >> 16;
     }
-    while (((lineEnd < len) && !rt.inM(226101, 4, 4, rt.chAt(source, lineEnd))) && (rt.chAt(source, lineEnd) !== 32)) {
+    while (((lineEnd < len) && !rt.inM(234427, 4, 4, rt.chAt(source, lineEnd))) && (rt.chAt(source, lineEnd) !== 32)) {
       lineEnd = (lineEnd + 1) << 16 >> 16;
     }
     if (rt.chAt(source, lineEnd) !== 32) {
-      while (((lineEnd + 1) < len) && rt.inM(226101, 4, 4, rt.chAt(source, lineEnd + 1))) {
+      while (((lineEnd + 1) < len) && rt.inM(234427, 4, 4, rt.chAt(source, lineEnd + 1))) {
         lineEnd = (lineEnd + 1) << 16 >> 16;
       }
     }
-    if ((U8[143769] <= lrCol) && (((lineEnd - idx) + (rt.chAt(source, lineEnd) !== 32 ? 1 : 0)) > width)) {
-      lineEnd = ((idx + lrCol) - U8[143769]) << 16 >> 16;
+    if ((U8[229655] <= lrCol) && (((lineEnd - idx) + (rt.chAt(source, lineEnd) !== 32 ? 1 : 0)) > width)) {
+      lineEnd = ((idx + lrCol) - U8[229655]) << 16 >> 16;
     }
-    if (((lineEnd - idx) + U8[143769]) > lrCol) {
-      if ((((lineEnd - idx) + U8[143769]) === (lrCol + 1)) && (rt.chAt(source, lineEnd) === 32)) {
+    if (((lineEnd - idx) + U8[229655]) > lrCol) {
+      if ((((lineEnd - idx) + U8[229655]) === (lrCol + 1)) && (rt.chAt(source, lineEnd) === 32)) {
         lineEnd = (lineEnd - 1) << 16 >> 16;
         (await PrintCharInWindow());
       }
-      U8[143769] = ulCol;
-      U8[143770] = U8[143770] + 1;
+      U8[229655] = ulCol;
+      U8[229656] = U8[229656] + 1;
       FindNewIndex();
-      if ((U8[143770] > lrRow) && ((idx < len) || (rt.chAt(source, idx) !== 32))) {
-        U8[143769] = ulCol;
-        U8[143770] = ulRow;
-        if ((U8[226089] !== 0)) {
+      if ((U8[229656] > lrRow) && ((idx < len) || (rt.chAt(source, idx) !== 32))) {
+        U8[229655] = ulCol;
+        U8[229656] = ulRow;
+        if ((U8[234415] !== 0)) {
           (await PauseOnly());
         } else {
           (await DisplayAndPause(13, "Press any key to continue"));
         }
-        (await ClearRect(ulCol, ulRow, lrCol, lrRow));
+        ClearRect(ulCol, ulRow, lrCol, lrRow);
         (await PrintCharInWindow());
-      } else if (U8[143770] > lrRow) {
+      } else if (U8[229656] > lrRow) {
         return;
       }
     } else {
       (await PrintCharInWindow());
     }
   } while (!(idx > len));
-  if (U8[143769] > lrCol) {
-    U8[143769] = ulCol;
-    U8[143770] = U8[143770] + 1;
+  if (U8[229655] > lrCol) {
+    U8[229655] = ulCol;
+    U8[229656] = U8[229656] + 1;
   }
 }
 
@@ -178,7 +183,7 @@ export async function ShowMessage(color: number, clearFirst: boolean, s: string)
   (await DisplayMessageWindow(1, 17, 38, 22, color, clearFirst, s));
 }
 
-export async function ReadString(query: string, color: number, maxLen: number) {
+async function ReadString$impl(query: string, color: number, maxLen: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 256);
   let col: number = 0, key: number = 0, $r0: string = "";
   ClearBottomLine();
@@ -211,8 +216,16 @@ export async function ReadString(query: string, color: number, maxLen: number) {
   S.sp = $sp;
   return $r0;
 }
+export async function ReadString(...a) {
+  $hooks.enter("TextRend.ReadString", a);
+  try {
+    return (await ReadString$impl(...a));
+  } finally {
+    $hooks.leave("TextRend.ReadString");
+  }
+}
 
-export async function ReadNumber(query: string, color: number) {
+async function ReadNumber$impl(query: string, color: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let num: number = 0, code: number = 0, $r0: number = 0;
   do {
@@ -228,13 +241,21 @@ export async function ReadNumber(query: string, color: number) {
   S.sp = $sp;
   return $r0;
 }
+export async function ReadNumber(...a) {
+  $hooks.enter("TextRend.ReadNumber", a);
+  try {
+    return (await ReadNumber$impl(...a));
+  } finally {
+    $hooks.leave("TextRend.ReadNumber");
+  }
+}
 
 export async function DisplayAndPause(color: number, msg: string) {
   let key: number = 0;
   ClearBottomLine();
   DisplayString(0, 24, color, msg);
   key = (await GameIo.ReadAnyKey()) & 255;
-  w16(226090, r16(226090) + 1);
+  w16(234416, r16(234416) + 1);
 }
 
 export async function TickCount() {
@@ -256,9 +277,13 @@ export async function GetTicks() {
   return $r0;
 }
 
-export async function ClearScreen() {
-  (await rt.FT[r32(141083)]());
+function ClearScreen$impl() {
+  rt.FT[r32(226969)]();
   Border.ForgetJoin();
+}
+export function ClearScreen(...a) {
+  $hooks.tap("TextRend.ClearScreen", a);
+  return ClearScreen$impl(...a);
 }
 
 export async function PrintAndPause(msg: string, color: number) {
@@ -269,12 +294,12 @@ export async function PrintAndPause(msg: string, color: number) {
 }
 
 export async function PauseOnly() {
-  if ((U8[141212] !== 0)) {
-    (await PauseTicks(Math.trunc((U8[141163] * 45) / 2)));
+  if ((U8[227098] !== 0)) {
+    (await PauseTicks(Math.trunc((U8[227049] * 45) / 2)));
   } else {
-    (await Crt.Delay(U8[141163] * 225));
+    (await Crt.Delay(U8[227049] * 225));
   }
-  w16(226090, r16(226090) + 1);
+  w16(234416, r16(234416) + 1);
 }
 
 export async function PauseTicks(hundredths: number) {
@@ -305,11 +330,11 @@ export async function FlashBottomLine(color: number, msg: string) {
   ClearBottomLine();
 }
 
-export async function ClearRect(ulCol: number, ulRow: number, lrCol: number, lrRow: number) {
+export function ClearRect(ulCol: number, ulRow: number, lrCol: number, lrRow: number) {
   if ((((((ulCol < 0) || (ulRow < 0)) || (ulCol > lrCol)) || (ulRow > lrRow)) || (lrCol > 39)) || (lrRow > 24)) {
     return;
   }
-  (await rt.FT[r32(141079)](ulCol, ulRow, lrCol, lrRow));
+  rt.FT[r32(226965)](ulCol, ulRow, lrCol, lrRow);
 }
 
 export function biosTicks() {
@@ -319,6 +344,6 @@ export function biosTicks() {
 }
 
 export function $init() {
-  U8[226089] = false ? 1 : 0;
-  w16(226090, 0);
+  U8[234415] = false ? 1 : 0;
+  w16(234416, 0);
 }

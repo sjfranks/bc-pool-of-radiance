@@ -11,7 +11,7 @@ import * as VidOps from './vidops';
 import * as TpRand from './tprand';
 
 
-export const $at = { cgaPixPos: 249045 };
+export const $at = { cgaPixPos: 257237 };
 
 export function ExpandChunk(chunk: number, mask: number, pic: number, at: number) {
   let k: number = 0, m: number = 0, half: number = 0, color: number = 0;
@@ -20,7 +20,7 @@ export function ExpandChunk(chunk: number, mask: number, pic: number, at: number
     for (let $i2 = 0; $i2 <= 7; $i2++) {
       k = $i2;
       color = Blit.SrcNibble(VidOps.ChunkPixel(chunk, k), $w1 + 9) & 255;
-      U8[$w1 + (at + (k >>> 2)) + 27] = U8[$w1 + (at + (k >>> 2)) + 27] | U8[color * 4 + (k & 3) + 249045];
+      U8[$w1 + (at + (k >>> 2)) + 27] = U8[$w1 + (at + (k >>> 2)) + 27] | U8[color * 4 + (k & 3) + 257237];
     }
     if (r32($w1 + 19) !== 0) {
       for (let $i3 = 0; $i3 <= 1; $i3++) {
@@ -29,7 +29,7 @@ export function ExpandChunk(chunk: number, mask: number, pic: number, at: number
         for (let $i4 = 0; $i4 <= 3; $i4++) {
           k = $i4;
           if ((mask & (128 >>> ((half * 4) + k))) !== 0) {
-            m = (m | r16((k + 4) * 2 + 132825)) & 255;
+            m = (m | r16((k + 4) * 2 + 218711)) & 255;
           }
         }
         U8[r32($w1 + 19) + (at + half)] = U8[r32($w1 + 19) + (at + half)] | m;
@@ -82,9 +82,9 @@ export function RemapColour(pic: number, scratch: number, srcOff: number, nFrame
           col = $i4;
           for (let $i5 = 0; $i5 <= 3; $i5++) {
             pixPos = $i5;
-            if ((U8[pic + srcOff + 27] & r16((pixPos + 4) * 2 + 132825)) === U8[Blit.SrcNibble(fromC, $w1 + 9) * 4 + pixPos + 249045]) {
+            if ((U8[pic + srcOff + 27] & r16((pixPos + 4) * 2 + 218711)) === U8[Blit.SrcNibble(fromC, $w1 + 9) * 4 + pixPos + 257237]) {
               if (!isDithered || (TpRand.Random(4) === 0)) {
-                U8[$w1 + dstOff + 27] = (U8[$w1 + dstOff + 27] & (~r16((pixPos + 4) * 2 + 132825) & 65535)) | U8[Blit.SrcNibble(toC, $w1 + 9) * 4 + pixPos + 249045];
+                U8[$w1 + dstOff + 27] = (U8[$w1 + dstOff + 27] & (~r16((pixPos + 4) * 2 + 218711) & 65535)) | U8[Blit.SrcNibble(toC, $w1 + 9) * 4 + pixPos + 257237];
               }
             }
           }
@@ -114,7 +114,7 @@ export function PutPixelRow(pic: number, at: number, y: number, px: number) {
     b = 0;
     for (let $i2 = 0; $i2 <= 3; $i2++) {
       k = $i2;
-      b = (b | ((U8[(U8[px + ((i * 4) + k)] & 15) + 132809] & 3) << (6 - (2 * k)))) & 255;
+      b = (b | ((U8[(U8[px + ((i * 4) + k)] & 15) + 218695] & 3) << (6 - (2 * k)))) & 255;
     }
     U8[pic + ((at + (y * 2)) + i) + 27] = b;
   }
@@ -125,9 +125,9 @@ export function InitRowTables() {
   for (let $i1 = 0; $i1 <= 199; $i1++) {
     i = $i1;
     if ((i & 1) !== 0) {
-      w16(i * 2 + 142433, (Math.trunc(i / 2) * 5) + 47616);
+      w16(i * 2 + 228319, (Math.trunc(i / 2) * 5) + 47616);
     } else {
-      w16(i * 2 + 142433, (Math.trunc(i / 2) * 5) + 47104);
+      w16(i * 2 + 228319, (Math.trunc(i / 2) * 5) + 47104);
     }
   }
 }

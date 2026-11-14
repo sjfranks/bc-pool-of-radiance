@@ -36,12 +36,12 @@ export const SYM_SET = 4;
 export const SYM_ARROW = 256;
 export const SYM_WALLS = 260;
 
-export const $at = { KIND_COLOURS: 252868, KIND_COLOURS_CGA: 252875, KIND_NAMES: 252882 };
+export const $at = { KIND_COLOURS: 261060, KIND_COLOURS_CGA: 261067, KIND_NAMES: 261074 };
 
 export async function ToolsMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let ch: number = 0;
-  if (U8[141198] === 0) {
+  if (U8[227084] === 0) {
     { S.sp = $sp; return; }
   }
   (await DrawTools());
@@ -65,7 +65,7 @@ export async function ToolsMenu() {
 
 export function NoteColour() {
   let $r0: number = 0;
-  if (U8[141050] >= 16) {
+  if (U8[226936] >= 16) {
     $r0 = 14;
   } else {
     $r0 = 13;
@@ -76,19 +76,19 @@ export function NoteColour() {
 export async function ShowSymbol(col: number, row: number, symbol: number, dim: boolean, fill: number, mark: number, cursor: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 32);
   let symbols: number = 0, glyph: number = 0, c: number = 0, remap: boolean = false;
-  symbols = r32(143787);
-  glyph = r32(143791);
+  symbols = r32(229673);
+  glyph = r32(229677);
   if ((symbols === 0) || (glyph === 0)) {
     { S.sp = $sp; return; }
   }
-  mv(glyph + 27, symbols + ((symbol - r16(132925)) * r16(symbols + 17)) + 27, r16(symbols + 17));
+  mv(glyph + 27, symbols + ((symbol - r16(218811)) * r16(symbols + 17)) + 27, r16(symbols + 17));
   mv(glyph + 9, symbols + 9, 8);
   for (let $i1 = 0; $i1 <= 15; $i1++) {
     c = $i1;
     U8[$f0 + c] = c;
     U8[$f0 + c + 16] = c;
   }
-  if (U8[141050] >= 16) {
+  if (U8[226936] >= 16) {
     if (dim) {
       U8[$f0 + 24] = 0;
       U8[$f0 + 23] = 8;
@@ -123,30 +123,30 @@ export async function ShowSymbol(col: number, row: number, symbol: number, dim: 
   if (remap) {
     (await Blit.RemapPic($f0, $f0 + 16, 0, false, glyph));
   }
-  (await Blit.ShowPic(col, row, glyph));
+  Blit.ShowPic(col, row, glyph);
   S.sp = $sp;
 }
 
 export function KindColour(kind: number) {
   let $r0: number = 0;
-  if (U8[141050] >= 16) {
-    $r0 = U8[kind + 252867];
+  if (U8[226936] >= 16) {
+    $r0 = U8[kind + 261059];
   } else {
-    $r0 = U8[kind + 252874];
+    $r0 = U8[kind + 261066];
   }
   return $r0;
 }
 
 export function CluesShown() {
   let $r0: boolean = false;
-  $r0 = U8[141199] !== 0;
+  $r0 = U8[227085] !== 0;
   return $r0;
 }
 
 export async function DrawSquare(mx: number, my: number, cursor: boolean) {
   let sym: number = 0, kind: number = 0, fill: number = 0, mark: number = 0, script: number = 0, map: number = 0;
-  script = U8[146747];
-  map = U8[r32(141147) + 394];
+  script = U8[232633];
+  map = U8[r32(227033) + 394];
   sym = 260;
   if (View3D.GetWallType(mx, my, 0) > 0) {
     sym = (sym + 1) & 65535;
@@ -160,8 +160,8 @@ export async function DrawSquare(mx: number, my: number, cursor: boolean) {
   if (View3D.GetWallType(mx, my, 6) > 0) {
     sym = (sym + 8) & 65535;
   }
-  if ((mx === I8[145546]) && (my === I8[145547])) {
-    sym = 256 + Math.trunc(U8[145548] / 2);
+  if ((mx === I8[231432]) && (my === I8[231433])) {
+    sym = 256 + Math.trunc(U8[231434] / 2);
   }
   kind = (await EvtKind.Kind(View3D.GetMapEvent(mx, my))) & 255;
   fill = 8;
@@ -182,7 +182,7 @@ export async function DrawMap() {
   let mx: number = 0, my: number = 0, kind: number = 0, row: number = 0;
   (await EvtKind.Prepare());
   rt.fill($f0, 7, (false ? 1 : 0));
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   for (let $i1 = 0; $i1 <= 15; $i1++) {
     my = $i1;
@@ -208,13 +208,13 @@ export async function DrawMap() {
     TextRend.DisplayString(19, row, 11, "Cyan: Clue Book");
     row = (row + 1) & 255;
   }
-  TextRend.DisplayString(19, row, 10, "Party at " + StrUtil.NumStr(I8[145546]) + "," + StrUtil.NumStr(I8[145547]));
+  TextRend.DisplayString(19, row, 10, "Party at " + StrUtil.NumStr(I8[231432]) + "," + StrUtil.NumStr(I8[231433]));
   row = (row + 2) & 255;
   for (let $i3 = 1; $i3 <= 7; $i3++) {
     kind = $i3;
     if ((U8[$f0 + kind - 1] !== 0)) {
       (await ShowSymbol(19, row, 260, false, KindColour(kind), 0, false));
-      TextRend.DisplayString(21, row, 10, rS(kind * 9 + 252873));
+      TextRend.DisplayString(21, row, 10, rS(kind * 9 + 261065));
       row = (row + 1) & 255;
     }
   }
@@ -223,8 +223,8 @@ export async function DrawMap() {
 
 export async function OnAreaMap() {
   let $r0: boolean = false;
-  $r0 = U8[141223] === 1;
-  if (U8[141223] !== 1) {
+  $r0 = U8[227109] === 1;
+  if (U8[227109] !== 1) {
     (await TextRend.DisplayAndPause(14, "The wilderness has its own map."));
     TextRend.ClearBottomLine();
   }
@@ -232,10 +232,10 @@ export async function OnAreaMap() {
 }
 
 export async function DrawTools() {
-  if (U8[141223] === 1) {
+  if (U8[227109] === 1) {
     (await DrawMap());
   } else {
-    (await TextRend.ClearScreen());
+    TextRend.ClearScreen();
     (await Border.DrawBorder(1, 1, 38, 22, 0));
   }
   TextRend.DisplayCentered(1, 38, 1, 15, "Companion Tools");
@@ -247,19 +247,19 @@ export async function MapTool() {
   if (!(await OnAreaMap())) {
     { S.sp = $sp; return; }
   }
-  script = U8[146747];
-  map = U8[r32(141147) + 394];
-  cx = I8[145546];
-  cy = I8[145547];
+  script = U8[232633];
+  map = U8[r32(227033) + 394];
+  cx = I8[231432];
+  cy = I8[231433];
   do {
     (await DrawSquare(cx, cy, true));
-    (await TextRend.ClearRect(2, 20, 37, 21));
+    TextRend.ClearRect(2, 20, 37, 21);
     TextRend.DisplayString(2, 20, 10, StrUtil.NumStr(cx) + "," + StrUtil.NumStr(cy) + " ");
     if (CluesShown()) {
       TextRend.DisplayString(8, 20, 11, ClueBook.Note(map, cx, cy));
     }
     TextRend.DisplayString(8, 21, NoteColour(), MapNotes.Note(script, map, cx, cy));
-    U8[227081] = true ? 1 : 0;
+    U8[235273] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("Map: ", "Write Clear Exit", 13, 10, 15, true, false, $f0)) & 255;
     nx = cx;
     ny = cy;
@@ -313,7 +313,7 @@ export async function MapTool() {
       cy = ny;
     }
   } while (!(!(U8[$f0] !== 0) && (ch === 0 || ch === 69)));
-  (await TextRend.ClearRect(2, 20, 37, 21));
+  TextRend.ClearRect(2, 20, 37, 21);
   TextRend.ClearBottomLine();
   S.sp = $sp;
 }

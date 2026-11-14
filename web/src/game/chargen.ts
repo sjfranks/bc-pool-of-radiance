@@ -53,29 +53,29 @@ export const RACE_SPLIT_COL = 17;
 export const RACE_TOP_BOTTOM = 8;
 export const RACE_LIST_ROW = 2;
 
-export const $at = { raceAbilityAdj: 253845, stingMode: 253887, ageThresholds: 253888, startingGoldClass: 253958 };
+export const $at = { raceAbilityAdj: 262037, stingMode: 262079, ageThresholds: 262080, startingGoldClass: 262150 };
 
 export async function MainMenu(inGame: boolean, anywhere: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 46);
   let ch: number = 0, redraw: boolean = false, saved: boolean = false, atHall: boolean = false, top_: number = 0;
-  U8[143234] = 3;
+  U8[229120] = 3;
   redraw = true;
-  U8[253887] = 0;
+  U8[262079] = 0;
   U8[$f0 + 4] = 0;
   if (anywhere) {
     U8[$f0 + 4] = 10;
   }
-  U8[240460] = inGame ? 1 : 0;
-  U8[141176] = 0;
+  U8[248652] = inGame ? 1 : 0;
+  U8[227062] = 0;
   while (true) {
     if (redraw) {
       (await Border.DrawWindow(1, 1, 38, 22, 0, 0, ""));
-      atHall = (CharHlp.HallMask() > 0) || (U8[253887] !== 0);
-      PartyMnu.OfferedCmds(r32(143749) !== 0, atHall, inGame, anywhere, $f0 + 2);
+      atHall = (CharHlp.HallMask() > 0) || (U8[262079] !== 0);
+      PartyMnu.OfferedCmds(r32(229635) !== 0, atHall, inGame, anywhere, $f0 + 2);
       top_ = 10;
-      if (r32(143749) !== 0) {
-        (await CharDisp.DisplayParty(r32(143749)));
-        top_ = PartyMnu.MenuTop(r16(r32(141151) + 1660)) & 255;
+      if (r32(229635) !== 0) {
+        CharDisp.DisplayParty(r32(229635));
+        top_ = PartyMnu.MenuTop(r16(r32(227037) + 1660)) & 255;
       }
       if (inGame) {
         if (!rt.inM($f0 + 2, 0, 2, U8[$f0 + 4])) {
@@ -90,23 +90,23 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
     if (inGame) {
       ch = (await PartyMnu.ChooseCmd(rt.rSet($f0 + 2, 0, 2), top_, $f0 + 4, $f0)) & 255;
     } else {
-      ch = (await PartyMnu.ChooseListed(rt.rSet($f0 + 2, 0, 2), (r32(143753) === 0) && Demo.Available(), $f0)) & 255;
+      ch = (await PartyMnu.ChooseListed(rt.rSet($f0 + 2, 0, 2), (r32(229639) === 0) && Demo.Available(), $f0)) & 255;
     }
     TextRend.ClearBottomLine();
     if ((U8[$f0] !== 0)) {
       if ((ch === 71 || ch === 79) || (!inGame && (ch === 72 || ch === 80))) {
         Party.SelectPrevNextChar(ch);
-        (await CharDisp.DisplayParty(r32(143749)));
+        CharDisp.DisplayParty(r32(229635));
       } else if ((await ViewChar.AltItems(ch))) {
         (await CharDisp.DisplayNoncombatInterface());
         redraw = true;
       }
     } else if (ch === 33) {
-      U8[141212] = true ? 1 : 0;
+      U8[227098] = true ? 1 : 0;
       { S.sp = $sp; return; }
     } else {
       if (!(ch === 69 || ch === 83 || ch === 71 || ch === 74)) {
-        U8[143748] = 0;
+        U8[229634] = 0;
       }
       switch (ch) {
         case 67: {
@@ -126,11 +126,11 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
           break;
         }
         case 85: {
-          wS($f0 + 5, 40, ChgClass.Refusal(r32(143749), atHall));
+          wS($f0 + 5, 40, ChgClass.Refusal(r32(229635), atHall));
           if (rS($f0 + 5) !== "") {
             (await TextRend.FlashBottomLine(14, rS($f0 + 5)));
           } else {
-            (await ChgClass.ChangeClassMenu(U8[253887] !== 0));
+            (await ChgClass.ChangeClassMenu(U8[262079] !== 0));
           }
           break;
         }
@@ -143,8 +143,8 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
           break;
         }
         case 82: {
-          if (r32(143749) !== 0) {
-            if ((await SaveLoad.SaveChar(r32(143749), ""))) {
+          if (r32(229635) !== 0) {
+            if ((await SaveLoad.SaveChar(r32(229635), ""))) {
               SaveLoad.RemoveCreature(false, true);
             }
           }
@@ -152,21 +152,21 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
         }
         case 76: {
           (await SaveLoad.LoadGame());
-          if (U8[141176] !== 0) {
-            U8[141221] = 1;
+          if (U8[227062] !== 0) {
+            U8[227107] = 1;
             { S.sp = $sp; return; }
           }
           break;
         }
         case 83: {
-          if (r32(143753) !== 0) {
+          if (r32(229639) !== 0) {
             saved = (await SaveLoad.SaveGame());
           }
           break;
         }
         case 66: {
-          if (r32(143753) !== 0) {
-            U8[141176] = 4;
+          if (r32(229639) !== 0) {
+            U8[227062] = 4;
             TextRend.ClearBottomLine();
             { S.sp = $sp; return; }
           }
@@ -185,9 +185,9 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
           break;
         }
         case 74: {
-          if ((U8[141208] !== 0)) {
-            U8[253887] = (U8[253887] === 0 ? 1 : 0);
-            if (U8[253887] !== 0) {
+          if ((U8[227094] !== 0)) {
+            U8[262079] = (U8[262079] === 0 ? 1 : 0);
+            if (U8[262079] !== 0) {
               (await CharDisp.PrintBottomLine("Free training on"));
             } else {
               (await CharDisp.PrintBottomLine("Free training off"));
@@ -204,17 +204,17 @@ export async function MainMenu(inGame: boolean, anywhere: boolean) {
 
 export async function TrainAnywhere() {
   let savedDisk: number = 0, savedIfc: number = 0, savedChoice: number = 0, savedHall: boolean = false;
-  savedDisk = U8[143234];
-  savedIfc = U8[141176];
-  savedChoice = U8[145643];
-  savedHall = (U8[240460] !== 0);
-  U8[141190] = true ? 1 : 0;
+  savedDisk = U8[229120];
+  savedIfc = U8[227062];
+  savedChoice = U8[231529];
+  savedHall = (U8[248652] !== 0);
+  U8[227076] = true ? 1 : 0;
   (await MainMenu(true, true));
-  U8[141190] = false ? 1 : 0;
-  U8[143234] = savedDisk;
-  U8[141176] = savedIfc;
-  U8[145643] = savedChoice;
-  U8[240460] = savedHall ? 1 : 0;
+  U8[227076] = false ? 1 : 0;
+  U8[229120] = savedDisk;
+  U8[227062] = savedIfc;
+  U8[231529] = savedChoice;
+  U8[248652] = savedHall ? 1 : 0;
   TextRend.ClearBottomLine();
 }
 
@@ -227,7 +227,7 @@ export async function CustomizeIcon() {
     if ((kind > 1) || (frame > 1)) {
       return $r1;
     }
-    if (id >= U8[kind + 254181]) {
+    if (id >= U8[kind + 262373]) {
       return $r1;
     }
     block = (id + (frame * 128)) & 255;
@@ -236,7 +236,7 @@ export async function CustomizeIcon() {
     }
     if (U8[$f0 + kind * 2 + frame + 31] !== block) {
       DaxIo.PushState(3);
-      (await Blit.LoadPic(rS(kind * 6 + 254169), block, true, 0, $f0 + kind * 8 + frame * 4 + 15));
+      (await Blit.LoadPic(rS(kind * 6 + 262361), block, true, 0, $f0 + kind * 8 + frame * 4 + 15));
       DaxIo.PopState();
       U8[$f0 + kind * 2 + frame + 31] = block;
     }
@@ -267,10 +267,10 @@ export async function CustomizeIcon() {
     }
     for (let $i2 = 1; $i2 <= 6; $i2++) {
       k = $i2;
-      U8[$f1 + (U8[k + 140258] & 15)] = U8[c + k - 1] & 15;
-      U8[$f1 + ((U8[k + 140258] + 8) & 15)] = U8[c + k - 1] >>> 4;
+      U8[$f1 + (U8[k + 226144] & 15)] = U8[c + k - 1] & 15;
+      U8[$f1 + ((U8[k + 226144] + 8) & 15)] = U8[c + k - 1] >>> 4;
     }
-    (await VidOps.RecolorPic($f1, r32($f0 + 35)));
+    VidOps.RecolorPic($f1, r32($f0 + 35));
     S.sp = $sp;
   }
   function Place(src: number, frame: number, boxed: boolean, dst: number) {
@@ -278,15 +278,15 @@ export async function CustomizeIcon() {
       return;
     }
     if (boxed && (Blit.ColourCount() < 16)) {
-      rt.fill(dst + 27, r16(dst + 17), U8[Blit.SrcNibble(3, 132845) + 131918]);
+      rt.fill(dst + 27, r16(dst + 17), U8[Blit.SrcNibble(3, 218731) + 217804]);
     } else {
       rt.fill(dst + 27, r16(dst + 17), 0);
     }
     if (boxed && (Blit.ColourCount() === 16)) {
       if (frame === 0) {
-        VidOps.OverlayPic(r32(143999), dst);
+        VidOps.OverlayPic(r32(229885), dst);
       } else {
-        VidOps.OverlayPic(r32(144003), dst);
+        VidOps.OverlayPic(r32(229889), dst);
       }
     }
     VidOps.OverlayPic(src, dst);
@@ -349,10 +349,10 @@ export async function CustomizeIcon() {
     let $r1: number = 0;
     $r1 = 0;
     if ((cur >= 3) && (cur <= 9)) {
-      if (U8[cur + 254151] === 2) {
+      if (U8[cur + 262343] === 2) {
         $r1 = which;
       } else {
-        $r1 = U8[cur + 254151];
+        $r1 = U8[cur + 262343];
       }
     }
     return $r1;
@@ -369,7 +369,7 @@ export async function CustomizeIcon() {
         break;
       }
       case 3: case 4: case 5: case 6: case 7: case 8: case 9: {
-        slot = U8[cur + 254144];
+        slot = U8[cur + 262336];
         if (PartNibble() === 0) {
           U8[c + slot - 1] = (U8[c + slot - 1] & 240) | (opt & 15);
         } else {
@@ -392,9 +392,9 @@ export async function CustomizeIcon() {
       }
       default: {
         if (PartNibble() === 0) {
-          v = U8[$f0 + U8[cur + 254144] + 8] & 15;
+          v = U8[$f0 + U8[cur + 262336] + 8] & 15;
         } else {
-          v = U8[$f0 + U8[cur + 254144] + 8] >>> 4;
+          v = U8[$f0 + U8[cur + 262336] + 8] >>> 4;
         }
       }
     }
@@ -430,26 +430,26 @@ export async function CustomizeIcon() {
     } else {
       col = 10;
     }
-    TextRend.DisplayString(U8[k + 254127], U8[k + 254137], col, rS(k * 7 + 254057));
+    TextRend.DisplayString(U8[k + 262319], U8[k + 262329], col, rS(k * 7 + 262249));
     switch (k) {
       case 0: {
-        TextRend.DisplayString(10, U8[k + 254137], col, Counter(U8[$f0 + 7], 14));
+        TextRend.DisplayString(10, U8[k + 262329], col, Counter(U8[$f0 + 7], 14));
         break;
       }
       case 1: {
-        TextRend.DisplayString(10, U8[k + 254137], col, Counter(U8[$f0 + 8], 32));
+        TextRend.DisplayString(10, U8[k + 262329], col, Counter(U8[$f0 + 8], 32));
         break;
       }
       case 2: {
         if (tSize === 1) {
-          TextRend.DisplayString(10, U8[k + 254137], col, "Small");
+          TextRend.DisplayString(10, U8[k + 262329], col, "Small");
         } else {
-          TextRend.DisplayString(10, U8[k + 254137], col, "Large");
+          TextRend.DisplayString(10, U8[k + 262329], col, "Large");
         }
         break;
       }
       case 3: case 4: case 5: case 6: case 7: case 8: case 9: {
-        if (U8[k + 254151] === 2) {
+        if (U8[k + 262343] === 2) {
           d1 = col;
           d2 = col;
           if (inGrid && (k === cur)) {
@@ -459,19 +459,19 @@ export async function CustomizeIcon() {
               d1 = 10;
             }
           }
-          TextRend.DisplayString(11, U8[k + 254137], d1, "1");
-          TextRend.DisplayString(13, U8[k + 254137], d2, "2");
+          TextRend.DisplayString(11, U8[k + 262329], d1, "1");
+          TextRend.DisplayString(13, U8[k + 262329], d2, "2");
         }
         break;
       }
     }
   }
-  async function ShowCell(k: number, boxed: boolean) {
+  function ShowCell(k: number, boxed: boolean) {
     if ((k > 15) || (r32($f0 + k * 4 + 39) === 0)) {
       return;
     }
     Place(r32($f0 + k * 4 + 39), 0, boxed, r32($f0 + 111));
-    (await Blit.ShowPic(U8[(k % 4) + 254161], U8[Math.trunc(k / 4) + 254165], r32($f0 + 111)));
+    Blit.ShowPic(U8[(k % 4) + 262353], U8[Math.trunc(k / 4) + 262357], r32($f0 + 111));
   }
   async function DrawGrid() {
     const $sp = S.sp, $f1 = (S.sp = $sp - 8);
@@ -484,14 +484,14 @@ export async function CustomizeIcon() {
     }
     moreBelow = (first + PageSize(first)) < OptionCount();
     if (OptionCount() > 16) {
-      (await Border.ClearBox(18, U8[254165], 38, U8[254168] + 2));
+      Border.ClearBox(18, U8[262357], 38, U8[262360] + 2);
     }
     for (let $i5 = 0; $i5 <= 15; $i5++) {
       k = $i5;
       opt = (first + k) - top_;
       if (((k < 4) && (top_ > 0)) || ((k >= 12) && moreBelow)) {
         if ((k % 4) === 0) {
-          TextRend.DisplayString(25, U8[Math.trunc(k / 4) + 254165] + 1, 10, "(more)");
+          TextRend.DisplayString(25, U8[Math.trunc(k / 4) + 262357] + 1, 10, "(more)");
         }
       } else if (opt < (first + PageSize(first))) {
         U8[$f1] = U8[$f0 + 7];
@@ -503,9 +503,9 @@ export async function CustomizeIcon() {
           mv(r32($f0 + k * 4 + 39) + 27, r32($f0 + 35) + 27, r16(r32($f0 + 35) + 17));
           mv(r32(r32($f0 + k * 4 + 39) + 19), r32(r32($f0 + 35) + 19), Blit.MaskBytes(r16(r32($f0 + 35) + 17)));
         }
-        (await ShowCell(k, opt === pick));
+        ShowCell(k, opt === pick);
       } else {
-        (await Border.ClearBox(U8[(k % 4) + 254161], U8[Math.trunc(k / 4) + 254165], U8[(k % 4) + 254161] + 2, U8[Math.trunc(k / 4) + 254165] + 2));
+        Border.ClearBox(U8[(k % 4) + 262353], U8[Math.trunc(k / 4) + 262357], U8[(k % 4) + 262353] + 2, U8[Math.trunc(k / 4) + 262357] + 2);
       }
     }
     S.sp = $sp;
@@ -516,28 +516,28 @@ export async function CustomizeIcon() {
     } else {
       (await Compose(0, U8[$f0 + 7], U8[$f0 + 8], $f0 + 9, r32($f0 + 103)));
     }
-    (await Blit.ShowPic(3, 3, r32($f0 + 103)));
+    Blit.ShowPic(3, 3, r32($f0 + 103));
     (await Compose(1, U8[$f0 + 7], U8[$f0 + 8], $f0 + 9, r32($f0 + 107)));
-    (await Blit.ShowPic(10, 3, r32($f0 + 107)));
+    Blit.ShowPic(10, 3, r32($f0 + 107));
   }
   function MsgLine(row: number, s: string) {
     TextRend.DisplayCentered(18, 38, row, 10, s);
   }
-  async function ShowMessage() {
+  function ShowMessage() {
     let top_: number = 0;
-    (await Border.ClearBox(18, 18, 38, 22));
+    Border.ClearBox(18, 18, 38, 22);
     if (!inGrid) {
       return;
     }
-    if (((cur >= 3) && (cur <= 9)) && (U8[cur + 254151] === 2)) {
+    if (((cur >= 3) && (cur <= 9)) && (U8[cur + 262343] === 2)) {
       top_ = 18;
     } else {
       top_ = 19;
     }
     if (cur >= 3) {
-      MsgLine(top_, "Choosing " + rS(cur * 7 + 254057) + " color");
+      MsgLine(top_, "Choosing " + rS(cur * 7 + 262249) + " color");
     } else {
-      MsgLine(top_, "Choosing " + rS(cur * 7 + 254057));
+      MsgLine(top_, "Choosing " + rS(cur * 7 + 262249));
     }
     MsgLine(top_ + 1, "Arrows to select,");
     MsgLine(top_ + 2, "Enter to choose");
@@ -548,7 +548,7 @@ export async function CustomizeIcon() {
   }
   function Revert() {
     {
-      const $w6 = r32(143749);
+      const $w6 = r32(229635);
       U8[$f0 + 7] = U8[$w6 + 189];
       U8[$f0 + 8] = U8[$w6 + 190];
       if (U8[$w6 + 192] === 1) {
@@ -613,12 +613,12 @@ export async function CustomizeIcon() {
     pick = CurrentOption() & 255;
     TextRend.ClearBottomLine();
     DrawItem(cur);
-    (await ShowMessage());
+    ShowMessage();
     (await DrawGrid());
     (await ShowPreviews());
     finished = false;
     do {
-      U8[227081] = true ? 1 : 0;
+      U8[235273] = true ? 1 : 0;
       key = (await MenuCore.MenuHorizontal("", "", 13, 10, 15, true, false, $f0)) & 255;
       if ((U8[$f0] !== 0)) {
         if (key === 72 || key === 80 || key === 75 || key === 77) {
@@ -629,8 +629,8 @@ export async function CustomizeIcon() {
             if (PageFirst(pick) !== PageFirst(old)) {
               (await DrawGrid());
             } else {
-              (await ShowCell(CellOf(old), false));
-              (await ShowCell(CellOf(pick), true));
+              ShowCell(CellOf(old), false);
+              ShowCell(CellOf(pick), true);
             }
             DrawItem(cur);
             (await ShowPreviews());
@@ -640,7 +640,7 @@ export async function CustomizeIcon() {
         switch (key) {
           case 13: {
             {
-              const $w8 = r32(143749);
+              const $w8 = r32(229635);
               switch (cur) {
                 case 0: {
                   U8[$w8 + 189] = U8[$f0 + 7];
@@ -664,7 +664,7 @@ export async function CustomizeIcon() {
             break;
           }
           case 32: {
-            if (((cur >= 3) && (cur <= 9)) && (U8[cur + 254151] === 2)) {
+            if (((cur >= 3) && (cur <= 9)) && (U8[cur + 262343] === 2)) {
               which = (1 - which) & 255;
               pick = CurrentOption() & 255;
               DrawItem(cur);
@@ -676,8 +676,8 @@ export async function CustomizeIcon() {
       }
     } while (!(finished));
     inGrid = false;
-    (await Border.ClearBox(18, 1, 38, 16));
-    (await ShowMessage());
+    Border.ClearBox(18, 1, 38, 16);
+    ShowMessage();
     DrawItem(cur);
     (await ShowPreviews());
   }
@@ -686,14 +686,14 @@ export async function CustomizeIcon() {
     if ((await MenuCore.YesNoMenu("Is this icon ok? ", 13, 10, 15)) === 89) {
       $r1 = true;
     } else {
-      U8[145643] = 1;
+      U8[231529] = 1;
       $r1 = false;
     }
     return $r1;
   }
-  savedChoice = U8[145643];
+  savedChoice = U8[231529];
   {
-    const $w9 = r32(143749);
+    const $w9 = r32(229635);
     savedHead = U8[$w9 + 189];
     savedBody = U8[$w9 + 190];
     savedSize = U8[$w9 + 192];
@@ -720,13 +720,13 @@ export async function CustomizeIcon() {
   pick = 0;
   cur = 0;
   Revert();
-  (await TextRend.ClearScreen());
-  (await CbtMap.SetCombatPalette());
+  TextRend.ClearScreen();
+  CbtMap.SetCombatPalette();
   (await Border.DrawBorder(1, 1, 16, 22, 0));
   (await Border.DrawBorder(18, 1, 38, 22, 0));
   (await Border.DrawBorder(18, 18, 38, 22, 0));
   {
-    const $w13 = r32(143749);
+    const $w13 = r32(229635);
     TextRend.DisplayCentered(1, 16, 1, 3, rS($w13));
   }
   TextRend.DisplayString(2, 6, 10, "Ready");
@@ -738,10 +738,10 @@ export async function CustomizeIcon() {
   }
   (await ShowPreviews());
   done = false;
-  U8[145643] = 1;
+  U8[231529] = 1;
   do {
-    U8[227081] = cur !== 10 ? 1 : 0;
-    U8[227082] = cur !== 10 ? 1 : 0;
+    U8[235273] = cur !== 10 ? 1 : 0;
+    U8[235274] = cur !== 10 ? 1 : 0;
     key = (await MenuCore.MenuHorizontal("", "Keep Exit", 13, 10, 15, true, false, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
       if (key === 72 || key === 80) {
@@ -766,7 +766,7 @@ export async function CustomizeIcon() {
           switch (cur) {
             case 2: {
               tSize = (3 - tSize) & 255;
-              U8[r32(143749) + 192] = tSize;
+              U8[r32(229635) + 192] = tSize;
               DrawItem(cur);
               (await ShowPreviews());
               break;
@@ -783,7 +783,7 @@ export async function CustomizeIcon() {
         }
         case 69: case 0: {
           {
-            const $w16 = r32(143749);
+            const $w16 = r32(229635);
             U8[$w16 + 189] = savedHead;
             U8[$w16 + 190] = savedBody;
             U8[$w16 + 192] = savedSize;
@@ -810,15 +810,15 @@ export async function CustomizeIcon() {
   Blit.FreePic($f0 + 103);
   Blit.FreePic($f0 + 107);
   Blit.FreePic($f0 + 111);
-  if (Party.IsPartyMember(r32(143749)) && (U8[r32(143749) + 191] < 8)) {
+  if (Party.IsPartyMember(r32(229635)) && (U8[r32(229635) + 191] < 8)) {
     (await SaveLoad.LoadCharIconAnim(true));
-    if (U8[141223] > 1) {
+    if (U8[227109] > 1) {
       (await MapTiles.LoadIconAnim("ICON", 0, 11));
     }
   }
   TextRend.ClearBottomLine();
-  (await CbtMap.SetNoncombatPalette());
-  U8[145643] = savedChoice;
+  CbtMap.SetNoncombatPalette();
+  U8[231529] = savedChoice;
   S.sp = $sp;
 }
 
@@ -833,42 +833,42 @@ export async function CustomizePortrait(canCancel: boolean) {
   async function ShowRow(body: boolean) {
     let k: number = 0;
     {
-      const $w1 = r32(143749);
+      const $w1 = r32(229635);
       for (let $i2 = -1; $i2 <= 1; $i2++) {
         k = $i2;
         if (body) {
-          (await Blit.LoadPic("BODY" + rS($f0 + 25), U8[Wrap(U8[$w1 + 188], k, nBodies) + 133187], false, 0, $f0 + (k + 1) * 4 + 13));
-          (await Portrait.DisplayImageBuf(U8[(k + 1) + 254054], 9, false, r32($f0 + (k + 1) * 4 + 13)));
+          (await Blit.LoadPic("BODY" + rS($f0 + 25), U8[Wrap(U8[$w1 + 188], k, nBodies) + 219073], false, 0, $f0 + (k + 1) * 4 + 13));
+          Portrait.DisplayImageBuf(U8[(k + 1) + 262246], 9, false, r32($f0 + (k + 1) * 4 + 13));
         } else {
-          (await Blit.LoadPic("HEAD" + rS($f0 + 25), U8[Wrap(U8[$w1 + 187], k, nHeads) + 133146], false, 0, $f0 + (k + 1) * 4 + 1));
-          (await Portrait.DisplayImageBuf(U8[(k + 1) + 254054], 4, false, r32($f0 + (k + 1) * 4 + 1)));
+          (await Blit.LoadPic("HEAD" + rS($f0 + 25), U8[Wrap(U8[$w1 + 187], k, nHeads) + 219032], false, 0, $f0 + (k + 1) * 4 + 1));
+          Portrait.DisplayImageBuf(U8[(k + 1) + 262246], 4, false, r32($f0 + (k + 1) * 4 + 1));
         }
       }
     }
   }
-  async function Centered(row: number, color: number, s: string) {
-    (await Border.ClearBox(2, row, 37, row));
+  function Centered(row: number, color: number, s: string) {
+    Border.ClearBox(2, row, 37, row);
     TextRend.DisplayCentered(2, 37, row, color, s);
   }
-  async function ShowCounts() {
+  function ShowCounts() {
     let col: number = 0;
     {
-      const $w3 = r32(143749);
+      const $w3 = r32(229635);
       if (onBody) {
         col = 10;
       } else {
         col = 15;
       }
-      (await Centered(17, col, "Head " + StrUtil.PadLeft(StrUtil.NumStr(U8[$w3 + 187]), 2) + " of " + StrUtil.NumStr(nHeads)));
+      Centered(17, col, "Head " + StrUtil.PadLeft(StrUtil.NumStr(U8[$w3 + 187]), 2) + " of " + StrUtil.NumStr(nHeads));
       if (onBody) {
         col = 15;
       } else {
         col = 10;
       }
-      (await Centered(18, col, "Body " + StrUtil.PadLeft(StrUtil.NumStr(U8[$w3 + 188]), 2) + " of " + StrUtil.NumStr(nBodies)));
+      Centered(18, col, "Body " + StrUtil.PadLeft(StrUtil.NumStr(U8[$w3 + 188]), 2) + " of " + StrUtil.NumStr(nBodies));
     }
   }
-  wS($f0 + 25, 1, rt.fmtI(U8[143234], 0));
+  wS($f0 + 25, 1, rt.fmtI(U8[229120], 0));
   nHeads = (await Portrait.PlayerPortraitCount(false)) & 255;
   nBodies = (await Portrait.PlayerPortraitCount(true)) & 255;
   for (let $i4 = 0; $i4 <= 2; $i4++) {
@@ -877,7 +877,7 @@ export async function CustomizePortrait(canCancel: boolean) {
     w32($f0 + i * 4 + 13, 0);
   }
   {
-    const $w5 = r32(143749);
+    const $w5 = r32(229635);
     savedHead = U8[$w5 + 187];
     savedBody = U8[$w5 + 188];
     if ((U8[$w5 + 187] === 0) || (U8[$w5 + 187] > nHeads)) {
@@ -886,19 +886,19 @@ export async function CustomizePortrait(canCancel: boolean) {
     if ((U8[$w5 + 188] === 0) || (U8[$w5 + 188] > nBodies)) {
       U8[$w5 + 188] = 1;
     }
-    (await TextRend.ClearScreen());
+    TextRend.ClearScreen();
     (await Border.DrawBorder(1, 1, 38, 22, 0));
-    (await Centered(2, 15, rS($w5)));
-    (await Border.DrawBorder(U8[254055], 4, U8[254055] + 10, 14, 0));
-    (await Centered(20, 10, "Arrow keys for selection"));
+    Centered(2, 15, rS($w5));
+    (await Border.DrawBorder(U8[262247], 4, U8[262247] + 10, 14, 0));
+    Centered(20, 10, "Arrow keys for selection");
     (await ShowRow(false));
     (await ShowRow(true));
     onBody = false;
     done = false;
-    U8[145643] = 5;
+    U8[231529] = 5;
     do {
-      (await ShowCounts());
-      U8[227081] = true ? 1 : 0;
+      ShowCounts();
+      U8[235273] = true ? 1 : 0;
       key = (await MenuCore.MenuHorizontal("Portrait: ", "Head Body Next Prev Keep", 13, 10, 15, true, false, $f0)) & 255;
       step = 0;
       if ((U8[$f0] !== 0)) {
@@ -943,16 +943,16 @@ export async function CustomizePortrait(canCancel: boolean) {
             break;
           }
           case 75: case 32: case 13: {
-            (await Border.ClearBox(U8[254054], 4, U8[254054] + 10, 14));
-            (await Border.ClearBox(U8[254056], 4, U8[254056] + 10, 14));
-            (await Border.ClearBox(2, 17, 37, 20));
+            Border.ClearBox(U8[262246], 4, U8[262246] + 10, 14);
+            Border.ClearBox(U8[262248], 4, U8[262248] + 10, 14);
+            Border.ClearBox(2, 17, 37, 20);
             if ((await MenuCore.YesNoMenu("Is this portrait ok? ", 13, 10, 15)) === 89) {
               done = true;
             } else {
               (await ShowRow(false));
               (await ShowRow(true));
-              (await Centered(20, 10, "Arrow keys for selection"));
-              U8[145643] = 5;
+              Centered(20, 10, "Arrow keys for selection");
+              U8[231529] = 5;
             }
             break;
           }
@@ -979,24 +979,24 @@ export async function CustomizePortrait(canCancel: boolean) {
 
 export function Modifiable() {
   let $r0: boolean = false;
-  $r0 = (((I8[r32(143749) + 46] >= 1) && (I8[r32(143749) + 46] <= 7)) && (I8[r32(143749) + 47] >= 0)) && (I8[r32(143749) + 47] <= 16);
+  $r0 = (((I8[r32(229635) + 46] >= 1) && (I8[r32(229635) + 46] <= 7)) && (I8[r32(229635) + 47] >= 0)) && (I8[r32(229635) + 47] <= 16);
   return $r0;
 }
 
 export async function ModifyCharacter(levelled: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 12);
   let savedExc: number = 0, savedHp: number = 0, savedHpCur: number = 0, lvlSp: number = 0, hold: number = 0, key: number = 0, statIdx: number = 0, oldCon: number = 0, hpShift: number = 0;
-  async function RedrawStat(hotPink: boolean) {
+  function RedrawStat(hotPink: boolean) {
     if (statIdx < 6) {
-      (await ViewChar.PrintStat(statIdx, hotPink));
+      ViewChar.PrintStat(statIdx, hotPink);
     } else {
-      CharDisp.PrintHitPoints(r32(143749), 4, 18, hotPink);
+      CharDisp.PrintHitPoints(r32(229635), 4, 18, hotPink);
     }
   }
   function StatMinimum(racialMin: number) {
     let $r1: number = 0;
     {
-      const $w1 = r32(143749);
+      const $w1 = r32(229635);
       if (ClassCal.ClassAbilityMin(I8[$w1 + 46], I8[$w1 + 47], statIdx) > racialMin) {
         $r1 = ClassCal.ClassAbilityMin(I8[$w1 + 46], I8[$w1 + 47], statIdx) & 255;
       } else {
@@ -1007,7 +1007,7 @@ export async function ModifyCharacter(levelled: boolean) {
   }
   function RaiseToMinimum(a: number) {
     {
-      const $w2 = r32(143749);
+      const $w2 = r32(229635);
       if (U8[$w2 + a + 16] < StatMinimum(ClassCal.RaceAbilityMin(I8[$w2 + 46], I8[$w2 + 158], a))) {
         U8[$w2 + a + 16] = StatMinimum(ClassCal.RaceAbilityMin(I8[$w2 + 46], I8[$w2 + 158], a));
       }
@@ -1015,7 +1015,7 @@ export async function ModifyCharacter(levelled: boolean) {
   }
   function LowerToMaximum(a: number) {
     {
-      const $w3 = r32(143749);
+      const $w3 = r32(229635);
       if (U8[$w3 + a + 16] > ClassCal.RaceAbilityMax(I8[$w3 + 46], I8[$w3 + 158], a)) {
         U8[$w3 + a + 16] = ClassCal.RaceAbilityMax(I8[$w3 + 46], I8[$w3 + 158], a);
       }
@@ -1023,8 +1023,8 @@ export async function ModifyCharacter(levelled: boolean) {
   }
   function ShiftHp() {
     {
-      const $w4 = r32(143749);
-      hpShift = (ClassCal.ConHpTotal(r32(143749), U8[$w4 + 20]) - ClassCal.ConHpTotal(r32(143749), oldCon)) << 16 >> 16;
+      const $w4 = r32(229635);
+      hpShift = (ClassCal.ConHpTotal(r32(229635), U8[$w4 + 20]) - ClassCal.ConHpTotal(r32(229635), oldCon)) << 16 >> 16;
       if ((U8[$w4 + 50] + hpShift) < 1) {
         hpShift = 1 - U8[$w4 + 50];
       }
@@ -1038,35 +1038,35 @@ export async function ModifyCharacter(levelled: boolean) {
   }
   function StepHp(k: number) {
     let hp: number = 0;
-    hp = (U8[r32(143749) + 50] + k) << 16 >> 16;
-    if (hp > ClassCal.HpMaximum(r32(143749))) {
-      hp = ClassCal.HpMaximum(r32(143749)) << 16 >> 16;
+    hp = (U8[r32(229635) + 50] + k) << 16 >> 16;
+    if (hp > ClassCal.HpMaximum(r32(229635))) {
+      hp = ClassCal.HpMaximum(r32(229635)) << 16 >> 16;
     }
     SetHpMax(hp);
   }
   if (!Modifiable()) {
-    (await TextRend.PrintAndPause(rS(r32(143749)) + " can't be modified.", 14));
+    (await TextRend.PrintAndPause(rS(r32(229635)) + " can't be modified.", 14));
     { S.sp = $sp; return; }
   }
-  (await ViewChar.DisplayChar(r32(143749)));
-  mv($f0, r32(143749) + 16, 6);
-  savedExc = U8[r32(143749) + 22];
-  savedHp = U8[r32(143749) + 50];
-  savedHpCur = U8[r32(143749) + 283];
+  (await ViewChar.DisplayChar(r32(229635)));
+  mv($f0, r32(229635) + 16, 6);
+  savedExc = U8[r32(229635) + 22];
+  savedHp = U8[r32(229635) + 50];
+  savedHpCur = U8[r32(229635) + 283];
   for (let $i5 = 1; $i5 <= 5; $i5++) {
     lvlSp = $i5;
-    U8[$f0 + lvlSp + 5] = CharHlp.SpellSlots(r32(143749), 0, lvlSp);
+    U8[$f0 + lvlSp + 5] = CharHlp.SpellSlots(r32(229635), 0, lvlSp);
   }
   statIdx = 6;
-  (await RedrawStat(false));
+  RedrawStat(false);
   statIdx = 0;
-  (await RedrawStat(true));
+  RedrawStat(true);
   {
-    const $w6 = r32(143749);
+    const $w6 = r32(229635);
     do {
-      U8[227081] = true ? 1 : 0;
+      U8[235273] = true ? 1 : 0;
       key = (await MenuCore.MenuHorizontal("Modify character: ", "Keep Exit", 13, 10, 15, true, false, $f0 + 11)) & 255;
-      (await RedrawStat(false));
+      RedrawStat(false);
       oldCon = U8[$w6 + 20];
       if ((U8[$f0 + 11] !== 0)) {
         switch (key) {
@@ -1104,7 +1104,7 @@ export async function ModifyCharacter(levelled: boolean) {
                 }
                 case 2: {
                   RaiseToMinimum(hold);
-                  ClassCal.ResetClericSlots(r32(143749));
+                  ClassCal.ResetClericSlots(r32(229635));
                   break;
                 }
                 case 4: {
@@ -1112,13 +1112,13 @@ export async function ModifyCharacter(levelled: boolean) {
                   if (levelled) {
                     ShiftHp();
                   } else {
-                    if (ClassCal.HpMaximum(r32(143749)) < U8[$w6 + 50]) {
-                      U8[$w6 + 50] = ClassCal.HpMaximum(r32(143749));
+                    if (ClassCal.HpMaximum(r32(229635)) < U8[$w6 + 50]) {
+                      U8[$w6 + 50] = ClassCal.HpMaximum(r32(229635));
                     }
                     U8[$w6 + 283] = U8[$w6 + 50];
                   }
                   statIdx = 6;
-                  (await RedrawStat(false));
+                  RedrawStat(false);
                   statIdx = 4;
                   break;
                 }
@@ -1130,8 +1130,8 @@ export async function ModifyCharacter(levelled: boolean) {
               StepHp(-1);
             } else {
               U8[$w6 + 50] = U8[$w6 + 50] - 1;
-              if (ClassCal.HpMinimum(r32(143749)) > U8[$w6 + 50]) {
-                U8[$w6 + 50] = ClassCal.HpMinimum(r32(143749));
+              if (ClassCal.HpMinimum(r32(229635)) > U8[$w6 + 50]) {
+                U8[$w6 + 50] = ClassCal.HpMinimum(r32(229635));
               }
               U8[$w6 + 283] = U8[$w6 + 50];
             }
@@ -1145,7 +1145,7 @@ export async function ModifyCharacter(levelled: boolean) {
               switch (hold) {
                 case 0: {
                   if (U8[$w6 + hold + 16] > ClassCal.RaceAbilityMax(I8[$w6 + 46], I8[$w6 + 158], hold)) {
-                    if (((U8[$w6 + hold + 16] > 18) && (CharHlp.WarriorLevel(r32(143749)) > 0)) && (U8[I8[$w6 + 46] * 16 + I8[$w6 + 158] + 140253] > U8[$w6 + 22])) {
+                    if (((U8[$w6 + hold + 16] > 18) && (CharHlp.WarriorLevel(r32(229635)) > 0)) && (U8[I8[$w6 + 46] * 16 + I8[$w6 + 158] + 226139] > U8[$w6 + 22])) {
                       U8[$w6 + 22] = U8[$w6 + 22] + 1;
                     }
                     U8[$w6 + hold + 16] = ClassCal.RaceAbilityMax(I8[$w6 + 46], I8[$w6 + 158], hold);
@@ -1154,7 +1154,7 @@ export async function ModifyCharacter(levelled: boolean) {
                 }
                 case 2: {
                   LowerToMaximum(hold);
-                  ClassCal.ResetClericSlots(r32(143749));
+                  ClassCal.ResetClericSlots(r32(229635));
                   break;
                 }
                 case 4: {
@@ -1162,13 +1162,13 @@ export async function ModifyCharacter(levelled: boolean) {
                   if (levelled) {
                     ShiftHp();
                   } else {
-                    if (ClassCal.HpMinimum(r32(143749)) > U8[$w6 + 50]) {
-                      U8[$w6 + 50] = ClassCal.HpMinimum(r32(143749));
+                    if (ClassCal.HpMinimum(r32(229635)) > U8[$w6 + 50]) {
+                      U8[$w6 + 50] = ClassCal.HpMinimum(r32(229635));
                     }
                     U8[$w6 + 283] = U8[$w6 + 50];
                   }
                   statIdx = 6;
-                  (await RedrawStat(false));
+                  RedrawStat(false);
                   statIdx = 4;
                   break;
                 }
@@ -1180,8 +1180,8 @@ export async function ModifyCharacter(levelled: boolean) {
               StepHp(1);
             } else {
               U8[$w6 + 50] = U8[$w6 + 50] + 1;
-              if (ClassCal.HpMaximum(r32(143749)) < U8[$w6 + 50]) {
-                U8[$w6 + 50] = ClassCal.HpMaximum(r32(143749));
+              if (ClassCal.HpMaximum(r32(229635)) < U8[$w6 + 50]) {
+                U8[$w6 + 50] = ClassCal.HpMaximum(r32(229635));
               }
               U8[$w6 + 283] = U8[$w6 + 50];
             }
@@ -1193,36 +1193,36 @@ export async function ModifyCharacter(levelled: boolean) {
           case 69: case 0: {
             for (let $i11 = 0; $i11 <= 5; $i11++) {
               hold = $i11;
-              U8[r32(143749) + hold + 16] = U8[$f0 + hold];
+              U8[r32(229635) + hold + 16] = U8[$f0 + hold];
             }
-            U8[r32(143749) + 22] = savedExc;
-            U8[r32(143749) + 50] = savedHp;
-            U8[r32(143749) + 283] = U8[$w6 + 50];
+            U8[r32(229635) + 22] = savedExc;
+            U8[r32(229635) + 50] = savedHp;
+            U8[r32(229635) + 283] = U8[$w6 + 50];
             if (levelled) {
-              U8[r32(143749) + 283] = savedHpCur;
+              U8[r32(229635) + 283] = savedHpCur;
             }
             for (let $i12 = 1; $i12 <= 5; $i12++) {
               lvlSp = $i12;
-              CharHlp.SetSpellSlots(r32(143749), 0, lvlSp, U8[$f0 + lvlSp + 5]);
+              CharHlp.SetSpellSlots(r32(229635), 0, lvlSp, U8[$f0 + lvlSp + 5]);
             }
             if (I8[$w6 + 156] > 0) {
-              ClassCal.RecalcThiefSkills(r32(143749));
+              ClassCal.RecalcThiefSkills(r32(229635));
             }
-            CharHlp.RecalcStats(r32(143749));
+            CharHlp.RecalcStats(r32(229635));
             { S.sp = $sp; return; }
             break;
           }
         }
       }
-      CharHlp.RecalcStats(r32(143749));
+      CharHlp.RecalcStats(r32(229635));
       ViewChar.PrintCombatStats();
-      (await RedrawStat(true));
+      RedrawStat(true);
     } while (!(!(U8[$f0 + 11] !== 0) && (key === 75)));
     if (I8[$w6 + 156] > 0) {
-      ClassCal.RecalcThiefSkills(r32(143749));
+      ClassCal.RecalcThiefSkills(r32(229635));
     }
     if (!levelled) {
-      U8[r32(143749) + 133] = 1;
+      U8[r32(229635) + 133] = 1;
     }
   }
   S.sp = $sp;
@@ -1231,10 +1231,10 @@ export async function ModifyCharacter(levelled: boolean) {
 export function SetHpMax(hp: number) {
   let dmg: number = 0;
   {
-    const $w1 = r32(143749);
+    const $w1 = r32(229635);
     dmg = U8[$w1 + 50] - U8[$w1 + 283];
-    if (hp < ClassCal.HpMinimum(r32(143749))) {
-      hp = ClassCal.HpMinimum(r32(143749)) << 16 >> 16;
+    if (hp < ClassCal.HpMinimum(r32(229635))) {
+      hp = ClassCal.HpMinimum(r32(229635)) << 16 >> 16;
     }
     if (hp < 1) {
       hp = 1;
@@ -1251,19 +1251,19 @@ export function SetHpMax(hp: number) {
 export async function GainLevels(trainable: number, restoreDrain: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 9);
   let clsCount: number = 0, rolled: number = 0, gain: number = 0, dmg: number = 0, cls: number = 0, conB: number = 0, oldMage: number = 0, sel: number = 0, resting: number = 0;
-  resting = ChgClass.RestingMask(r32(143749)) & 255;
+  resting = ChgClass.RestingMask(r32(229635)) & 255;
   {
-    const $w1 = r32(143749);
-    clsCount = ClassCal.HpClassCount(r32(143749)) & 255;
+    const $w1 = r32(229635);
+    clsCount = ClassCal.HpClassCount(r32(229635)) & 255;
     oldMage = I8[$w1 + 155];
     for (let $i2 = 0; $i2 <= 7; $i2++) {
       cls = $i2;
       if (I8[$w1 + cls + 150] > 0) {
-        if (((U8[cls + 131902] & trainable) > 0) && ((U8[$w1 + 285] & (1 << cls)) === 0)) {
+        if (((U8[cls + 217788] & trainable) > 0) && ((U8[$w1 + 285] & (1 << cls)) === 0)) {
           let $t3;
           $t3 = $w1 + cls + 150, U8[$t3] = I8[$t3] + 1;
           if (restoreDrain && (U8[$w1 + 116] > 0)) {
-            if (CharExt.TrainDrain(r32(143749), cls, $f0 + 3)) {
+            if (CharExt.TrainDrain(r32(229635), cls, $f0 + 3)) {
               if (U8[$f0 + 7] > U8[$w1 + 117]) {
                 U8[$w1 + 117] = 0;
               } else {
@@ -1277,24 +1277,24 @@ export async function GainLevels(trainable: number, restoreDrain: boolean) {
         }
       }
     }
-    ClassCal.RecalcBaseSkills(r32(143749));
+    ClassCal.RecalcBaseSkills(r32(229635));
     if (I8[$w1 + 155] > oldMage) {
       w16($f0, -1);
       do {
         sel = (await Magic.SpellMenu(4, 4, $f0, $f0 + 2)) & 255;
       } while (!((sel > 0) || !(U8[$f0 + 2] !== 0)));
       if (sel > 0) {
-        CharHlp.SetSpellKnown(r32(143749), sel, true);
+        CharHlp.SetSpellKnown(r32(229635), sel, true);
       }
     }
-    if (!CharHlp.IsDualClass(r32(143749)) || (ClassCal.HitDice(r32(143749), I8[$w1 + 47]) > 0)) {
-      rolled = ClassCal.RollFirstLevelHp(r32(143749), trainable) << 16 >> 16;
+    if (!CharHlp.IsDualClass(r32(229635)) || (ClassCal.HitDice(r32(229635), I8[$w1 + 47]) > 0)) {
+      rolled = ClassCal.RollFirstLevelHp(r32(229635), trainable) << 16 >> 16;
       gain = Math.trunc(rolled / clsCount) << 16 >> 16;
       if (gain === 0) {
         gain = 1;
       }
       U8[$w1 + 177] = U8[$w1 + 177] + gain;
-      conB = ClassCal.ConHpBonus(r32(143749), trainable) << 16 >> 16;
+      conB = ClassCal.ConHpBonus(r32(229635), trainable) << 16 >> 16;
       gain = Math.trunc((rolled + conB) / clsCount) << 16 >> 16;
       if (gain < 1) {
         gain = 1;
@@ -1305,7 +1305,7 @@ export async function GainLevels(trainable: number, restoreDrain: boolean) {
     }
   }
   if (resting !== 0) {
-    (await ChgClass.AnnounceWoken(r32(143749), resting));
+    (await ChgClass.AnnounceWoken(r32(229635), resting));
   }
   S.sp = $sp;
 }
@@ -1353,7 +1353,7 @@ export async function CreateCharacterMenu() {
     const $w3 = creature;
     for (let $i4 = 1; $i4 <= 6; $i4++) {
       slot = $i4;
-      U8[$w3 + slot + 192] = U8[slot + 140258] + ((U8[slot + 140258] + 8) * 16);
+      U8[$w3 + slot + 192] = U8[slot + 226144] + ((U8[slot + 226144] + 8) * 16);
     }
     U8[$w3 + 169] = 50;
     U8[$w3 + 45] = 40;
@@ -1372,28 +1372,28 @@ export async function CreateCharacterMenu() {
     switch (k) {
       case 1: case 2: case 3: case 4: case 5: {
         w32($f0 + 4, MenuCore.FindListMember(k, r32($f0)));
-        wS(r32($f0 + 4), 40, "  " + rS(k * 9 + 132408));
+        wS(r32($f0 + 4), 40, "  " + rS(k * 9 + 218294));
         break;
       }
       case 7: {
         w32($f0 + 4, MenuCore.FindListMember(k - 1, r32($f0)));
-        wS(r32($f0 + 4), 40, "  " + rS(k * 9 + 132408));
+        wS(r32($f0 + 4), 40, "  " + rS(k * 9 + 218294));
         break;
       }
     }
   }
-  (await Border.ClearBox(1, 1, 38, 22));
+  Border.ClearBox(1, 1, 38, 22);
   (await Border.DrawBorder(1, 10, 38, 22, 0));
   (await Border.DrawBorder(1, 1, 16, 8, 0));
   (await Border.DrawBorder(18, 1, 38, 8, 0));
-  (await ShowRaceInfo(1));
+  ShowRaceInfo(1);
   w32($f0 + 4, r32($f0));
   w16($f0 + 8, 1);
-  w16(145641, 1);
+  w16(231527, 1);
   U8[$f0 + 10] = true ? 1 : 0;
   addExit = true;
   do {
-    U8[227106] = true ? 1 : 0;
+    U8[235298] = true ? 1 : 0;
     ch = (await MenuCore.MenuVertical("", "", 13, 10, 15, 1, 2, 16, 7, r32($f0), addExit, $f0 + 10, $f0 + 8, $f0 + 4)) & 255;
     if (ch === 0) {
       MenuCore.FreeStringList($f0);
@@ -1402,9 +1402,9 @@ export async function CreateCharacterMenu() {
     }
     if (ch !== 13) {
       if (ri16($f0 + 8) === 6) {
-        (await ShowRaceInfo(7));
+        ShowRaceInfo(7);
       } else {
-        (await ShowRaceInfo(ri16($f0 + 8)));
+        ShowRaceInfo(ri16($f0 + 8));
       }
     }
   } while (!(ch === 13));
@@ -1460,14 +1460,14 @@ export async function CreateCharacterMenu() {
   for (let $i8 = 0; $i8 <= 1; $i8++) {
     g = $i8;
     w32($f0 + 4, MenuCore.FindListMember(g + 1, r32($f0)));
-    wS(r32($f0 + 4), 40, "  " + rS(g * 7 + 132624));
+    wS(r32($f0 + 4), 40, "  " + rS(g * 7 + 218510));
   }
   if (!(await PickFromList())) {
     { S.sp = $sp; return; }
   }
   U8[creature + 158] = ri16($f0 + 8) - 1;
   MenuCore.FreeStringList($f0);
-  cnt = I8[I8[creature + 46] * 14 + 229905] & 255;
+  cnt = I8[I8[creature + 46] * 14 + 238097] & 255;
   if (cnt > 13) {
     cnt = 13;
   }
@@ -1477,7 +1477,7 @@ export async function CreateCharacterMenu() {
   for (let $i9 = 1, $e9 = cnt; $i9 <= $e9; $i9++) {
     slot = $i9;
     w32($f0 + 4, MenuCore.FindListMember(slot, r32($f0)));
-    wS(r32($f0 + 4), 40, "  " + rS(I8[I8[creature + 46] * 14 + slot + 229905] * 26 + 131942));
+    wS(r32($f0 + 4), 40, "  " + rS(I8[I8[creature + 46] * 14 + slot + 238097] * 26 + 217828));
   }
   if (!(await PickFromList())) {
     { S.sp = $sp; return; }
@@ -1487,13 +1487,13 @@ export async function CreateCharacterMenu() {
   }
   {
     const $w10 = creature;
-    U8[$w10 + 47] = I8[I8[$w10 + 46] * 14 + ri16($f0 + 8) + 229905];
+    U8[$w10 + 47] = I8[I8[$w10 + 46] * 14 + ri16($f0 + 8) + 238097];
     U8[$w10 + 115] = 1;
     if ((I8[$w10 + 47] >= 0) && (I8[$w10 + 47] <= 16)) {
       for (let $i11 = 1; $i11 <= 3; $i11++) {
         slot = $i11;
-        if ((I8[I8[$w10 + 47] * 3 + slot + 140376] >= 0) && (I8[I8[$w10 + 47] * 3 + slot + 140376] <= 7)) {
-          U8[$w10 + I8[I8[$w10 + 47] * 3 + slot + 140376] + 150] = 1;
+        if ((I8[I8[$w10 + 47] * 3 + slot + 226262] >= 0) && (I8[I8[$w10 + 47] * 3 + slot + 226262] <= 7)) {
+          U8[$w10 + I8[I8[$w10 + 47] * 3 + slot + 226262] + 150] = 1;
         }
       }
     }
@@ -1505,33 +1505,33 @@ export async function CreateCharacterMenu() {
     for (let $i12 = 0; $i12 <= 7; $i12++) {
       cls = $i12;
       if (I8[$w10 + cls + 150] > 0) {
-        if (U8[cls * 11 + I8[$w10 + cls + 150] + 140171] > U8[$w10 + 45]) {
-          U8[$w10 + 45] = U8[cls * 11 + I8[$w10 + cls + 150] + 140171];
+        if (U8[cls * 11 + I8[$w10 + cls + 150] + 226057] > U8[$w10 + 45]) {
+          U8[$w10 + 45] = U8[cls * 11 + I8[$w10 + cls + 150] + 226057];
         }
-        U8[$w10 + 176] = U8[$w10 + 176] | U8[cls + 230187];
+        U8[$w10 + 176] = U8[$w10 + 176] | U8[cls + 238379];
       }
     }
   }
   ClassCal.RecalcSaves(creature);
   MenuCore.FreeStringList($f0);
-  cnt = I8[I8[creature + 47] * 10 + 230017] & 255;
+  cnt = I8[I8[creature + 47] * 10 + 238209] & 255;
   MenuCore.AllocStringList(cnt + 1, $f0);
   U8[r32($f0) + 41] = 1;
   wS(r32($f0), 40, "Pick Alignment");
   for (let $i13 = 1, $e13 = cnt; $i13 <= $e13; $i13++) {
     slot = $i13;
     w32($f0 + 4, MenuCore.FindListMember(slot, r32($f0)));
-    wS(r32($f0 + 4), 40, "  " + rS(I8[I8[creature + 47] * 10 + slot + 230017] * 16 + 132480));
+    wS(r32($f0 + 4), 40, "  " + rS(I8[I8[creature + 47] * 10 + slot + 238209] * 16 + 218366));
   }
   if (!(await PickFromList())) {
     { S.sp = $sp; return; }
   }
-  U8[creature + 160] = I8[I8[creature + 47] * 10 + ri16($f0 + 8) + 230017];
+  U8[creature + 160] = I8[I8[creature + 47] * 10 + ri16($f0 + 8) + 238209];
   MenuCore.FreeStringList($f0);
   w16(creature + 48, ClassCal.StartingAge(I8[creature + 46], I8[creature + 47]));
-  savedCur = r32(143749);
-  w32(143749, creature);
-  (await ViewChar.DisplayChar(r32(143749)));
+  savedCur = r32(229635);
+  w32(229635, creature);
+  (await ViewChar.DisplayChar(r32(229635)));
   do {
     U8[creature + 22] = 0;
     for (let $i15 = 0; $i15 <= 5; $i15++) {
@@ -1541,7 +1541,7 @@ export async function CreateCharacterMenu() {
         j = $i16;
         roll = Dice.RollDice(3, 6) & 255;
         if ((I8[creature + 46] >= 1) && (I8[creature + 46] <= 7)) {
-          roll = (roll + I8[I8[creature + 46] * 6 + i + 253839]) & 255;
+          roll = (roll + I8[I8[creature + 46] * 6 + i + 262031]) & 255;
         }
         if (U8[creature + i + 16] < roll) {
           U8[creature + i + 16] = roll;
@@ -1551,37 +1551,37 @@ export async function CreateCharacterMenu() {
         const $w17 = creature;
         switch (i) {
           case 0: {
-            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 253878) < r16($w17 + 48))) {
+            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 262070) < r16($w17 + 48))) {
               let $t18;
               $t18 = $w17 + i + 16, U8[$t18] = U8[$t18] + 1;
             }
-            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 253880) < r16($w17 + 48))) {
+            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 262072) < r16($w17 + 48))) {
               let $t19;
               $t19 = $w17 + i + 16, U8[$t19] = U8[$t19] - 1;
             }
-            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 253882) < r16($w17 + 48))) {
+            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 262074) < r16($w17 + 48))) {
               let $t20;
               $t20 = $w17 + i + 16, U8[$t20] = U8[$t20] - 2;
             }
-            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 253884) < r16($w17 + 48))) {
+            if ((U8[$w17 + i + 16] > 0) && (r16(I8[$w17 + 46] * 10 + 262076) < r16($w17 + 48))) {
               let $t21;
               $t21 = $w17 + i + 16, U8[$t21] = U8[$t21] - 1;
             }
             ClampToLimits(i);
             if ((U8[$w17 + 16] === 18) && (CharHlp.WarriorLevel(creature) > 0)) {
               U8[$w17 + 22] = TpRand.Random(100) + 1;
-              if (U8[I8[$w17 + 46] * 16 + I8[$w17 + 158] + 140253] < U8[$w17 + 22]) {
-                U8[$w17 + 22] = U8[I8[$w17 + 46] * 16 + I8[$w17 + 158] + 140253];
+              if (U8[I8[$w17 + 46] * 16 + I8[$w17 + 158] + 226139] < U8[$w17 + 22]) {
+                U8[$w17 + 22] = U8[I8[$w17 + 46] * 16 + I8[$w17 + 158] + 226139];
               }
             }
             break;
           }
           case 1: {
-            if (r16(I8[$w17 + 46] * 10 + 253880) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262072) < r16($w17 + 48)) {
               let $t22;
               $t22 = $w17 + i + 16, U8[$t22] = U8[$t22] + 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253884) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262076) < r16($w17 + 48)) {
               let $t23;
               $t23 = $w17 + i + 16, U8[$t23] = U8[$t23] + 1;
             }
@@ -1589,19 +1589,19 @@ export async function CreateCharacterMenu() {
             break;
           }
           case 2: {
-            if (r16(I8[$w17 + 46] * 10 + 253878) >= r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262070) >= r16($w17 + 48)) {
               let $t24;
               $t24 = $w17 + i + 16, U8[$t24] = U8[$t24] - 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253880) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262072) < r16($w17 + 48)) {
               let $t25;
               $t25 = $w17 + i + 16, U8[$t25] = U8[$t25] + 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253882) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262074) < r16($w17 + 48)) {
               let $t26;
               $t26 = $w17 + i + 16, U8[$t26] = U8[$t26] + 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253884) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262076) < r16($w17 + 48)) {
               let $t27;
               $t27 = $w17 + i + 16, U8[$t27] = U8[$t27] + 1;
             }
@@ -1609,11 +1609,11 @@ export async function CreateCharacterMenu() {
             break;
           }
           case 3: {
-            if (r16(I8[$w17 + 46] * 10 + 253882) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262074) < r16($w17 + 48)) {
               let $t28;
               $t28 = $w17 + i + 16, U8[$t28] = U8[$t28] - 2;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253884) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262076) < r16($w17 + 48)) {
               let $t29;
               $t29 = $w17 + i + 16, U8[$t29] = U8[$t29] - 1;
             }
@@ -1623,15 +1623,15 @@ export async function CreateCharacterMenu() {
           case 4: {
             let $t30;
             $t30 = $w17 + i + 16, U8[$t30] = U8[$t30] + 1;
-            if (r16(I8[$w17 + 46] * 10 + 253880) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262072) < r16($w17 + 48)) {
               let $t31;
               $t31 = $w17 + i + 16, U8[$t31] = U8[$t31] - 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253882) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262074) < r16($w17 + 48)) {
               let $t32;
               $t32 = $w17 + i + 16, U8[$t32] = U8[$t32] - 1;
             }
-            if (r16(I8[$w17 + 46] * 10 + 253884) < r16($w17 + 48)) {
+            if (r16(I8[$w17 + 46] * 10 + 262076) < r16($w17 + 48)) {
               let $t33;
               $t33 = $w17 + i + 16, U8[$t33] = U8[$t33] - 1;
             }
@@ -1644,7 +1644,7 @@ export async function CreateCharacterMenu() {
           }
         }
       }
-      (await ViewChar.PrintStat(i, false));
+      ViewChar.PrintStat(i, false);
     }
     if (I8[creature + 156] > 0) {
       ClassCal.RecalcThiefSkills(creature);
@@ -1661,7 +1661,7 @@ export async function CreateCharacterMenu() {
       for (let $i35 = 0; $i35 <= 7; $i35++) {
         cls = $i35;
         if (I8[$w34 + cls + 150] > 0) {
-          goldDice = (goldDice + Dice.RollDice(U8[cls * 2 + 253958], U8[cls * 2 + 253959])) & 255;
+          goldDice = (goldDice + Dice.RollDice(U8[cls * 2 + 262150], U8[cls * 2 + 262151])) & 255;
           clsCount = (clsCount + 1) & 255;
           ClassCal.StartCasterClass(creature, cls);
         }
@@ -1673,32 +1673,32 @@ export async function CreateCharacterMenu() {
       U8[$w34 + 177] = Math.trunc(U8[$w34 + 177] / clsCount);
     }
     ViewChar.PrintCombatStats();
-    (await ViewChar.PrintMoney());
+    ViewChar.PrintMoney();
     ch = (await MenuCore.YesNoMenu("Keep this character? ", 13, 10, 15)) & 255;
   } while (!(ch === 89));
-  (await ViewChar.DisplayChar(r32(143749)));
-  w32(143749, savedCur);
+  (await ViewChar.DisplayChar(r32(229635)));
+  w32(229635, savedCur);
   do {
     wS(creature, 15, (await TextRend.ReadString("Character name: ", 13, 15)));
   } while (!(rS(creature) !== ""));
-  savedCur = r32(143749);
-  w32(143749, creature);
+  savedCur = r32(229635);
+  w32(229635, creature);
   (await CustomizePortrait(false));
-  (await ViewChar.DisplayChar(r32(143749)));
+  (await ViewChar.DisplayChar(r32(229635)));
   (await CustomizeIcon());
   while (!(await SaveLoad.SaveChar(creature, "")) && ((await MenuCore.YesNoMenu("Try again? ", 14, 10, 15)) === 89)) {
   }
-  w32(143749, savedCur);
+  w32(229635, savedCur);
   SaveLoad.FreeCreature(creature);
   S.sp = $sp;
 }
 
 export async function DropCharacterMenu() {
-  if (r32(143749) === 0) {
+  if (r32(229635) === 0) {
     return;
   }
   {
-    const $w1 = r32(143749);
+    const $w1 = r32(229635);
     if (((await MenuCore.YesNoMenu("Drop " + rS($w1) + " forever? ", 14, 10, 15)) === 89) && ((await MenuCore.YesNoMenu("Are you sure? ", 14, 10, 15)) === 89)) {
       if (U8[$w1 + 269] === 0) {
         (await CharDisp.PrintBottomLine("You dump " + rS($w1) + " out back."));
@@ -1716,8 +1716,8 @@ export async function DropCharacterMenu() {
 }
 
 export async function ModifyCharacterMenu() {
-  if (((ri32(r32(143749) + 172) > 0) || !Modifiable()) || CharHlp.IsDualClass(r32(143749))) {
-    (await TextRend.PrintAndPause(rS(r32(143749)) + " can't be modified.", 14));
+  if (((ri32(r32(229635) + 172) > 0) || !Modifiable()) || CharHlp.IsDualClass(r32(229635))) {
+    (await TextRend.PrintAndPause(rS(r32(229635)) + " can't be modified.", 14));
   } else {
     (await ModifyCharacter(false));
   }
@@ -1725,27 +1725,27 @@ export async function ModifyCharacterMenu() {
 
 export async function TrainingMenu() {
   let xpClamp: number = 0, nextXp: number = 0, trainMask: number = 0, classMask: number = 0, trainable: number = 0, trains: number = 0, cls: number = 0, row: number = 0, lvl: number = 0;
-  if ((U8[r32(143749) + 268] !== 0) && (U8[253887] === 0)) {
+  if ((U8[r32(229635) + 268] !== 0) && (U8[262079] === 0)) {
     (await TextRend.PrintAndPause("we only train conscious people", 14));
     return;
   }
-  if ((MoneyCal.CreatureGold(r32(143749)) < 1000) && (U8[253887] === 0)) {
+  if ((MoneyCal.CreatureGold(r32(229635)) < 1000) && (U8[262079] === 0)) {
     (await TextRend.PrintAndPause("Training costs 1000 gp.", 14));
     return;
   }
   trainMask = 0;
   classMask = 0;
   {
-    const $w1 = r32(143749);
+    const $w1 = r32(229635);
     xpClamp = 0;
-    trains = CharHlp.TrainClasses(r32(143749), U8[253887] !== 0) & 255;
+    trains = CharHlp.TrainClasses(r32(229635), U8[262079] !== 0) & 255;
     for (let $i2 = 0; $i2 <= 7; $i2++) {
       cls = $i2;
       if ((I8[$w1 + cls + 150] > 0) && ((U8[$w1 + 285] & (1 << cls)) === 0)) {
-        classMask = (classMask + U8[cls + 131902]) & 255;
+        classMask = (classMask + U8[cls + 217788]) & 255;
         lvl = I8[$w1 + cls + 150];
         if ((trains & (1 << cls)) !== 0) {
-          trainMask = (trainMask + U8[cls + 131902]) & 255;
+          trainMask = (trainMask + U8[cls + 217788]) & 255;
           if (ClassCal.LevelOpen(cls, lvl + 2)) {
             nextXp = ClassCal.LevelXp(cls, lvl + 2) | 0;
           } else {
@@ -1761,7 +1761,7 @@ export async function TrainingMenu() {
         }
       }
     }
-    if (U8[253887] === 0) {
+    if (U8[262079] === 0) {
       if ((classMask & CharHlp.HallMask()) === 0) {
         (await TextRend.PrintAndPause("We don't train that class here", 14));
         return;
@@ -1770,7 +1770,7 @@ export async function TrainingMenu() {
         return;
       }
     }
-    if (U8[253887] === 0) {
+    if (U8[262079] === 0) {
       trainable = trainMask & CharHlp.HallMask();
     } else {
       trainable = trainMask;
@@ -1779,19 +1779,19 @@ export async function TrainingMenu() {
       (await TextRend.PrintAndPause("No class can train further", 14));
       return;
     }
-    (await Border.ClearBox(1, 1, 38, 22));
+    Border.ClearBox(1, 1, 38, 22);
     row = 4;
-    CharDisp.DisplayCreatureName(r32(143749), 4, row, false);
+    CharDisp.DisplayCreatureName(r32(229635), 4, row, false);
     TextRend.DisplayString(U8[$w1] + 4, row, 10, " will become:");
     for (let $i3 = 0; $i3 <= 7; $i3++) {
       cls = $i3;
       if ((I8[$w1 + cls + 150] > 0) && ((U8[$w1 + 285] & (1 << cls)) === 0)) {
-        if ((U8[cls + 131902] & trainable) > 0) {
+        if ((U8[cls + 217788] & trainable) > 0) {
           row = (row + 1) << 24 >> 24;
           if (row === 5) {
-            TextRend.DisplayString(6, row, 10, "    a level " + StrUtil.NumStr(I8[$w1 + cls + 150] + 1) + " " + rS(cls * 26 + 131942));
+            TextRend.DisplayString(6, row, 10, "    a level " + StrUtil.NumStr(I8[$w1 + cls + 150] + 1) + " " + rS(cls * 26 + 217828));
           } else {
-            TextRend.DisplayString(6, row, 10, "and a level " + StrUtil.NumStr(I8[$w1 + cls + 150] + 1) + " " + rS(cls * 26 + 131942));
+            TextRend.DisplayString(6, row, 10, "and a level " + StrUtil.NumStr(I8[$w1 + cls + 150] + 1) + " " + rS(cls * 26 + 217828));
           }
         }
       }
@@ -1800,8 +1800,8 @@ export async function TrainingMenu() {
       return;
     }
     (await CharDisp.PrintBottomLine("Congratulations..."));
-    if (U8[253887] === 0) {
-      Money.PayFromCreature(r32(143749), 1000);
+    if (U8[262079] === 0) {
+      Money.PayFromCreature(r32(229635), 1000);
     }
     if (xpClamp > 0) {
       w32($w1 + 172, xpClamp);
@@ -1818,7 +1818,7 @@ export async function AddCharacterMenu() {
     (await TextRend.FlashBottomLine(14, "No characters found to add."));
     { S.sp = $sp; return; }
   }
-  (await Border.ClearBox(1, 1, 38, 22));
+  Border.ClearBox(1, 1, 38, 22);
   w16($f0 + 8, 0);
   w32($f0 + 4, r32($f0));
   U8[$f0 + 10] = true ? 1 : 0;
@@ -1843,19 +1843,19 @@ export async function AddCharacterMenu() {
             U8[$f0 + 10] = true ? 1 : 0;
           } else {
             (await TextRend.DisplayAndPause(14, rt.Copy(rS(r32($f0 + 4)), 1, 21) + "'s file is damaged."));
-            (await Border.ClearBox(0, 24, 39, 24));
+            Border.ClearBox(0, 24, 39, 24);
           }
         } else {
           wS(r32($f0 + 4), 40, "* " + rS(r32($f0 + 4)));
-          if (r32(143753) === 0) {
-            w16(r32(141151) + 1660, 0);
+          if (r32(229639) === 0) {
+            w16(r32(227037) + 1660, 0);
             SaveLoad.AddCharToParty(creature);
             (await SaveLoad.LoadCharIconAnim(true));
           } else {
             rangers = 0;
             hasEvil = false;
             paladin = 0;
-            p = r32(143753);
+            p = r32(229639);
             while ((p !== 0) && ((rS(p) !== rS(creature)) || (U8[p + 171] !== U8[creature + 171]))) {
               if (!CharHlp.IsNpc(p)) {
                 nonNpc = (nonNpc + 1) & 255;
@@ -1883,9 +1883,9 @@ export async function AddCharacterMenu() {
               } else {
                 (await TextRend.DisplayAndPause(14, rS(paladin) + " will tolerate no evil!"));
               }
-              (await Border.ClearBox(0, 24, 39, 24));
+              Border.ClearBox(0, 24, 39, 24);
               SaveLoad.FreeCreature(creature);
-            } else if (((p === 0) && (r16(r32(141151) + 1660) < 8)) && (CharHlp.IsNpc(creature) || (nonNpc < 6))) {
+            } else if (((p === 0) && (r16(r32(227037) + 1660) < 8)) && (CharHlp.IsNpc(creature) || (nonNpc < 6))) {
               SaveLoad.AddCharToParty(creature);
               (await SaveLoad.LoadCharIconAnim(true));
               if (!CharHlp.IsNpc(creature)) {
@@ -1901,24 +1901,24 @@ export async function AddCharacterMenu() {
         }
       }
     }
-  } while (!((((key === 69) || (key === 0)) || (nonNpc >= 6)) || (r16(r32(141151) + 1660) >= 8)));
+  } while (!((((key === 69) || (key === 0)) || (nonNpc >= 6)) || (r16(r32(227037) + 1660) >= 8)));
   (await SaveLoad.SaveCharlist(r32($f0), ""));
   MenuCore.FreeStringList($f0);
   S.sp = $sp;
 }
 
-export async function ShowRaceInfo(race: number) {
+export function ShowRaceInfo(race: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 264);
   let i: number = 0, slot: number = 0, cnt: number = 0, cls: number = 0, row: number = 0, adj: number = 0, p: number = 0, part: number = 0, lvl: number = 0, hasMulti: boolean = false;
-  (await Border.ClearBox(23, 2, 38, 7));
-  (await Border.ClearBox(1, 11, 38, 21));
+  Border.ClearBox(23, 2, 38, 7);
+  Border.ClearBox(1, 11, 38, 21);
   if ((race < 1) || (race > 7)) {
     { S.sp = $sp; return; }
   }
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     i = $i1;
-    TextRend.DisplayString(19, 2 + i, 10, rS(i * 4 + 132384));
-    adj = I8[race * 6 + i + 253839];
+    TextRend.DisplayString(19, 2 + i, 10, rS(i * 4 + 218270));
+    adj = I8[race * 6 + i + 262031];
     if (adj > 0) {
       wS($f0, 255, "+" + StrUtil.NumStr(adj));
     } else if (adj < 0) {
@@ -1930,25 +1930,25 @@ export async function ShowRaceInfo(race: number) {
   }
   rt.fill($f0 + 256, 8, 0);
   hasMulti = false;
-  cnt = I8[race * 14 + 229905] & 255;
+  cnt = I8[race * 14 + 238097] & 255;
   if (cnt > 13) {
     cnt = 13;
   }
   row = 13;
   for (let $i2 = 1, $e2 = cnt; $i2 <= $e2; $i2++) {
     slot = $i2;
-    cls = I8[race * 14 + slot + 229905];
+    cls = I8[race * 14 + slot + 238097];
     if ((cls >= 0) && (cls <= 16)) {
       wS($f0, 255, "");
       for (let $i3 = 1; $i3 <= 3; $i3++) {
         p = $i3;
-        part = I8[cls * 3 + p + 140376];
+        part = I8[cls * 3 + p + 226262];
         if ((part >= 0) && (part <= 7)) {
           U8[$f0 + part + 256] = true ? 1 : 0;
           if (rS($f0) !== "") {
             wS($f0, 255, rS($f0) + "/");
           }
-          wS($f0, 255, rS($f0) + rS(part * 3 + 253974));
+          wS($f0, 255, rS($f0) + rS(part * 3 + 262166));
         }
       }
       if ((cls > 7) && (row <= 21)) {
@@ -1967,8 +1967,8 @@ export async function ShowRaceInfo(race: number) {
   for (let $i4 = 0; $i4 <= 7; $i4++) {
     part = $i4;
     if ((U8[$f0 + part + 256] !== 0) && (row <= 19)) {
-      lvl = I8[race * 8 + part + 253990];
-      if ((lvl > 0) && (U8[141187] === 0)) {
+      lvl = I8[race * 8 + part + 262182];
+      if ((lvl > 0) && (U8[227073] === 0)) {
         lvl = 0;
       }
       if (lvl === 0) {
@@ -1979,7 +1979,7 @@ export async function ShowRaceInfo(race: number) {
         wS($f0, 255, "-");
       }
       TextRend.DisplayString(3, row, 10, rS($f0));
-      TextRend.DisplayString(7, row, 10, rt.Copy(rS(part * 26 + 131942), 1, 13));
+      TextRend.DisplayString(7, row, 10, rt.Copy(rS(part * 26 + 217828), 1, 13));
       row = (row + 1) & 255;
     }
   }

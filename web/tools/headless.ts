@@ -20,6 +20,7 @@ import { clock } from '../src/host/x_dos';
 import { U8 } from '../src/rt/mem';
 import * as vfs from '../src/rt/vfs';
 import * as sys from '../src/rt/sys';
+import * as hooks from '../src/host/hooks';
 
 const argv = process.argv.slice(2);
 const gameArgs: string[] = [];
@@ -119,6 +120,22 @@ function step(): boolean {
     else if (s.startsWith('wait:')) {
       waitUntil = now + Number(s.slice(5));
       return true;
+    } else if (s === 'cells:') {
+      // the screen by 8x8 cell: C the frame's corner piece, . black, # anything else
+      const scr = screenAt();
+      const cell = (cx: number, cy: number) => {
+        let h = '';
+        for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) h += U8[scr + (cy * 8 + y) * 320 + cx * 8 + x].toString(16);
+        return h;
+      };
+      const corner = cell(0, 0);
+      for (let cy = 0; cy < 25; cy++) {
+        let line = '';
+        for (let cx = 0; cx < 40; cx++) line += cell(cx, cy) === corner ? 'C' : /^0+$/.test(cell(cx, cy)) ? '.' : '#';
+        console.log(line);
+      }
+    } else if (s === 'info:') {
+      console.log('[hooks] ' + hooks.stack.map((f) => f.name + '(' + f.args.filter((a) => typeof a === 'string').map((a) => JSON.stringify(a)).join(', ') + ')').join(' > '));
     } else if (s.startsWith('dump:')) {
       const f = vfs.get(s.slice(5));
       if (f) fs.writeFileSync(path.join(outDir, s.slice(5).replace(/[\\/:]/g, '_')), f.data.subarray(0, f.size));

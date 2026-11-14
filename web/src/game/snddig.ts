@@ -10,13 +10,13 @@ import * as SoundDrv from './sounddrv';
 import * as SndChip from './sndchip';
 
 
-export const $at = { ADPCM_DELTA: 226557, ADPCM_STEP: 226621, loadTried: 226685, effects: 226686 };
+export const $at = { ADPCM_DELTA: 234749, ADPCM_STEP: 234813, loadTried: 234877, effects: 234878 };
 
 export function Install() {
-  wS(141119, 20, "Digital Audio");
-  U8[141140] = 0;
-  w32(141141, 17);
-  U8[141145] = true ? 1 : 0;
+  wS(227005, 20, "Digital Audio");
+  U8[227026] = 0;
+  w32(227027, 18);
+  U8[227031] = true ? 1 : 0;
 }
 
 export function DecodeAdpcm(src: number, start: number, len: number, dst: number) {
@@ -38,13 +38,13 @@ export function DecodeAdpcm(src: number, start: number, len: number, dst: number
       if (k > 63) {
         k = 63;
       }
-      level = (level + I8[k + 226557]) << 16 >> 16;
+      level = (level + I8[k + 234749]) << 16 >> 16;
       if (level > 255) {
         level = 255;
       } else if (level < 0) {
         level = 0;
       }
-      step = ((step + U8[k + 226621]) & 255) & 255;
+      step = ((step + U8[k + 234813]) & 255) & 255;
       U8[dst + n] = level;
       n = (n + 1) & 65535;
     }
@@ -54,15 +54,15 @@ export function DecodeAdpcm(src: number, start: number, len: number, dst: number
 export function LoadEffects() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 14);
   let i: number = 0, fx: number = 0;
-  U8[226685] = true ? 1 : 0;
-  rt.fill(226686, 160, 0);
+  U8[234877] = true ? 1 : 0;
+  rt.fill(234878, 160, 0);
   if (!SfxFile.Load($f0, $f0 + 4, $f0 + 6)) {
     { S.sp = $sp; return; }
   }
   for (let $i1 = 1, $e1 = U8[$f0 + 6]; $i1 <= $e1; $i1++) {
     i = $i1;
     if (SfxFile.GetEntry(r32($f0), r16($f0 + 4), i - 1, $f0 + 7)) {
-      fx = U8[$f0 + 7] * 8 + 226678;
+      fx = U8[$f0 + 7] * 8 + 234870;
       if (r32(fx) !== 0) {
         rt.freeMem(r32(fx));
       }
@@ -80,23 +80,23 @@ export function LoadEffects() {
   S.sp = $sp;
 }
 
-export async function Play(tune: number) {
+export function Play(tune: number) {
   if ((tune >= 1) && (tune <= 20)) {
-    if (!(U8[226685] !== 0)) {
+    if (!(U8[234877] !== 0)) {
       LoadEffects();
     }
-    if (r32(tune * 8 + 226678) !== 0) {
-      (await SoundDrv.ProgramTandyVoices(0));
-      (await SndChip.PlaySample(r32(tune * 8 + 226678), r16(tune * 8 + 226682), r16(tune * 8 + 226684)));
+    if (r32(tune * 8 + 234870) !== 0) {
+      SoundDrv.ProgramTandyVoices(0);
+      SndChip.PlaySample(r32(tune * 8 + 234870), r16(tune * 8 + 234874), r16(tune * 8 + 234876));
       return;
     }
   }
   if (tune === 0) {
-    (await SndChip.PlaySample(0, 0, 0));
+    SndChip.PlaySample(0, 0, 0);
   }
-  (await SoundDrv.ProgramTandyVoices(tune));
+  SoundDrv.ProgramTandyVoices(tune);
 }
 
 export function $init() {
-  U8[226685] = false ? 1 : 0;
+  U8[234877] = false ? 1 : 0;
 }

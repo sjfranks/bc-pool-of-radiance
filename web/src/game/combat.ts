@@ -47,9 +47,9 @@ export const READY_SET_2 = 253;
 export async function CombatMain() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 5);
   let endNoticed: boolean = false;
-  U8[141176] = 5;
-  w32(145644, 30);
-  CbtLog.Clear(U8[141206], U8[141205] !== 0);
+  U8[227062] = 5;
+  w32(231530, 31);
+  CbtLog.Clear(U8[227092], U8[227091] !== 0);
   (await CombatSt.CombatStart());
   U8[$f0] = false ? 1 : 0;
   endNoticed = false;
@@ -58,14 +58,14 @@ export async function CombatMain() {
     U8[$f0] = true ? 1 : 0;
   }
   while (!(U8[$f0] !== 0) && !(await GameIo.DemoEnding())) {
-    CbtLog.Heading(15, "Round " + StrUtil.NumStr(U8[146459] + 1));
+    CbtLog.Heading(15, "Round " + StrUtil.NumStr(U8[232345] + 1));
     CharHlp.CountTeams();
-    w32($f0 + 1, r32(143753));
+    w32($f0 + 1, r32(229639));
     while (r32($f0 + 1) !== 0) {
       (await CbtActs.BeginRound(r32($f0 + 1)));
       w32($f0 + 1, r32(r32($f0 + 1) + 260));
     }
-    w16(r32(141151) + 1430, 0);
+    w16(r32(227037) + 1430, 0);
     NextCreature($f0 + 1);
     while (((r32($f0 + 1) !== 0) && !(U8[$f0] !== 0)) && !(await GameIo.DemoEnding())) {
       (await CreatureAction(r32($f0 + 1)));
@@ -88,7 +88,7 @@ export async function CombatMain() {
 export async function BandageDying(bandage: boolean) {
   let p: number = 0, found: boolean = false, $r0: boolean = false;
   found = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (((U8[r32(p + 264) + 19] === 0) && (I8[p + 270] === 0)) && (U8[p + 268] === 5)) {
       found = true;
@@ -109,7 +109,7 @@ export function NextCreature(next: number) {
   let best: number = 0, bestRoll: number = 0, roll: number = 0, p: number = 0;
   best = 0;
   bestRoll = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     roll = Dice.RollDice(1, 100) & 255;
     if (I8[r32(p + 264) + 3] > best) {
@@ -137,7 +137,7 @@ export async function CreatureAction(creature: number) {
   if (I8[r32(creature + 264) + 3] === 20) {
     U8[r32(creature + 264) + 3] = 19;
   }
-  w32(143749, creature);
+  w32(229635, creature);
   (await CbtMap.DisplayMapViewCentered(creature, 2, true));
   CharHlp.RecalcStats(creature);
   (await CharDisp.CombatPrintCreatureInfo(creature));
@@ -223,10 +223,10 @@ export async function ManualControl(creature: number) {
             break;
           }
           case 254: {
-            if ((U8[227025] !== 0)) {
+            if ((U8[235217] !== 0)) {
               (await TextRend.FlashBottomLine(10, "No minimap in the Wide View"));
             } else {
-              U8[141196] = (U8[141196] === 0 ? 1 : 0);
+              U8[227082] = (U8[227082] === 0 ? 1 : 0);
               Options.SaveOptions();
             }
             break;
@@ -241,7 +241,7 @@ export async function ManualControl(creature: number) {
           }
           case 16: {
             U8[r32(creature + 264) + 3] = 20;
-            p = r32(143753);
+            p = r32(229639);
             while (p !== 0) {
               TurnOnAuto(p);
               p = r32(p + 260);
@@ -306,7 +306,7 @@ export async function CombatMenu(creature: number, ch: number) {
   let $t5;
   do {
     if (sets) {
-      wS(227083, 16, "12");
+      wS(235275, 16, "12");
     }
     U8[ch] = (await MenuCore.MenuHorizontal("", rS($f0), 13, 10, 15, true, false, $f0 + 41));
     let $t4;
@@ -329,9 +329,9 @@ export async function CombatMenu(creature: number, ch: number) {
 export async function EndOfRound(done: number) {
   let p: number = 0;
   (await FxEngine.AdvanceTime(1, 1));
-  U8[146459] = U8[146459] + 1;
+  U8[232345] = U8[232345] + 1;
   CbtActs.UpdateHostileHpPercent();
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     (await FxEngine.TriggerEffectsWithCondition(19, p));
     (await FxEngine.ConsiderStinkingCloud(p));
@@ -352,7 +352,7 @@ export async function EndOfRound(done: number) {
   CharHlp.CountTeams();
   (await CbtMap.ScrollView(CbtMap.CenterX(), CbtMap.CenterY(), 255, 8));
   U8[done] = CharHlp.SideEmpty() ? 1 : 0;
-  if (((U8[144894] > 0) && (U8[144895] === 0)) && !(U8[141212] !== 0)) {
+  if (((U8[230780] > 0) && (U8[230781] === 0)) && !(U8[227098] !== 0)) {
     if ((await MenuCore.YesNoMenu("Continue Battle:", 13, 10, 15)) === 89) {
       U8[done] = false ? 1 : 0;
     }
@@ -370,10 +370,10 @@ export async function MoveMenu(creature: number, done: number) {
   U8[done] = false ? 1 : 0;
   dir = 8;
   while (((U8[r32(creature + 264) + 6] > 1) && (ch !== 0)) && (ch !== 13)) {
-    (await Border.ClearBox(24, 24, 39, 24));
+    Border.ClearBox(24, 24, 39, 24);
     (await CbtMini.Show(creature, -1, -1));
-    U8[227081] = true ? 1 : 0;
-    ch = (await MenuCore.MenuHorizontal("Move/Attack, Move Left = " + StrUtil.NumStr(Math.trunc(U8[r32(creature + 264) + 6] / 2)) + " ", "", 10, 10, 15, true, false, 247517)) & 255;
+    U8[235273] = true ? 1 : 0;
+    ch = (await MenuCore.MenuHorizontal("Move/Attack, Move Left = " + StrUtil.NumStr(Math.trunc(U8[r32(creature + 264) + 6] / 2)) + " ", "", 10, 10, 15, true, false, 255709)) & 255;
     switch (ch) {
       case 0: {
         U8[r32(creature + 264) + 6] = savedMove;
@@ -395,7 +395,7 @@ export async function MoveMenu(creature: number, done: number) {
       CbtMap.ProbeDirection(creature, dir, $f0, $f0 + 1);
       if (U8[$f0] > 0) {
         attacksLeft = U8[creature + 275] + U8[creature + 276];
-        (await MeleeAttack(creature, r32(U8[$f0] * 4 + 144292), done));
+        (await MeleeAttack(creature, r32(U8[$f0] * 4 + 230178), done));
         if ((U8[creature + 275] + U8[creature + 276]) !== attacksLeft) {
           savedMove = U8[r32(creature + 264) + 6];
           savedDir = U8[r32(creature + 264) + 9];
@@ -413,7 +413,7 @@ export async function MoveMenu(creature: number, done: number) {
             break;
           }
         }
-      } else if (U8[U8[$f0 + 1] * 3 + 132942] > U8[r32(creature + 264) + 6]) {
+      } else if (U8[U8[$f0 + 1] * 3 + 218828] > U8[r32(creature + 264) + 6]) {
         (await CharDisp.PrintBottomLine("Blocked"));
       } else {
         if ((await CbtActs.StepCreature(creature, dir))) {
@@ -457,7 +457,7 @@ export async function DoneMenu(creature: number, done: number) {
   wS($f0, 40, rS($f0) + "Speed Exit");
   ch = 32;
   while (!(ch === 0 || ch === 69) && !(U8[done] !== 0)) {
-    ch = (await MenuCore.MenuHorizontal("", rS($f0), 13, 10, 15, false, false, 247517)) & 255;
+    ch = (await MenuCore.MenuHorizontal("", rS($f0), 13, 10, 15, false, false, 255709)) & 255;
     switch (ch) {
       case 71: {
         U8[done] = CharHlp.Guard(creature) ? 1 : 0;
@@ -491,31 +491,31 @@ export async function DoneMenu(creature: number, done: number) {
 export async function SpeedMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 82);
   let ch: number = 0, speed: number = 0;
-  speed = U8[141163];
+  speed = U8[227049];
   ch = 32;
   while (!(ch === 0 || ch === 69)) {
-    wS($f0 + 41, 40, "GameSpeed (" + StrUtil.NumStr(U8[141163]) + ") :");
+    wS($f0 + 41, 40, "GameSpeed (" + StrUtil.NumStr(U8[227049]) + ") :");
     wS($f0, 40, " ");
-    if (U8[141163] < 9) {
+    if (U8[227049] < 9) {
       wS($f0, 40, rS($f0) + "Slower ");
     }
-    if (U8[141163] > 0) {
+    if (U8[227049] > 0) {
       wS($f0, 40, rS($f0) + "Faster ");
     }
     wS($f0, 40, rS($f0) + "Exit");
-    ch = (await MenuCore.MenuHorizontal(rS($f0 + 41), rS($f0), 13, 10, 15, false, false, 247517)) & 255;
+    ch = (await MenuCore.MenuHorizontal(rS($f0 + 41), rS($f0), 13, 10, 15, false, false, 255709)) & 255;
     switch (ch) {
       case 83: {
-        U8[141163] = U8[141163] + 1;
+        U8[227049] = U8[227049] + 1;
         break;
       }
       case 70: {
-        U8[141163] = U8[141163] - 1;
+        U8[227049] = U8[227049] - 1;
         break;
       }
     }
   }
-  if (U8[141163] !== speed) {
+  if (U8[227049] !== speed) {
     Options.SaveOptions();
   }
   S.sp = $sp;
@@ -530,21 +530,21 @@ export function TurnOnAuto(creature: number) {
 
 export async function CombatDoneCleanup() {
   let p: number = 0;
-  while (r32(146453) !== 0) {
-    p = r32(r32(146453) + 4);
-    rt.freeMem(r32(146453));
-    w32(146453, p);
+  while (r32(232339) !== 0) {
+    p = r32(r32(232339) + 4);
+    rt.freeMem(r32(232339));
+    w32(232339, p);
   }
-  rt.freeMem(r32(144641));
-  w32(144641, 0);
-  Blit.FreePic(146533);
+  rt.freeMem(r32(230527));
+  w32(230527, 0);
+  Blit.FreePic(232419);
   MapTiles.FreeCloudkillArt();
-  if ((U8[227025] !== 0)) {
+  if ((U8[235217] !== 0)) {
     (await WideView.Leave());
     CbtMap.SetLayout(false);
   }
-  (await CbtMap.SetNoncombatPalette());
-  w32(145644, 31);
+  CbtMap.SetNoncombatPalette();
+  w32(231530, 32);
 }
 
 export function HasSets(creature: number) {

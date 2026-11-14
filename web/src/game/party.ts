@@ -14,8 +14,8 @@ export function IsPartyMember(creature: number) {
   if (creature === 0) {
     return $r0;
   }
-  p = r32(143753);
-  n = r16(r32(141151) + 1660) << 16 >> 16;
+  p = r32(229639);
+  n = r16(r32(227037) + 1660) << 16 >> 16;
   while ((p !== 0) && (n > 0)) {
     if (p === creature) {
       $r0 = true;
@@ -29,9 +29,9 @@ export function IsPartyMember(creature: number) {
 
 export function SelectPrevNextChar(c: number) {
   let p: number = 0;
-  p = r32(143749);
+  p = r32(229635);
   if (p === 0) {
-    p = r32(143753);
+    p = r32(229639);
   }
   if (p !== 0) {
     switch (c) {
@@ -45,14 +45,14 @@ export function SelectPrevNextChar(c: number) {
       }
     }
   }
-  w32(143749, p);
+  w32(229635, p);
 }
 
 export function MemberAt(n: number) {
   let p: number = 0, $r0: number = 0;
   p = 0;
-  if ((n >= 1) && (n <= r16(r32(141151) + 1660))) {
-    p = r32(143753);
+  if ((n >= 1) && (n <= r16(r32(227037) + 1660))) {
+    p = r32(229639);
     while ((p !== 0) && (n > 1)) {
       p = r32(p + 260);
       n = (n - 1) & 255;
@@ -74,7 +74,7 @@ export function AltMember(c: number) {
 
 export function LastCreature() {
   let p: number = 0, $r0: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   if (p !== 0) {
     while (r32(p + 260) !== 0) {
       p = r32(p + 260);
@@ -86,7 +86,7 @@ export function LastCreature() {
 
 export function PrevCreature(c: number) {
   let p: number = 0, $r0: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   if (p === c) {
     p = LastCreature();
   } else {
@@ -103,7 +103,7 @@ export function NextCreature(c: number) {
   if ((c !== 0) && (r32(c + 260) !== 0)) {
     $r0 = r32(c + 260);
   } else {
-    $r0 = r32(143753);
+    $r0 = r32(229639);
   }
   return $r0;
 }

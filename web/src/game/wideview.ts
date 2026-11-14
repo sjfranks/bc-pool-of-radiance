@@ -10,12 +10,12 @@ import * as Blit from './blit';
 
 export async function Enter(rows: number, cells: number) {
   let fits: boolean = false, $r0: boolean = false;
-  Blit.FreePic(141249);
+  Blit.FreePic(227135);
   fits = 16777216 >= (((Blit.FrameBytes(rows, cells) | 0) + 32028) - 32001);
   if (fits) {
-    (await Blit.AllocPic(rows, cells, 1, 0, 141249));
+    (await Blit.AllocPic(rows, cells, 1, 0, 227135));
   } else {
-    (await Blit.AllocPic(168, 21, 1, 0, 141249));
+    (await Blit.AllocPic(168, 21, 1, 0, 227135));
   }
   Blit.ClearSpans();
   $r0 = fits;
@@ -23,7 +23,7 @@ export async function Enter(rows: number, cells: number) {
 }
 
 export async function Leave() {
-  Blit.FreePic(141249);
-  (await Blit.AllocPic(168, 21, 1, 0, 141249));
+  Blit.FreePic(227135);
+  (await Blit.AllocPic(168, 21, 1, 0, 227135));
   Blit.ClearSpans();
 }

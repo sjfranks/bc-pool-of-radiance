@@ -43,15 +43,15 @@ import * as Wilds from './wilds';
 import * as CharGen from './chargen';
 
 
-export const $at = { quickLoadAsked: 250681, bottomMessageCleared: 250682, doorOpen: 253591, moveMode: 253594 };
+export const $at = { quickLoadAsked: 258873, bottomMessageCleared: 258874, doorOpen: 261783, moveMode: 261786 };
 
 export async function ResolveMovement() {
   let moved: boolean = false, barrier: number = 0;
   moved = false;
-  switch (U8[141223]) {
+  switch (U8[227109]) {
     case 1: {
-      if (r16(r32(141151) + 1426) < 255) {
-        barrier = View3D.GetBarrierType(I8[145546], I8[145547], U8[145548]) & 255;
+      if (r16(r32(227037) + 1426) < 255) {
+        barrier = View3D.GetBarrierType(I8[231432], I8[231433], U8[231434]) & 255;
         switch (barrier) {
           case 1: {
             moved = true;
@@ -65,55 +65,55 @@ export async function ResolveMovement() {
         if (moved) {
           (await MovePartyForward3D());
         } else {
-          (await SoundDrv.SoundEffect(r16(132901), 16));
+          SoundDrv.SoundEffect(r16(218787), 16);
         }
-        (await CharDisp.PrintMiscInfo());
+        CharDisp.PrintMiscInfo();
       } else {
-        w16(r32(141151) + 1426, 0);
+        w16(r32(227037) + 1426, 0);
       }
       break;
     }
     case 2: case 3: case 4: {
-      if (r16(r32(141151) + 1426) < 255) {
+      if (r16(r32(227037) + 1426) < 255) {
         (await MovePartyWilderness());
-        (await CharDisp.PrintMiscInfo());
+        CharDisp.PrintMiscInfo();
       } else {
-        w16(r32(141151) + 1426, 0);
+        w16(r32(227037) + 1426, 0);
       }
       break;
     }
   }
-  Portrait.FreeAnimation(145563);
-  Blit.FreePic(145630);
-  Blit.FreePic(145636);
-  U8[145629] = 255;
-  U8[145635] = 255;
+  Portrait.FreeAnimation(231449);
+  Blit.FreePic(231516);
+  Blit.FreePic(231522);
+  U8[231515] = 255;
+  U8[231521] = 255;
 }
 
 export async function MapMainMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let done: boolean = false, c: number = 0, wild: boolean = false, $r0: number = 0;
   async function Turn(eighths: number, sound: boolean) {
-    U8[145548] = (U8[145548] + eighths) % 8;
+    U8[231434] = (U8[231434] + eighths) % 8;
     if (sound) {
-      (await SoundDrv.SoundEffect(r16(132907), 1));
+      SoundDrv.SoundEffect(r16(218793), 1);
     }
-    U8[145549] = View3D.GetWallType(I8[145546], I8[145547], U8[145548]);
-    (await View3D.Display3DMapView(I8[145546], I8[145547], U8[145548]));
+    U8[231435] = View3D.GetWallType(I8[231432], I8[231433], U8[231434]);
+    (await View3D.Display3DMapView(I8[231432], I8[231433], U8[231434]));
   }
   function MoveKey(key: number) {
     let dir: number = 0;
     for (let $i1 = 0; $i1 <= 7; $i1++) {
       dir = $i1;
-      if (U8[dir + 253718] === key) {
-        U8[145548] = dir;
+      if (U8[dir + 261910] === key) {
+        U8[231434] = dir;
         done = true;
       }
     }
   }
   async function Arrow(dir: number, eighths: number, sound: boolean, ahead: boolean) {
     if (wild) {
-      U8[145548] = dir;
+      U8[231434] = dir;
       done = true;
     } else if (ahead) {
       MoveForward();
@@ -123,35 +123,35 @@ export async function MapMainMenu() {
     }
   }
   c = 0;
-  w16(r32(141151) + 1426, 0);
+  w16(r32(227037) + 1426, 0);
   let $t2;
-  wild = ($t2 = U8[141223], ($t2 >= 2 && $t2 <= 4));
+  wild = ($t2 = U8[227109], ($t2 >= 2 && $t2 <= 4));
   if (!wild) {
     (await EndMoveMode());
   }
-  if (wild || (U8[141223] === 1)) {
-    if (wild && (U8[141222] < 2)) {
+  if (wild || (U8[227109] === 1)) {
+    if (wild && (U8[227108] < 2)) {
       (await MapTiles.LoadWildIcons());
       (await CharDisp.DisplayWildernessInterface());
     }
     done = false;
     do {
-      U8[227081] = true ? 1 : 0;
-      U8[227103] = true ? 1 : 0;
-      U8[227104] = true ? 1 : 0;
-      if ((U8[240358] !== 0)) {
+      U8[235273] = true ? 1 : 0;
+      U8[235295] = true ? 1 : 0;
+      U8[235296] = true ? 1 : 0;
+      if ((U8[248550] !== 0)) {
         (await CharDisp.SetWildView(true));
       }
-      if ((U8[253594] !== 0) && (U8[240359] !== 0)) {
-        c = (await MenuCore.MenuHorizontal(CharDisp.MiscInfoText() + " ", rS(253677), 10, 10, 15, true, false, $f0)) & 255;
-      } else if ((U8[253594] !== 0)) {
-        c = (await MenuCore.MenuHorizontal("", rS(253677), 13, 10, 15, true, false, $f0)) & 255;
+      if ((U8[261786] !== 0) && (U8[248551] !== 0)) {
+        c = (await MenuCore.MenuHorizontal(CharDisp.MiscInfoText() + " ", rS(261869), 10, 10, 15, true, false, $f0)) & 255;
+      } else if ((U8[261786] !== 0)) {
+        c = (await MenuCore.MenuHorizontal("", rS(261869), 13, 10, 15, true, false, $f0)) & 255;
       } else if (wild) {
-        c = (await MenuCore.MenuHorizontal("", rS(253636), 13, 10, 15, true, false, $f0)) & 255;
+        c = (await MenuCore.MenuHorizontal("", rS(261828), 13, 10, 15, true, false, $f0)) & 255;
       } else {
-        c = (await MenuCore.MenuHorizontal("", rS(253595), 13, 10, 15, true, false, $f0)) & 255;
+        c = (await MenuCore.MenuHorizontal("", rS(261787), 13, 10, 15, true, false, $f0)) & 255;
       }
-      if (!(U8[$f0] !== 0) && (U8[253594] !== 0)) {
+      if (!(U8[$f0] !== 0) && (U8[261786] !== 0)) {
         if (c === 0 || c === 69) {
           (await CharDisp.SetWildView(false));
           (await EndMoveMode());
@@ -160,15 +160,15 @@ export async function MapMainMenu() {
         switch (c) {
           case 77: {
             if (wild) {
-              U8[253594] = true ? 1 : 0;
-              U8[240358] = true ? 1 : 0;
+              U8[261786] = true ? 1 : 0;
+              U8[248550] = true ? 1 : 0;
             }
             break;
           }
           case 65: {
-            if (JrnlSeen.AreaMapAllowed() || (U8[141208] !== 0)) {
-              U8[145545] = !(U8[145545] !== 0) ? 1 : 0;
-              (await View3D.Display3DMapView(I8[145546], I8[145547], U8[145548]));
+            if (JrnlSeen.AreaMapAllowed() || (U8[227094] !== 0)) {
+              U8[231431] = !(U8[231431] !== 0) ? 1 : 0;
+              (await View3D.Display3DMapView(I8[231432], I8[231433], U8[231434]));
             } else {
               (await TextRend.PrintAndPause("Not Here", 14));
             }
@@ -191,19 +191,19 @@ export async function MapMainMenu() {
             break;
           }
           case 83: {
-            w16(r32(141151) + 1428, r16(r32(141151) + 1428) ^ 1);
+            w16(r32(227037) + 1428, r16(r32(227037) + 1428) ^ 1);
             break;
           }
           case 76: {
-            w16(r32(141151) + 1428, r16(r32(141151) + 1428) | 2);
+            w16(r32(227037) + 1428, r16(r32(227037) + 1428) | 2);
             (await FxEngine.AdvanceTime(1, 2));
-            w16(141174, r16(141166));
+            w16(227060, r16(227052));
             done = true;
             break;
           }
         }
       } else if (!(await SideScreen(c, true, wild))) {
-        if (((U8[253594] !== 0) && (c !== 63)) && (c !== 66)) {
+        if (((U8[261786] !== 0) && (c !== 63)) && (c !== 66)) {
           MoveKey(c);
         } else {
           switch (c) {
@@ -233,18 +233,18 @@ export async function MapMainMenu() {
             }
             default: {
               Party.SelectPrevNextChar(c);
-              (await CharDisp.DisplayParty(r32(143749)));
+              CharDisp.DisplayParty(r32(229635));
             }
           }
         }
       }
-      (await CharDisp.PrintMiscInfo());
+      CharDisp.PrintMiscInfo();
     } while (!(done));
   }
-  U8[141222] = U8[141223];
-  if (U8[250682] === 0) {
-    (await Border.ClearBox(1, 17, 38, 22));
-    U8[250682] = 1;
+  U8[227108] = U8[227109];
+  if (U8[258874] === 0) {
+    Border.ClearBox(1, 17, 38, 22);
+    U8[258874] = 1;
   }
   $r0 = c;
   S.sp = $sp;
@@ -267,11 +267,11 @@ export async function SideScreen(c: number, quickKeys: boolean, wild: boolean) {
       break;
     }
     case 62: {
-      shown = U8[141189] !== 0;
+      shown = U8[227075] !== 0;
       break;
     }
     case 64: {
-      shown = U8[141198] !== 0;
+      shown = U8[227084] !== 0;
       break;
     }
     default: {
@@ -306,7 +306,7 @@ export async function SideScreen(c: number, quickKeys: boolean, wild: boolean) {
       break;
     }
   }
-  if (U8[141221] !== 0) {
+  if (U8[227107] !== 0) {
     (await EndMoveMode());
   }
   if (wild) {
@@ -322,7 +322,7 @@ export function FindKnockCaster(caster: number, scroll: number) {
   let p: number = 0, $r0: boolean = false;
   w32(scroll, 0);
   w32(caster, FindCharWithSpell(31));
-  p = r32(143753);
+  p = r32(229639);
   while ((r32(caster) === 0) && (p !== 0)) {
     if ((U8[p + 268] === 0) && CharHlp.CanUseItems(p)) {
       Magic.FindScrollCopies(p, 31, $f0, scroll);
@@ -338,7 +338,7 @@ export function FindKnockCaster(caster: number, scroll: number) {
 }
 
 export async function ResetGame() {
-  rt.fill(253591, 3, 1);
+  rt.fill(261783, 3, 1);
   (await EndMoveMode());
 }
 
@@ -348,19 +348,19 @@ export function ChangeBarrierImpassable(x: number, y: number, facing: number) {
   }
   switch (facing) {
     case 6: {
-      U8[r32(145541) + y * 16 + x + 768] = U8[r32(145541) + y * 16 + x + 768] & 63;
+      U8[r32(231427) + y * 16 + x + 768] = U8[r32(231427) + y * 16 + x + 768] & 63;
       break;
     }
     case 4: {
-      U8[r32(145541) + y * 16 + x + 768] = U8[r32(145541) + y * 16 + x + 768] & 207;
+      U8[r32(231427) + y * 16 + x + 768] = U8[r32(231427) + y * 16 + x + 768] & 207;
       break;
     }
     case 2: {
-      U8[r32(145541) + y * 16 + x + 768] = U8[r32(145541) + y * 16 + x + 768] & 243;
+      U8[r32(231427) + y * 16 + x + 768] = U8[r32(231427) + y * 16 + x + 768] & 243;
       break;
     }
     case 0: {
-      U8[r32(145541) + y * 16 + x + 768] = U8[r32(145541) + y * 16 + x + 768] & 252;
+      U8[r32(231427) + y * 16 + x + 768] = U8[r32(231427) + y * 16 + x + 768] & 252;
       break;
     }
   }
@@ -372,33 +372,33 @@ export function ChangeBarrierPassable(x: number, y: number, facing: number) {
   }
   switch (facing) {
     case 6: {
-      U8[r32(145541) + y * 16 + x + 768] = (U8[r32(145541) + y * 16 + x + 768] & 63) | 64;
+      U8[r32(231427) + y * 16 + x + 768] = (U8[r32(231427) + y * 16 + x + 768] & 63) | 64;
       break;
     }
     case 4: {
-      U8[r32(145541) + y * 16 + x + 768] = (U8[r32(145541) + y * 16 + x + 768] & 207) | 16;
+      U8[r32(231427) + y * 16 + x + 768] = (U8[r32(231427) + y * 16 + x + 768] & 207) | 16;
       break;
     }
     case 2: {
-      U8[r32(145541) + y * 16 + x + 768] = (U8[r32(145541) + y * 16 + x + 768] & 243) | 4;
+      U8[r32(231427) + y * 16 + x + 768] = (U8[r32(231427) + y * 16 + x + 768] & 243) | 4;
       break;
     }
     case 0: {
-      U8[r32(145541) + y * 16 + x + 768] = (U8[r32(145541) + y * 16 + x + 768] & 252) | 1;
+      U8[r32(231427) + y * 16 + x + 768] = (U8[r32(231427) + y * 16 + x + 768] & 252) | 1;
       break;
     }
   }
 }
 
 export function OpenBarrierAhead() {
-  ChangeBarrierPassable(I8[145546], I8[145547], U8[145548]);
-  ChangeBarrierPassable(I8[145546] + I8[U8[145548] + 132927], I8[145547] + I8[U8[145548] + 132936], (U8[145548] + 4) % 8);
+  ChangeBarrierPassable(I8[231432], I8[231433], U8[231434]);
+  ChangeBarrierPassable(I8[231432] + I8[U8[231434] + 218813], I8[231433] + I8[U8[231434] + 218822], (U8[231434] + 4) % 8);
 }
 
 export function PartyHasClass(idx: number) {
   let p: number = 0, found: boolean = false, $r0: boolean = false;
   found = false;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !found) {
     if (CharHlp.GetClassLevel(p, 1 << idx) > 0) {
       found = true;
@@ -412,12 +412,12 @@ export function PartyHasClass(idx: number) {
 export function BashDoor() {
   let p: number = 0, success: boolean = false, $r0: boolean = false;
   success = false;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !success) {
     if (U8[p + 268] === 0) {
       {
         const $w2 = p;
-        if (View3D.GetBarrierType(I8[145546], I8[145547], U8[145548]) === 3) {
+        if (View3D.GetBarrierType(I8[231432], I8[231433], U8[231434]) === 3) {
           const $c3 = U8[$w2 + 16];
           if ($c3 === 18) {
             const $c4 = U8[$w2 + 22];
@@ -430,7 +430,7 @@ export function BashDoor() {
                 success = true;
               }
             } else {
-              U8[253591] = 0;
+              U8[261783] = 0;
             }
           } else if ($c3 === 19 || $c3 === 20) {
             if (Dice.RollDice(1, 6) <= 3) {
@@ -453,7 +453,7 @@ export function BashDoor() {
               success = true;
             }
           } else {
-            U8[253591] = 0;
+            U8[261783] = 0;
           }
         } else {
           const $c5 = U8[$w2 + 16];
@@ -520,7 +520,7 @@ export function BashDoor() {
 export function PickLock() {
   let p: number = 0, success: boolean = false, $r0: boolean = false;
   success = false;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !success) {
     {
       const $w2 = p;
@@ -530,7 +530,7 @@ export function PickLock() {
     }
     p = r32(p + 260);
   }
-  U8[253592] = 0;
+  U8[261784] = 0;
   if (success) {
     OpenBarrierAhead();
   }
@@ -554,7 +554,7 @@ export function FindMemorizedSpell(spellId: number, creature: number) {
 
 export function FindCharWithSpell(spellId: number) {
   let p: number = 0, $r0: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && ((U8[p + 268] !== 0) || (FindMemorizedSpell(spellId, p) === 255))) {
     p = r32(p + 260);
   }
@@ -581,43 +581,43 @@ export async function PartyCastsKnock() {
 
 export function MoveForward() {
   let nx: number = 0, ny: number = 0, f: number = 0;
-  nx = I8[145546];
-  ny = I8[145547];
-  f = U8[145548];
-  w16(r32(141151) + 1450, 0);
+  nx = I8[231432];
+  ny = I8[231433];
+  f = U8[231434];
+  w16(r32(227037) + 1450, 0);
   if (View3D.GetBarrierType(nx, ny, f) !== 0) {
-    nx = (nx + I8[f + 132927]) << 16 >> 16;
-    ny = (ny + I8[f + 132936]) << 16 >> 16;
+    nx = (nx + I8[f + 218813]) << 16 >> 16;
+    ny = (ny + I8[f + 218822]) << 16 >> 16;
     if (nx > 15) {
-      U8[145546] = 15;
-      w16(r32(141151) + 1450, 1);
+      U8[231432] = 15;
+      w16(r32(227037) + 1450, 1);
     }
     if (nx < 0) {
-      U8[145546] = 0;
-      w16(r32(141151) + 1450, 1);
+      U8[231432] = 0;
+      w16(r32(227037) + 1450, 1);
     }
     if (ny > 15) {
-      U8[145547] = 15;
-      w16(r32(141151) + 1450, 1);
+      U8[231433] = 15;
+      w16(r32(227037) + 1450, 1);
     }
     if (ny < 0) {
-      U8[145547] = 0;
-      w16(r32(141151) + 1450, 1);
+      U8[231433] = 0;
+      w16(r32(227037) + 1450, 1);
     }
   }
 }
 
 export async function MovePartyForward3D() {
-  if (!(U8[141145] !== 0)) {
-    (await SoundDrv.SoundEffect(r16(132907), 1));
+  if (!(U8[227031] !== 0)) {
+    SoundDrv.SoundEffect(r16(218793), 1);
   }
-  U8[145546] = I8[145546] + I8[U8[145548] + 132927];
-  U8[145547] = I8[145547] + I8[U8[145548] + 132936];
-  View3D.WrapCoords(145546, 145547);
-  U8[145549] = View3D.GetWallType(I8[145546], I8[145547], U8[145548]);
-  rt.fill(253591, 3, 1);
-  U8[145550] = View3D.GetMapEvent(I8[145546], I8[145547]);
-  if ((r16(r32(141151) + 1428) & 1) > 0) {
+  U8[231432] = I8[231432] + I8[U8[231434] + 218813];
+  U8[231433] = I8[231433] + I8[U8[231434] + 218822];
+  View3D.WrapCoords(231432, 231433);
+  U8[231435] = View3D.GetWallType(I8[231432], I8[231433], U8[231434]);
+  rt.fill(261783, 3, 1);
+  U8[231436] = View3D.GetMapEvent(I8[231432], I8[231433]);
+  if ((r16(r32(227037) + 1428) & 1) > 0) {
     (await FxEngine.AdvanceTime(1, 2));
   } else {
     (await FxEngine.AdvanceTime(1, 1));
@@ -625,19 +625,19 @@ export async function MovePartyForward3D() {
 }
 
 export async function EndMoveMode() {
-  U8[253594] = false ? 1 : 0;
-  U8[240358] = false ? 1 : 0;
+  U8[261786] = false ? 1 : 0;
+  U8[248550] = false ? 1 : 0;
   (await Wilds.ShowWide(false));
 }
 
 export async function MovePartyWilderness() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let diagonal: boolean = false;
-  switch (Wilds.StepTo(r16(r32(141147) + 390), r16(r32(141147) + 392), U8[145548], U8[U8[141223] + 140166], r16(r32(141147) + 836) === 0, $f0, $f0 + 1)) {
+  switch (Wilds.StepTo(r16(r32(227033) + 390), r16(r32(227033) + 392), U8[231434], U8[U8[227109] + 226052], r16(r32(227033) + 836) === 0, $f0, $f0 + 1)) {
     case 0: {
-      diagonal = (I8[$f0] !== r16(r32(141147) + 390)) && (I8[$f0 + 1] !== r16(r32(141147) + 392));
-      w16(r32(141147) + 390, I8[$f0]);
-      w16(r32(141147) + 392, I8[$f0 + 1]);
+      diagonal = (I8[$f0] !== r16(r32(227033) + 390)) && (I8[$f0 + 1] !== r16(r32(227033) + 392));
+      w16(r32(227033) + 390, I8[$f0]);
+      w16(r32(227033) + 392, I8[$f0 + 1]);
       if (diagonal) {
         (await FxEngine.AdvanceTime(18, 3));
       } else {
@@ -657,7 +657,7 @@ export async function AskQuickLoad() {
   let $r0: boolean = false;
   $r0 = SaveLoad.QuickLoadable();
   if (SaveLoad.QuickLoadable()) {
-    U8[250681] = true ? 1 : 0;
+    U8[258873] = true ? 1 : 0;
     (await EndMoveMode());
   } else {
     (await TextRend.DisplayAndPause(14, "There is no quick save."));
@@ -671,18 +671,18 @@ export async function DoorMenu(barred: boolean) {
   let $r0: boolean = false;
   $r0 = false;
   wS($f0, 40, "");
-  if (U8[253591] !== 0) {
+  if (U8[261783] !== 0) {
     wS($f0, 40, "Bash");
   }
-  if ((U8[253592] !== 0) && PartyHasClass(6)) {
+  if ((U8[261784] !== 0) && PartyHasClass(6)) {
     wS($f0, 40, rS($f0) + " Pick");
   }
-  if ((U8[253593] !== 0) && FindKnockCaster($f0 + 42, $f0 + 46)) {
+  if ((U8[261785] !== 0) && FindKnockCaster($f0 + 42, $f0 + 46)) {
     wS($f0, 40, rS($f0) + " Knock");
   }
   wS($f0, 40, rS($f0) + " Exit");
   if (rS($f0) === " Exit") {
-    ChangeBarrierImpassable(I8[145546], I8[145547], U8[145548]);
+    ChangeBarrierImpassable(I8[231432], I8[231433], U8[231434]);
   } else {
     switch ((await MenuCore.MenuHorizontal("Locked. ", rS($f0), 13, 10, 15, false, false, $f0 + 41))) {
       case 66: {
@@ -691,7 +691,7 @@ export async function DoorMenu(barred: boolean) {
       }
       case 80: {
         if (barred) {
-          U8[253592] = 0;
+          U8[261784] = 0;
         } else {
           $r0 = PickLock();
         }
@@ -708,7 +708,7 @@ export async function DoorMenu(barred: boolean) {
 }
 
 export function $init() {
-  U8[250681] = false ? 1 : 0;
-  U8[250682] = 0;
-  U8[253594] = false ? 1 : 0;
+  U8[258873] = false ? 1 : 0;
+  U8[258874] = 0;
+  U8[261786] = false ? 1 : 0;
 }

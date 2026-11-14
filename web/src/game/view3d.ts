@@ -14,13 +14,13 @@ import * as StrUtil from './strutil';
 import * as Explored from './explored';
 
 
-export const $at = { wallGfx: 238097, skyCeilingColor: 238101, ceilingBandColor: 238102, midBandColor: 238103, floorBandColor: 238104, viewSlotGeom: 240288 };
+export const $at = { wallGfx: 246289, skyCeilingColor: 246293, ceilingBandColor: 246294, midBandColor: 246295, floorBandColor: 246296, viewSlotGeom: 248480 };
 
 export function SetView3DColors(cSky: number, cHorz1: number, cHorz2: number, cFloor: number) {
-  U8[238101] = cSky;
-  U8[238102] = cHorz1;
-  U8[238103] = cHorz2;
-  U8[238104] = cFloor;
+  U8[246293] = cSky;
+  U8[246294] = cHorz1;
+  U8[246295] = cHorz2;
+  U8[246296] = cFloor;
 }
 
 export function GetWallType(x: number, y: number, facing: number) {
@@ -32,19 +32,19 @@ export function GetWallType(x: number, y: number, facing: number) {
   if (MapSquare($f0, $f0 + 1)) {
     switch (facing) {
       case 0: {
-        $r0 = (U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0]] & 240) >>> 4;
+        $r0 = (U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0]] & 240) >>> 4;
         break;
       }
       case 2: {
-        $r0 = U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0]] & 15;
+        $r0 = U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0]] & 15;
         break;
       }
       case 4: {
-        $r0 = (U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 256] & 240) >>> 4;
+        $r0 = (U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 256] & 240) >>> 4;
         break;
       }
       case 6: {
-        $r0 = U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 256] & 15;
+        $r0 = U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 256] & 15;
         break;
       }
     }
@@ -65,19 +65,19 @@ export function GetBarrierType(x: number, y: number, facing: number) {
     if (GetWallType(I8[$f0], I8[$f0 + 1], facing) > 0) {
       switch (facing) {
         case 6: {
-          b = (U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 192) >>> 6;
+          b = (U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 192) >>> 6;
           break;
         }
         case 4: {
-          b = (U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 48) >>> 4;
+          b = (U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 48) >>> 4;
           break;
         }
         case 2: {
-          b = (U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 12) >>> 2;
+          b = (U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 12) >>> 2;
           break;
         }
         case 0: {
-          b = U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 3;
+          b = U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 768] & 3;
           break;
         }
       }
@@ -94,7 +94,7 @@ export function GetMapEvent(x: number, y: number) {
   U8[$f0 + 1] = y;
   let $r0: number = 0;
   if (MapSquare($f0, $f0 + 1)) {
-    $r0 = U8[r32(145541) + I8[$f0 + 1] * 16 + I8[$f0] + 512];
+    $r0 = U8[r32(231427) + I8[$f0 + 1] * 16 + I8[$f0] + 512];
   } else {
     $r0 = 0;
   }
@@ -118,20 +118,20 @@ export async function Display3DMapView(x: number, y: number, facing: number) {
       }
       if (wallFront !== 0) {
         if (prevWall > 0) {
-          (await DrawWallSlice((ri16(240336) + symOfs) + corner, ri16(240356), prevWall, 9));
+          (await DrawWallSlice((ri16(248528) + symOfs) + corner, ri16(248548), prevWall, 9));
         }
         prevWall = wallFront;
-        (await DrawWallSlice(ri16(240318) + symOfs, ri16(240338), wallFront, 0));
+        (await DrawWallSlice(ri16(248510) + symOfs, ri16(248530), wallFront, 0));
       } else {
-        if ((prevWall > 0) && (GetWallType(wx - I8[walk + 132927], wy - I8[walk + 132936], walk) !== 0)) {
-          (await DrawWallSlice((ri16(240336) + symOfs) + corner, ri16(240356), prevWall, 9));
+        if ((prevWall > 0) && (GetWallType(wx - I8[walk + 218813], wy - I8[walk + 218822], walk) !== 0)) {
+          (await DrawWallSlice((ri16(248528) + symOfs) + corner, ri16(248548), prevWall, 9));
         }
         prevWall = 0;
       }
       side = (side + 1) & 255;
       symOfs = (symOfs + step) << 16 >> 16;
-      wx = (wx + I8[walk + 132927]) << 16 >> 16;
-      wy = (wy + I8[walk + 132936]) << 16 >> 16;
+      wx = (wx + I8[walk + 218813]) << 16 >> 16;
+      wy = (wy + I8[walk + 218822]) << 16 >> 16;
     }
   }
   async function FarSides(dir: number, slot: number, step: number, adjust: number) {
@@ -144,15 +144,15 @@ export async function Display3DMapView(x: number, y: number, facing: number) {
       wallSide = GetWallType(wx, wy, dir) & 255;
       if (wallSide !== 0) {
         if (side === 0) {
-          (await DrawWallSlice(ri16(slot * 2 + 240318) + symOfs, ri16(slot * 2 + 240338), wallSide, slot));
+          (await DrawWallSlice(ri16(slot * 2 + 248510) + symOfs, ri16(slot * 2 + 248530), wallSide, slot));
         } else {
-          (await DrawWallSlice((ri16(slot * 2 + 240318) + symOfs) + adjust, ri16(slot * 2 + 240338), wallSide, slot));
+          (await DrawWallSlice((ri16(slot * 2 + 248510) + symOfs) + adjust, ri16(slot * 2 + 248530), wallSide, slot));
         }
       }
       side = (side + 1) & 255;
       symOfs = (symOfs + step) << 16 >> 16;
-      wx = (wx + I8[dir + 132927]) << 16 >> 16;
-      wy = (wy + I8[dir + 132936]) << 16 >> 16;
+      wx = (wx + I8[dir + 218813]) << 16 >> 16;
+      wy = (wy + I8[dir + 218822]) << 16 >> 16;
     }
   }
   async function FrontsAndSides(start: number, cells: number, count: number, symStart: number, symStep: number, frontSlot: number, sideDir: number, sideSlot: number, scan: number) {
@@ -161,38 +161,38 @@ export async function Display3DMapView(x: number, y: number, facing: number) {
     wy = cyPos;
     for (let $i3 = 1, $e3 = cells; $i3 <= $e3; $i3++) {
       side = $i3;
-      wx = (wx + I8[start + 132927]) << 16 >> 16;
-      wy = (wy + I8[start + 132936]) << 16 >> 16;
+      wx = (wx + I8[start + 218813]) << 16 >> 16;
+      wy = (wy + I8[start + 218822]) << 16 >> 16;
     }
     side = 0;
     symOfs = symStart;
     while (side < count) {
       wallFront = GetWallType(wx, wy, facing) & 255;
       if (wallFront !== 0) {
-        (await DrawWallSlice(ri16(frontSlot * 2 + 240318) + symOfs, ri16(frontSlot * 2 + 240338), wallFront, frontSlot));
+        (await DrawWallSlice(ri16(frontSlot * 2 + 248510) + symOfs, ri16(frontSlot * 2 + 248530), wallFront, frontSlot));
       }
       wallSide = GetWallType(wx, wy, sideDir) & 255;
       if (wallSide !== 0) {
-        (await DrawWallSlice(ri16(sideSlot * 2 + 240318) + symOfs, ri16(sideSlot * 2 + 240338), wallSide, sideSlot));
+        (await DrawWallSlice(ri16(sideSlot * 2 + 248510) + symOfs, ri16(sideSlot * 2 + 248530), wallSide, sideSlot));
       }
       side = (side + 1) & 255;
       symOfs = (symOfs + symStep) << 16 >> 16;
-      wx = (wx + I8[scan + 132927]) << 16 >> 16;
-      wy = (wy + I8[scan + 132936]) << 16 >> 16;
+      wx = (wx + I8[scan + 218813]) << 16 >> 16;
+      wy = (wy + I8[scan + 218822]) << 16 >> 16;
     }
   }
   Explored.Mark(x, y);
-  if ((U8[145545] !== 0)) {
+  if ((U8[231431] !== 0)) {
     (await DrawAutoMap(x, y, facing));
   } else {
-    (await DrawBackdrop());
+    DrawBackdrop();
     fL = (facing + 6) % 8;
     fB = (facing + 4) % 8;
     fR = (facing + 2) % 8;
     cxPos = x;
     cyPos = y;
-    dxF = I8[facing + 132927];
-    dyF = I8[facing + 132936];
+    dxF = I8[facing + 218813];
+    dyF = I8[facing + 218822];
     dist = 2;
     cxPos = (cxPos + (dist * dxF)) << 16 >> 16;
     cyPos = (cyPos + (dist * dyF)) << 16 >> 16;
@@ -216,11 +216,11 @@ export async function Display3DMapView(x: number, y: number, facing: number) {
           break;
         }
       }
-      cxPos = (cxPos + I8[fB + 132927]) << 16 >> 16;
-      cyPos = (cyPos + I8[fB + 132936]) << 16 >> 16;
+      cxPos = (cxPos + I8[fB + 218813]) << 16 >> 16;
+      cyPos = (cyPos + I8[fB + 218822]) << 16 >> 16;
       dist = (dist - 1) & 255;
     } while (!(dist === 255));
-    (await DisplayViewBuf());
+    DisplayViewBuf();
   }
 }
 
@@ -230,15 +230,15 @@ export async function LoadWallSet(fileId: number, wsSlot: number) {
   if ((wsSlot < 1) || (wsSlot > 3)) {
     { S.sp = $sp; return; }
   }
-  (await DaxIo.LoadDax("WALLDEF" + StrUtil.NumStr(U8[143234]), ".dax", fileId, $f0, $f0 + 2));
+  (await DaxIo.LoadDax("WALLDEF" + StrUtil.NumStr(U8[229120]), ".dax", fileId, $f0, $f0 + 2));
   if ((((r16($f0) === 0) || ((r16($f0) % 780) !== 0)) || ((Math.trunc(r16($f0) / 780) + wsSlot) > 4)) || ((r16($f0) > 780) && (fileId > 25))) {
     (await GameIo.FatalError("Unable to load wallset in LoadWallSet."));
   }
-  symOfs = (r16(wsSlot * 2 + 132917) - r16(132919)) & 65535;
+  symOfs = (r16(wsSlot * 2 + 218803) - r16(218805)) & 65535;
   offset = 0;
   i = 1;
   do {
-    mv(r32(238097) + ((5 * ((wsSlot + i) - 2)) + 1) * 156 - 156, r32($f0 + 2) + offset, 780);
+    mv(r32(246289) + ((5 * ((wsSlot + i) - 2)) + 1) * 156 - 156, r32($f0 + 2) + offset, 780);
     offset = (offset + 780) & 65535;
     i = (i + 1) & 65535;
   } while (!(offset >= r16($f0)));
@@ -248,15 +248,15 @@ export async function LoadWallSet(fileId: number, wsSlot: number) {
     i = $i2;
     let $t3;
     if (($t3 = (wsSlot + i) - 1, ($t3 >= 1 && $t3 <= 3))) {
-      w16(((wsSlot + i) - 1) * 4 + 145547, -1);
-      w16(((wsSlot + i) - 1) * 4 + 145549, -1);
+      w16(((wsSlot + i) - 1) * 4 + 231433, -1);
+      w16(((wsSlot + i) - 1) * 4 + 231435, -1);
       for (let $i4 = 1; $i4 <= 5; $i4++) {
         row = $i4;
         for (let $i5 = 0; $i5 <= 155; $i5++) {
           col = $i5;
-          if (U8[r32(238097) + ((5 * ((wsSlot + i) - 2)) + row) * 156 + col - 156] >= r16(132919)) {
+          if (U8[r32(246289) + ((5 * ((wsSlot + i) - 2)) + row) * 156 + col - 156] >= r16(218805)) {
             let $t6;
-            $t6 = r32(238097) + ((5 * ((wsSlot + i) - 2)) + row) * 156 + col - 156, U8[$t6] = U8[$t6] + symOfs;
+            $t6 = r32(246289) + ((5 * ((wsSlot + i) - 2)) + row) * 156 + col - 156, U8[$t6] = U8[$t6] + symOfs;
           }
         }
       }
@@ -272,28 +272,28 @@ export async function LoadWallSet(fileId: number, wsSlot: number) {
       }
     }
   }
-  w16(wsSlot * 4 + 145547, fileId);
-  w16(wsSlot * 4 + 145549, wsSlot);
+  w16(wsSlot * 4 + 231433, fileId);
+  w16(wsSlot * 4 + 231435, wsSlot);
   S.sp = $sp;
 }
 
 export async function Load3DMap(mapId: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 6);
   let offset: number = 0;
-  (await DaxIo.LoadDax("GEO" + StrUtil.NumStr(U8[143234]), ".dax", mapId, $f0, $f0 + 2));
+  (await DaxIo.LoadDax("GEO" + StrUtil.NumStr(U8[229120]), ".dax", mapId, $f0, $f0 + 2));
   if ((r16($f0) === 0) || (r16($f0) !== 1026)) {
     (await GameIo.FatalError("Unable to load geo in Load3DMap."));
   }
   offset = 2;
-  mv(r32(145541), r32($f0 + 2) + offset, 256);
+  mv(r32(231427), r32($f0 + 2) + offset, 256);
   offset = (offset + 256) & 65535;
-  mv(r32(145541) + 256, r32($f0 + 2) + offset, 256);
+  mv(r32(231427) + 256, r32($f0 + 2) + offset, 256);
   offset = (offset + 256) & 65535;
-  mv(r32(145541) + 512, r32($f0 + 2) + offset, 256);
+  mv(r32(231427) + 512, r32($f0 + 2) + offset, 256);
   offset = (offset + 256) & 65535;
-  mv(r32(145541) + 768, r32($f0 + 2) + offset, 256);
+  mv(r32(231427) + 768, r32($f0 + 2) + offset, 256);
   rt.freeMem(r32($f0 + 2));
-  w16(r32(141147) + 394, mapId);
+  w16(r32(227033) + 394, mapId);
   S.sp = $sp;
 }
 
@@ -302,8 +302,8 @@ export function WrapCoords(x: number, y: number) {
   U8[y] = I8[y] & 15;
 }
 
-export async function DisplayViewBuf() {
-  (await Blit.FlushView());
+export function DisplayViewBuf() {
+  Blit.FlushView();
 }
 
 export async function DrawAutoMap(x: number, y: number, facing: number) {
@@ -347,27 +347,27 @@ export async function DrawAutoMap(x: number, y: number, facing: number) {
     }
   }
   (await Sym8x8.Put8x8Sym((pwx + 3) - 1, (pwy + 3) - 1, Math.trunc(facing / 2) + 256, true, false));
-  (await DisplayViewBuf());
+  DisplayViewBuf();
 }
 
-export async function DrawBackdrop() {
-  (await Blit.FillPicRect(2, 16, 11, 43, U8[238101], 132845, r32(141249)));
-  (await Blit.FillPicRect(2, 59, 11, 1, U8[238102], 132845, r32(141249)));
-  (await Blit.FillPicRect(2, 60, 11, 2, U8[238103], 132845, r32(141249)));
-  (await Blit.FillPicRect(2, 62, 11, 42, U8[238104], 132845, r32(141249)));
+export function DrawBackdrop() {
+  Blit.FillPicRect(2, 16, 11, 43, U8[246293], 218731, r32(227135));
+  Blit.FillPicRect(2, 59, 11, 1, U8[246294], 218731, r32(227135));
+  Blit.FillPicRect(2, 60, 11, 2, U8[246295], 218731, r32(227135));
+  Blit.FillPicRect(2, 62, 11, 42, U8[246296], 218731, r32(227135));
 }
 
 export async function DrawWallSlice(x: number, y: number, wallType: number, slot: number) {
   let colLim: number = 0, rowLim: number = 0, col: number = 0, row: number = 0, cnt: number = 0;
-  cnt = U8[slot + 240288];
-  colLim = (U8[slot + 240298] + x) - 1;
-  rowLim = (U8[slot + 240308] + y) - 1;
+  cnt = U8[slot + 248480];
+  colLim = (U8[slot + 248490] + x) - 1;
+  rowLim = (U8[slot + 248500] + y) - 1;
   for (let $i1 = y, $e1 = rowLim; $i1 <= $e1; $i1++) {
     row = $i1;
     for (let $i2 = x, $e2 = colLim; $i2 <= $e2; $i2++) {
       col = $i2;
-      if (((((row >= 0) && (row <= 10)) && (col >= 0)) && (col <= 10)) && (U8[r32(238097) + wallType * 156 + cnt - 156] > 0)) {
-        (await Sym8x8.Put8x8Sym((col + 3) - 1, (row + 3) - 1, U8[r32(238097) + wallType * 156 + cnt - 156], true, true));
+      if (((((row >= 0) && (row <= 10)) && (col >= 0)) && (col <= 10)) && (U8[r32(246289) + wallType * 156 + cnt - 156] > 0)) {
+        (await Sym8x8.Put8x8Sym((col + 3) - 1, (row + 3) - 1, U8[r32(246289) + wallType * 156 + cnt - 156], true, true));
       }
       cnt = (cnt + 1) & 255;
     }
@@ -376,15 +376,15 @@ export async function DrawWallSlice(x: number, y: number, wallType: number, slot
 
 export function MapSquare(x: number, y: number) {
   let $r0: boolean = false;
-  $r0 = Types.OnMap(I8[x], I8[y]) || ((U8[146747] !== 0) && (U8[146747] !== 10));
+  $r0 = Types.OnMap(I8[x], I8[y]) || ((U8[232633] !== 0) && (U8[232633] !== 10));
   WrapCoords(x, y);
   return $r0;
 }
 
 export function $init() {
-  w32(238097, 0);
-  U8[238101] = 0;
-  U8[238102] = 0;
-  U8[238103] = 0;
-  U8[238104] = 0;
+  w32(246289, 0);
+  U8[246293] = 0;
+  U8[246294] = 0;
+  U8[246295] = 0;
+  U8[246296] = 0;
 }

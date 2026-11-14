@@ -30,18 +30,18 @@ import * as StrUtil from './strutil';
 import * as ViewChar from './viewchar';
 
 
-export const $at = { rules: 249850 };
+export const $at = { rules: 258042 };
 
 export async function TempleMainMenu(mode: number) {
   let i: number = 0;
-  TempleRules(249850);
+  TempleRules(258042);
   for (let $i1 = 0; $i1 <= 11; $i1++) {
     i = $i1;
-    if (ri32(i * 4 + 249850) > 0) {
-      w32(i * 4 + 249850, MoneyCal.TemplePrice(ri32(i * 4 + 249850), mode));
+    if (ri32(i * 4 + 258042) > 0) {
+      w32(i * 4 + 258042, MoneyCal.TemplePrice(ri32(i * 4 + 258042), mode));
     }
   }
-  (await Shop.CounterMenu(true, 21));
+  (await Shop.CounterMenu(true, 22));
 }
 
 export async function HealMenu() {
@@ -51,7 +51,7 @@ export async function HealMenu() {
   count = 0;
   for (let $i1 = 0; $i1 <= 11; $i1++) {
     i = $i1;
-    if (TownCore.Offers(249850, i)) {
+    if (TownCore.Offers(258042, i)) {
       U8[$f0 + count + 8] = i;
       count = (count + 1) & 255;
     }
@@ -75,16 +75,16 @@ export async function HealMenu() {
   w16($f0 + 21, 0);
   do {
     if (frame) {
-      (await TextRend.ClearRect(0, 24, 39, 24));
+      TextRend.ClearRect(0, 24, 39, 24);
       U8[$f0 + 20] = true ? 1 : 0;
       (await Border.DrawWindow(1, 1, 38, 22, 0, 15, ""));
       (await Border.DrawWindow(1, 1, 38, 1, 0, 15, ""));
       frame = false;
     }
-    wS($f0 + 23, 40, rS(r32(143749)) + ", how can we help you?");
+    wS($f0 + 23, 40, rS(r32(229635)) + ", how can we help you?");
     TextRend.DisplayString(1, 1, 15, rS($f0 + 23));
     (await Border.DrawWindow(1, 17, 38, 22, 0, 15, ""));
-    U8[227105] = true ? 1 : 0;
+    U8[235297] = true ? 1 : 0;
     c = (await MenuCore.MenuVertical("", "Heal Repair Exit", 13, 10, 15, 2, 3, 38, 15, r32($f0), false, $f0 + 20, $f0 + 21, $f0 + 4)) & 255;
     switch (c) {
       case 72: case 13: {
@@ -111,9 +111,9 @@ export async function HealMenu() {
     }
   } while (!(done));
   MenuCore.FreeStringList($f0);
-  (await TextRend.ClearRect(0, 0, 39, 24));
+  TextRend.ClearRect(0, 0, 39, 24);
   (await CharDisp.DisplayNoncombatInterface());
-  (await CharDisp.DisplayParty(r32(143749)));
+  CharDisp.DisplayParty(r32(229635));
   S.sp = $sp;
 }
 
@@ -166,7 +166,7 @@ export function CanonRace(race: number) {
 export function Look(c: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let cr: number = 0, item: number = 0, i: number = 0;
-  cr = r32(143749);
+  cr = r32(229635);
   U8[c] = U8[cr + 268];
   w16(c + 1, U8[cr + 283]);
   w16(c + 3, U8[cr + 50]);
@@ -218,9 +218,9 @@ export function Look(c: number) {
 
 export async function Ask(msg: string) {
   let $r0: boolean = false;
-  (await CharDisp.PrintNameString(r32(143749), msg, 0, false));
+  (await CharDisp.PrintNameString(r32(229635), msg, 0, false));
   $r0 = (await MenuCore.YesNoMenu("cast cure anyway: ", 13, 10, 15)) === 89;
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   return $r0;
 }
 
@@ -229,21 +229,21 @@ export async function Pay(quote: string, cost: number) {
   (await TextRend.ShowMessage(10, true, quote));
   $r0 = false;
   if ((await MenuCore.YesNoMenu("pay for cure ", 13, 15, 10)) === 89) {
-    $r0 = (await Money.PayGold(r32(143749), cost));
+    $r0 = (await Money.PayGold(r32(229635), cost));
   }
   return $r0;
 }
 
 export async function Say(msg: string) {
-  (await CharDisp.ClearMessageWindow());
-  (await CharDisp.PrintNameString(r32(143749), msg, 0, true));
+  CharDisp.ClearMessageWindow();
+  (await CharDisp.PrintNameString(r32(229635), msg, 0, true));
 }
 
 export async function Act(d: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 7);
   mv($f0 + 0, d, 7);
   let cr: number = 0, i: number = 0, hp: number = 0;
-  cr = r32(143749);
+  cr = r32(229635);
   if ((r16($f0) & 1) !== 0) {
     (await FxEngine.RemoveEffect(cr, 33, 0));
   }
@@ -254,7 +254,7 @@ export async function Act(d: number) {
   if ((r16($f0) & 16) !== 0) {
     (await FxEngine.RemoveEffect(cr, 154, 0));
   }
-  U8[144903] = 1;
+  U8[230789] = 1;
   if ((r16($f0) & 4) !== 0) {
     (await FxEngine.RemoveEffect(cr, 55, 0));
     (await FxEngine.RemoveEffect(cr, 22, 0));
@@ -263,13 +263,13 @@ export async function Act(d: number) {
   if ((r16($f0) & 8) !== 0) {
     (await FxEngine.RemoveEffect(cr, 32, 0));
   }
-  U8[144903] = 0;
+  U8[230789] = 0;
   if ((r16($f0) & 32) !== 0) {
-    w32(146161, cr);
+    w32(232047, cr);
     (await Magic.SpellRemoveCurse());
   }
   if ((r16($f0) & 64) !== 0) {
-    w32(146161, cr);
+    w32(232047, cr);
     (await Magic.SpellRestoration());
   }
   if ((r16($f0) & 128) !== 0) {
@@ -326,19 +326,19 @@ export function Words(msg: number) {
 }
 
 export function TempleIO(io: number) {
-  w32(io, 22);
-  w32(io + 4, 23);
-  w32(io + 8, 24);
-  w32(io + 12, 25);
-  w32(io + 16, 26);
-  w32(io + 20, 27);
-  w32(io + 24, 28);
+  w32(io, 23);
+  w32(io + 4, 24);
+  w32(io + 8, 25);
+  w32(io + 12, 26);
+  w32(io + 16, 27);
+  w32(io + 20, 28);
+  w32(io + 24, 29);
 }
 
 export async function Serve(svc: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 28);
   TempleIO($f0);
-  (await TownCore.TempleService(249850, svc, $f0));
+  (await TownCore.TempleService(258042, svc, $f0));
   S.sp = $sp;
 }
 
@@ -346,45 +346,45 @@ export async function RepairParty() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 176);
   let n: number = 0, i: number = 0, p: number = 0, buyer: number = 0, total: number = 0, undone: number = 0;
   TempleIO($f0 + 148);
-  buyer = r32(143749);
+  buyer = r32(229635);
   n = 0;
   total = 0;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (n < 8)) {
     n = (n + 1) & 255;
     w32($f0 + n * 4 + 100, p);
-    w32(143749, p);
+    w32(229635, p);
     Look($f0 + 136);
-    TownCore.RepairPlan(249850, $f0 + 136, $f0 + n * 13 - 13);
-    total = (total + TownCore.RepairCost(249850, $f0 + n * 13 - 13)) | 0;
+    TownCore.RepairPlan(258042, $f0 + 136, $f0 + n * 13 - 13);
+    total = (total + TownCore.RepairCost(258042, $f0 + n * 13 - 13)) | 0;
     p = r32(p + 260);
   }
   for (let $i2 = 1, $e2 = n; $i2 <= $e2; $i2++) {
     i = $i2;
     if (U8[$f0 + i * 13 - 1] !== 0) {
-      w32(143749, r32($f0 + i * 4 + 100));
-      (await Say((await TownCore.TempleWords($f0 + 148, U8[$f0 + i * 13 - 1]))));
+      w32(229635, r32($f0 + i * 4 + 100));
+      (await Say(TownCore.TempleWords($f0 + 148, U8[$f0 + i * 13 - 1])));
     }
   }
-  w32(143749, buyer);
+  w32(229635, buyer);
   if (total === 0) {
     (await CharDisp.MessageText("The party needs nothing the temple can give.", 10, true));
     (await CharDisp.MessageWait());
-  } else if ((await Pay(TownCore.RepairQuote(249850, total), total))) {
+  } else if ((await Pay(TownCore.RepairQuote(258042, total), total))) {
     undone = 0;
     for (let $i3 = 1, $e3 = n; $i3 <= $e3; $i3++) {
       i = $i3;
-      w32(143749, r32($f0 + i * 4 + 100));
-      undone = (undone + (await TownCore.TempleRepair(249850, $f0 + i * 13 - 13, $f0 + 148))) | 0;
+      w32(229635, r32($f0 + i * 4 + 100));
+      undone = (undone + (await TownCore.TempleRepair(258042, $f0 + i * 13 - 13, $f0 + 148))) | 0;
     }
-    w32(143749, buyer);
+    w32(229635, buyer);
     if (undone > 0) {
-      w32(144874, ri32(144874) + undone);
+      w32(230760, ri32(230760) + undone);
       (await TextRend.ShowMessage(10, true, "The priests put " + StrUtil.NumStr(undone) + " gold pieces back in the pool."));
       (await TextRend.PauseOnly());
     }
   }
-  w32(143749, buyer);
-  (await CharDisp.ClearMessageWindow());
+  w32(229635, buyer);
+  CharDisp.ClearMessageWindow();
   S.sp = $sp;
 }

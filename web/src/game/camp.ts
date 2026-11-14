@@ -44,22 +44,22 @@ export const ACT_SCRIBE = 3;
 export async function CampMainMenu(interrupted: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let savedIfc: number = 0, c: number = 0, saved: boolean = false;
-  savedIfc = U8[141176];
-  U8[141176] = 2;
-  w16(249032, 0);
-  rt.fill(249018, 14, 0);
+  savedIfc = U8[227062];
+  U8[227062] = 2;
+  w16(257224, 0);
+  rt.fill(257210, 14, 0);
   (await CharDisp.DisplayNoncombatInterface());
-  (await Border.ClearBox(1, 17, 38, 22));
+  Border.ClearBox(1, 17, 38, 22);
   TextRend.DisplayString(1, 18, 10, "The party makes camp...");
   ResetPartySpellActivities();
   U8[interrupted] = false ? 1 : 0;
   c = 32;
   while (((U8[interrupted] !== 0) === false) && !(c === 0 || c === 69)) {
-    U8[227104] = true ? 1 : 0;
-    c = (await MenuCore.MenuHorizontal("Camp:", rS(250851), 13, 10, 15, true, true, $f0 + 1)) & 255;
+    U8[235296] = true ? 1 : 0;
+    c = (await MenuCore.MenuHorizontal("Camp:", rS(259043), 13, 10, 15, true, true, $f0 + 1)) & 255;
     if ((U8[$f0 + 1] !== 0)) {
       if (!(await Explore.SideScreen(c, false, false))) {
-        (await SelectOtherChar(c));
+        SelectOtherChar(c);
       }
     } else {
       switch (c) {
@@ -92,10 +92,10 @@ export async function CampMainMenu(interrupted: number) {
     }
   }
   ResetPartySpellActivities();
-  w32(146449, 0);
-  U8[141176] = savedIfc;
-  (await CharDisp.PrintMiscInfo());
-  (await CharDisp.ClearMessageWindow());
+  w32(232335, 0);
+  U8[227062] = savedIfc;
+  CharDisp.PrintMiscInfo();
+  CharDisp.ClearMessageWindow();
   TextRend.ClearBottomLine();
   S.sp = $sp;
 }
@@ -105,18 +105,18 @@ export async function NoncombatCastMenu() {
   let redraw: boolean = false, spellId: number = 0, caster: number = 0;
   redraw = false;
   w16($f0, -1);
-  w32(146449, 0);
+  w32(232335, 0);
   if ((await CanDoSpellActivity(1))) {
     do {
       spellId = (await Magic.CastSpellMenu($f0, $f0 + 2, $f0 + 4)) & 255;
       if (spellId !== 0) {
         redraw = true;
         (await Border.DrawBorder(1, 17, 38, 22, 0));
-        (await Border.ClearBox(1, 17, 38, 22));
+        Border.ClearBox(1, 17, 38, 22);
         if (r32($f0 + 4) === 0) {
           (await Magic.CastSpell(spellId, false, true, $f0 + 3));
         } else {
-          caster = r32(143749);
+          caster = r32(229635);
           (await Magic.UseItemSpell(r32($f0 + 4), spellId, true, $f0 + 3));
           CharHlp.RecalcStats(caster);
         }
@@ -125,7 +125,7 @@ export async function NoncombatCastMenu() {
         if ((U8[$f0 + 2] !== 0)) {
           redraw = true;
         } else {
-          (await CharDisp.PrintNameString(r32(143749), "has no spells memorized", 10, true));
+          (await CharDisp.PrintNameString(r32(229635), "has no spells memorized", 10, true));
         }
       }
     } while (!(spellId === 0));
@@ -140,7 +140,7 @@ export function PendingLevel(b: number) {
   let $r0: number = 0;
   $r0 = 0;
   if ((b > 127) && CharHlp.IsSpell(b & 127)) {
-    $r0 = I8[(b & 127) * 16 + 136507] & 255;
+    $r0 = I8[(b & 127) * 16 + 222393] & 255;
   }
   return $r0;
 }
@@ -212,7 +212,7 @@ export function ResetScribe(creature: number) {
 
 export function ResetPartySpellActivities() {
   let p: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     ResetMemorize(p);
     ResetScribe(p);
@@ -226,7 +226,7 @@ export async function CanDoSpellActivity(activity: number) {
   wS($f0, 40, "");
   if ((activity === 1) && CharHlp.AntiMagicArea()) {
     wS($f0, 40, "cannot cast spells in this area");
-  } else if ((U8[r32(143749) + 268] === 1) || (U8[r32(143749) + 269] === 0)) {
+  } else if ((U8[r32(229635) + 268] === 1) || (U8[r32(229635) + 269] === 0)) {
     wS($f0, 40, "is in no condition to ");
     switch (activity) {
       case 1: {
@@ -247,20 +247,20 @@ export async function CanDoSpellActivity(activity: number) {
     $r0 = true;
   } else {
     $r0 = false;
-    (await CharDisp.PrintNameString(r32(143749), rS($f0), 10, false));
+    (await CharDisp.PrintNameString(r32(229635), rS($f0), 10, false));
   }
   S.sp = $sp;
   return $r0;
 }
 
-export async function SelectOtherChar(c: number) {
+export function SelectOtherChar(c: number) {
   let was: number = 0;
-  was = r32(143749);
+  was = r32(229635);
   Party.SelectPrevNextChar(c);
-  if (r32(143749) !== was) {
-    (await CharDisp.ClearMessageWindow());
+  if (r32(229635) !== was) {
+    CharDisp.ClearMessageWindow();
   }
-  (await CharDisp.DisplayParty(r32(143749)));
+  CharDisp.DisplayParty(r32(229635));
 }
 
 export function DisplaySpellSlots() {
@@ -287,10 +287,10 @@ export function DisplaySpellSlots() {
     wS($f0, 40, StrUtil.PadRight(rS($f0), 10));
     for (let $i2 = 1; $i2 <= 5; $i2++) {
       lvl = $i2;
-      if (CharHlp.SpellSlots(r32(143749), typ, lvl) === 0) {
+      if (CharHlp.SpellSlots(r32(229635), typ, lvl) === 0) {
         wS($f0, 40, rS($f0) + "     ");
       } else {
-        wS($f0, 40, rS($f0) + "  " + StrUtil.NumStr(lvl) + ":" + StrUtil.NumStr(UsualSpl.SpellSlotsRemaining(r32(143749), lvl, typ)));
+        wS($f0, 40, rS($f0) + "  " + StrUtil.NumStr(lvl) + ":" + StrUtil.NumStr(UsualSpl.SpellSlotsRemaining(r32(229635), lvl, typ)));
         has = true;
       }
     }
@@ -315,39 +315,39 @@ export function DisplaySpellSlots() {
 
 export async function SlipAway() {
   let p: number = 0, next: number = 0, cur: number = 0, gone: boolean = false;
-  if (!(U8[249034] !== 0)) {
+  if (!(U8[257226] !== 0)) {
     return;
   }
-  cur = r32(143749);
+  cur = r32(229635);
   gone = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     next = r32(p + 260);
-    if (CharExt.SlipsAway(p) && ((p !== r32(143753)) || (next !== 0))) {
+    if (CharExt.SlipsAway(p) && ((p !== r32(229639)) || (next !== 0))) {
       (await CharDisp.PrintNameString(p, "slipped away while the party slept.", 0, true));
       if (cur === p) {
         cur = 0;
       }
-      w32(143749, p);
+      w32(229635, p);
       SaveLoad.RemoveCreature(false, true);
       gone = true;
     }
     p = next;
   }
   if (cur === 0) {
-    cur = r32(143753);
+    cur = r32(229639);
   }
-  w32(143749, cur);
+  w32(229635, cur);
   if (gone) {
-    (await Border.ClearBox(17, 1, 38, 11));
-    (await CharDisp.DisplayParty(r32(143749)));
+    Border.ClearBox(17, 1, 38, 11);
+    CharDisp.DisplayParty(r32(229635));
   }
 }
 
 export async function RestForSpellPrep(interrupted: number) {
   let p: number = 0, total: number = 0, t: number = 0;
-  if (U8[141200] !== 0) {
-    p = r32(143753);
+  if (U8[227086] !== 0) {
+    p = r32(229639);
     while (p !== 0) {
       if (((U8[p + 268] !== 1) && (U8[p + 269] !== 0)) && !UsualSpl.HasPending(p)) {
         UsualSpl.QueueUsualSpells(p);
@@ -356,7 +356,7 @@ export async function RestForSpellPrep(interrupted: number) {
     }
   }
   total = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     t = CampSpellPrepTime(p) & 65535;
     if (total < t) {
@@ -364,11 +364,11 @@ export async function RestForSpellPrep(interrupted: number) {
     }
     p = r32(p + 260);
   }
-  Clock.SetFromMinutes(249018, total);
+  Clock.SetFromMinutes(257210, total);
   U8[interrupted] = (await GameTime.CampRest(true)) ? 1 : 0;
-  rt.fill(249018, 14, 0);
+  rt.fill(257210, 14, 0);
   (await SlipAway());
-  (await CharDisp.PrintMiscInfo());
+  CharDisp.PrintMiscInfo();
 }
 
 export function RememberUsualSpells() {
@@ -376,9 +376,9 @@ export function RememberUsualSpells() {
   let i: number = 0;
   for (let $i1 = 0; $i1 <= 47; $i1++) {
     i = $i1;
-    U8[$f0 + i] = CharHlp.MemorizedAt(r32(143749), i) & 127;
+    U8[$f0 + i] = CharHlp.MemorizedAt(r32(229635), i) & 127;
   }
-  UsualSpl.SetUsualSpells(r32(143749), $f0);
+  UsualSpl.SetUsualSpells(r32(229635), $f0);
   S.sp = $sp;
 }
 
@@ -392,15 +392,15 @@ export async function CampMemorizeMenu() {
   let done: boolean = false, redraw: boolean = false, spellId: number = 0;
   if ((await CanDoSpellActivity(2))) {
     done = false;
-    if (!UsualSpl.HasPending(r32(143749))) {
-      UsualSpl.QueueUsualSpells(r32(143749));
+    if (!UsualSpl.HasPending(r32(229635))) {
+      UsualSpl.QueueUsualSpells(r32(229635));
     }
     w16($f0 + 1, -1);
     spellId = (await Magic.SpellMenu(5, 5, $f0 + 1, $f0)) & 255;
     redraw = true;
     if ((U8[$f0] !== 0)) {
       if ((await MenuCore.YesNoMenu("Memorize These Spells? ", 14, 10, 15)) === 78) {
-        ResetMemorize(r32(143749));
+        ResetMemorize(r32(229635));
       } else {
         RememberUsualSpells();
         done = true;
@@ -409,31 +409,31 @@ export async function CampMemorizeMenu() {
       redraw = false;
     }
     w16($f0 + 1, -1);
-    w32(240653, 32);
+    w32(248845, 33);
     while (done === false) {
       done = DisplaySpellSlots() === false;
       if (done) {
-        (await CharDisp.PrintNameString(r32(143749), "cannot memorize any spells", 10, true));
+        (await CharDisp.PrintNameString(r32(229635), "cannot memorize any spells", 10, true));
       } else {
         spellId = (await Magic.SpellMenu(1, 2, $f0 + 1, $f0)) & 255;
         redraw = true;
         if (spellId === 0) {
           done = true;
-        } else if (UsualSpl.SpellSlotsRemaining(r32(143749), I8[spellId * 16 + 136507], I8[spellId * 16 + 136506]) > 0) {
-          UsualSpl.PutPending(r32(143749), spellId, $f0 + 3);
+        } else if (UsualSpl.SpellSlotsRemaining(r32(229635), I8[spellId * 16 + 222393], I8[spellId * 16 + 222392]) > 0) {
+          UsualSpl.PutPending(r32(229635), spellId, $f0 + 3);
           if ((U8[$f0 + 3] !== 0)) {
-            UsualSpl.SortMemorizedSpells(r32(143749));
+            UsualSpl.SortMemorizedSpells(r32(229635));
           }
         }
       }
     }
-    w32(240653, 0);
+    w32(248845, 0);
     if (ri16($f0 + 1) !== (-1)) {
       w16($f0 + 1, -1);
       spellId = (await Magic.SpellMenu(5, 5, $f0 + 1, $f0)) & 255;
       if ((U8[$f0] !== 0)) {
         if ((await MenuCore.YesNoMenu("Memorize these spells? ", 14, 10, 15)) === 78) {
-          ResetMemorize(r32(143749));
+          ResetMemorize(r32(229635));
         } else {
           RememberUsualSpells();
         }
@@ -452,7 +452,7 @@ export async function CampScribeMenu() {
   if (!(await CanDoSpellActivity(3))) {
     { S.sp = $sp; return; }
   }
-  if (CharHlp.GetClassLevel(r32(143749), 32) <= 0) {
+  if (CharHlp.GetClassLevel(r32(229635), 32) <= 0) {
     (await CharDisp.PrintMessage("Scribing a scroll requires arcane training."));
   } else {
     done = false;
@@ -461,7 +461,7 @@ export async function CampScribeMenu() {
     redraw = true;
     if ((U8[$f0] !== 0)) {
       if ((await MenuCore.YesNoMenu("Scribe These Spells? ", 14, 10, 15)) === 78) {
-        ResetScribe(r32(143749));
+        ResetScribe(r32(229635));
       } else {
         done = true;
       }
@@ -474,19 +474,19 @@ export async function CampScribeMenu() {
       if (spellId === 0) {
         done = true;
         if ((U8[$f0] !== 0) === false) {
-          (await CharDisp.PrintNameString(r32(143749), "has no copyable scrolls.", 10, true));
+          (await CharDisp.PrintNameString(r32(229635), "has no copyable scrolls.", 10, true));
         } else {
           redraw = true;
         }
-      } else if (!CharHlp.IsSpell(spellId) || !UsualSpl.HasSlotKind(I8[spellId * 16 + 136507], I8[spellId * 16 + 136506])) {
+      } else if (!CharHlp.IsSpell(spellId) || !UsualSpl.HasSlotKind(I8[spellId * 16 + 222393], I8[spellId * 16 + 222392])) {
         redraw = true;
         (await CharDisp.PrintBottomLine("You can not scribe that spell."));
       } else {
         redraw = true;
-        if (CharHlp.KnowsSpell(r32(143749), spellId)) {
+        if (CharHlp.KnowsSpell(r32(229635), spellId)) {
           (await CharDisp.PrintBottomLine("You already know that spell."));
         } else {
-          p = r32(r32(143749) + 200);
+          p = r32(r32(229635) + 200);
           found = false;
           while ((p !== 0) && (found === false)) {
             if (CharHlp.ItemReadable(p)) {
@@ -501,8 +501,8 @@ export async function CampScribeMenu() {
             p = r32(p + 42);
           }
           if (found === false) {
-            if (CharHlp.SpellSlots(r32(143749), I8[spellId * 16 + 136506], I8[spellId * 16 + 136507]) > 0) {
-              p = r32(r32(143749) + 200);
+            if (CharHlp.SpellSlots(r32(229635), I8[spellId * 16 + 222392], I8[spellId * 16 + 222393]) > 0) {
+              p = r32(r32(229635) + 200);
               while ((p !== 0) && (found === false)) {
                 if (CharHlp.ItemReadable(p)) {
                   i = 1;
@@ -528,7 +528,7 @@ export async function CampScribeMenu() {
       spellId = (await Magic.SpellMenu(6, 0, $f0 + 1, $f0)) & 255;
       if ((U8[$f0] !== 0)) {
         if ((await MenuCore.YesNoMenu("Scribe these spells? ", 14, 10, 15)) === 78) {
-          ResetScribe(r32(143749));
+          ResetScribe(r32(229635));
         }
       }
     }
@@ -547,7 +547,7 @@ export async function CampDisplayMenu() {
   U8[r32($f0 + 4) + 41] = 0;
   wS(r32($f0 + 4), 40, " ");
   w32(r32($f0 + 4) + 42, 0);
-  ch = r32(143753);
+  ch = r32(229639);
   while (ch !== 0) {
     cnt = 0;
     MenuCore.AppendMenuLine($f0, $f0 + 4, rS(ch), true);
@@ -563,8 +563,8 @@ export async function CampDisplayMenu() {
           k = 1;
           found = false;
           while ((k <= 100) && (found === false)) {
-            if (CharHlp.IsSpell(k) && (U8[k * 16 + 136516] === id)) {
-              wS($f0 + 9, 40, rS(k * 33 + 133189));
+            if (CharHlp.IsSpell(k) && (U8[k * 16 + 222402] === id)) {
+              wS($f0 + 9, 40, rS(k * 33 + 219075));
               found = true;
             } else {
               k = (k + 1) & 255;
@@ -673,9 +673,9 @@ export async function CampMagicMenu(interrupted: number) {
   let c: number = 0;
   c = 32;
   while (((U8[interrupted] !== 0) === false) && !(c === 0 || c === 69)) {
-    c = (await MenuCore.MenuHorizontal("", rS(250687), 13, 10, 15, true, true, $f0)) & 255;
+    c = (await MenuCore.MenuHorizontal("", rS(258879), 13, 10, 15, true, true, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
-      (await SelectOtherChar(c));
+      SelectOtherChar(c);
     } else {
       switch (c) {
         case 67: {
@@ -706,56 +706,56 @@ export async function CampMagicMenu(interrupted: number) {
 
 export function OrderMoveUp() {
   let prev: number = 0, p: number = 0, savedNext: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   prev = 0;
-  if (p === r32(143749)) {
+  if (p === r32(229635)) {
     p = Party.LastCreature();
   } else {
-    while (r32(p + 260) !== r32(143749)) {
+    while (r32(p + 260) !== r32(229635)) {
       prev = p;
       p = r32(p + 260);
     }
   }
-  savedNext = r32(r32(143749) + 260);
-  if (r32(143753) === r32(143749)) {
+  savedNext = r32(r32(229635) + 260);
+  if (r32(229639) === r32(229635)) {
     if (savedNext !== 0) {
-      w32(143753, savedNext);
+      w32(229639, savedNext);
     }
-    w32(p + 260, r32(143749));
-    w32(r32(143749) + 260, 0);
+    w32(p + 260, r32(229635));
+    w32(r32(229635) + 260, 0);
   } else {
     w32(p + 260, savedNext);
-    w32(r32(143749) + 260, p);
-    if ((p === r32(143753)) || (prev === 0)) {
-      w32(143753, r32(143749));
+    w32(r32(229635) + 260, p);
+    if ((p === r32(229639)) || (prev === 0)) {
+      w32(229639, r32(229635));
     } else {
-      w32(prev + 260, r32(143749));
+      w32(prev + 260, r32(229635));
     }
   }
 }
 
 export function OrderMoveDown() {
   let p: number = 0, next: number = 0;
-  p = r32(143753);
-  if (p !== r32(143749)) {
-    while (r32(p + 260) !== r32(143749)) {
+  p = r32(229639);
+  if (p !== r32(229635)) {
+    while (r32(p + 260) !== r32(229635)) {
       p = r32(p + 260);
     }
   }
-  next = r32(r32(143749) + 260);
+  next = r32(r32(229635) + 260);
   if (next === 0) {
-    w32(r32(143749) + 260, r32(143753));
-    w32(143753, r32(143749));
+    w32(r32(229635) + 260, r32(229639));
+    w32(229639, r32(229635));
     w32(p + 260, next);
   } else {
-    w32(r32(143749) + 260, r32(next + 260));
-    if (r32(143753) === r32(143749)) {
-      w32(143753, next);
+    w32(r32(229635) + 260, r32(next + 260));
+    if (r32(229639) === r32(229635)) {
+      w32(229639, next);
     }
-    if (p !== r32(143749)) {
+    if (p !== r32(229635)) {
       w32(p + 260, next);
     }
-    w32(next + 260, r32(143749));
+    w32(next + 260, r32(229635));
   }
 }
 
@@ -765,10 +765,10 @@ export async function CampOrderMenu() {
   selected = 0;
   c = 32;
   while (!(c === 0 || c === 69)) {
-    c = (await MenuCore.MenuHorizontal("Party Order: ", rS(selected * 41 + 250728), 13, 10, 15, true, true, $f0)) & 255;
+    c = (await MenuCore.MenuHorizontal("Party Order: ", rS(selected * 41 + 258920), 13, 10, 15, true, true, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
       if (selected === 0) {
-        (await SelectOtherChar(c));
+        SelectOtherChar(c);
       } else {
         switch (c) {
           case 71: case 72: {
@@ -780,14 +780,14 @@ export async function CampOrderMenu() {
             break;
           }
         }
-        (await CharDisp.DisplayParty(r32(143749)));
+        CharDisp.DisplayParty(r32(229635));
       }
     } else if (c === 80 || c === 83) {
       selected = (selected === 0 ? 1 : 0);
       if (selected !== 0) {
-        (await CharDisp.PrintNameString(r32(143749), "has been selected", 10, false));
+        (await CharDisp.PrintNameString(r32(229635), "has been selected", 10, false));
       } else {
-        (await CharDisp.ClearMessageWindow());
+        CharDisp.ClearMessageWindow();
       }
     }
   }
@@ -795,25 +795,25 @@ export async function CampOrderMenu() {
 }
 
 export async function CampDropMenu() {
-  if ((r32(r32(143749) + 260) === 0) && (r32(143749) === r32(143753))) {
+  if ((r32(r32(229635) + 260) === 0) && (r32(229635) === r32(229639))) {
     if ((await MenuCore.YesNoMenu("quit TO DOS: ", 14, 10, 15)) === 89) {
       SaveLoad.RemoveCreature(false, true);
       (await GameIo.ExitGame());
     }
     return;
   }
-  (await CharDisp.PrintNameString(r32(143749), "will be gone", 10, false));
+  (await CharDisp.PrintNameString(r32(229635), "will be gone", 10, false));
   if ((await MenuCore.YesNoMenu("Drop from party? ", 14, 10, 15)) === 89) {
-    if (U8[r32(143749) + 269] !== 0) {
-      (await CharDisp.PrintNameString(r32(143749), "bids you farewell.", 10, true));
+    if (U8[r32(229635) + 269] !== 0) {
+      (await CharDisp.PrintNameString(r32(229635), "bids you farewell.", 10, true));
     } else {
-      (await CharDisp.PrintNameString(r32(143749), "is dumped in a ditch.", 10, true));
+      (await CharDisp.PrintNameString(r32(229635), "is dumped in a ditch.", 10, true));
     }
     SaveLoad.RemoveCreature(false, true);
-    (await Border.ClearBox(17, 1, 38, 11));
-    (await CharDisp.DisplayParty(r32(143749)));
+    Border.ClearBox(17, 1, 38, 11);
+    CharDisp.DisplayParty(r32(229635));
   } else {
-    (await CharDisp.PrintNameString(r32(143749), "Breathes A sigh of relief.", 10, true));
+    (await CharDisp.PrintNameString(r32(229635), "Breathes A sigh of relief.", 10, true));
   }
 }
 
@@ -822,9 +822,9 @@ export async function CampAlterMenu() {
   let c: number = 0, c2: number = 0;
   c = 32;
   while (!(c === 0 || c === 69)) {
-    c = (await MenuCore.MenuHorizontal("Alter: ", rS(250810), 13, 10, 15, true, true, $f0)) & 255;
+    c = (await MenuCore.MenuHorizontal("Alter: ", rS(259002), 13, 10, 15, true, true, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
-      (await SelectOtherChar(c));
+      SelectOtherChar(c);
     } else {
       switch (c) {
         case 79: {
@@ -844,7 +844,7 @@ export async function CampAlterMenu() {
             }
             c2 = (await MenuCore.MenuHorizontal("Character: ", rS($f0 + 1), 13, 10, 15, true, true, $f0)) & 255;
             if ((U8[$f0] !== 0)) {
-              (await SelectOtherChar(c2));
+              SelectOtherChar(c2);
             } else {
               switch (c2) {
                 case 73: {
@@ -920,13 +920,13 @@ export async function CampFixMenu(interrupted: number) {
   }
   function NoteDrained() {
     let c: number = 0, m: number = 0, kind: number = 0, missing: number = 0;
-    c = r32(143753);
+    c = r32(229639);
     while (c !== 0) {
       missing = 0;
       for (let $i2 = 1; $i2 <= 4; $i2++) {
         kind = $i2;
         if ((missing === 0) && FixPlan.DrainedOutOf(c, FixPlan.CureSpell(kind))) {
-          m = r32(143753);
+          m = r32(229639);
           while (m !== 0) {
             if (FixPlan.Treatable(m) && (FixPlan.CondCount(m, kind) > 0)) {
               missing = FixPlan.CureSpell(kind) & 255;
@@ -936,7 +936,7 @@ export async function CampFixMenu(interrupted: number) {
         }
       }
       if (missing !== 0) {
-        Note(rS(c) + " is level drained and can't cast " + rS(missing * 33 + 133189) + ".");
+        Note(rS(c) + " is level drained and can't cast " + rS(missing * 33 + 219075) + ".");
       }
       c = r32(c + 260);
     }
@@ -946,15 +946,15 @@ export async function CampFixMenu(interrupted: number) {
     for (let $i4 = 1, $e4 = reportCount; $i4 <= $e4; $i4++) {
       n = $i4;
       if (n > 1) {
-        if (U8[143769] !== 1) {
-          U8[143769] = 1;
-          U8[143770] = U8[143770] + 1;
+        if (U8[229655] !== 1) {
+          U8[229655] = 1;
+          U8[229656] = U8[229656] + 1;
         }
-        if (U8[143770] > 22) {
+        if (U8[229656] > 22) {
           (await CharDisp.MessageWait());
         }
       }
-      (await CharDisp.MessageText(rS($f0 + n * 101 + 97), 10, (n === 1) || (U8[143770] > 22)));
+      (await CharDisp.MessageText(rS($f0 + n * 101 + 97), 10, (n === 1) || (U8[229656] > 22)));
     }
   }
   U8[interrupted] = false ? 1 : 0;
@@ -971,10 +971,10 @@ export async function CampFixMenu(interrupted: number) {
   rested = FixPlan.HasCasts($f0);
   goOn = true;
   if (rested) {
-    Clock.SetFromMinutes(249018, FixPlan.RestMinutes($f0));
+    Clock.SetFromMinutes(257210, FixPlan.RestMinutes($f0));
     U8[interrupted] = (await GameTime.CampRest(false)) ? 1 : 0;
-    done = (((r16(249026) === 0) && (r16(249024) === 0)) && (r16(249022) === 0)) && (r16(249020) === 0);
-    rt.fill(249018, 14, 0);
+    done = (((r16(257218) === 0) && (r16(257216) === 0)) && (r16(257214) === 0)) && (r16(257212) === 0);
+    rt.fill(257210, 14, 0);
     goOn = done && !(U8[interrupted] !== 0);
     if (goOn) {
       for (let $i6 = 1, $e6 = U8[$f0]; $i6 <= $e6; $i6++) {
@@ -984,11 +984,11 @@ export async function CampFixMenu(interrupted: number) {
           for (let $i8 = 1, $e8 = U8[$f0 + i * 4 + cond + 108]; $i8 <= $e8; $i8++) {
             k = $i8;
             spell = FixPlan.CureSpell(cond) & 255;
-            w32(146161, r32($f0 + i * 4 - 3));
-            U8[146160] = 1;
-            U8[144900] = spell;
-            (await rt.FT[r32(spell * 4 + 145644)]());
-            U8[144900] = 0;
+            w32(232047, r32($f0 + i * 4 - 3));
+            U8[232046] = 1;
+            U8[230786] = spell;
+            (await rt.FT[r32(spell * 4 + 231530)]());
+            U8[230786] = 0;
           }
         }
       }
@@ -1041,13 +1041,13 @@ export async function CampFixMenu(interrupted: number) {
       wS($f0 + 198, 100, rS($f0 + 2622));
     }
   }
-  (await CharDisp.DisplayParty(r32(143749)));
-  (await CharDisp.PrintMiscInfo());
+  CharDisp.DisplayParty(r32(229635));
+  CharDisp.PrintMiscInfo();
   (await ShowReport());
   if (rested) {
     (await SlipAway());
   }
-  (await CharDisp.DisplayParty(r32(143749)));
-  (await CharDisp.PrintMiscInfo());
+  CharDisp.DisplayParty(r32(229635));
+  CharDisp.PrintMiscInfo();
   S.sp = $sp;
 }

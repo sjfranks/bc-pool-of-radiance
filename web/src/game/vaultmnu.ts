@@ -22,9 +22,9 @@ import * as TpRand from './tprand';
 export async function VaultMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 44);
   let c: number = 0, done: boolean = false;
-  U8[141176] = 8;
+  U8[227062] = 8;
   (await CharDisp.DisplayNoncombatInterface());
-  (await CharDisp.DisplayParty(r32(143749)));
+  CharDisp.DisplayParty(r32(229635));
   Vault.ReadVault();
   if (Vault.WasVisited() && (TpRand.Random(20) === 0)) {
     (await TextRend.ShowMessage(10, true, "OH, YOU'RE ALIVE... I MEAN  WELCOME BACK!"));
@@ -79,7 +79,7 @@ export async function VaultMenu() {
         }
       }
     }
-    (await CharDisp.DisplayParty(r32(143749)));
+    CharDisp.DisplayParty(r32(229635));
   } while (!(done));
   CharHlp.ClearTreasure();
   S.sp = $sp;

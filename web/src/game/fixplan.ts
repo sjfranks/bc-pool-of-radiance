@@ -27,12 +27,12 @@ export const WOUND_OINTMENT = 10;
 export const SLOT_ROW_FIRST = 2;
 export const SLOT_ROW_LAST = 9;
 
-export const $at = { CURES: 250683 };
+export const $at = { CURES: 258875 };
 
 export function CureSpell(cond: number) {
   let $r0: number = 0;
   if ((cond >= 1) && (cond <= 4)) {
-    $r0 = U8[cond + 250682];
+    $r0 = U8[cond + 258874];
   } else {
     $r0 = 0;
   }
@@ -85,7 +85,7 @@ export function Rotted(creature: number) {
 export function Plan(plan: number) {
   let p: number = 0, i: number = 0, k: number = 0, cond: number = 0, lvl: number = 0, wanted: number = 0;
   rt.fill(plan, 184, 0);
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (U8[plan] < 8)) {
     U8[plan] = U8[plan] + 1;
     w32(plan + U8[plan] * 4 - 3, p);
@@ -206,7 +206,7 @@ export function DrainedOutOf(cleric: number, spell: number) {
     cl = 9;
   }
   if (cl >= 2) {
-    $r0 = U8[cl * 5 + lvl + 140449] > 0;
+    $r0 = U8[cl * 5 + lvl + 226335] > 0;
   }
   return $r0;
 }
@@ -215,24 +215,24 @@ export function NextUse(drainOnly: boolean, use: number) {
   let p: number = 0, most: number = 0, found: boolean = false, $r0: boolean = false;
   found = false;
   U8[use] = 1;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !found) {
     if (Treatable(p)) {
       if (!drainOnly && (CondCount(p, 2) > 0)) {
-        if (U8[141203] !== 0) {
+        if (U8[227089] !== 0) {
           found = FindPaladin(false, use);
           if (found) {
             U8[use] = 3;
           }
         }
-        if (!found && (U8[141201] !== 0)) {
+        if (!found && (U8[227087] !== 0)) {
           found = FindScroll(39, use);
         }
-        if ((!found && (U8[141202] !== 0)) && !Poisoned(p)) {
+        if ((!found && (U8[227088] !== 0)) && !Poisoned(p)) {
           found = FindPotion(127, use);
         }
       }
-      if ((!found && !drainOnly) && (U8[141201] !== 0)) {
+      if ((!found && !drainOnly) && (U8[227087] !== 0)) {
         if (CondCount(p, 3) > 0) {
           found = FindScroll(37, use);
         }
@@ -240,7 +240,7 @@ export function NextUse(drainOnly: boolean, use: number) {
           found = FindScroll(43, use);
         }
       }
-      if ((!found && (U8[141201] !== 0)) && (CondCount(p, 1) > 0)) {
+      if ((!found && (U8[227087] !== 0)) && (CondCount(p, 1) > 0)) {
         found = FindScroll(56, use);
       }
     }
@@ -250,9 +250,9 @@ export function NextUse(drainOnly: boolean, use: number) {
       p = r32(p + 260);
     }
   }
-  if ((!found && !drainOnly) && (U8[141204] !== 0)) {
+  if ((!found && !drainOnly) && (U8[227090] !== 0)) {
     most = 0;
-    p = r32(143753);
+    p = r32(229639);
     while (p !== 0) {
       if (Healable(p) > 0) {
         if ((most === 0) || (Healable(p) > Healable(most))) {
@@ -270,12 +270,12 @@ export function NextUse(drainOnly: boolean, use: number) {
     }
   }
   if (!drainOnly) {
-    p = r32(143753);
+    p = r32(229639);
     while ((p !== 0) && !found) {
-      if ((U8[141201] !== 0) && (Healable(p) >= 4)) {
+      if ((U8[227087] !== 0) && (Healable(p) >= 4)) {
         found = FindScroll(3, use);
       }
-      if (!found && (U8[141202] !== 0)) {
+      if (!found && (U8[227088] !== 0)) {
         if (Healable(p) >= 7) {
           found = FindPotion(62, use);
         }
@@ -298,7 +298,7 @@ export function NextUse(drainOnly: boolean, use: number) {
 export function SpellLevel(spell: number) {
   let $r0: number = 0;
   if (CharHlp.IsSpell(spell)) {
-    $r0 = U8[spell * 16 + 136507];
+    $r0 = U8[spell * 16 + 222393];
   } else {
     $r0 = 0;
   }
@@ -338,7 +338,7 @@ export function Able(creature: number) {
 export function FindScroll(spell: number, use: number) {
   let p: number = 0, item: number = 0, slot: number = 0, $r0: boolean = false;
   $r0 = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (Able(p)) {
       item = r32(p + 200);
@@ -366,7 +366,7 @@ export function FindScroll(spell: number, use: number) {
 export function FindPotion(spell: number, use: number) {
   let p: number = 0, item: number = 0, $r0: boolean = false;
   $r0 = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (Able(p)) {
       item = r32(p + 200);
@@ -389,7 +389,7 @@ export function FindPotion(spell: number, use: number) {
 export function FindPaladin(heal: boolean, use: number) {
   let p: number = 0, ready: boolean = false, $r0: boolean = false;
   $r0 = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (heal) {
       ready = CharHlp.PaladinCanHeal(p);

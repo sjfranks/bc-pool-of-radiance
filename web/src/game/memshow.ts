@@ -11,7 +11,7 @@ import * as StrUtil from './strutil';
 
 export async function ShowMemory() {
   (await TextRend.DisplayAndPause(10, "Heap free " + StrUtil.NumStr(16777216) + " big " + StrUtil.NumStr(16777216)));
-  (await TextRend.DisplayAndPause(10, "Pictures " + StrUtil.NumStr(ri32(226092)) + " peak " + StrUtil.NumStr(ri32(226096))));
+  (await TextRend.DisplayAndPause(10, "Pictures " + StrUtil.NumStr(ri32(234418)) + " peak " + StrUtil.NumStr(ri32(234422))));
   TextRend.ClearBottomLine();
-  U8[141220] = true ? 1 : 0;
+  U8[227106] = true ? 1 : 0;
 }

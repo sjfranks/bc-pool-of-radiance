@@ -35,7 +35,7 @@ import * as TpRand from './tprand';
 
 export const TURN_SLACK = 20;
 
-export const $at = { aiDirOffsets: 249934, lastMoveDir: 249964, stuckCount: 249965, quickShown: 249966 };
+export const $at = { aiDirOffsets: 258126, lastMoveDir: 258156, stuckCount: 258157, quickShown: 258158 };
 
 export async function CombatAiControl(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
@@ -43,7 +43,7 @@ export async function CombatAiControl(creature: number) {
   U8[$f0] = (await CheckKeystroke(creature)) ? 1 : 0;
   if (QuickLine()) {
   }
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   if (U8[creature + 269] === 0) {
     U8[$f0] = CharHlp.EndActions(creature) ? 1 : 0;
   }
@@ -92,9 +92,9 @@ export async function CombatAiControl(creature: number) {
 }
 
 export async function ToggleQuickMagic() {
-  U8[146532] = !(U8[146532] !== 0) ? 1 : 0;
+  U8[232418] = !(U8[232418] !== 0) ? 1 : 0;
   if (!QuickLine()) {
-    if ((U8[146532] !== 0)) {
+    if ((U8[232418] !== 0)) {
       (await CharDisp.PrintBottomLine("Magic On"));
     } else {
       (await CharDisp.PrintBottomLine("Magic Off"));
@@ -104,7 +104,7 @@ export async function ToggleQuickMagic() {
 
 export function AllToManual() {
   let p: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (CharHlp.ComesUnderPlayer(p)) {
       U8[p + 271] = 0;
@@ -169,7 +169,7 @@ export async function SpellImpact(creature: number, spell: number) {
     if (CbtActs.FindCureTarget(creature, $f0)) {
       $r0 = 1;
     }
-  } else if (U8[spell * 16 + 136520] === 0) {
+  } else if (U8[spell * 16 + 222406] === 0) {
     switch (spell) {
       case 24: {
         threat = EnemySeenDoing(creature, 1);
@@ -187,7 +187,7 @@ export async function SpellImpact(creature: number, spell: number) {
         threat = true;
       }
     }
-    eff = U8[spell * 16 + 136516];
+    eff = U8[spell * 16 + 222402];
     if (spell === 85) {
       eff = 151;
     }
@@ -195,9 +195,9 @@ export async function SpellImpact(creature: number, spell: number) {
       $r0 = 1;
     }
   } else {
-    rt.fill(146161, 288, 0);
+    rt.fill(232047, 288, 0);
     if ((await CbtActs.BestAim(spell, $f0 + 8)) !== 0) {
-      if (((U8[spell * 16 + 136521] === 0) || (spell === 25)) || (U8[$f0 + 8] >= 2)) {
+      if (((U8[spell * 16 + 222407] === 0) || (spell === 25)) || (U8[$f0 + 8] >= 2)) {
         $r0 = U8[$f0 + 8];
       }
     }
@@ -208,7 +208,7 @@ export async function SpellImpact(creature: number, spell: number) {
 
 export function KeepsGear(creature: number) {
   let $r0: boolean = false;
-  $r0 = (U8[141193] === 0) && CharHlp.ComesUnderPlayer(creature);
+  $r0 = (U8[227079] === 0) && CharHlp.ComesUnderPlayer(creature);
   return $r0;
 }
 
@@ -341,7 +341,7 @@ export async function EquipWeaponAndShield(creature: number) {
 export function QuickLine() {
   let p: number = 0, quick: boolean = false, $r0: boolean = false;
   quick = false;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if ((U8[p + 271] !== 0) && CharHlp.ComesUnderPlayer(p)) {
       quick = true;
@@ -350,14 +350,14 @@ export function QuickLine() {
   }
   TextRend.ClearBottomLine();
   $r0 = quick;
-  U8[249966] = quick ? 1 : 0;
+  U8[258158] = quick ? 1 : 0;
   if (!quick) {
     return $r0;
   }
   TextRend.DisplayString(0, 24, 13, "Quick: ");
   TextRend.DisplayString(7, 24, 15, "On (Space) ");
   TextRend.DisplayString(18, 24, 13, "Magic: ");
-  if ((U8[146532] !== 0)) {
+  if ((U8[232418] !== 0)) {
     TextRend.DisplayString(25, 24, 15, "On (Alt-M)");
   } else {
     TextRend.DisplayString(25, 24, 15, "Off (Alt-M)");
@@ -385,7 +385,7 @@ export async function SelectItemToUse(creature: number) {
   chosen = 0;
   lowPri = 7;
   roll = Dice.RollDice(1, 7) & 255;
-  if (((U8[r32(creature + 264) + 2] !== 0) && (U8[CharHlp.EnemyTeam(creature) + 144894] > 0)) && !CharHlp.AntiMagicArea()) {
+  if (((U8[r32(creature + 264) + 2] !== 0) && (U8[CharHlp.EnemyTeam(creature) + 230780] > 0)) && !CharHlp.AntiMagicArea()) {
     for (let $i1 = 1, $e1 = roll; $i1 <= $e1; $i1++) {
       i = $i1;
       item = r32(creature + 200);
@@ -425,13 +425,13 @@ export async function SelectSpellToCast(creature: number) {
   chosen = 0;
   total = 0;
   if (count > 0) {
-    if (CharHlp.IsNpc(creature) || (U8[146532] !== 0)) {
-      if (U8[CharHlp.EnemyTeam(creature) + 144894] > 0) {
+    if (CharHlp.IsNpc(creature) || (U8[232418] !== 0)) {
+      if (U8[CharHlp.EnemyTeam(creature) + 230780] > 0) {
         for (let $i2 = 0, $e2 = count - 1; $i2 <= $e2; $i2++) {
           k = $i2;
           w16($f0 + k * 2 + 48, 0);
-          if (U8[U8[$f0 + k] * 16 + 136519] > 0) {
-            w16($f0 + k * 2 + 48, rt.mul((await SpellImpact(creature, U8[$f0 + k])) & 65535, U8[U8[$f0 + k] * 16 + 136519]));
+          if (U8[U8[$f0 + k] * 16 + 222405] > 0) {
+            w16($f0 + k * 2 + 48, rt.mul((await SpellImpact(creature, U8[$f0 + k])) & 65535, U8[U8[$f0 + k] * 16 + 222405]));
           }
           total = (total + r16($f0 + k * 2 + 48)) & 65535;
         }
@@ -460,8 +460,8 @@ export async function SelectSpellToCast(creature: number) {
 export async function AiMoveAttack(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 5);
   let inRange: boolean = false, canAct: boolean = false, weaponRange: number = 0, cnt: number = 0, pick: number = 0, target: number = 0, loopCount: number = 0, loopLimit: number = 0, $r0: boolean = false;
-  U8[249964] = 8;
-  U8[249965] = 0;
+  U8[258156] = 8;
+  U8[258157] = 0;
   loopCount = 0;
   loopLimit = (Math.trunc(U8[r32(creature + 264) + 6] / 2) + 20) & 255;
   canAct = true;
@@ -505,7 +505,7 @@ export async function AiMoveAttack(creature: number) {
           U8[$f0 + 3] = CbtMap.CombatCellX(target);
           U8[$f0 + 4] = CbtMap.CombatCellY(target);
           w16($f0 + 1, weaponRange);
-          if (Pathing.WalkLine(CbtMap.CombatCellX(creature), CbtMap.CombatCellY(creature), $f0 + 3, $f0 + 4, $f0 + 1, r32(144641))) {
+          if (Pathing.WalkLine(CbtMap.CombatCellX(creature), CbtMap.CombatCellY(creature), $f0 + 3, $f0 + 4, $f0 + 1, r32(230527))) {
             if (Math.trunc(r16($f0 + 1) / 2) <= weaponRange) {
               inRange = true;
             }
@@ -522,7 +522,7 @@ export async function AiMoveAttack(creature: number) {
           }
         } else {
           pick = Dice.RollDice(1, cnt) & 255;
-          target = r32(U8[pick + 146459] * 4 + 144292);
+          target = r32(U8[pick + 232345] * 4 + 230178);
           if ((CharHlp.HasRangedWeapon(creature) && !CharHlp.HasThrowableWeapon(creature)) && (CbtMap.CountTargets(creature, 1) > 0)) {
             (await EquipWeaponAndShield(creature));
             U8[$f0] = true ? 1 : 0;
@@ -558,7 +558,7 @@ export async function AiMoveAttack(creature: number) {
 
 export async function FinishRound(creature: number) {
   let $r0: boolean = false;
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   if ((CharHlp.IsHelpless(creature) || CharHlp.HasRangedWeapon(creature)) || (I8[r32(creature + 264) + 3] === 0)) {
     $r0 = CharHlp.EndActions(creature);
   } else {
@@ -571,7 +571,7 @@ export async function FinishRound(creature: number) {
 export async function CheckKeystroke(creature: number) {
   let ch: number = 0, ext: boolean = false, $r0: boolean = false;
   $r0 = false;
-  if ((U8[141212] !== 0)) {
+  if ((U8[227098] !== 0)) {
     if ((await GameIo.DemoEnding())) {
     }
   } else if ((await Crt.KeyPressed())) {
@@ -620,9 +620,9 @@ export async function CheckMorale(creature: number) {
   if (!CharHlp.IsNpc(creature)) {
     return $r0;
   }
-  U8[144908] = (U8[creature + 132] & 127) * 2;
-  if (U8[144908] > 102) {
-    U8[144908] = 0;
+  U8[230794] = (U8[creature + 132] & 127) * 2;
+  if (U8[230794] > 102) {
+    U8[230794] = 0;
   }
   (await FxEngine.TriggerEffectsWithCondition(17, creature));
   if (U8[creature + 50] === 0) {
@@ -630,13 +630,13 @@ export async function CheckMorale(creature: number) {
   } else {
     hpPct = Math.trunc((U8[creature + 283] * 100) / U8[creature + 50]) << 16 >> 16;
   }
-  if ((U8[144908] >= (100 - hpPct)) && (U8[144908] !== 0)) {
+  if ((U8[230794] >= (100 - hpPct)) && (U8[230794] !== 0)) {
     return $r0;
   }
-  moraleSave = U8[144908];
-  U8[144908] = U8[247516];
+  moraleSave = U8[230794];
+  U8[230794] = U8[255708];
   (await FxEngine.TriggerEffectsWithCondition(17, creature));
-  if (((U8[144908] >= (100 - r16(r32(141151) + 1420))) && (U8[144908] !== 0)) && (I8[creature + 270] !== 0)) {
+  if (((U8[230794] >= (100 - r16(r32(227037) + 1420))) && (U8[230794] !== 0)) && (I8[creature + 270] !== 0)) {
     return $r0;
   }
   enemyMove = (await CbtActs.HighestEnemyMovement(creature)) & 255;
@@ -654,9 +654,9 @@ export function EnemySeenDoing(creature: number, elem: number) {
   $r0 = false;
   for (let $i1 = 1, $e1 = Pathing.LastSlot(); $i1 <= $e1; $i1++) {
     i = $i1;
-    p = r32(i * 4 + 144292);
+    p = r32(i * 4 + 230178);
     if (p !== 0) {
-      if (((U8[p + 269] !== 0) && (CharHlp.Team(p) === CharHlp.EnemyTeam(creature))) && ((U8[i + 240562] & elem) !== 0)) {
+      if (((U8[p + 269] !== 0) && (CharHlp.Team(p) === CharHlp.EnemyTeam(creature))) && ((U8[i + 248754] & elem) !== 0)) {
         $r0 = true;
       }
     }
@@ -669,7 +669,7 @@ export function EnemyHasMissiles(creature: number) {
   $r0 = false;
   for (let $i1 = 1, $e1 = Pathing.LastSlot(); $i1 <= $e1; $i1++) {
     i = $i1;
-    p = r32(i * 4 + 144292);
+    p = r32(i * 4 + 230178);
     if (p !== 0) {
       if (((U8[p + 269] !== 0) && (CharHlp.Team(p) === CharHlp.EnemyTeam(creature))) && CharHlp.HasRangedWeapon(p)) {
         $r0 = true;
@@ -681,7 +681,7 @@ export function EnemyHasMissiles(creature: number) {
 
 export async function DecideCastSpell(creature: number, spell: number, minPri: number) {
   let $r0: boolean = false;
-  $r0 = (U8[spell * 16 + 136519] >= minPri) && ((await SpellImpact(creature, spell)) > 0);
+  $r0 = (U8[spell * 16 + 222405] >= minPri) && ((await SpellImpact(creature, spell)) > 0);
   return $r0;
 }
 
@@ -710,14 +710,14 @@ export function CanStepDir(creature: number, dir: number, edge: number) {
   if (U8[$f0] !== 0) {
     { S.sp = $sp; return $r0; }
   }
-  if (U8[U8[$f0 + 1] * 3 + 132942] >= U8[r32(creature + 264) + 6]) {
+  if (U8[U8[$f0 + 1] * 3 + 218828] >= U8[r32(creature + 264) + 6]) {
     { S.sp = $sp; return $r0; }
   }
   stepCost = 2;
   if ((dir & 1) !== 0) {
     stepCost = 3;
   }
-  stepCost = (stepCost * U8[U8[$f0 + 1] * 3 + 132942]) & 255;
+  stepCost = (stepCost * U8[U8[$f0 + 1] * 3 + 218828]) & 255;
   if ((U8[$f0 + 1] === 30) && AvoidsCloud(creature)) {
     stepCost = (U8[r32(creature + 264) + 6] + 1) & 255;
   }
@@ -733,7 +733,7 @@ export function CanStepDir(creature: number, dir: number, edge: number) {
 
 export function AiCanStep(creature: number, attempt: number, baseDir: number, edge: number) {
   let $r0: boolean = false;
-  $r0 = CanStepDir(creature, (baseDir + U8[U8[r32(creature + 264) + 21] * 5 + attempt + 249928]) % 8, edge);
+  $r0 = CanStepDir(creature, (baseDir + U8[U8[r32(creature + 264) + 21] * 5 + attempt + 258120]) % 8, edge);
   return $r0;
 }
 
@@ -754,15 +754,15 @@ export async function RouteToEnemy(creature: number, dir: number, wait: number) 
   if (AvoidsCloudkill(creature)) {
     rt.wSet($f0 + 1, 0, 32, rt.sUnion(rt.rSet($f0 + 1, 0, 32), rt.setR(66, 66)));
   }
-  found = (await Pathing.RouteStep(slot, rt.setR(targetSlot, targetSlot), rt.setR(), rt.rSet($f0 + 1, 0, 32), 29, dir, $f0));
+  found = Pathing.RouteStep(slot, rt.setR(targetSlot, targetSlot), rt.setR(), rt.rSet($f0 + 1, 0, 32), 30, dir, $f0);
   if (!found) {
     rt.wSet($f0 + 36, 0, 32, rt.setR());
     rt.wSet($f0 + 68, 0, 32, rt.setR());
     last = Pathing.LastSlot() & 255;
     for (let $i1 = 1, $e1 = last; $i1 <= $e1; $i1++) {
       i = $i1;
-      p = r32(i * 4 + 144292);
-      if (((i !== slot) && (p !== 0)) && (U8[i * 4 + 144007] !== 0)) {
+      p = r32(i * 4 + 230178);
+      if (((i !== slot) && (p !== 0)) && (U8[i * 4 + 229893] !== 0)) {
         if (CharHlp.Team(p) !== CharHlp.EnemyTeam(creature)) {
           rt.wSet($f0 + 68, 0, 32, rt.sUnion(rt.rSet($f0 + 68, 0, 32), rt.setR(i, i)));
         } else if ((U8[p + 269] !== 0) && (await CbtActs.CanTarget(creature, p, true))) {
@@ -770,16 +770,16 @@ export async function RouteToEnemy(creature: number, dir: number, wait: number) 
         }
       }
     }
-    found = (await Pathing.RouteStep(slot, rt.rSet($f0 + 36, 0, 32), rt.setR(), rt.rSet($f0 + 1, 0, 32), 29, dir, $f0));
+    found = Pathing.RouteStep(slot, rt.rSet($f0 + 36, 0, 32), rt.setR(), rt.rSet($f0 + 1, 0, 32), 30, dir, $f0);
     if (!found) {
-      found = (await Pathing.RouteStep(slot, rt.rSet($f0 + 36, 0, 32), rt.rSet($f0 + 68, 0, 32), rt.rSet($f0 + 1, 0, 32), 29, dir, $f0));
+      found = Pathing.RouteStep(slot, rt.rSet($f0 + 36, 0, 32), rt.rSet($f0 + 68, 0, 32), rt.rSet($f0 + 1, 0, 32), 30, dir, $f0);
       if (found) {
         CbtMap.ProbeDirection(creature, U8[dir], $f0 + 33, $f0 + 34);
         U8[wait] = U8[$f0 + 33] !== 0 ? 1 : 0;
       }
     }
     if (found) {
-      w32(r32(creature + 264) + 10, r32(U8[$f0] * 4 + 144292));
+      w32(r32(creature + 264) + 10, r32(U8[$f0] * 4 + 230178));
     }
   }
   $r0 = (found && !(U8[wait] !== 0)) && CanStepDir(creature, U8[dir], $f0 + 35);
@@ -790,7 +790,7 @@ export async function RouteToEnemy(creature: number, dir: number, wait: number) 
 export async function AiMoveStep(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 3);
   let dir: number = 0, attempt: number = 0, done: boolean = false, routed: boolean = false;
-  if (!(U8[249966] !== 0)) {
+  if (!(U8[258158] !== 0)) {
     TextRend.DisplayString(0, 24, 10, "Move/Attack, Move Left = " + StrUtil.NumStr(Math.trunc(U8[r32(creature + 264) + 6] / 2)) + " ");
   }
   if ((await CheckKeystroke(creature))) {
@@ -806,7 +806,7 @@ export async function AiMoveStep(creature: number) {
       dir = CbtActs.DirTowardTarget(creature, r32(r32(creature + 264) + 10)) & 255;
     } else {
       U8[r32(creature + 264) + 21] = Dice.RollDice(1, 2);
-      dir = U8[145548];
+      dir = U8[231434];
       if (I8[creature + 270] === 0) {
         dir = (dir + 4) & 255;
       }
@@ -818,8 +818,8 @@ export async function AiMoveStep(creature: number) {
     if ((U8[$f0 + 2] !== 0)) {
       done = (await FinishRound(creature));
     } else if (routed) {
-      U8[249964] = U8[$f0];
-      U8[249965] = 0;
+      U8[258156] = U8[$f0];
+      U8[258157] = 0;
     } else {
       while (((attempt < 6) && !done) && !AiCanStep(creature, attempt, dir, $f0 + 1)) {
         if ((U8[r32(creature + 264) + 20] !== 0) && (U8[$f0 + 1] !== 0)) {
@@ -834,16 +834,16 @@ export async function AiMoveStep(creature: number) {
         done = CharHlp.EndActions(creature);
       } else {
         if (attempt < 6) {
-          U8[$f0] = (dir + U8[U8[r32(creature + 264) + 21] * 5 + attempt + 249928]) % 8;
+          U8[$f0] = (dir + U8[U8[r32(creature + 264) + 21] * 5 + attempt + 258120]) % 8;
         } else {
           U8[$f0] = dir;
         }
-        if ((attempt === 6) || (U8[249964] === ((U8[$f0] + 4) % 8))) {
-          U8[249965] = U8[249965] + 1;
+        if ((attempt === 6) || (U8[258156] === ((U8[$f0] + 4) % 8))) {
+          U8[258157] = U8[258157] + 1;
           U8[r32(creature + 264) + 21] = (U8[r32(creature + 264) + 21] % 6) + 1;
-          if (U8[249965] > 1) {
+          if (U8[258157] > 1) {
             w32(r32(creature + 264) + 10, 0);
-            if (U8[249965] > 2) {
+            if (U8[258157] > 2) {
               U8[r32(creature + 264) + 6] = 0;
               done = true;
             } else if (!(await CbtActs.AcquireTarget(creature, 255, 1, 0))) {
@@ -852,7 +852,7 @@ export async function AiMoveStep(creature: number) {
           }
         }
         if (attempt < 6) {
-          U8[249964] = U8[$f0];
+          U8[258156] = U8[$f0];
         } else {
           done = true;
         }
@@ -869,5 +869,5 @@ export async function AiMoveStep(creature: number) {
 }
 
 export function $init() {
-  U8[249966] = false ? 1 : 0;
+  U8[258158] = false ? 1 : 0;
 }

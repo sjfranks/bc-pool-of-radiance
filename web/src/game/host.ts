@@ -9,7 +9,7 @@ export const SCREEN_HEIGHT = 200;
 export const TEXT_MODE = 3;
 export const VGA_MODE = 19;
 
-export const $at = { screen: 65793, dac: 129793, videoMode: 130561, BIOS_FONT: 130562, cursorRow: 131586, cursorCol: 131594 };
+export const $at = { screen: 151679, dac: 215679, videoMode: 216447, BIOS_FONT: 216448, cursorRow: 217472, cursorCol: 217480 };
 
 export const Service = $ext.Service;
 export const WaitKey = $ext.WaitKey;
@@ -25,25 +25,25 @@ export function Intr(intNo: number, regs: number) {
   }
   switch (U8[regs + 1]) {
     case 0: {
-      U8[130561] = U8[regs] & 127;
-      if (U8[130561] === 19) {
-        rt.fill(65793, 64000, 0);
+      U8[216447] = U8[regs] & 127;
+      if (U8[216447] === 19) {
+        rt.fill(151679, 64000, 0);
       }
       break;
     }
     case 2: {
-      U8[(U8[regs + 3] & 7) + 131586] = U8[regs + 7];
-      U8[(U8[regs + 3] & 7) + 131594] = U8[regs + 6];
+      U8[(U8[regs + 3] & 7) + 217472] = U8[regs + 7];
+      U8[(U8[regs + 3] & 7) + 217480] = U8[regs + 6];
       break;
     }
     case 9: {
-      if (U8[130561] === 19) {
-        WriteBiosChars(U8[(U8[regs + 3] & 7) + 131594], U8[(U8[regs + 3] & 7) + 131586], U8[regs], U8[regs + 2], r16(regs + 4));
+      if (U8[216447] === 19) {
+        WriteBiosChars(U8[(U8[regs + 3] & 7) + 217480], U8[(U8[regs + 3] & 7) + 217472], U8[regs], U8[regs + 2], r16(regs + 4));
       }
       break;
     }
     case 15: {
-      U8[regs] = U8[130561];
+      U8[regs] = U8[216447];
       break;
     }
   }
@@ -56,7 +56,7 @@ export function WriteBiosChars(col: number, row: number, ch: number, color: numb
     for (let $i2 = 0; $i2 <= 7; $i2++) {
       r = $i2;
       if (ch < 128) {
-        bits = U8[ch * 8 + r + 130562];
+        bits = U8[ch * 8 + r + 216448];
       } else {
         bits = 0;
       }
@@ -64,11 +64,11 @@ export function WriteBiosChars(col: number, row: number, ch: number, color: numb
       for (let $i3 = 0; $i3 <= 7; $i3++) {
         k = $i3;
         if ((bits & (128 >>> k)) === 0) {
-          U8[(ofs + k) + 65793] = 0;
+          U8[(ofs + k) + 151679] = 0;
         } else if ((color & 128) !== 0) {
-          U8[(ofs + k) + 65793] = U8[(ofs + k) + 65793] ^ (color & 127);
+          U8[(ofs + k) + 151679] = U8[(ofs + k) + 151679] ^ (color & 127);
         } else {
-          U8[(ofs + k) + 65793] = color;
+          U8[(ofs + k) + 151679] = color;
         }
       }
     }
@@ -77,5 +77,5 @@ export function WriteBiosChars(col: number, row: number, ch: number, color: numb
 }
 
 export function $init() {
-  U8[130561] = 3;
+  U8[216447] = 3;
 }

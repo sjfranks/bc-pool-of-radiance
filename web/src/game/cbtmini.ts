@@ -37,8 +37,8 @@ export function Build(grid: number, current: number, cursorX: number, cursorY: n
     y = $i1;
     for (let $i2 = 0; $i2 <= 49; $i2++) {
       x = $i2;
-      t = U8[r32(144641) + y * 50 + x + 7];
-      if ((t > 0) && (U8[t * 3 + 132942] === 255)) {
+      t = U8[r32(230527) + y * 50 + x + 7];
+      if ((t > 0) && (U8[t * 3 + 218828] === 255)) {
         U8[grid + y * 50 + x] = 1;
       } else {
         U8[grid + y * 50 + x] = 0;
@@ -49,8 +49,8 @@ export function Build(grid: number, current: number, cursorX: number, cursorY: n
     pass = $i3;
     for (let $i4 = 1, $e4 = Pathing.LastSlot(); $i4 <= $e4; $i4++) {
       i = $i4;
-      p = r32(i * 4 + 144292);
-      if (((U8[i * 4 + 144007] > 0) && (p !== 0)) && ((U8[p + 269] !== 0 ? 1 : 0) === pass)) {
+      p = r32(i * 4 + 230178);
+      if (((U8[i * 4 + 229893] > 0) && (p !== 0)) && ((U8[p + 269] !== 0 ? 1 : 0) === pass)) {
         if (p === current) {
           PutCreature(grid, i, 15);
         } else if (U8[p + 269] === 0) {
@@ -81,7 +81,7 @@ export function PixelColor(grid: number, px: number, py: number) {
 export async function Show(current: number, cursorX: number, cursorY: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 12);
   let grid: number = 0, col: number = 0, row: number = 0, x: number = 0, y: number = 0;
-  if ((((U8[141196] === 0) || (U8[141176] !== 5)) || (r32(144641) === 0)) || (U8[227025] !== 0)) {
+  if ((((U8[227082] === 0) || (U8[227062] !== 5)) || (r32(230527) === 0)) || (U8[235217] !== 0)) {
     { S.sp = $sp; return; }
   }
   if (16777216 < ((1250 + (Blit.FrameBytes(8, 1) | 0)) + 1024)) {
@@ -100,9 +100,9 @@ export async function Show(current: number, cursorX: number, cursorY: number) {
           x = $i4;
           U8[$f0 + x + 4] = PixelColor(grid, ((col - 24) * 8) + x, ((row - 15) * 8) + y);
         }
-        (await VidOps.PutPixelRow(r32($f0), 0, y, $f0 + 4));
+        VidOps.PutPixelRow(r32($f0), 0, y, $f0 + 4);
       }
-      (await Blit.ShowPic(col, row, r32($f0)));
+      Blit.ShowPic(col, row, r32($f0));
     }
   }
   Blit.FreePic($f0);
@@ -115,9 +115,9 @@ export function PutCreature(grid: number, i: number, color: number) {
   let k: number = 0, x: number = 0, y: number = 0;
   for (let $i1 = 0; $i1 <= 3; $i1++) {
     k = $i1;
-    if (Pathing.GetIconTileDelta(U8[i * 4 + 144007], k, $f0, $f0 + 1)) {
-      x = (I8[i * 4 + 144004] + I8[$f0]) << 24 >> 24;
-      y = (I8[i * 4 + 144005] + I8[$f0 + 1]) << 24 >> 24;
+    if (Pathing.GetIconTileDelta(U8[i * 4 + 229893], k, $f0, $f0 + 1)) {
+      x = (I8[i * 4 + 229890] + I8[$f0]) << 24 >> 24;
+      y = (I8[i * 4 + 229891] + I8[$f0 + 1]) << 24 >> 24;
       if (Pathing.OnArena(x, y)) {
         U8[grid + y * 50 + x] = color;
       }

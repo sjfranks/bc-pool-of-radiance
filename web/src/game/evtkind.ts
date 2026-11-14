@@ -23,23 +23,23 @@ export const MAX_SCAN = 256;
 export const MAX_FOLLOW = 160;
 export const UNKNOWN = 255;
 
-export const $at = { dispatchCount: 251010, dispatch: 251011, queue: 251491, queueLen: 252515, visited: 252517, varCount: 252521, vars: 252522, varMasks: 252538, varOffsets: 252546, kinds: 252554 };
+export const $at = { dispatchCount: 259202, dispatch: 259203, queue: 259683, queueLen: 260707, visited: 260709, varCount: 260713, vars: 260714, varMasks: 260730, varOffsets: 260738, kinds: 260746 };
 
 export async function Prepare() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 9);
   let a: number = 0, op: number = 0, i: number = 0, v2: number = 0, head: number = 0, eventBit: number = 0, guarded: number = 0;
-  U8[251010] = 0;
-  w16(252515, 0);
-  rt.fill(252554, 256, 255);
-  w32(252517, rt.getMem(1248));
-  rt.fill(r32(252517), 1248, 0);
+  U8[259202] = 0;
+  w16(260707, 0);
+  rt.fill(260746, 256, 255);
+  w32(260709, rt.getMem(1248));
+  rt.fill(r32(260709), 1248, 0);
   for (let $i1 = 1; $i1 <= 5; $i1++) {
     i = $i1;
-    Push(r16(i * 2 + 141162));
+    Push(r16(i * 2 + 227048));
   }
   head = 1;
-  while (head <= r16(252515)) {
-    a = r16(head * 2 + 251489);
+  while (head <= r16(260707)) {
+    a = r16(head * 2 + 259681);
     head = (head + 1) & 65535;
     op = (await Decode(a, $f0)) & 255;
     switch (op) {
@@ -77,7 +77,7 @@ export async function Prepare() {
           w16($f0 + 6, Operand(1, $f0 + 4));
           v2 = Operand(2, $f0 + 5) & 65535;
           if (((U8[$f0 + 4] !== 0) && (r16($f0 + 6) === 49231)) || ((U8[$f0 + 5] !== 0) && (v2 === 49231))) {
-            U8[252521] = 0;
+            U8[260713] = 0;
             eventBit = VarBit(49231, 255, 0) & 255;
             if (op === 3) {
               (await Scan(a, eventBit));
@@ -93,7 +93,7 @@ export async function Prepare() {
       }
     }
   }
-  rt.freeMem(r32(252517));
+  rt.freeMem(r32(260709));
   S.sp = $sp;
 }
 
@@ -103,23 +103,23 @@ export async function Kind(event: number) {
   if (event === 0) {
     return $r0;
   }
-  if (U8[event + 252554] !== 255) {
-    $r0 = U8[event + 252554];
+  if (U8[event + 260746] !== 255) {
+    $r0 = U8[event + 260746];
     return $r0;
   }
   k = 1;
   found = false;
-  for (let $i1 = 1, $e1 = U8[251010]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[259202]; $i1 <= $e1; $i1++) {
     i = $i1;
-    if ((event & U8[i * 5 + 251006]) === U8[i * 5 + 251007]) {
-      t = (await KindAt(r16(i * 5 + 251008), (U8[i * 5 + 251010] !== 0))) & 255;
+    if ((event & U8[i * 5 + 259198]) === U8[i * 5 + 259199]) {
+      t = (await KindAt(r16(i * 5 + 259200), (U8[i * 5 + 259202] !== 0))) & 255;
       if (!found || (t > k)) {
         k = t;
       }
       found = true;
     }
   }
-  U8[event + 252554] = k;
+  U8[event + 260746] = k;
   $r0 = k;
   return $r0;
 }
@@ -127,30 +127,30 @@ export async function Kind(event: number) {
 export function Operand(i: number, isAddr: number) {
   let $r0: number = 0;
   let $t1;
-  U8[isAddr] = ($t1 = U8[i + 146547], $t1 === 1 || $t1 === 3) ? 1 : 0;
+  U8[isAddr] = ($t1 = U8[i + 232433], $t1 === 1 || $t1 === 3) ? 1 : 0;
   let $t2;
-  if (($t2 = U8[i + 146547], $t2 === 1 || $t2 === 2 || $t2 === 3)) {
-    $r0 = EclVars.CombineBytesToWord(U8[i + 146675], U8[i + 146611]) & 65535;
+  if (($t2 = U8[i + 232433], $t2 === 1 || $t2 === 2 || $t2 === 3)) {
+    $r0 = EclVars.CombineBytesToWord(U8[i + 232561], U8[i + 232497]) & 65535;
   } else {
-    $r0 = U8[i + 146675];
+    $r0 = U8[i + 232561];
   }
   return $r0;
 }
 
 export function ListHead(a: number, v: number, isAddr: number, n: number) {
   let t: number = 0;
-  t = U8[r32(141159) + (a + 1) - 39168];
+  t = U8[r32(227045) + (a + 1) - 39168];
   U8[isAddr] = t === 1 || t === 3 ? 1 : 0;
-  w16(v, U8[r32(141159) + (a + 2) - 39168]);
+  w16(v, U8[r32(227045) + (a + 2) - 39168]);
   a = (a + 3) & 65535;
   if (t === 1 || t === 2 || t === 3) {
-    w16(v, EclVars.CombineBytesToWord(r16(v) & 255, U8[r32(141159) + a - 39168]));
+    w16(v, EclVars.CombineBytesToWord(r16(v) & 255, U8[r32(227045) + a - 39168]));
     a = (a + 1) & 65535;
   }
   U8[n] = 0;
   let $t1;
-  if (($t1 = U8[r32(141159) + a - 39168], $t1 === 0 || $t1 === 2)) {
-    U8[n] = U8[r32(141159) + (a + 1) - 39168];
+  if (($t1 = U8[r32(227045) + a - 39168], $t1 === 0 || $t1 === 2)) {
+    U8[n] = U8[r32(227045) + (a + 1) - 39168];
   }
 }
 
@@ -162,14 +162,14 @@ export function InScript(a: number) {
 
 export async function Decode(a: number, next: number) {
   let savedIp: number = 0, savedOp: number = 0, $r0: number = 0;
-  savedIp = r16(141174);
-  savedOp = U8[146547];
-  w16(141174, a);
+  savedIp = r16(227060);
+  savedOp = U8[232433];
+  w16(227060, a);
   (await EclVars.SkipEclCmd());
-  $r0 = U8[146547];
-  w16(next, r16(141174));
-  w16(141174, savedIp);
-  U8[146547] = savedOp;
+  $r0 = U8[232433];
+  w16(next, r16(227060));
+  w16(227060, savedIp);
+  U8[232433] = savedOp;
   return $r0;
 }
 
@@ -202,37 +202,37 @@ export function AddDispatch(mask: number, value: number, target: number, single:
     return;
   }
   value = value & mask;
-  for (let $i1 = 1, $e1 = U8[251010]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[259202]; $i1 <= $e1; $i1++) {
     i = $i1;
-    if (((U8[i * 5 + 251006] === mask) && (U8[i * 5 + 251007] === value)) && (r16(i * 5 + 251008) === target)) {
+    if (((U8[i * 5 + 259198] === mask) && (U8[i * 5 + 259199] === value)) && (r16(i * 5 + 259200) === target)) {
       return;
     }
   }
-  if (U8[251010] < 96) {
-    U8[251010] = U8[251010] + 1;
-    U8[U8[251010] * 5 + 251006] = mask;
-    U8[U8[251010] * 5 + 251007] = value;
-    w16(U8[251010] * 5 + 251008, target);
-    U8[U8[251010] * 5 + 251010] = single ? 1 : 0;
+  if (U8[259202] < 96) {
+    U8[259202] = U8[259202] + 1;
+    U8[U8[259202] * 5 + 259198] = mask;
+    U8[U8[259202] * 5 + 259199] = value;
+    w16(U8[259202] * 5 + 259200, target);
+    U8[U8[259202] * 5 + 259202] = single ? 1 : 0;
   }
 }
 
 export function VarBit(v: number, mask: number, offset: number) {
   let k: number = 0, $r0: number = 0;
   $r0 = 0;
-  for (let $i1 = 1, $e1 = U8[252521]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[260713]; $i1 <= $e1; $i1++) {
     k = $i1;
-    if ((r16(k * 2 + 252520) === v) && ((mask === 0) || (U8[k + 252545] === offset))) {
+    if ((r16(k * 2 + 260712) === v) && ((mask === 0) || (U8[k + 260737] === offset))) {
       $r0 = (1 << (k - 1)) & 255;
       return $r0;
     }
   }
-  if ((mask !== 0) && (U8[252521] < 8)) {
-    U8[252521] = U8[252521] + 1;
-    w16(U8[252521] * 2 + 252520, v);
-    U8[U8[252521] + 252537] = mask;
-    U8[U8[252521] + 252545] = offset;
-    $r0 = (1 << (U8[252521] - 1)) & 255;
+  if ((mask !== 0) && (U8[260713] < 8)) {
+    U8[260713] = U8[260713] + 1;
+    w16(U8[260713] * 2 + 260712, v);
+    U8[U8[260713] + 260729] = mask;
+    U8[U8[260713] + 260737] = offset;
+    $r0 = (1 << (U8[260713] - 1)) & 255;
   }
   return $r0;
 }
@@ -240,9 +240,9 @@ export function VarBit(v: number, mask: number, offset: number) {
 export function Bits(v: number, live: number) {
   let k: number = 0, b: number = 0, $r0: number = 0;
   b = 0;
-  for (let $i1 = 1, $e1 = U8[252521]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[260713]; $i1 <= $e1; $i1++) {
     k = $i1;
-    if (r16(k * 2 + 252520) === v) {
+    if (r16(k * 2 + 260712) === v) {
       b = (b | (1 << (k - 1))) & 255;
     }
   }
@@ -253,11 +253,11 @@ export function Bits(v: number, live: number) {
 export function LiveVar(v: number, live: number, mask: number, offset: number) {
   let k: number = 0, $r0: boolean = false;
   $r0 = false;
-  for (let $i1 = 1, $e1 = U8[252521]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[260713]; $i1 <= $e1; $i1++) {
     k = $i1;
-    if ((r16(k * 2 + 252520) === v) && ((live & (1 << (k - 1))) !== 0)) {
-      U8[mask] = U8[k + 252537];
-      U8[offset] = U8[k + 252545];
+    if ((r16(k * 2 + 260712) === v) && ((live & (1 << (k - 1))) !== 0)) {
+      U8[mask] = U8[k + 260729];
+      U8[offset] = U8[k + 260737];
       $r0 = true;
     }
   }
@@ -371,13 +371,13 @@ export function Push(a: number) {
     return;
   }
   k = (a - 39168) & 65535;
-  if ((U8[r32(252517) + Math.trunc(k / 8)] & (1 << (k % 8))) !== 0) {
+  if ((U8[r32(260709) + Math.trunc(k / 8)] & (1 << (k % 8))) !== 0) {
     return;
   }
-  U8[r32(252517) + Math.trunc(k / 8)] = U8[r32(252517) + Math.trunc(k / 8)] | (1 << (k % 8));
-  if (r16(252515) < 512) {
-    w16(252515, r16(252515) + 1);
-    w16(r16(252515) * 2 + 251489, a);
+  U8[r32(260709) + Math.trunc(k / 8)] = U8[r32(260709) + Math.trunc(k / 8)] | (1 << (k % 8));
+  if (r16(260707) < 512) {
+    w16(260707, r16(260707) + 1);
+    w16(r16(260707) * 2 + 259681, a);
   }
 }
 

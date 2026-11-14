@@ -6,10 +6,12 @@
   "type": "module",
   "scripts": {
     "gen": "bash gen.sh",
-    "dev": "vite",
-    "build": "tsc --noEmit && vite build",
-    "preview": "vite preview",
-    "headless": "node tools/headless.mjs"
+    "pack": "node tools/pack.mjs",
+    "dev": "npm run pack && vite --host",
+    "build": "npm run pack && tsc --noEmit && vite build",
+    "preview": "vite preview --host",
+    "headless": "node tools/headless.mjs",
+    "test": "node tools/runtests.mjs"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

@@ -46,7 +46,7 @@ export const MAX_THROWN = 24;
 export const RULE_NONE = 0;
 export const RULE_SLEEP = 1;
 
-export const $at = { suppressTargeting: 247481, seenCasting: 247482, hitsMade: 247514, hostileHpPct: 247516, doneRoundFlag: 247517, thrownCount: 247518, thrown: 247519, attacksMade: 247715, aimSpell: 247717, areaRules: 247718 };
+export const $at = { suppressTargeting: 255673, seenCasting: 255674, hitsMade: 255706, hostileHpPct: 255708, doneRoundFlag: 255709, thrownCount: 255710, thrown: 255711, attacksMade: 255907, aimSpell: 255909, areaRules: 255910 };
 
 export async function BeginRound(creature: number) {
   {
@@ -57,17 +57,17 @@ export async function BeginRound(creature: number) {
     U8[$w1 + 8] = 0;
     U8[$w1 + 4] = 2;
     (await RecalcAttacksLeft(creature));
-    U8[144899] = U8[creature + 162];
-    U8[144902] = 0;
+    U8[230785] = U8[creature + 162];
+    U8[230788] = 0;
     (await FxEngine.TriggerEffectsWithCondition(18, creature));
-    U8[creature + 276] = AttacksFromRate(U8[144899]);
+    U8[creature + 276] = AttacksFromRate(U8[230785]);
     U8[$w1 + 5] = U8[creature + 107];
     if (U8[creature + 269] !== 0) {
       U8[$w1 + 3] = Dice.RollDice(1, 6) + AbilAdj.DexMissileAdjust(creature);
       if (I8[$w1 + 3] < 1) {
         U8[$w1 + 3] = 1;
       }
-      if ((((I8[creature + 270] + 1) & (r16(r32(141151) + 1430) << 16 >> 16)) & 255) !== 0) {
+      if ((((I8[creature + 270] + 1) & (r16(r32(227037) + 1430) << 16 >> 16)) & 255) !== 0) {
         U8[$w1 + 3] = I8[$w1 + 3] - 6;
       }
       if ((I8[$w1 + 3] < 0) || (I8[$w1 + 3] > 20)) {
@@ -84,16 +84,16 @@ export async function CalcCreatureMovement(creature: number) {
   let m: number = 0, $r0: number = 0;
   m = U8[creature + 284];
   if (I8[creature + 270] === 0) {
-    m = (m + r16(r32(141151) + 1764)) & 255;
+    m = (m + r16(r32(227037) + 1764)) & 255;
   }
-  U8[144902] = 1;
+  U8[230788] = 1;
   if ((m < 1) || (m > 96)) {
     m = 1;
   }
-  U8[144899] = m * 2;
+  U8[230785] = m * 2;
   (await FxEngine.TriggerEffectsWithCondition(18, creature));
-  U8[144902] = 0;
-  $r0 = U8[144899];
+  U8[230788] = 0;
+  $r0 = U8[230785];
   return $r0;
 }
 
@@ -115,24 +115,24 @@ export async function CombatMoveCreature(creature: number, dir: number) {
     U8[r32(creature + 264) + 6] = 0;
     return;
   }
-  x = I8[slot * 4 + 144004];
-  y = I8[slot * 4 + 144005];
-  nx = (x + I8[dir + 132927]) << 24 >> 24;
-  ny = (y + I8[dir + 132936]) << 24 >> 24;
+  x = I8[slot * 4 + 229890];
+  y = I8[slot * 4 + 229891];
+  nx = (x + I8[dir + 218813]) << 24 >> 24;
+  ny = (y + I8[dir + 218822]) << 24 >> 24;
   cost = 1;
   if (U8[creature + 271] !== 0) {
     cost = 3;
-    if (!CbtMap.ViewCoordsValid(nx - I8[r32(144641) + 2], ny - I8[r32(144641) + 3])) {
+    if (!CbtMap.ViewCoordsValid(nx - I8[r32(230527) + 2], ny - I8[r32(230527) + 3])) {
       (await CbtMap.ScrollView(x, y, 2, 8));
     }
   }
   (await CbtMap.UpdateCombatMapTile(0, 0, slot));
-  U8[slot * 4 + 144004] = nx;
-  U8[slot * 4 + 144005] = ny;
+  U8[slot * 4 + 229890] = nx;
+  U8[slot * 4 + 229891] = ny;
   CbtMap.BuildArenaArrays();
   (await CbtMap.ScrollView(nx, ny, cost, 8));
   ResetFlanking(creature);
-  (await SoundDrv.SoundEffect(r16(132907), 1));
+  SoundDrv.SoundEffect(r16(218793), 1);
   (await GuardersAttack(creature));
   if ((U8[creature + 269] === 0) || CharHlp.IsHelpless(creature)) {
     U8[r32(creature + 264) + 6] = 0;
@@ -153,23 +153,23 @@ export async function AttacksOfOpportunity(creature: number, dir: number) {
   }
   for (let $i1 = 1, $e1 = cntBefore; $i1 <= $e1; $i1++) {
     i = $i1;
-    U8[$f0 + i - 1] = U8[i + 146459];
+    U8[$f0 + i - 1] = U8[i + 232345];
   }
   let $t2;
-  $t2 = slot * 4 + 144004, U8[$t2] = I8[$t2] + I8[dir + 132927];
+  $t2 = slot * 4 + 229890, U8[$t2] = I8[$t2] + I8[dir + 218813];
   let $t3;
-  $t3 = slot * 4 + 144005, U8[$t3] = I8[$t3] + I8[dir + 132936];
+  $t3 = slot * 4 + 229891, U8[$t3] = I8[$t3] + I8[dir + 218822];
   cntAfter = CbtMap.CountTargets(creature, 1) & 255;
   let $t4;
-  $t4 = slot * 4 + 144004, U8[$t4] = I8[$t4] - I8[dir + 132927];
+  $t4 = slot * 4 + 229890, U8[$t4] = I8[$t4] - I8[dir + 218813];
   let $t5;
-  $t5 = slot * 4 + 144005, U8[$t5] = I8[$t5] - I8[dir + 132936];
+  $t5 = slot * 4 + 229891, U8[$t5] = I8[$t5] - I8[dir + 218822];
   for (let $i6 = 1, $e6 = cntBefore; $i6 <= $e6; $i6++) {
     i = $i6;
     still = false;
     for (let $i7 = 1, $e7 = cntAfter; $i7 <= $e7; $i7++) {
       j = $i7;
-      if (U8[j + 146459] === U8[$f0 + i - 1]) {
+      if (U8[j + 232345] === U8[$f0 + i - 1]) {
         still = true;
       }
     }
@@ -182,7 +182,7 @@ export async function AttacksOfOpportunity(creature: number, dir: number) {
     if (U8[$f0 + i - 1] > 0) {
       if (U8[creature + 269] !== 0) {
         attacked = false;
-        p = r32(U8[$f0 + i - 1] * 4 + 144292);
+        p = r32(U8[$f0 + i - 1] * 4 + 230178);
         if (!CharHlp.IsHelpless(p)) {
           if ((await CanTarget(p, creature, true))) {
             if (!CharHlp.HasEffect(p, 75, $f0 + 12)) {
@@ -215,7 +215,7 @@ export async function AttacksOfOpportunity(creature: number, dir: number) {
                       U8[p + phase + 274] = 1;
                       U8[r32(p + 264) + 4] = phase;
                       savedOther = r32(r32(p + 264) + 10);
-                      (await MakeAttack(p, creature, true, 0, 247517));
+                      (await MakeAttack(p, creature, true, 0, 255709));
                       attacked = true;
                       w32(r32(p + 264) + 10, savedOther);
                       if (U8[p + 269] !== 0) {
@@ -395,13 +395,13 @@ export async function RecalcAttacksLeft(creature: number) {
     if (rof < 2) {
       rof = 2;
     }
-    U8[144899] = rof;
+    U8[230785] = rof;
   } else {
-    U8[144899] = U8[creature + 161];
+    U8[230785] = U8[creature + 161];
   }
-  U8[144902] = 0;
+  U8[230788] = 0;
   (await FxEngine.TriggerEffectsWithCondition(18, creature));
-  adj = AttacksFromRate(U8[144899]) & 255;
+  adj = AttacksFromRate(U8[230785]) & 255;
   if (ranged && (r32($f0) !== 0)) {
     qty = 1;
     if (U8[r32($f0) + 57] > qty) {
@@ -434,7 +434,7 @@ export async function SweepAttack(att: number, def: number) {
   defIdx = 0;
   for (let $i1 = 1, $e1 = cnt; $i1 <= $e1; $i1++) {
     i = $i1;
-    p = r32(U8[i + 146459] * 4 + 144292);
+    p = r32(U8[i + 232345] * 4 + 230178);
     if (p === def) {
       defIdx = i;
     }
@@ -452,19 +452,19 @@ export async function SweepAttack(att: number, def: number) {
     weak = U8[r32(att + 264) + 5];
   }
   (await CharDisp.PrintNameString(att, "sweeps", 10, true));
-  p = r32(U8[146460] * 4 + 144292);
+  p = r32(U8[232346] * 4 + 230178);
   if (p !== def) {
-    U8[defIdx + 146459] = U8[146460];
-    U8[146460] = CbtMap.CombatSlot(def);
+    U8[defIdx + 232345] = U8[232346];
+    U8[232346] = CbtMap.CombatSlot(def);
   }
   for (let $i2 = 1, $e2 = cnt; $i2 <= $e2; $i2++) {
     i = $i2;
     if ((weak > 0) && (U8[att + 269] !== 0)) {
-      if (I8[r32(U8[i + 146459] * 4 + 144292) + 115] === 0) {
-        p = r32(U8[i + 146459] * 4 + 144292);
+      if (I8[r32(U8[i + 232345] * 4 + 230178) + 115] === 0) {
+        p = r32(U8[i + 232345] * 4 + 230178);
         NoteAttackDirection(att, p);
         U8[att + 275] = 1;
-        (await MakeAttack(att, p, false, 0, 247517));
+        (await MakeAttack(att, p, false, 0, 255709));
         weak = (weak - 1) & 255;
       }
     }
@@ -486,15 +486,15 @@ export async function CanTarget(creature: number, other: number, allowAlly: bool
   if (!allowAlly && (I8[other + 270] === I8[creature + 270])) {
     return $r0;
   }
-  U8[247481] = 0;
+  U8[255673] = 0;
   (await FxEngine.TriggerEffectsWithCondition(1, other));
-  if (U8[247481] === 0) {
+  if (U8[255673] === 0) {
     saved = r32(r32(creature + 264) + 10);
     w32(r32(creature + 264) + 10, other);
     (await FxEngine.TriggerEffectsWithCondition(0, creature));
     w32(r32(creature + 264) + 10, saved);
   }
-  $r0 = U8[247481] === 0;
+  $r0 = U8[255673] === 0;
   return $r0;
 }
 
@@ -502,7 +502,7 @@ export async function AimCycles(creature: number, other: number, allies: boolean
   let $r0: boolean = false;
   if ((other === 0) || (creature === other)) {
     $r0 = other !== 0;
-  } else if (U8[141194] === 0) {
+  } else if (U8[227080] === 0) {
     $r0 = (await CanTarget(creature, other, true));
   } else if (allies) {
     $r0 = (I8[other + 270] === I8[creature + 270]) && (await CanTarget(creature, other, true));
@@ -513,12 +513,12 @@ export async function AimCycles(creature: number, other: number, allies: boolean
 }
 
 export function NoteThrown(thrower: number, item: number) {
-  if ((I8[thrower + 270] !== 0) || (U8[247518] >= 24)) {
+  if ((I8[thrower + 270] !== 0) || (U8[255710] >= 24)) {
     return;
   }
-  U8[247518] = U8[247518] + 1;
-  w32(U8[247518] * 8 + 247511, item);
-  w32(U8[247518] * 8 + 247515, thrower);
+  U8[255710] = U8[255710] + 1;
+  w32(U8[255710] * 8 + 255703, item);
+  w32(U8[255710] * 8 + 255707, thrower);
 }
 
 export async function ReturnThrown(n: number, thrower: number, back: number, name_: number) {
@@ -526,11 +526,11 @@ export async function ReturnThrown(n: number, thrower: number, back: number, nam
   $r0 = false;
   w32(back, 0);
   wS(name_, 255, "");
-  item = r32(n * 8 + 247511);
-  w32(thrower, r32(n * 8 + 247515));
+  item = r32(n * 8 + 255703);
+  w32(thrower, r32(n * 8 + 255707));
   prev = 0;
-  if (r32(144890) !== item) {
-    prev = r32(144890);
+  if (r32(230776) !== item) {
+    prev = r32(230776);
     while ((prev !== 0) && (r32(prev + 42) !== item)) {
       prev = r32(prev + 42);
     }
@@ -538,7 +538,7 @@ export async function ReturnThrown(n: number, thrower: number, back: number, nam
       return $r0;
     }
   }
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (p !== r32(thrower))) {
     p = r32(p + 260);
   }
@@ -563,12 +563,12 @@ export async function ReturnThrown(n: number, thrower: number, back: number, nam
     w32(back, 0);
   }
   if (prev === 0) {
-    w32(144890, r32(item + 42));
+    w32(230776, r32(item + 42));
   } else {
     w32(prev + 42, r32(item + 42));
   }
-  if (r32(143761) === item) {
-    w32(143761, r32(item + 42));
+  if (r32(229647) === item) {
+    w32(229647, r32(item + 42));
   }
   w32(item + 42, 0);
   rt.freeMem(item);
@@ -577,10 +577,10 @@ export async function ReturnThrown(n: number, thrower: number, back: number, nam
     U8[r32(back) + 52] = 0;
     base = CharHlp.BaseItem(U8[r32(back) + 46]);
     if ((((r32(r32(thrower) + 204) === 0) && (U8[base] === 0)) && ((U8[r32(thrower) + 256] + U8[base + 1]) <= 2)) && ((U8[base + 13] & U8[r32(thrower) + 176]) !== 0)) {
-      saved = r32(143749);
-      w32(143749, r32(thrower));
+      saved = r32(229635);
+      w32(229635, r32(thrower));
       (await FxEngine.ToggleReadyItem(r32(back)));
-      w32(143749, saved);
+      w32(229635, saved);
       CharHlp.RecalcStats(r32(thrower));
     }
   }
@@ -627,7 +627,7 @@ export async function CombatTurnUndead(creature: number) {
           }
         }
       }
-      (await CharDisp.ClearMessageWindow());
+      CharDisp.ClearMessageWindow();
     } else {
       stop = true;
     }
@@ -636,8 +636,8 @@ export async function CombatTurnUndead(creature: number) {
     (await CharDisp.PrintBottomLine("Nothing Happens..."));
   }
   CharHlp.CountTeams();
-  U8[247517] = CharHlp.EndActions(creature) ? 1 : 0;
-  (await CharDisp.ClearMessageWindow());
+  U8[255709] = CharHlp.EndActions(creature) ? 1 : 0;
+  CharDisp.ClearMessageWindow();
   S.sp = $sp;
 }
 
@@ -649,7 +649,7 @@ export function FindTurnUndeadTarget(creature: number, tgt: number) {
   $r0 = false;
   for (let $i1 = 1, $e1 = cnt; $i1 <= $e1; $i1++) {
     i = $i1;
-    p = r32(U8[i + 146459] * 4 + 144292);
+    p = r32(U8[i + 232345] * 4 + 230178);
     if (((U8[r32(p + 264) + 16] === 0) && (I8[p + 118] > 0)) && (I8[p + 118] < best)) {
       best = I8[p + 118];
       w32(tgt, p);
@@ -696,18 +696,18 @@ export async function MakeAttack(att: number, def: number, fromBehind: boolean, 
   }
   U8[done] = true ? 1 : 0;
   if ((U8[att + 275] > 0) || (U8[att + 276] > 0)) {
-    savedCur = r32(143749);
-    w32(143749, att);
+    savedCur = r32(229635);
+    w32(229635, att);
     (await RollAttacks(att, def, fromBehind, ranged, done));
     if (weapon !== 0) {
-      U8[weapon + 57] = AmmoLeft(U8[weapon + 57], U8[247715]);
+      U8[weapon + 57] = AmmoLeft(U8[weapon + 57], U8[255907]);
       if (U8[weapon + 57] === 0) {
         if (CharHlp.HasThrowableWeapon(att) && (U8[weapon + 62] !== 137)) {
-          CharHlp.PrependItemCopy(144890, weapon);
-          item = r32(144890);
+          CharHlp.PrependItemCopy(230776, weapon);
+          item = r32(230776);
           U8[item + 52] = 0;
           (await CharHlp.RemoveItem(att, weapon));
-          w32(143761, item);
+          w32(229647, item);
           NoteThrown(att, item);
         } else {
           (await CharHlp.RemoveItem(att, weapon));
@@ -715,7 +715,7 @@ export async function MakeAttack(att: number, def: number, fromBehind: boolean, 
       }
     }
     CharHlp.RecalcStats(att);
-    w32(143749, savedCur);
+    w32(229635, savedCur);
   }
   if ((U8[done] !== 0)) {
     U8[done] = CharHlp.EndActions(att) ? 1 : 0;
@@ -734,11 +734,11 @@ export function FindCureTarget(creature: number, tgt: number) {
   bestHp = 255;
   for (let $i1 = 0; $i1 <= 8; $i1++) {
     d = $i1;
-    nx = (CbtMap.CombatCellX(creature) + I8[d + 132927]) << 24 >> 24;
-    ny = (CbtMap.CombatCellY(creature) + I8[d + 132936]) << 24 >> 24;
+    nx = (CbtMap.CombatCellX(creature) + I8[d + 218813]) << 24 >> 24;
+    ny = (CbtMap.CombatCellY(creature) + I8[d + 218822]) << 24 >> 24;
     CbtMap.GetArenaContents(nx, ny, $f0, $f0 + 1);
     if (U8[$f0] > 0) {
-      w32(tgt, r32(U8[$f0] * 4 + 144292));
+      w32(tgt, r32(U8[$f0] * 4 + 230178));
       if (I8[r32(tgt) + 270] === I8[creature + 270]) {
         if (U8[r32(tgt) + 283] < U8[r32(tgt) + 50]) {
           if ((U8[r32(tgt) + 283] < bestHp) || ((r32(tgt) === creature) && (U8[r32(tgt) + 283] < Math.trunc(U8[r32(tgt) + 50] / 2)))) {
@@ -748,14 +748,14 @@ export function FindCureTarget(creature: number, tgt: number) {
         }
       }
     } else if (U8[$f0 + 1] === 31) {
-      for (let $i2 = 1, $e2 = U8[144640]; $i2 <= $e2; $i2++) {
+      for (let $i2 = 1, $e2 = U8[230526]; $i2 <= $e2; $i2++) {
         j = $i2;
-        if (r32(j * 7 + 144577) !== 0) {
+        if (r32(j * 7 + 230463) !== 0) {
           let $t3;
-          if (!($t3 = U8[r32(j * 7 + 144577) + 268], $t3 === 6 || $t3 === 7 || $t3 === 8)) {
-            if (I8[j * 7 + 144581] === nx) {
-              if (I8[j * 7 + 144582] === ny) {
-                if (I8[r32(j * 7 + 144577) + 270] === I8[creature + 270]) {
+          if (!($t3 = U8[r32(j * 7 + 230463) + 268], $t3 === 6 || $t3 === 7 || $t3 === 8)) {
+            if (I8[j * 7 + 230467] === nx) {
+              if (I8[j * 7 + 230468] === ny) {
+                if (I8[r32(j * 7 + 230463) + 270] === I8[creature + 270]) {
                   downIdx = j;
                 }
               }
@@ -768,7 +768,7 @@ export function FindCureTarget(creature: number, tgt: number) {
   if ((bestHp < 8) || (downIdx === 0)) {
     w32(tgt, best);
   } else {
-    w32(tgt, r32(downIdx * 7 + 144577));
+    w32(tgt, r32(downIdx * 7 + 230463));
   }
   if (r32(tgt) !== 0) {
     $r0 = true;
@@ -786,14 +786,14 @@ export function SpellCanAffect(spell: number, target: number, caster: number) {
   if ((target === 0) || (U8[target + 269] === 0)) {
     { S.sp = $sp; return $r0; }
   }
-  eff = U8[spell * 16 + 136516];
+  eff = U8[spell * 16 + 222402];
   if ((eff !== 0) && CharHlp.HasEffect(target, eff, $f0)) {
     { S.sp = $sp; return $r0; }
   }
   if (CharHlp.IsHelpless(target)) {
     for (let $i1 = 1; $i1 <= 4; $i1++) {
       i = $i1;
-      if (eff === U8[i + 133142]) {
+      if (eff === U8[i + 219028]) {
         { S.sp = $sp; return $r0; }
       }
     }
@@ -830,7 +830,7 @@ export function SpellCanAffect(spell: number, target: number, caster: number) {
       break;
     }
     case 25: {
-      ok = rt.inM(247482, 0, 32, CbtMap.CombatSlot(target));
+      ok = rt.inM(255674, 0, 32, CbtMap.CombatSlot(target));
       break;
     }
     case 94: {
@@ -871,12 +871,12 @@ export function CloudCatch(spell: number, x: number, y: number) {
     k = $i1;
     CbtMap.CloudCell(U8[$f0 + 10], k, x, y, $f0 + 11, $f0 + 12);
     CbtMap.GetArenaContents(I8[$f0 + 11], I8[$f0 + 12], $f0 + k - 1, $f0 + 9);
-    if ((U8[$f0 + 9] === 0) || (U8[U8[$f0 + 9] * 3 + 132942] >= 255)) {
+    if ((U8[$f0 + 9] === 0) || (U8[U8[$f0 + 9] * 3 + 218828] >= 255)) {
       U8[$f0 + k - 1] = 0;
     }
     if (U8[$f0 + k - 1] > 0) {
-      p = r32(U8[$f0 + k - 1] * 4 + 144292);
-      if (CharHlp.Team(p) !== CharHlp.EnemyTeam(r32(143749))) {
+      p = r32(U8[$f0 + k - 1] * 4 + 230178);
+      if (CharHlp.Team(p) !== CharHlp.EnemyTeam(r32(229635))) {
         { S.sp = $sp; return $r0; }
       }
       first = true;
@@ -886,7 +886,7 @@ export function CloudCatch(spell: number, x: number, y: number) {
           first = false;
         }
       }
-      if (first && SpellCanAffect(spell, p, r32(143749))) {
+      if (first && SpellCanAffect(spell, p, r32(229635))) {
         caught = (caught + 1) & 255;
       }
     }
@@ -902,28 +902,28 @@ export async function BestAim(spell: number, count: number) {
   U8[count] = 0;
   best = 0;
   ties = 0;
-  n = CbtMap.CountTargets(r32(143749), CharHlp.CalcSpellRange(spell)) & 255;
+  n = CbtMap.CountTargets(r32(229635), CharHlp.CalcSpellRange(spell)) & 255;
   for (let $i1 = 1, $e1 = n; $i1 <= $e1; $i1++) {
     i = $i1;
-    U8[$f0 + i - 1] = U8[i + 146459];
+    U8[$f0 + i - 1] = U8[i + 232345];
   }
-  radius = U8[spell * 16 + 136521];
+  radius = U8[spell * 16 + 222407];
   if (CharHlp.SpellArea(spell, $f0 + 72) !== 1) {
     U8[$f0 + 72] = 1;
   }
   for (let $i2 = 1, $e2 = n; $i2 <= $e2; $i2++) {
     i = $i2;
-    p = r32(U8[$f0 + i - 1] * 4 + 144292);
-    if ((U8[p + 269] !== 0) && (await CanTarget(r32(143749), p, true))) {
+    p = r32(U8[$f0 + i - 1] * 4 + 230178);
+    if ((U8[p + 269] !== 0) && (await CanTarget(r32(229635), p, true))) {
       if (radius > 0) {
         if (!AreaHitsNonEnemy(CbtMap.CombatCellX(p), CbtMap.CombatCellY(p), radius)) {
           caught = 0;
           if (CharHlp.SpellArea(spell, $f0 + 73) === 4) {
             caught = CloudCatch(spell, CbtMap.CombatCellX(p), CbtMap.CombatCellY(p)) & 255;
           } else {
-            for (let $i3 = 1, $e3 = U8[144645]; $i3 <= $e3; $i3++) {
+            for (let $i3 = 1, $e3 = U8[230531]; $i3 <= $e3; $i3++) {
               j = $i3;
-              if (SpellCanAffect(spell, r32(U8[j * 3 + 144643] * 4 + 144292), r32(143749))) {
+              if (SpellCanAffect(spell, r32(U8[j * 3 + 230529] * 4 + 230178), r32(229635))) {
                 caught = (caught + 1) & 255;
               }
             }
@@ -939,14 +939,14 @@ export async function BestAim(spell: number, count: number) {
             }
           }
         }
-      } else if (SpellCanAffect(spell, p, r32(143749))) {
+      } else if (SpellCanAffect(spell, p, r32(229635))) {
         if (U8[count] < U8[$f0 + 72]) {
           U8[count] = U8[count] + 1;
         }
         taken = false;
         for (let $i4 = 1; $i4 <= 72; $i4++) {
           j = $i4;
-          if (r32(j * 4 + 146157) === p) {
+          if (r32(j * 4 + 232043) === p) {
             taken = true;
           }
         }
@@ -971,22 +971,22 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
   let remaining: number = 0, k: number = 0, j: number = 0, dup: boolean = false, kind: number = 0, picked: boolean = false, pool: number = 0, spent: number = 0, stop: boolean = false;
   U8[cast] = true ? 1 : 0;
-  U8[146160] = 0;
-  rt.fill(146161, 288, 0);
-  U8[144904] = 0;
-  U8[240657] = CbtMap.CombatCellX(r32(143749));
-  U8[240658] = CbtMap.CombatCellY(r32(143749));
+  U8[232046] = 0;
+  rt.fill(232047, 288, 0);
+  U8[230790] = 0;
+  U8[248849] = CbtMap.CombatCellX(r32(229635));
+  U8[248850] = CbtMap.CombatCellY(r32(229635));
   kind = CharHlp.SpellArea(spell, $f0 + 7) & 255;
   switch (kind) {
     case 0: {
-      w32(146161, r32(143749));
-      U8[146160] = 1;
+      w32(232047, r32(229635));
+      U8[232046] = 1;
       break;
     }
     case 2: {
       if (!b) {
         if (spell === 60) {
-          U8[247717] = spell;
+          U8[255909] = spell;
           (await CbtMap.StartSpellPreview(1, spell, 0, 19, true));
         } else {
           (await CbtMap.StartSpellPreview(0, spell, 0, AimMarker(spell), false));
@@ -996,11 +996,11 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
       (await CbtMap.StopSpellPreview());
       if (picked) {
         if (r32($f0) !== 0) {
-          w32(146161, r32($f0));
-          U8[146160] = 1;
+          w32(232047, r32($f0));
+          U8[232046] = 1;
         } else {
-          Pathing.TargetArea(I8[240657], I8[240658], 0);
-          U8[144904] = 1;
+          Pathing.TargetArea(I8[248849], I8[248850], 0);
+          U8[230790] = 1;
         }
       } else {
         U8[cast] = false ? 1 : 0;
@@ -1009,7 +1009,7 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
     }
     case 3: case 4: case 5: {
       if (!b) {
-        U8[247717] = spell;
+        U8[255909] = spell;
         switch (kind) {
           case 5: {
             (await CbtMap.StartSpellPreview(1, spell, 0, 19, true));
@@ -1031,8 +1031,8 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
       picked = (await SelectSpellTarget(spell, b, 1, $f0));
       (await CbtMap.StopSpellPreview());
       if (picked) {
-        Pathing.TargetArea(I8[240657], I8[240658], U8[spell * 16 + 136512] & 7);
-        U8[144904] = 1;
+        Pathing.TargetArea(I8[248849], I8[248850], U8[spell * 16 + 222398] & 7);
+        U8[230790] = 1;
       } else {
         U8[cast] = false ? 1 : 0;
       }
@@ -1040,13 +1040,13 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
     }
     case 6: {
       if (!b) {
-        U8[247717] = spell;
+        U8[255909] = spell;
         (await CbtMap.StartSpellPreview(1, spell, 0, AimMarker(spell), true));
       }
       picked = (await SelectSpellTarget(spell, b, 1, $f0));
       (await CbtMap.StopSpellPreview());
       if (picked) {
-        U8[144904] = 1;
+        U8[230790] = 1;
       } else {
         U8[cast] = false ? 1 : 0;
       }
@@ -1071,7 +1071,7 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
           dup = false;
           for (let $i2 = 1, $e2 = k; $i2 <= $e2; $i2++) {
             j = $i2;
-            if (r32(j * 4 + 146157) === r32($f0)) {
+            if (r32(j * 4 + 232043) === r32($f0)) {
               dup = true;
             }
           }
@@ -1081,7 +1081,7 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
               stop = true;
             } else {
               k = (k + 1) & 255;
-              w32(k * 4 + 146157, r32($f0));
+              w32(k * 4 + 232043, r32($f0));
             }
           } else if (!b) {
             (await CharDisp.PrintBottomLine("Already been targeted"));
@@ -1093,7 +1093,7 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
           stop = true;
         }
       } while (!((stop || (pool === 0)) || (k === 72)));
-      U8[146160] = k;
+      U8[232046] = k;
       if (k === 0) {
         U8[cast] = false ? 1 : 0;
       }
@@ -1112,25 +1112,25 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
           dup = false;
           for (let $i4 = 1, $e4 = k; $i4 <= $e4; $i4++) {
             j = $i4;
-            if (r32(j * 4 + 146157) === r32($f0)) {
+            if (r32(j * 4 + 232043) === r32($f0)) {
               dup = true;
             }
           }
           if (!dup) {
             k = (k + 1) & 255;
-            w32(k * 4 + 146157, r32($f0));
+            w32(k * 4 + 232043, r32($f0));
             remaining = (remaining - 1) & 255;
           } else if (!b) {
             (await CharDisp.PrintBottomLine("Already been targeted"));
           } else {
             remaining = (remaining - 1) & 255;
           }
-          (await CbtMap.RedrawArenaCell(CbtMap.CombatCellX(r32(k * 4 + 146157)), CbtMap.CombatCellY(r32(k * 4 + 146157))));
+          (await CbtMap.RedrawArenaCell(CbtMap.CombatCellX(r32(k * 4 + 232043)), CbtMap.CombatCellY(r32(k * 4 + 232043))));
         } else {
           remaining = (remaining - 1) & 255;
         }
       }
-      U8[146160] = k;
+      U8[232046] = k;
       if (k === 0) {
         U8[cast] = false ? 1 : 0;
       }
@@ -1142,7 +1142,7 @@ export async function SelectCombatTargets(spell: number, b: boolean, cast: numbe
 export async function CastSpellCombat(spell: number, ai: number, cast: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 7);
   let spellId: number = 0, castTime: number = 0, caster: number = 0;
-  caster = r32(143749);
+  caster = r32(229635);
   U8[$f0 + 2] = true ? 1 : 0;
   w16($f0, -1);
   U8[cast] = false ? 1 : 0;
@@ -1155,12 +1155,12 @@ export async function CastSpellCombat(spell: number, ai: number, cast: number) {
     }
   }
   if (spellId > 0) {
-    if (U8[spellId * 16 + 136517] === 0) {
+    if (U8[spellId * 16 + 222403] === 0) {
       (await CharDisp.PrintBottomLine("Camp Only Spell"));
       spellId = 0;
       w32($f0 + 3, 0);
     } else {
-      rt.wSet(247482, 0, 32, rt.sUnion(rt.rSet(247482, 0, 32), rt.setR(CbtMap.CombatSlot(caster), CbtMap.CombatSlot(caster))));
+      rt.wSet(255674, 0, 32, rt.sUnion(rt.rSet(255674, 0, 32), rt.setR(CbtMap.CombatSlot(caster), CbtMap.CombatSlot(caster))));
     }
   }
   if (r32($f0 + 3) !== 0) {
@@ -1178,7 +1178,7 @@ export async function CastSpellCombat(spell: number, ai: number, cast: number) {
     (await CharDisp.CombatPrintCreatureInfo(caster));
   }
   if (spellId > 0) {
-    castTime = Math.trunc(U8[spellId * 16 + 136518] / 3);
+    castTime = Math.trunc(U8[spellId * 16 + 222404] / 3);
     if (castTime === 0) {
       (await Magic.CastSpell(spellId, (ai !== 0), true, cast));
       U8[cast] = CharHlp.EndActions(caster) ? 1 : 0;
@@ -1205,8 +1205,8 @@ export async function CheckAttackAlly(att: number, def: number) {
     $r0 = false;
   } else {
     $r0 = true;
-    w16(r32(141151) + 1638, 1);
-    p = r32(143753);
+    w16(r32(227037) + 1638, 1);
+    p = r32(229639);
     while (p !== 0) {
       if ((U8[p + 268] === 0) && CharHlp.IsNpc(p)) {
         U8[p + 270] = 1;
@@ -1224,20 +1224,20 @@ export async function CombatAimMenu(creature: number, range: number, weaponMode:
   let effRange: number = 0, tgtCount: number = 0, curIdx: number = 0, skipStep: number = 0, menuStep: number = 0, curX: number = 0, curY: number = 0, nextX: number = 0, nextY: number = 0, p: number = 0, ch: number = 0;
   async function BuildAimTargets(c: number) {
     let i: number = 0;
-    Pathing.BuildTargetList(CbtMap.CombatCellX(c), CbtMap.CombatCellY(c), 127, 255, CbtMap.GetIconSize(c), r32(144641));
+    Pathing.BuildTargetList(CbtMap.CombatCellX(c), CbtMap.CombatCellY(c), 127, 255, CbtMap.GetIconSize(c), r32(230527));
     tgtCount = 0;
-    for (let $i1 = 1, $e1 = U8[144645]; $i1 <= $e1; $i1++) {
+    for (let $i1 = 1, $e1 = U8[230531]; $i1 <= $e1; $i1++) {
       i = $i1;
-      if ((await AimCycles(c, r32(U8[i * 3 + 144643] * 4 + 144292), allies))) {
+      if ((await AimCycles(c, r32(U8[i * 3 + 230529] * 4 + 230178), allies))) {
         tgtCount = (tgtCount + 1) & 255;
-        mv($f0 + tgtCount * 3 - 3, i * 3 + 144643, 3);
+        mv($f0 + tgtCount * 3 - 3, i * 3 + 230529, 3);
       }
     }
     if (tgtCount === 0) {
-      tgtCount = U8[144645];
+      tgtCount = U8[230531];
       for (let $i2 = 1, $e2 = tgtCount; $i2 <= $e2; $i2++) {
         i = $i2;
-        mv($f0 + i * 3 - 3, i * 3 + 144643, 3);
+        mv($f0 + i * 3 - 3, i * 3 + 230529, 3);
       }
     }
     if ((curIdx < 1) || (curIdx > tgtCount)) {
@@ -1251,7 +1251,7 @@ export async function CombatAimMenu(creature: number, range: number, weaponMode:
     own = 0;
     for (let $i3 = tgtCount; $i3 >= 1; $i3--) {
       i = $i3;
-      other = r32(U8[$f0 + i * 3 - 3] * 4 + 144292);
+      other = r32(U8[$f0 + i * 3 - 3] * 4 + 230178);
       if (other === c) {
         own = i;
       } else if (other !== 0) {
@@ -1279,8 +1279,8 @@ export async function CombatAimMenu(creature: number, range: number, weaponMode:
   async function AdvanceAimTarget(step: number, animate: boolean) {
     let $r1: number = 0;
     if (animate) {
-      curX = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 144004];
-      curY = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 144005];
+      curX = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 229890];
+      curY = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 229891];
     } else {
       (await CbtMap.RedrawArenaCell(curX, curY));
     }
@@ -1291,9 +1291,9 @@ export async function CombatAimMenu(creature: number, range: number, weaponMode:
     if (curIdx > tgtCount) {
       curIdx = 1;
     }
-    $r1 = r32(U8[$f0 + curIdx * 3 - 3] * 4 + 144292);
-    nextX = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 144004];
-    nextY = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 144005];
+    $r1 = r32(U8[$f0 + curIdx * 3 - 3] * 4 + 230178);
+    nextX = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 229890];
+    nextY = I8[U8[$f0 + curIdx * 3 - 3] * 4 + 229891];
     if (animate) {
       (await CharDisp.CombatAnimateMovingIcon(curX, curY, nextX, nextY, 1, 0));
       curX = nextX;
@@ -1367,7 +1367,7 @@ export async function CombatAimMenu(creature: number, range: number, weaponMode:
     }
   }
   if (weaponMode !== 0) {
-    (await Border.ClearBox(0, 23, 39, 23));
+    Border.ClearBox(0, 23, 39, 23);
   }
   S.sp = $sp;
 }
@@ -1382,7 +1382,7 @@ export function UpdateHostileHpPercent() {
   let maxSum: number = 0, curSum: number = 0, p: number = 0;
   maxSum = 0;
   curSum = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (I8[p + 270] === 1) {
       if (U8[p + 269] !== 0) {
@@ -1393,14 +1393,14 @@ export function UpdateHostileHpPercent() {
     p = r32(p + 260);
   }
   if (maxSum > 0) {
-    U8[247516] = rt.mul(Math.trunc((curSum * 20) / maxSum), 5);
+    U8[255708] = rt.mul(Math.trunc((curSum * 20) / maxSum), 5);
   }
 }
 
 export async function HighestEnemyMovement(creature: number) {
   let best: number = 0, m: number = 0, p: number = 0, $r0: number = 0;
   best = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if ((CharHlp.EnemyTeam(creature) === CharHlp.Team(p)) && (U8[p + 269] !== 0)) {
       m = Math.trunc((await CalcCreatureMovement(p)) / 2) & 255;
@@ -1429,23 +1429,23 @@ export async function AcquireTarget(creature: number, range: number, relaxed: nu
   while (!found && !second) {
     second = pass;
     if (pass && (forceNew === 0)) {
-      U8[r32(144641) + 6] = 1;
+      U8[r32(230527) + 6] = 1;
     }
     tries = 20;
     cnt = CbtMap.CountTargets(creature, range) & 255;
     while (((tries > 0) && !found) && (cnt > 0)) {
       tries = (tries - 1) & 255;
       pick = Dice.RollDice(1, cnt) & 255;
-      if (U8[pick + 146459] > 0) {
-        p = r32(U8[pick + 146459] * 4 + 144292);
-        if (((relaxed !== 0) && (U8[r32(144641) + 6] !== 0)) || (await CanTarget(creature, p, true))) {
+      if (U8[pick + 232345] > 0) {
+        p = r32(U8[pick + 232345] * 4 + 230178);
+        if (((relaxed !== 0) && (U8[r32(230527) + 6] !== 0)) || (await CanTarget(creature, p, true))) {
           found = true;
           w32(r32(creature + 264) + 10, p);
         } else {
-          U8[pick + 146459] = 0;
+          U8[pick + 232345] = 0;
           for (let $i3 = 1, $e3 = cnt; $i3 <= $e3; $i3++) {
             pick = $i3;
-            if (U8[pick + 146459] > 0) {
+            if (U8[pick + 232345] > 0) {
               found = true;
             }
           }
@@ -1461,14 +1461,14 @@ export async function AcquireTarget(creature: number, range: number, relaxed: nu
       pass = true;
     }
   }
-  U8[r32(144641) + 6] = 0;
+  U8[r32(230527) + 6] = 0;
   $r0 = found;
   return $r0;
 }
 
 export async function AttackClawRake(creature: number, p: number, removed: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
-  if (U8[247514] === 2) {
+  if (U8[255706] === 2) {
     if (U8[r32(r32(creature + 264) + 10) + 269] !== 0) {
       U8[r32(creature + 264) + 4] = 2;
       U8[creature + 276] = 2;
@@ -1491,9 +1491,9 @@ export async function BiteAndHold(creature: number, p: number, removed: boolean)
     U8[creature + 276] = 0;
     U8[creature + 277] = 3;
     U8[creature + 279] = 4;
-    (await MakeAttack(creature, r32(144909), true, 0, $f0));
+    (await MakeAttack(creature, r32(230795), true, 0, $f0));
     U8[$f0] = CharHlp.EndActions(creature) ? 1 : 0;
-    if (U8[r32(144909) + 269] === 0) {
+    if (U8[r32(230795) + 269] === 0) {
       (await FxEngine.RemoveEffect(creature, 74, p));
     }
   }
@@ -1503,19 +1503,19 @@ export async function BiteAndHold(creature: number, p: number, removed: boolean)
 export async function VictoryCheat() {
   let done: boolean = false, p: number = 0, slot: number = 0, $r0: boolean = false;
   $r0 = false;
-  if (!(U8[141208] !== 0)) {
+  if (!(U8[227094] !== 0)) {
     return $r0;
   }
   $r0 = true;
   (await CharDisp.PrintBottomLine("The Gods intervene!"));
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     if (I8[p + 270] === 1) {
       U8[p + 269] = 0;
       U8[p + 268] = 6;
       slot = CbtMap.CombatSlot(p) & 255;
       if (slot > 0) {
-        U8[slot * 4 + 144007] = 0;
+        U8[slot * 4 + 229893] = 0;
       }
     }
     done = CharHlp.EndActions(p);
@@ -1529,29 +1529,29 @@ export function AreaHitsNonEnemy(x: number, y: number, radius: number) {
   let i: number = 0, $r0: boolean = false;
   $r0 = false;
   Pathing.BuildAreaList(x, y, radius);
-  for (let $i1 = 1, $e1 = U8[144645]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[230531]; $i1 <= $e1; $i1++) {
     i = $i1;
-    if (CharHlp.Team(r32(U8[i * 3 + 144643] * 4 + 144292)) !== CharHlp.EnemyTeam(r32(143749))) {
+    if (CharHlp.Team(r32(U8[i * 3 + 230529] * 4 + 230178)) !== CharHlp.EnemyTeam(r32(229635))) {
       $r0 = true;
     }
   }
   return $r0;
 }
 
-export async function ReportAreaCatch(caught: number) {
+export function ReportAreaCatch(caught: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let i: number = 0, enemy: number = 0;
   rt.fill($f0, 4, 0);
-  enemy = CharHlp.EnemyTeam(r32(143749)) << 24 >> 24;
+  enemy = CharHlp.EnemyTeam(r32(229635)) << 24 >> 24;
   for (let $i1 = 1, $e1 = U8[caught]; $i1 <= $e1; $i1++) {
     i = $i1;
     let $t2;
-    $t2 = $f0 + (CharHlp.Team(r32(U8[caught + i] * 4 + 144292)) === enemy ? 1 : 0) * 2, U8[$t2] = U8[$t2] + 1;
+    $t2 = $f0 + (CharHlp.Team(r32(U8[caught + i] * 4 + 230178)) === enemy ? 1 : 0) * 2, U8[$t2] = U8[$t2] + 1;
   }
-  if (AreaRuleOf(U8[247717]) === 1) {
+  if (AreaRuleOf(U8[255909]) === 1) {
     CharHlp.SleepMost(caught, enemy, $f0 + 3, $f0 + 1);
   }
-  (await ShowAreaTally($f0));
+  ShowAreaTally($f0);
   S.sp = $sp;
 }
 
@@ -1605,14 +1605,14 @@ export function TryLead(paladin: number, npc: number, roll: number) {
 export async function UseLeadership() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let paladin: number = 0, npc: number = 0, row: number = 0, c: number = 0;
-  if ((U8[141212] !== 0)) {
+  if ((U8[227098] !== 0)) {
     { S.sp = $sp; return; }
   }
   row = 0;
-  paladin = r32(143753);
+  paladin = r32(229639);
   while (paladin !== 0) {
     if (CanLead(paladin)) {
-      npc = r32(143753);
+      npc = r32(229639);
       while (npc !== 0) {
         if (CanBeLed(npc)) {
           if (TryLead(paladin, npc, Dice.RollDice(1, 100))) {
@@ -1641,7 +1641,7 @@ export async function UseLeadership() {
 export function AttacksFromRate(n: number) {
   let v: number = 0, $r0: number = 0;
   v = n;
-  if ((U8[146459] & 1) !== 0) {
+  if ((U8[232345] & 1) !== 0) {
     v = (v + 1) & 255;
   }
   $r0 = Math.trunc(v / 2);
@@ -1694,7 +1694,7 @@ export async function AnimateMissile(att: number, def: number, weapon: number) {
   frames = 1;
   pace = 10;
   sym = 13;
-  size = Blit.MaskBytes(r16(r32(146533) + 17)) & 65535;
+  size = Blit.MaskBytes(r16(r32(232419) + 17)) & 65535;
   switch (U8[weapon + 46]) {
     case 9: case 21: case 28: case 31: case 73: {
       if ((dir & 1) !== 0) {
@@ -1730,11 +1730,11 @@ export async function AnimateMissile(att: number, def: number, weapon: number) {
       pace = 20;
     }
   }
-  (await SoundDrv.SoundSetAutoStop(0));
-  (await SoundDrv.SoundEffect(r16(132899), 2));
+  SoundDrv.SoundSetAutoStop(0);
+  SoundDrv.SoundEffect(r16(218785), 2);
   (await CharDisp.AnimateIconBetween(att, def, frames, pace));
-  (await SoundDrv.SoundEffect(r16(132911), 2));
-  (await SoundDrv.SoundSetAutoStop(10));
+  SoundDrv.SoundEffect(r16(218797), 2);
+  SoundDrv.SoundSetAutoStop(10);
 }
 
 export async function CalcWeaponDamage(att: number, def: number, idx: number) {
@@ -1747,13 +1747,13 @@ export async function CalcWeaponDamage(att: number, def: number, idx: number) {
   if ((CharHlp.GetClassLevel(att, 16) > 0) && (CbtMap.CalcDistance(att, def) <= 1)) {
     for (let $i1 = 1; $i1 <= 16; $i1++) {
       i = $i1;
-      if (rS(def) === rS(i * 16 + 131630)) {
+      if (rS(def) === rS(i * 16 + 217516)) {
         bonus = CharHlp.GetClassLevel(att, 16) & 255;
       }
     }
   }
-  U8[144897] = WeaponDamage(I8[att + idx + 280] + Dice.RollDamageDice(U8[att + idx + 276], U8[att + idx + 278]), mult, bonus);
-  U8[144898] = 0;
+  U8[230783] = WeaponDamage(I8[att + idx + 280] + Dice.RollDamageDice(U8[att + idx + 276], U8[att + idx + 278]), mult, bonus);
+  U8[230784] = 0;
   (await FxEngine.TriggerEffectsWithCondition(4, att));
   (await FxEngine.TriggerEffectsWithCondition(5, def));
 }
@@ -1798,7 +1798,7 @@ export async function ProcessAttackResult(att: number, def: number, atkType: num
   CbtLog.NextLine();
   CbtLog.Add(10, rS($f0));
   (await CharDisp.PrintNameLine(def, rS($f0), row));
-  row = (U8[143770] + 1) & 255;
+  row = (U8[229656] + 1) & 255;
   if (dmg > 0) {
     U8[r32(def + 264) + 1] = 0;
     if (U8[r32(def + 264)] > 0) {
@@ -1832,7 +1832,7 @@ export async function ProcessAttackResult(att: number, def: number, atkType: num
       (await TextRend.PauseOnly());
     }
   }
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   S.sp = $sp;
 }
 
@@ -1843,7 +1843,7 @@ export async function GuardersAttack(creature: number) {
   for (let $i1 = 1, $e1 = cnt; $i1 <= $e1; $i1++) {
     i = $i1;
     if (U8[creature + 269] !== 0) {
-      p = r32(U8[i + 146459] * 4 + 144292);
+      p = r32(U8[i + 232345] * 4 + 230178);
       if ((U8[r32(p + 264) + 7] !== 0) && !CharHlp.IsHelpless(p)) {
         (await CbtMap.ScrollView(CbtMap.CombatCellX(creature), CbtMap.CombatCellY(creature), 2, 8));
         U8[r32(p + 264) + 7] = 0;
@@ -1865,22 +1865,22 @@ export async function RollAttacks(att: number, def: number, fromBehind: boolean,
   }
   behind = fromBehind;
   U8[done] = false ? 1 : 0;
-  U8[247514] = 0;
-  U8[247515] = 0;
-  U8[247715] = 0;
-  U8[247716] = 0;
+  U8[255706] = 0;
+  U8[255707] = 0;
+  U8[255907] = 0;
+  U8[255908] = 0;
   anyHit = false;
   defDowned = false;
-  U8[144897] = 0;
+  U8[230783] = 0;
   U8[r32(att + 264) + 8] = 1;
   if (CharHlp.IsHelpless(def)) {
-    (await SoundDrv.SoundEffect(r16(132901), group));
+    SoundDrv.SoundEffect(r16(218787), group);
     while ((U8[r32(att + 264) + 4] > 1) && (U8[att + U8[r32(att + 264) + 4] + 274] === 0)) {
       let $t2;
       $t2 = r32(att + 264) + 4, U8[$t2] = U8[$t2] - 1;
     }
     let $t3;
-    $t3 = U8[r32(att + 264) + 4] + 247714, U8[$t3] = U8[$t3] + 1;
+    $t3 = U8[r32(att + 264) + 4] + 255906, U8[$t3] = U8[$t3] + 1;
     if (U8[def + 283] > 250) {
       slay = 255;
     } else {
@@ -1936,22 +1936,22 @@ export async function RollAttacks(att: number, def: number, fromBehind: boolean,
         let $t7;
         $t7 = att + phase + 274, U8[$t7] = U8[$t7] - 1;
         U8[r32(att + 264) + 4] = phase;
-        U8[phase + 247714] = U8[phase + 247714] + 1;
+        U8[phase + 255906] = U8[phase + 255906] + 1;
         rolled = (await FxEngine.AttackRoll(att, def, U8[$f0 + 16]));
         if (atkType === 0) {
-          Bestiary.LearnArmor(def, att, (I8[144906] + FxEngine.HitBonus(att)) - (U8[$f0 + 16] - U8[def + 273]), rolled);
+          Bestiary.LearnArmor(def, att, (I8[230792] + FxEngine.HitBonus(att)) - (U8[$f0 + 16] - U8[def + 273]), rolled);
         }
         if (rolled || CharHlp.IsHelpless(def)) {
           anyHit = true;
           if (CharHlp.HasEffect(def, 28, $f0 + 17) && FxEngine.ImageStruck(r32($f0 + 17))) {
-            (await SoundDrv.SoundEffect(r16(132905), group));
+            SoundDrv.SoundEffect(r16(218791), group);
             (await ProcessAttackResult(att, def, atkType, 0, 0, false));
             (await FxEngine.LoseImage(def, r32($f0 + 17)));
           } else {
-            U8[phase + 247513] = U8[phase + 247513] + 1;
-            (await SoundDrv.SoundEffect(r16(132901), group));
+            U8[phase + 255705] = U8[phase + 255705] + 1;
+            SoundDrv.SoundEffect(r16(218787), group);
             (await CalcWeaponDamage(att, def, phase));
-            (await ProcessAttackResult(att, def, atkType, U8[144897], U8[144897], true));
+            (await ProcessAttackResult(att, def, atkType, U8[230783], U8[230783], true));
             if (U8[def + 269] !== 0) {
               (await FxEngine.TriggerEffectsWithCondition((2 + phase) - 1, att));
             }
@@ -1963,7 +1963,7 @@ export async function RollAttacks(att: number, def: number, fromBehind: boolean,
       }
     }
     if (!anyHit) {
-      (await SoundDrv.SoundEffect(r16(132905), group));
+      SoundDrv.SoundEffect(r16(218791), group);
       (await ProcessAttackResult(att, def, atkType, 0, 0, false));
     }
     U8[done] = true ? 1 : 0;
@@ -2012,12 +2012,12 @@ export async function SelectSpellTarget(spell: number, ai: boolean, ground: numb
   let p: number = 0, $r0: boolean = false;
   U8[$f0] = false ? 1 : 0;
   if (!ai) {
-    (await CombatAimMenu(r32(143749), CharHlp.CalcSpellRange(spell), 0, ground, U8[spell * 16 + 136520] === 0, $f0, tgt));
-    w32(r32(r32(143749) + 264) + 10, r32(tgt));
+    (await CombatAimMenu(r32(229635), CharHlp.CalcSpellRange(spell), 0, ground, U8[spell * 16 + 222406] === 0, $f0, tgt));
+    w32(r32(r32(229635) + 264) + 10, r32(tgt));
   } else {
-    if (U8[spell * 16 + 136520] === 0) {
-      w32(tgt, r32(143749));
-      if (!rt.inS(C_SPELL.CURE_WOUNDS, spell) || FindCureTarget(r32(143749), tgt)) {
+    if (U8[spell * 16 + 222406] === 0) {
+      w32(tgt, r32(229635));
+      if (!rt.inS(C_SPELL.CURE_WOUNDS, spell) || FindCureTarget(r32(229635), tgt)) {
         U8[tgt + 4] = CbtMap.CombatCellX(r32(tgt));
         U8[tgt + 5] = CbtMap.CombatCellY(r32(tgt));
         U8[$f0] = true ? 1 : 0;
@@ -2025,7 +2025,7 @@ export async function SelectSpellTarget(spell: number, ai: boolean, ground: numb
     } else {
       p = (await BestAim(spell, $f0 + 1));
       if (p !== 0) {
-        w32(r32(r32(143749) + 264) + 10, p);
+        w32(r32(r32(229635) + 264) + 10, p);
         w32(tgt, p);
         U8[tgt + 4] = CbtMap.CombatCellX(p);
         U8[tgt + 5] = CbtMap.CombatCellY(p);
@@ -2035,8 +2035,8 @@ export async function SelectSpellTarget(spell: number, ai: boolean, ground: numb
   }
   if ((U8[$f0] !== 0)) {
     $r0 = true;
-    U8[240657] = I8[tgt + 4];
-    U8[240658] = I8[tgt + 5];
+    U8[248849] = I8[tgt + 4];
+    U8[248850] = I8[tgt + 5];
   } else {
     $r0 = false;
     rt.fill(tgt, 7, 0);
@@ -2049,7 +2049,7 @@ export function HostileSpell(spell: number) {
   let $r0: boolean = false;
   $r0 = false;
   if ((spell >= 1) && (spell <= 128)) {
-    $r0 = (U8[spell * 16 + 136520] === 1) && (U8[spell * 16 + 136513] === 0);
+    $r0 = (U8[spell * 16 + 222406] === 1) && (U8[spell * 16 + 222399] === 0);
   }
   return $r0;
 }
@@ -2069,8 +2069,8 @@ export function AreaRuleOf(spell: number) {
   $r0 = 0;
   for (let $i1 = 1; $i1 <= 1; $i1++) {
     i = $i1;
-    if (U8[i * 2 + 247716] === spell) {
-      $r0 = U8[i * 2 + 247717];
+    if (U8[i * 2 + 255908] === spell) {
+      $r0 = U8[i * 2 + 255909];
     }
   }
   return $r0;
@@ -2083,12 +2083,12 @@ export function AimSpellName(spell: number) {
     spell = 47;
   }
   if (CharHlp.IsSpell(spell)) {
-    $r0 = rS(spell * 33 + 133189);
+    $r0 = rS(spell * 33 + 219075);
   }
   return $r0;
 }
 
-export async function ShowAreaTally(side: number) {
+export function ShowAreaTally(side: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 293);
   let n: number = 0, len: number = 0, col: number = 0, i: number = 0;
   function Add(color: number, s: string) {
@@ -2112,7 +2112,7 @@ export async function ShowAreaTally(side: number) {
       }
     }
   }
-  wS($f0 + 252, 40, AimSpellName(U8[247717]));
+  wS($f0 + 252, 40, AimSpellName(U8[255909]));
   n = 0;
   len = 0;
   if (rS($f0 + 252) !== "") {
@@ -2125,7 +2125,7 @@ export async function ShowAreaTally(side: number) {
     len = 0;
     AddSides();
   }
-  (await Border.ClearBox(0, 23, 39, 23));
+  Border.ClearBox(0, 23, 39, 23);
   col = 0;
   for (let $i1 = 1, $e1 = n; $i1 <= $e1; $i1++) {
     i = $i1;
@@ -2171,7 +2171,7 @@ export async function AimTargetMenu(cur: number, tgt: number, range: number, wea
   (await CharDisp.CombatPrintCreatureInfo(tgt));
   (await CbtMini.Show(cur, CbtMap.CombatCellX(tgt), CbtMap.CombatCellY(tgt)));
   do {
-    U8[227081] = true ? 1 : 0;
+    U8[235273] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("Aim: ", rS($f0), 13, 10, 15, true, false, $f0 + 41)) & 255;
     U8[dir] = 8;
     if ((U8[$f0 + 41] !== 0)) {
@@ -2194,7 +2194,7 @@ export async function ConfirmAttackTarget(cur: number, tgt: number, weaponMode: 
     w32(sel, tgt);
     U8[sel + 4] = CbtMap.CombatCellX(tgt);
     U8[sel + 5] = CbtMap.CombatCellY(tgt);
-    U8[r32(144641) + 4] = false ? 1 : 0;
+    U8[r32(230527) + 4] = false ? 1 : 0;
     (await CbtMap.ScrollView(CbtMap.CenterX(), CbtMap.CenterY(), 3, 8));
     if (weaponMode === 1) {
       if ((await SweepAttack(cur, tgt))) {
@@ -2217,12 +2217,12 @@ export async function ManualAimCursor(cur: number, underCursor: number, range: n
   ch = 32;
   dir = startDir;
   U8[done] = false ? 1 : 0;
-  U8[r32(144641) + 4] = true ? 1 : 0;
-  U8[r32(144641) + 5] = 1;
+  U8[r32(230527) + 4] = true ? 1 : 0;
+  U8[r32(230527) + 5] = 1;
   while (!(ch === 0 || ch === 69 || ch === 84)) {
     (await CbtMap.ScrollView(cx, cy, 3, dir));
-    cx = (cx + I8[dir + 132927]) << 24 >> 24;
-    cy = (cy + I8[dir + 132936]) << 24 >> 24;
+    cx = (cx + I8[dir + 218813]) << 24 >> 24;
+    cy = (cy + I8[dir + 218822]) << 24 >> 24;
     if (cx < 0) {
       cx = 0;
     }
@@ -2240,25 +2240,25 @@ export async function ManualAimCursor(cur: number, underCursor: number, range: n
     w16($f0 + 45, 255);
     U8[$f0 + 41] = cx;
     U8[$f0 + 42] = cy;
-    if (Pathing.WalkLine(CbtMap.CombatCellX(cur), CbtMap.CombatCellY(cur), $f0 + 41, $f0 + 42, $f0 + 45, r32(144641))) {
+    if (Pathing.WalkLine(CbtMap.CombatCellX(cur), CbtMap.CombatCellY(cur), $f0 + 41, $f0 + 42, $f0 + 45, r32(230527))) {
       valid = true;
       if (weaponMode !== 0) {
         ShowRange(Math.trunc(r16($f0 + 45) / 2));
       }
     } else if (weaponMode !== 0) {
-      (await Border.ClearBox(0, 23, 39, 23));
+      Border.ClearBox(0, 23, 39, 23);
     }
     w16($f0 + 45, Math.trunc(r16($f0 + 45) / 2));
     underCursor = 0;
     if (valid) {
       if (U8[$f0 + 43] > 0) {
-        underCursor = r32(U8[$f0 + 43] * 4 + 144292);
+        underCursor = r32(U8[$f0 + 43] * 4 + 230178);
       } else if (U8[$f0 + 44] === 31) {
-        for (let $i2 = 1, $e2 = U8[144640]; $i2 <= $e2; $i2++) {
+        for (let $i2 = 1, $e2 = U8[230526]; $i2 <= $e2; $i2++) {
           j = $i2;
-          if (I8[j * 7 + 144581] === cx) {
-            if (I8[j * 7 + 144582] === cy) {
-              underCursor = r32(j * 7 + 144577);
+          if (I8[j * 7 + 230467] === cx) {
+            if (I8[j * 7 + 230468] === cy) {
+              underCursor = r32(j * 7 + 230463);
             }
           }
         }
@@ -2267,10 +2267,10 @@ export async function ManualAimCursor(cur: number, underCursor: number, range: n
     if (underCursor !== 0) {
       (await CharDisp.CombatPrintCreatureInfo(underCursor));
     } else {
-      (await CharDisp.ClearCreatureInfo());
+      CharDisp.ClearCreatureInfo();
     }
     (await CbtMini.Show(cur, cx, cy));
-    if ((range < r16($f0 + 45)) || (U8[U8[$f0 + 44] * 3 + 132942] === 255)) {
+    if ((range < r16($f0 + 45)) || (U8[U8[$f0 + 44] * 3 + 218828] === 255)) {
       valid = false;
     }
     if (underCursor !== 0) {
@@ -2291,11 +2291,11 @@ export async function ManualAimCursor(cur: number, underCursor: number, range: n
     if (valid) {
       wS($f0, 40, "Target " + rS($f0));
     }
-    U8[227081] = true ? 1 : 0;
-    ch = (await MenuCore.MenuHorizontal("(Use Cursor keys) ", rS($f0), 13, 10, 15, true, false, 247517)) & 255;
+    U8[235273] = true ? 1 : 0;
+    ch = (await MenuCore.MenuHorizontal("(Use Cursor keys) ", rS($f0), 13, 10, 15, true, false, 255709)) & 255;
     switch (ch) {
       case 84: {
-        U8[r32(144641) + 4] = false ? 1 : 0;
+        U8[r32(230527) + 4] = false ? 1 : 0;
         if (valid) {
           U8[sel + 4] = cx;
           U8[sel + 5] = cy;
@@ -2337,9 +2337,9 @@ export async function ManualAimCursor(cur: number, underCursor: number, range: n
 }
 
 export function $init() {
-  U8[247481] = 0;
-  U8[247717] = 0;
-  rt.fill(247514, 2, 0);
-  U8[247516] = 0;
-  U8[247517] = false ? 1 : 0;
+  U8[255673] = 0;
+  U8[255909] = 0;
+  rt.fill(255706, 2, 0);
+  U8[255708] = 0;
+  U8[255709] = false ? 1 : 0;
 }

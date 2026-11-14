@@ -12,12 +12,12 @@ export function ValidateClock(clock: number, ageOnYear: boolean) {
   let i: number = 0, cur: number = 0;
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     i = $i1;
-    if (r16(clock + i * 2) >= r16(i * 2 + 138570)) {
+    if (r16(clock + i * 2) >= r16(i * 2 + 224456)) {
       let $t2;
       $t2 = clock + (i + 1) * 2, w16($t2, r16($t2) + 1);
-      w16(clock + i * 2, r16(clock + i * 2) - r16(i * 2 + 138570));
+      w16(clock + i * 2, r16(clock + i * 2) - r16(i * 2 + 224456));
       if ((i === 5) && ageOnYear) {
-        cur = r32(143753);
+        cur = r32(229639);
         while (cur !== 0) {
           w16(cur + 48, r16(cur + 48) + 1);
           cur = r32(cur + 260);

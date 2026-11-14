@@ -21,17 +21,17 @@ export const VAULT_SIG = "VALT";
 export const VAULT_VERSION = 1;
 export const COPY_BUF = 512;
 
-export const $at = { visited: 242200 };
+export const $at = { visited: 250392 };
 
 export function ForgetSessionVault() {
-  FileUtil.DeleteFile(rS(143235) + SESSION_FILE);
+  FileUtil.DeleteFile(rS(229121) + SESSION_FILE);
 }
 
 export function AddToSave(s: number, letter: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
   let ok: boolean = false, $r0: boolean = false;
   ok = true;
-  if (!FileUtil.OpenReadOnly($f0, rS(143235) + SESSION_FILE)) {
+  if (!FileUtil.OpenReadOnly($f0, rS(229121) + SESSION_FILE)) {
     FileUtil.AddToSet(s, SaveMenu.VaultName(letter), false);
   } else {
     ok = CopyToTemp($f0, rS(s) + SaveMenu.VaultName(letter));
@@ -47,10 +47,10 @@ export function AddToSave(s: number, letter: number) {
 export async function RestoreFromSlot(letter: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
   let ok: boolean = false;
-  if (FileUtil.OpenReadOnly($f0, rS(143235) + SaveMenu.VaultName(letter))) {
-    ok = CopyToTemp($f0, rS(143235) + SESSION_FILE) && FileUtil.PutInPlace(rS(143235) + SESSION_FILE);
+  if (FileUtil.OpenReadOnly($f0, rS(229121) + SaveMenu.VaultName(letter))) {
+    ok = CopyToTemp($f0, rS(229121) + SESSION_FILE) && FileUtil.PutInPlace(rS(229121) + SESSION_FILE);
   } else {
-    ok = FileUtil.DeleteChecked(rS(143235) + SESSION_FILE);
+    ok = FileUtil.DeleteChecked(rS(229121) + SESSION_FILE);
   }
   if (!ok) {
     ForgetSessionVault();
@@ -61,31 +61,31 @@ export async function RestoreFromSlot(letter: number) {
 
 export function HasRoom() {
   let $r0: boolean = false;
-  $r0 = MenuCore.ListCount(r32(144890)) < 100;
+  $r0 = MenuCore.ListCount(r32(230776)) < 100;
   return $r0;
 }
 
 export async function DepositItem(creature: number, item: number) {
   U8[item + 63] = 0;
-  CharHlp.AppendItemCopy(144890, item);
+  CharHlp.AppendItemCopy(230776, item);
   (await CharHlp.RemoveItem(creature, item));
 }
 
 export function ReadVault() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 170);
   let n: number = 0, ioRes: number = 0;
-  U8[242200] = 0;
-  rt.fill(144862, 28, 0);
-  if (!FileUtil.RecoverFile(rS(143235) + SESSION_FILE)) {
+  U8[250392] = 0;
+  rt.fill(230748, 28, 0);
+  if (!FileUtil.RecoverFile(rS(229121) + SESSION_FILE)) {
     { S.sp = $sp; return; }
   }
-  if (!FileUtil.OpenReadOnly($f0, rS(143235) + SESSION_FILE)) {
+  if (!FileUtil.OpenReadOnly($f0, rS(229121) + SESSION_FILE)) {
     { S.sp = $sp; return; }
   }
   n = rt.BlockRead($f0, $f0 + 8, 35, true) & 65535;
   if ((((rt.IOResult() === 0) && (n === 35)) && (rS($f0 + 8) === VAULT_SIG)) && (U8[$f0 + 13] === 1)) {
-    U8[242200] = U8[$f0 + 14];
-    mv(144862, $f0 + 15, 28);
+    U8[250392] = U8[$f0 + 14];
+    mv(230748, $f0 + 15, 28);
     do {
       n = rt.BlockRead($f0, $f0 + 107, 63, true) & 65535;
       if (rt.IOResult() !== 0) {
@@ -93,7 +93,7 @@ export function ReadVault() {
       }
       if ((n === 63) && HasRoom()) {
         DiskRec.ItemFromDisk($f0 + 107, $f0 + 43);
-        CharHlp.AppendItemCopy(144890, $f0 + 43);
+        CharHlp.AppendItemCopy(230776, $f0 + 43);
       }
     } while (!(n !== 63));
   }
@@ -110,11 +110,11 @@ export async function WriteVault() {
   wS($f0 + 8, 4, VAULT_SIG);
   U8[$f0 + 13] = 1;
   U8[$f0 + 14] = 1;
-  mv($f0 + 15, 144862, 28);
-  U8[$f0 + 43] = FileUtil.RewriteTemp($f0, rS(143235) + SESSION_FILE) ? 1 : 0;
+  mv($f0 + 15, 230748, 28);
+  U8[$f0 + 43] = FileUtil.RewriteTemp($f0, rS(229121) + SESSION_FILE) ? 1 : 0;
   if ((U8[$f0 + 43] !== 0)) {
     FileUtil.WriteChecked($f0, $f0 + 8, 35, $f0 + 43);
-    p = r32(144890);
+    p = r32(230776);
     while ((U8[$f0 + 43] !== 0) && (p !== 0)) {
       mv($f0 + 44, p, 64);
       w32($f0 + 86, 0);
@@ -122,7 +122,7 @@ export async function WriteVault() {
       FileUtil.WriteChecked($f0, $f0 + 108, 63, $f0 + 43);
       p = r32(p + 42);
     }
-    U8[$f0 + 43] = FileUtil.CloseTemp($f0, rS(143235) + SESSION_FILE, (U8[$f0 + 43] !== 0)) && FileUtil.PutInPlace(rS(143235) + SESSION_FILE) ? 1 : 0;
+    U8[$f0 + 43] = FileUtil.CloseTemp($f0, rS(229121) + SESSION_FILE, (U8[$f0 + 43] !== 0)) && FileUtil.PutInPlace(rS(229121) + SESSION_FILE) ? 1 : 0;
   }
   if (!(U8[$f0 + 43] !== 0)) {
     (await TextRend.DisplayAndPause(14, "The vault's ledger was not written."));
@@ -134,7 +134,7 @@ export async function WriteVault() {
 
 export function WasVisited() {
   let $r0: boolean = false;
-  $r0 = U8[242200] !== 0;
+  $r0 = U8[250392] !== 0;
   return $r0;
 }
 

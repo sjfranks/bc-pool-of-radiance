@@ -107,6 +107,6 @@ export function InitRowTables() {
   let i: number = 0;
   for (let $i1 = 0; $i1 <= 199; $i1++) {
     i = $i1;
-    w16(i * 2 + 142433, ((Math.trunc(i / 4) * 10) + 47104) + ((i % 4) * 512));
+    w16(i * 2 + 228319, ((Math.trunc(i / 4) * 10) + 47104) + ((i % 4) * 512));
   }
 }

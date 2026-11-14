@@ -23,32 +23,32 @@ import * as Clock from './clock';
 import * as AbilAdj from './abiladj';
 
 
-export const $at = { restTime: 249018, healTicks: 249032, rested: 249034, prepTimers: 249035, restTicks: 249043 };
+export const $at = { restTime: 257210, healTicks: 257224, rested: 257226, prepTimers: 257227, restTicks: 257235 };
 
 export async function CampRest(interactive: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let cur: number = 0, i: number = 0, cnt: number = 0, stop: boolean = false, $r0: boolean = false;
   $r0 = false;
-  U8[249034] = false ? 1 : 0;
+  U8[257226] = false ? 1 : 0;
   i = 1;
-  cur = r32(143753);
+  cur = r32(229639);
   while ((cur !== 0) && (i <= 8)) {
-    U8[i + 249034] = 0;
+    U8[i + 257226] = 0;
     i = (i + 1) & 255;
     cur = r32(cur + 260);
   }
-  rt.fill(240488, 72, 1);
+  rt.fill(248680, 72, 1);
   U8[$f0] = 0;
   cnt = 0;
-  (await TextRend.ClearRect(1, 17, 38, 22));
+  TextRend.ClearRect(1, 17, 38, 22);
   DisplayRestTime(0);
-  U8[146458] = 1;
+  U8[232344] = 1;
   if (interactive) {
     stop = !(await CampRestMenu());
   } else {
     stop = false;
   }
-  while (!stop && ((((r16(249026) > 0) || (r16(249024) > 0)) || (r16(249022) > 0)) || (r16(249020) > 0))) {
+  while (!stop && ((((r16(257218) > 0) || (r16(257216) > 0)) || (r16(257214) > 0)) || (r16(257212) > 0))) {
     if ((await Crt.KeyPressed())) {
       DisplayRestTime(0);
       if ((await MenuCore.YesNoMenu("Stop Resting? ", 13, 10, 15)) === 89) {
@@ -59,7 +59,7 @@ export async function CampRest(interactive: boolean) {
     }
     if (!stop) {
       DecrementRestTime(5, 1);
-      U8[249034] = true ? 1 : 0;
+      U8[257226] = true ? 1 : 0;
       cnt = (cnt + 1) & 255;
       if (cnt >= 5) {
         DisplayRestTime(0);
@@ -69,12 +69,12 @@ export async function CampRest(interactive: boolean) {
       (await CheckRestingHeal());
       (await AdvanceSpellPrep());
       (await AdvanceSpellPrepBase($f0));
-      if (r16(r32(141151) + 1444) > 0) {
-        w16(249043, r16(249043) + 1);
-        if (r16(249043) >= r16(r32(141151) + 1444)) {
-          w16(249043, 0);
-          if (Dice.RollDice(1, 100) <= r16(r32(141151) + 1446)) {
-            (await CharDisp.ClearMessageWindow());
+      if (r16(r32(227037) + 1444) > 0) {
+        w16(257235, r16(257235) + 1);
+        if (r16(257235) >= r16(r32(227037) + 1444)) {
+          w16(257235, 0);
+          if (Dice.RollDice(1, 100) <= r16(r32(227037) + 1446)) {
+            CharDisp.ClearMessageWindow();
             DisplayRestTime(0);
             TextRend.DisplayString(1, 19, 15, "The Party is rudely interrupted!");
             stop = true;
@@ -85,50 +85,50 @@ export async function CampRest(interactive: boolean) {
       }
     }
   }
-  (await TextRend.ClearRect(1, 17, 38, 22));
-  U8[146458] = 0;
+  TextRend.ClearRect(1, 17, 38, 22);
+  U8[232344] = 0;
   S.sp = $sp;
   return $r0;
 }
 
 export function ResetGame() {
-  w16(249043, 0);
+  w16(257235, 0);
 }
 
 export function ValidateRestTime() {
-  Clock.ValidateClock(249018, false);
-  if (r16(249028) > 0) {
-    w16(249026, r16(249026) + (r16(138578) * r16(249028)));
-    w16(249028, 0);
-    if (r16(249026) > 99) {
-      w16(249026, 99);
+  Clock.ValidateClock(257210, false);
+  if (r16(257220) > 0) {
+    w16(257218, r16(257218) + (r16(224464) * r16(257220)));
+    w16(257220, 0);
+    if (r16(257218) > 99) {
+      w16(257218, 99);
     }
   }
 }
 
 export function DecrementRestTime(count: number, tUnit: number) {
   let j: number = 0, k: number = 0;
-  if ((((r16(249026) !== 0) || (r16(249024) !== 0)) || (r16(249022) !== 0)) || (r16(249020) !== 0)) {
-    while (count > r16(tUnit * 2 + 249018)) {
+  if ((((r16(257218) !== 0) || (r16(257216) !== 0)) || (r16(257214) !== 0)) || (r16(257212) !== 0)) {
+    while (count > r16(tUnit * 2 + 257210)) {
       j = (tUnit + 1) << 24 >> 24;
-      while ((r16(j * 2 + 249018) === 0) && (j < 5)) {
+      while ((r16(j * 2 + 257210) === 0) && (j < 5)) {
         j = (j + 1) << 24 >> 24;
       }
       if (j === 5) {
-        rt.fill(249018, 14, 0);
+        rt.fill(257210, 14, 0);
         count = 0;
       } else {
         for (let $i3 = j, $e3 = tUnit + 1; $i3 >= $e3; $i3--) {
           k = $i3;
           let $t4;
-          $t4 = k * 2 + 249018, w16($t4, r16($t4) - 1);
+          $t4 = k * 2 + 257210, w16($t4, r16($t4) - 1);
           let $t5;
-          $t5 = (k - 1) * 2 + 249018, w16($t5, r16($t5) + r16((k - 1) * 2 + 138570));
+          $t5 = (k - 1) * 2 + 257210, w16($t5, r16($t5) + r16((k - 1) * 2 + 224456));
         }
       }
     }
     let $t6;
-    $t6 = tUnit * 2 + 249018, w16($t6, r16($t6) - count);
+    $t6 = tUnit * 2 + 257210, w16($t6, r16($t6) - count);
     ValidateRestTime();
   }
 }
@@ -146,11 +146,11 @@ export function DisplayRestTime(hl: number) {
   x = 11;
   for (let $i1 = 4; $i1 >= 3; $i1--) {
     i = $i1;
-    DrawField(x + 1, i, StrUtil.ZeroPad2(r16(i * 2 + 249018)));
+    DrawField(x + 1, i, StrUtil.ZeroPad2(r16(i * 2 + 257210)));
     TextRend.DisplayString((x + 1) + 2, 17, 10, ":");
     x = (x + 3) & 255;
   }
-  DrawField(x + 1, 2, StrUtil.ZeroPad2((10 * r16(249022)) + r16(249020)));
+  DrawField(x + 1, 2, StrUtil.ZeroPad2((10 * r16(257214)) + r16(257212)));
 }
 
 export async function CampRestMenu() {
@@ -160,7 +160,7 @@ export async function CampRestMenu() {
   sel = 2;
   do {
     DisplayRestTime(sel);
-    U8[227081] = true ? 1 : 0;
+    U8[235273] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("", "Rest   daYs Hours Mins   Inc Dec   Exit", 13, 10, 15, true, false, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
       switch (ch) {
@@ -212,10 +212,10 @@ export async function CampRestMenu() {
       }
       case 73: {
         if (sel === 2) {
-          w16(249020, r16(249020) + 5);
+          w16(257212, r16(257212) + 5);
         } else {
           let $t2;
-          $t2 = sel * 2 + 249018, w16($t2, r16($t2) + 1);
+          $t2 = sel * 2 + 257210, w16($t2, r16($t2) + 1);
         }
         ValidateRestTime();
         break;
@@ -237,10 +237,10 @@ export async function CampRestMenu() {
 
 export async function CheckRestingHeal() {
   let healed: boolean = false, cur: number = 0;
-  w16(249032, r16(249032) + 1);
-  if (r16(249032) >= 288) {
+  w16(257224, r16(257224) + 1);
+  if (r16(257224) >= 288) {
     healed = false;
-    cur = r32(143753);
+    cur = r32(229639);
     while (cur !== 0) {
       if ((await FxEngine.RestoreHitPoints(cur, 1, false))) {
         healed = true;
@@ -250,11 +250,11 @@ export async function CheckRestingHeal() {
     DisplayRestTime(0);
     TextRend.DisplayString(1, 19, 10, "The Whole Party Is Healed");
     if (healed) {
-      (await CharDisp.DisplayParty(r32(143749)));
+      CharDisp.DisplayParty(r32(229635));
     }
     (await TextRend.PauseOnly());
-    (await CharDisp.ClearMessageWindow());
-    w16(249032, 0);
+    CharDisp.ClearMessageWindow();
+    w16(257224, 0);
   }
 }
 
@@ -266,7 +266,7 @@ export async function CheckMemorizeDone(creature: number, done: number) {
     b = CharHlp.MemorizedAt(creature, i) & 255;
     if ((b > 127) && CharHlp.IsSpell(b & 127)) {
       if ((U8[done] !== 0)) {
-        lvl = U8[(b & 127) * 16 + 136507];
+        lvl = U8[(b & 127) * 16 + 222393];
       } else {
         CharHlp.SetMemorizedAt(creature, i, b & 127);
         DisplayRestTime(0);
@@ -291,7 +291,7 @@ export async function CheckScribeDone(creature: number, done: number) {
       while ((j <= 3) && (lvl === 0)) {
         if ((U8[item + j + 59] > 128) && CharHlp.IsSpell(U8[item + j + 59] & 127)) {
           if ((U8[done] !== 0)) {
-            lvl = U8[(U8[item + j + 59] & 127) * 16 + 136507];
+            lvl = U8[(U8[item + j + 59] & 127) * 16 + 222393];
           } else {
             sp = U8[item + j + 59] & 127;
             (await Magic.RemoveSpellFromScroll(creature, item, U8[item + j + 59]));
@@ -300,7 +300,7 @@ export async function CheckScribeDone(creature: number, done: number) {
               CharHlp.SetSpellKnown(creature, sp, true);
               (await Magic.PrintCastSpellMsg(creature, "has scribed", sp));
             } else {
-              (await CharDisp.PrintTwoLines(rS(creature) + " failed to scribe " + rS(sp * 33 + 133189) + ".", rS(sp * 33 + 133189) + " has been lost."));
+              (await CharDisp.PrintTwoLines(rS(creature) + " failed to scribe " + rS(sp * 33 + 219075) + ".", rS(sp * 33 + 219075) + " has been lost."));
             }
             U8[done] = true ? 1 : 0;
             held = r32(creature + 200);
@@ -325,16 +325,16 @@ export async function AdvanceSpellPrep() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let i: number = 0, lvl: number = 0, cur: number = 0;
   i = 1;
-  cur = r32(143753);
+  cur = r32(229639);
   while ((cur !== 0) && (i <= 8)) {
-    U8[i + 249034] = U8[i + 249034] - 1;
-    if ((U8[i + 249034] === 0) && (U8[cur + 44] === 0)) {
+    U8[i + 257226] = U8[i + 257226] - 1;
+    if ((U8[i + 257226] === 0) && (U8[cur + 44] === 0)) {
       U8[$f0] = false ? 1 : 0;
       lvl = (await CheckScribeDone(cur, $f0)) & 255;
       if (lvl === 0) {
         lvl = (await CheckMemorizeDone(cur, $f0)) & 255;
       }
-      U8[i + 249034] = lvl * 3;
+      U8[i + 257226] = lvl * 3;
     }
     cur = r32(cur + 260);
     i = (i + 1) & 255;
@@ -349,7 +349,7 @@ export async function AdvanceSpellPrepBase(tick: number) {
   if (U8[tick] >= 12) {
     U8[tick] = 0;
     i = 1;
-    cur = r32(143753);
+    cur = r32(229639);
     while (cur !== 0) {
       if ((U8[cur + 44] << 24 >> 24) > 0) {
         U8[cur + 44] = U8[cur + 44] - 1;
@@ -360,7 +360,7 @@ export async function AdvanceSpellPrepBase(tick: number) {
             lvl = (await CheckMemorizeDone(cur, $f0)) & 255;
           }
           if (i <= 8) {
-            U8[i + 249034] = lvl * 3;
+            U8[i + 257226] = lvl * 3;
           }
         }
       }
@@ -372,7 +372,7 @@ export async function AdvanceSpellPrepBase(tick: number) {
 }
 
 export function $init() {
-  rt.fill(249018, 14, 0);
-  w16(249032, 0);
-  U8[249034] = false ? 1 : 0;
+  rt.fill(257210, 14, 0);
+  w16(257224, 0);
+  U8[257226] = false ? 1 : 0;
 }

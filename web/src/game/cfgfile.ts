@@ -901,7 +901,7 @@ export function DirExists(path: string) {
   }
   wS($f0, 255, NatFile.NativeName(rS($f0)));
   Dos.FindFirst(rS($f0), 55, $f0 + 256);
-  $r0 = (ri16(131603) === 0) && ((U8[$f0 + 277] & 16) !== 0);
+  $r0 = (ri16(217489) === 0) && ((U8[$f0 + 277] & 16) !== 0);
   Dos.FindClose($f0 + 256);
   S.sp = $sp;
   return $r0;

@@ -30,33 +30,33 @@ export const TITLE_COLOR = 15;
 export const KEY_COLOR = 15;
 export const LINE_COLOR = 10;
 
-export const $at = { KEYS: 252945 };
+export const $at = { KEYS: 261137 };
 
 export function LineShown(n: number, quickKeys: boolean) {
   let $r0: boolean = false;
-  switch (U8[n * 34 + 252944]) {
+  switch (U8[n * 34 + 261136]) {
     case 1: {
       $r0 = quickKeys;
       break;
     }
     case 2: {
-      $r0 = U8[141198] !== 0;
+      $r0 = U8[227084] !== 0;
       break;
     }
     case 3: {
-      $r0 = (U8[141208] !== 0);
+      $r0 = (U8[227094] !== 0);
       break;
     }
     case 4: {
-      $r0 = U8[141140] !== 2;
+      $r0 = U8[227026] !== 2;
       break;
     }
     case 5: {
-      $r0 = U8[141205] !== 0;
+      $r0 = U8[227091] !== 0;
       break;
     }
     case 6: {
-      $r0 = U8[141189] !== 0;
+      $r0 = U8[227075] !== 0;
       break;
     }
     default: {
@@ -87,8 +87,8 @@ export function GroupGaps(quickKeys: boolean) {
 export function KeyGroup(n: number) {
   let $r0: number = 0;
   let $t1;
-  if (($t1 = U8[n * 34 + 252912], $t1 === 65 || $t1 === 67)) {
-    $r0 = U8[n * 34 + 252912];
+  if (($t1 = U8[n * 34 + 261104], $t1 === 65 || $t1 === 67)) {
+    $r0 = U8[n * 34 + 261104];
   } else {
     $r0 = 70;
   }
@@ -98,9 +98,9 @@ export function KeyGroup(n: number) {
 export async function ShowKeys(quickKeys: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let n: number = 0, row: number = 0, group: number = 0, ch: number = 0, savedChoice: number = 0, gaps: boolean = false;
-  savedChoice = U8[145643];
+  savedChoice = U8[231529];
   gaps = GroupGaps(quickKeys);
-  (await Border.ClearBox(0, 0, 39, 23));
+  Border.ClearBox(0, 0, 39, 23);
   (await Border.DrawBorder(1, 3, 38, 23, 0));
   (await Border.DrawBorder(1, 1, 38, 1, 0));
   TextRend.DisplayCentered(1, 38, 1, 15, "Command Keys");
@@ -113,16 +113,16 @@ export async function ShowKeys(quickKeys: boolean) {
         row = (row + 1) & 255;
       }
       group = KeyGroup(n) & 255;
-      TextRend.DisplayString(2, row, 15, rS(n * 34 + 252911));
-      TextRend.DisplayString(2 + U8[n * 34 + 252911], row, 10, rS(n * 34 + 252919));
+      TextRend.DisplayString(2, row, 15, rS(n * 34 + 261103));
+      TextRend.DisplayString(2 + U8[n * 34 + 261103], row, 10, rS(n * 34 + 261111));
       row = (row + 1) & 255;
     }
   }
   do {
-    U8[227104] = true ? 1 : 0;
+    U8[235296] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("Help: ", "Exit", 13, 10, 15, false, false, $f0)) & 255;
   } while (!(!(U8[$f0] !== 0) && (ch === 0 || ch === 69)));
   TextRend.ClearBottomLine();
-  U8[145643] = savedChoice;
+  U8[231529] = savedChoice;
   S.sp = $sp;
 }

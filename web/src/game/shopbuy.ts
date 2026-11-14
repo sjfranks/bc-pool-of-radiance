@@ -48,7 +48,7 @@ export const PANEL_RIGHT = 37;
 export const POOL_COL = 20;
 export const OFF_MAX = 8;
 
-export const $at = { tabKeys: 249789, tabCols: 249796, tabNames: 249802, tabKeyAt: 249844 };
+export const $at = { tabKeys: 257981, tabCols: 257988, tabNames: 257994, tabKeyAt: 258036 };
 
 export function InTab(itemType: number, tab: number) {
   let $r0: boolean = false;
@@ -298,14 +298,14 @@ export function NewTexts(cur: number, t: number, ac: number, dmg: number) {
 export async function BuyScreen() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 571);
   let sel: number = 0, creature: number = 0, member: number = 0, tab: number = 0, usableOnly: boolean = false, rebuild: boolean = false, done: boolean = false, c: number = 0;
-  async function BuildList() {
+  function BuildList() {
     let i: number = 0;
     if (r32($f0 + 514) !== 0) {
       MenuCore.FreeStringList($f0 + 514);
     }
     w32($f0 + 514, 0);
     w32($f0 + 518, 0);
-    FilterStock(r32(144890), creature, tab, usableOnly, $f0);
+    FilterStock(r32(230776), creature, tab, usableOnly, $f0);
     for (let $i1 = 0, $e1 = ri16($f0) - 1; $i1 <= $e1; $i1++) {
       i = $i1;
       if (r16(r32($f0 + i * 4 + 2) + 58) === 0) {
@@ -316,55 +316,55 @@ export async function BuyScreen() {
     w16($f0 + 528, FindShown($f0, sel));
     if (ri16($f0 + 528) < 0) {
       w16($f0 + 528, 0);
-      w16(145641, 0);
+      w16(231527, 0);
     }
     if (ri16($f0) > 0) {
       sel = r32($f0 + ri16($f0 + 528) * 4 + 2);
     } else {
       sel = 0;
     }
-    (await DrawTabs(tab));
-    (await Border.ClearBox(1, 3, 38, 15));
+    DrawTabs(tab);
+    Border.ClearBox(1, 3, 38, 15);
     if (ri16($f0) === 0) {
       TextRend.DisplayCentered(2, 37, 9, 15, "** No Items **");
     }
     U8[$f0 + 526] = true ? 1 : 0;
   }
-  creature = r32(143749);
+  creature = r32(229635);
   w32($f0 + 514, 0);
   sel = 0;
   tab = 0;
   usableOnly = false;
-  w16(145641, 0);
+  w16(231527, 0);
   (await DrawFrame());
   rebuild = true;
   done = false;
   do {
     if (rebuild) {
-      (await BuildList());
+      BuildList();
       rebuild = false;
     }
-    (await DrawPanel(creature, sel));
+    DrawPanel(creature, sel);
     if (usableOnly) {
       wS($f0 + 530, 40, "Showing usable");
     } else {
       wS($f0 + 530, 40, "Showing all");
     }
-    wS(227083, 16, rS(249789));
-    U8[227105] = true ? 1 : 0;
+    wS(235275, 16, rS(257981));
+    U8[235297] = true ? 1 : 0;
     if (ri16($f0) === 0) {
       c = (await MenuCore.MenuHorizontal("Shop: ", rS($f0 + 530) + " Exit", 13, 10, 15, true, false, $f0 + 527)) & 255;
       if ((U8[$f0 + 527] !== 0) && (Party.AltMember(c) === 0)) {
         c = 32;
       }
     } else {
-      U8[227109] = true ? 1 : 0;
-      U8[227106] = true ? 1 : 0;
+      U8[235301] = true ? 1 : 0;
+      U8[235298] = true ? 1 : 0;
       c = (await MenuCore.MenuVertical("Shop: ", rS($f0 + 530) + " Buy", 13, 10, 15, 2, 3, 37, 15, r32($f0 + 514), true, $f0 + 526, $f0 + 528, $f0 + 522)) & 255;
       if (r32($f0 + 522) !== 0) {
         sel = r32($f0 + ri16($f0 + 528) * 4 + 2);
       }
-      if ((U8[227107] !== 0)) {
+      if ((U8[235299] !== 0)) {
         c = 32;
       }
     }
@@ -372,7 +372,7 @@ export async function BuyScreen() {
       member = Party.MemberAt(Party.AltMember(c));
       if ((member !== 0) && (member !== creature)) {
         creature = member;
-        w32(143749, member);
+        w32(229635, member);
         rebuild = usableOnly;
       }
     } else {
@@ -387,7 +387,7 @@ export async function BuyScreen() {
           break;
         }
         case 76: case 77: case 82: case 65: case 79: case 73: {
-          tab = (rt.Pos(String.fromCharCode(c), rS(249789)) - 1) & 255;
+          tab = (rt.Pos(String.fromCharCode(c), rS(257981)) - 1) & 255;
           rebuild = true;
           break;
         }
@@ -414,18 +414,18 @@ export function InTheWay(item: number, other: number) {
   return $r0;
 }
 
-export async function DrawTabs(cur: number) {
+export function DrawTabs(cur: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 7);
   let tab: number = 0;
-  (await Border.ClearBox(1, 1, 38, 1));
+  Border.ClearBox(1, 1, 38, 1);
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     tab = $i1;
-    wS($f0, 6, rS(tab * 7 + 249802));
+    wS($f0, 6, rS(tab * 7 + 257994));
     if (tab === cur) {
-      TextRend.DisplayString(U8[tab + 249796], 1, 15, rS($f0));
+      TextRend.DisplayString(U8[tab + 257988], 1, 15, rS($f0));
     } else {
-      TextRend.DisplayString(U8[tab + 249796], 1, 14, rS($f0));
-      TextRend.DisplayString((U8[tab + 249796] + U8[tab + 249844]) - 1, 1, 15, String.fromCharCode(U8[$f0 + U8[tab + 249844]]));
+      TextRend.DisplayString(U8[tab + 257988], 1, 14, rS($f0));
+      TextRend.DisplayString((U8[tab + 257988] + U8[tab + 258036]) - 1, 1, 15, String.fromCharCode(U8[$f0 + U8[tab + 258036]]));
     }
   }
   S.sp = $sp;
@@ -463,15 +463,15 @@ export function ShownAmmo(creature: number) {
   return $r0;
 }
 
-export async function DrawPanel(creature: number, item: number) {
+export function DrawPanel(creature: number, item: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 341);
   let acWidth: number = 0, dmgWidth: number = 0, statCol: number = 0, n: number = 0, shield: number = 0, shieldColor: number = 0, armorWidth: number = 0;
-  (await Border.ClearBox(1, 17, 38, 22));
+  Border.ClearBox(1, 17, 38, 22);
   wS($f0 + 300, 40, StrUtil.Grouped(MoneyCal.CreatureGold(creature)) + " GP");
   TextRend.DisplayString(2, 17, 15, "Char:");
   TextRend.DisplayString(8, 17, 14, rS($f0 + 300));
   TextRend.DisplayString(20, 17, 15, "Pool:");
-  TextRend.DisplayString(26, 17, 14, StrUtil.Grouped(MoneyCal.CoinValueInGold(144862)) + " GP");
+  TextRend.DisplayString(26, 17, 14, StrUtil.Grouped(MoneyCal.CoinValueInGold(230748)) + " GP");
   CharHlp.RecalcStats(creature);
   GetFigures(creature, $f0);
   wS($f0 + 13, 40, AcText(U8[$f0]));
@@ -543,7 +543,7 @@ export async function DrawPanel(creature: number, item: number) {
 }
 
 export async function DrawFrame() {
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 1, 0));
   (await Border.DrawBorder(1, 3, 38, 15, 0));
   (await Border.DrawBorder(1, 17, 38, 22, 0));

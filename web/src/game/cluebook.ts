@@ -7,7 +7,7 @@ import * as Types from './types';
 export const CLUE_LEN = 30;
 export const NO_MAP = 255;
 
-export const $at = { marksMap: 252835, marks: 252836 };
+export const $at = { marksMap: 261027, marks: 261028 };
 
 export function Note(map: number, x: number, y: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 258);
@@ -34,22 +34,22 @@ export function Note(map: number, x: number, y: number) {
 export function Marked(map: number, x: number, y: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 258);
   let i: number = 0, k: number = 0, $r0: boolean = false;
-  if (map !== U8[252835]) {
-    rt.fill(252836, 32, 0);
-    U8[252835] = map;
+  if (map !== U8[261027]) {
+    rt.fill(261028, 32, 0);
+    U8[261027] = map;
     i = 1;
     wS($f0, 255, Entry(map, i));
     while (rS($f0) !== "") {
       k = 1;
       while (EntrySquare(rS($f0), k, $f0 + 256, $f0 + 257)) {
-        w16(I8[$f0 + 257] * 2 + 252836, r16(I8[$f0 + 257] * 2 + 252836) | (1 << I8[$f0 + 256]));
+        w16(I8[$f0 + 257] * 2 + 261028, r16(I8[$f0 + 257] * 2 + 261028) | (1 << I8[$f0 + 256]));
         k = (k + 1) & 255;
       }
       i = (i + 1) & 255;
       wS($f0, 255, Entry(map, i));
     }
   }
-  $r0 = Types.OnMap(x, y) && ((r16(y * 2 + 252836) & (1 << x)) !== 0);
+  $r0 = Types.OnMap(x, y) && ((r16(y * 2 + 261028) & (1 << x)) !== 0);
   S.sp = $sp;
   return $r0;
 }

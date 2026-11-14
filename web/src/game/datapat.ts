@@ -8,36 +8,36 @@ export const PART_COUNT = 113;
 export const BYTE_COUNT = 3953;
 export const TABLE_BYTES = 5196;
 
-export const $at = { parts: 254187, patchBytes: 254191, partFill: 254195, byteFill: 254197 };
+export const $at = { parts: 262379, patchBytes: 262383, partFill: 262387, byteFill: 262389 };
 
 export function LoadTable() {
   let $r0: boolean = false;
-  w32(254187, rt.getMem(1243));
-  w32(254191, rt.getMem(3953));
-  w16(254195, 0);
-  w16(254197, 0);
+  w32(262379, rt.getMem(1243));
+  w32(262383, rt.getMem(3953));
+  w16(262387, 0);
+  w16(262389, 0);
   FillParts();
   FillBytes();
-  $r0 = (r16(254195) === 113) && (r16(254197) === 3953);
+  $r0 = (r16(262387) === 113) && (r16(262389) === 3953);
   return $r0;
 }
 
 export function FreeTable() {
-  rt.freeMem(r32(254191));
-  rt.freeMem(r32(254187));
+  rt.freeMem(r32(262383));
+  rt.freeMem(r32(262379));
 }
 
 export function Part(issue: number, family: number, disk: number, id: number, size: number, offset: number, origLen: number, newLen: number) {
-  w16(254195, r16(254195) + 1);
-  if (r16(254195) <= 113) {
-    w16(r32(254187) + r16(254195) * 11 - 11, issue);
-    U8[r32(254187) + r16(254195) * 11 - 9] = family;
-    U8[r32(254187) + r16(254195) * 11 - 8] = disk;
-    U8[r32(254187) + r16(254195) * 11 - 7] = id;
-    w16(r32(254187) + r16(254195) * 11 - 6, size);
-    w16(r32(254187) + r16(254195) * 11 - 4, offset);
-    U8[r32(254187) + r16(254195) * 11 - 2] = origLen;
-    U8[r32(254187) + r16(254195) * 11 - 1] = newLen;
+  w16(262387, r16(262387) + 1);
+  if (r16(262387) <= 113) {
+    w16(r32(262379) + r16(262387) * 11 - 11, issue);
+    U8[r32(262379) + r16(262387) * 11 - 9] = family;
+    U8[r32(262379) + r16(262387) * 11 - 8] = disk;
+    U8[r32(262379) + r16(262387) * 11 - 7] = id;
+    w16(r32(262379) + r16(262387) * 11 - 6, size);
+    w16(r32(262379) + r16(262387) * 11 - 4, offset);
+    U8[r32(262379) + r16(262387) * 11 - 2] = origLen;
+    U8[r32(262379) + r16(262387) * 11 - 1] = newLen;
   }
 }
 
@@ -45,10 +45,10 @@ export function Put(s: string) {
   let i: number = 0;
   for (let $i1 = 1, $e1 = s.length; $i1 <= $e1; $i1++) {
     i = $i1;
-    if (r16(254197) < 3953) {
-      U8[r32(254191) + r16(254197)] = rt.chAt(s, i);
+    if (r16(262389) < 3953) {
+      U8[r32(262383) + r16(262389)] = rt.chAt(s, i);
     }
-    w16(254197, r16(254197) + 1);
+    w16(262389, r16(262389) + 1);
   }
 }
 

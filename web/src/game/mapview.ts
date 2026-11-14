@@ -13,7 +13,7 @@ import * as MapTiles from './maptiles';
 import * as JrnlSeen from './jrnlseen';
 
 
-export const $at = { wildAnimFrame: 240449 };
+export const $at = { wildAnimFrame: 248641 };
 
 export async function DisplayMapView() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
@@ -53,28 +53,28 @@ export async function DisplayMapView() {
     }
     return $r1;
   }
-  loc = U8[141223];
-  if (r16(r32(141147) + 460) !== 0) {
+  loc = U8[227109];
+  if (r16(r32(227033) + 460) !== 0) {
     loc = 1;
   }
   switch (loc) {
     case 1: {
-      U8[145550] = View3D.GetMapEvent(I8[145546], I8[145547]);
-      if (U8[145550] > 127) {
-        U8[238101] = U8[(r16(r32(141147) + 508) & 7) + 240450];
+      U8[231436] = View3D.GetMapEvent(I8[231432], I8[231433]);
+      if (U8[231436] > 127) {
+        U8[246293] = U8[(r16(r32(227033) + 508) & 7) + 248642];
       } else {
-        U8[238101] = U8[(r16(r32(141147) + 506) & 7) + 240450];
+        U8[246293] = U8[(r16(r32(227033) + 506) & 7) + 248642];
       }
-      if ((U8[146750] !== 0)) {
-        U8[238102] = CeilColor(U8[146538]);
-        U8[238103] = FloorColor(U8[146538]);
-        U8[238104] = WallColor(U8[146537]);
+      if ((U8[232636] !== 0)) {
+        U8[246294] = CeilColor(U8[232424]);
+        U8[246295] = FloorColor(U8[232424]);
+        U8[246296] = WallColor(U8[232423]);
       }
-      View3D.SetView3DColors(U8[238101], U8[238102], U8[238103], U8[238104]);
+      View3D.SetView3DColors(U8[246293], U8[246294], U8[246295], U8[246296]);
       if (!JrnlSeen.AreaMapAllowed()) {
-        U8[145545] = false ? 1 : 0;
+        U8[231431] = false ? 1 : 0;
       }
-      (await View3D.Display3DMapView(I8[145546], I8[145547], U8[145548]));
+      (await View3D.Display3DMapView(I8[231432], I8[231433], U8[231434]));
       break;
     }
     case 2: case 3: case 4: {
@@ -90,21 +90,21 @@ export async function DisplayMapView() {
 export async function DisplayWildMapView() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let $t1;
-  if (!($t1 = U8[141223], ($t1 >= 2 && $t1 <= 4))) {
+  if (!($t1 = U8[227109], ($t1 >= 2 && $t1 <= 4))) {
     { S.sp = $sp; return; }
   }
-  PartyCell(U8[141223], $f0, $f0 + 2);
-  (await MapTiles.DrawIconAnimSprite(ri16($f0) - Wilds.CenteredCorner(ri16($f0), 43, Wilds.ViewLast()), ri16($f0 + 2) - Wilds.CenteredCorner(ri16($f0 + 2), 35, 4), U8[145548], U8[240449] % 2, Math.trunc(U8[240449] / 2) + 9));
-  U8[240449] = (U8[240449] + 1) % 6;
-  (await Blit.FlushView());
+  PartyCell(U8[227109], $f0, $f0 + 2);
+  (await MapTiles.DrawIconAnimSprite(ri16($f0) - Wilds.CenteredCorner(ri16($f0), 43, Wilds.ViewLast()), ri16($f0 + 2) - Wilds.CenteredCorner(ri16($f0 + 2), 35, 4), U8[231434], U8[248641] % 2, Math.trunc(U8[248641] / 2) + 9));
+  U8[248641] = (U8[248641] + 1) % 6;
+  Blit.FlushView();
   S.sp = $sp;
 }
 
 export function ResetGame() {
-  U8[240449] = 0;
+  U8[248641] = 0;
 }
 
 export function PartyCell(loc: number, col: number, row: number) {
-  w16(col, U8[loc + 140166] + (r16(r32(141147) + 390) << 16 >> 16));
-  w16(row, r16(r32(141147) + 392) << 16 >> 16);
+  w16(col, U8[loc + 226052] + (r16(r32(227033) + 390) << 16 >> 16));
+  w16(row, r16(r32(227033) + 392) << 16 >> 16);
 }

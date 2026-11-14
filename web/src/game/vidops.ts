@@ -10,12 +10,12 @@ import * as Blit from './blit';
 
 export function ModeName() {
   let $r0: string = "";
-  $r0 = rS(141029);
+  $r0 = rS(226915);
   return $r0;
 }
 
-export async function InitRowTables() {
-  (await rt.FT[r32(141111)]());
+export function InitRowTables() {
+  rt.FT[r32(226997)]();
 }
 
 export function MergePic(src: number, dst: number) {
@@ -23,7 +23,7 @@ export function MergePic(src: number, dst: number) {
   if (!CanMerge(src, dst)) {
     return;
   }
-  if ((U8[141052] !== 0)) {
+  if ((U8[226938] !== 0)) {
     for (let $i1 = 0, $e1 = r16(src + 17) - 1; $i1 <= $e1; $i1++) {
       n = $i1;
       if (U8[src + n + 27] !== 255) {
@@ -63,7 +63,7 @@ export function OverlayPic(src: number, dst: number) {
   if (((r32(src + 19) === 0) || (r16(src + 17) !== r16(dst + 17))) || (r16(dst + 17) === 0)) {
     return;
   }
-  if ((U8[141052] !== 0)) {
+  if ((U8[226938] !== 0)) {
     for (let $i1 = 0, $e1 = r16(dst + 17) - 1; $i1 <= $e1; $i1++) {
       n = $i1;
       if (U8[src + n + 27] !== 255) {
@@ -74,22 +74,22 @@ export function OverlayPic(src: number, dst: number) {
   }
   for (let $i2 = 0, $e2 = r16(dst + 17) - 1; $i2 <= $e2; $i2++) {
     n = $i2;
-    U8[dst + n + 27] = (U8[dst + n + 27] & U8[r32(src + 19) + (n >>> U8[141055])]) | U8[src + n + 27];
+    U8[dst + n + 27] = (U8[dst + n + 27] & U8[r32(src + 19) + (n >>> U8[226941])]) | U8[src + n + 27];
   }
 }
 
-export async function RecolorPic(toT: number, pic: number) {
+export function RecolorPic(toT: number, pic: number) {
   if ((pic === 0) || (r16(pic + 17) === 0)) {
     return;
   }
-  (await rt.FT[r32(141103)](toT, pic));
+  rt.FT[r32(226989)](toT, pic);
 }
 
-export async function PutPixelRow(pic: number, frame: number, y: number, px: number) {
+export function PutPixelRow(pic: number, frame: number, y: number, px: number) {
   if (pic === 0) {
     return;
   }
-  (await rt.FT[r32(141107)](pic, frame * r16(pic + 17), y, px));
+  rt.FT[r32(226993)](pic, frame * r16(pic + 17), y, px);
 }
 
 export function ComputeMask(transpColor: number, chunk: number) {
@@ -125,11 +125,11 @@ export function ChunkPixel(chunk: number, k: number) {
   return $r0;
 }
 
-export async function ExpandPicFrames(imgData: number, srcOff: number, transpColor: number, pic: number) {
+export function ExpandPicFrames(imgData: number, srcOff: number, transpColor: number, pic: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let mask: number = 0, at: number = 0, n: number = 0, chunks: number = 0;
   while (pic !== 0) {
-    chunks = ((U8[pic + 8] * r16(pic + 17)) >>> U8[141053]) & 65535;
+    chunks = ((U8[pic + 8] * r16(pic + 17)) >>> U8[226939]) & 65535;
     at = 0;
     for (let $i2 = 1, $e2 = chunks; $i2 <= $e2; $i2++) {
       n = $i2;
@@ -138,8 +138,8 @@ export async function ExpandPicFrames(imgData: number, srcOff: number, transpCol
       if (r32(pic + 19) !== 0) {
         mask = ComputeMask(transpColor, $f0) & 255;
       }
-      (await rt.FT[r32(141091)]($f0, mask, pic, at));
-      at = (at + (1 << U8[141053])) & 65535;
+      rt.FT[r32(226977)]($f0, mask, pic, at);
+      at = (at + (1 << U8[226939])) & 65535;
       srcOff = (srcOff + 4) & 65535;
     }
     pic = r32(pic + 23);
@@ -163,14 +163,14 @@ export function MirrorBits(value: number) {
 
 export function MirrorPairs(value: number) {
   let mirrored: number = 0, $r0: number = 0;
-  mirrored = ((value & r16(132839)) << 14) & 65535;
-  mirrored = (mirrored + ((value & r16(132837)) << 10)) & 65535;
-  mirrored = (mirrored + ((value & r16(132835)) << 6)) & 65535;
-  mirrored = (mirrored + ((value & r16(132833)) << 2)) & 65535;
-  mirrored = (mirrored + ((value & r16(132831)) >>> 2)) & 65535;
-  mirrored = (mirrored + ((value & r16(132829)) >>> 6)) & 65535;
-  mirrored = (mirrored + ((value & r16(132827)) >>> 10)) & 65535;
-  mirrored = (mirrored + ((value & r16(132825)) >>> 14)) & 65535;
+  mirrored = ((value & r16(218725)) << 14) & 65535;
+  mirrored = (mirrored + ((value & r16(218723)) << 10)) & 65535;
+  mirrored = (mirrored + ((value & r16(218721)) << 6)) & 65535;
+  mirrored = (mirrored + ((value & r16(218719)) << 2)) & 65535;
+  mirrored = (mirrored + ((value & r16(218717)) >>> 2)) & 65535;
+  mirrored = (mirrored + ((value & r16(218715)) >>> 6)) & 65535;
+  mirrored = (mirrored + ((value & r16(218713)) >>> 10)) & 65535;
+  mirrored = (mirrored + ((value & r16(218711)) >>> 14)) & 65535;
   $r0 = mirrored;
   return $r0;
 }

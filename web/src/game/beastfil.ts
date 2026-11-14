@@ -14,22 +14,22 @@ export const SIG = "BEST";
 export const VERSION = 1;
 
 export function Load() {
-  LoadFrom(rS(143235) + FILE_NAME);
+  LoadFrom(rS(229121) + FILE_NAME);
 }
 
 export function Flush() {
-  if ((!(U8[228370] !== 0) || (U8[228371] !== 0)) || (Bestiary.Count() === 0)) {
+  if ((!(U8[236562] !== 0) || (U8[236563] !== 0)) || (Bestiary.Count() === 0)) {
     return;
   }
-  if ((U8[228372] !== 0)) {
-    FileUtil.DeleteFile(rS(143235) + BAD_NAME);
-    if (!FileUtil.RenameChecked(rS(143235) + FILE_NAME, rS(143235) + BAD_NAME)) {
+  if ((U8[236564] !== 0)) {
+    FileUtil.DeleteFile(rS(229121) + BAD_NAME);
+    if (!FileUtil.RenameChecked(rS(229121) + FILE_NAME, rS(229121) + BAD_NAME)) {
       return;
     }
-    U8[228372] = false ? 1 : 0;
+    U8[236564] = false ? 1 : 0;
   }
-  if (WriteTo(rS(143235) + FILE_NAME)) {
-    U8[228370] = false ? 1 : 0;
+  if (WriteTo(rS(229121) + FILE_NAME)) {
+    U8[236562] = false ? 1 : 0;
   }
 }
 
@@ -63,10 +63,10 @@ export function LoadFrom(fn: string) {
   rt.Close($f0);
   ioRes = rt.IOResult() << 16 >> 16;
   if (ok) {
-    U8[228371] = (U8[$f0 + 13] > 1) || short ? 1 : 0;
+    U8[236563] = (U8[$f0 + 13] > 1) || short ? 1 : 0;
   } else {
     Bestiary.Clear();
-    U8[228372] = true ? 1 : 0;
+    U8[236564] = true ? 1 : 0;
   }
   S.sp = $sp;
 }
@@ -113,8 +113,8 @@ export function Tell(b: number, creature: number) {
   while (effect !== 0) {
     for (let $i2 = 1; $i2 <= 63; $i2++) {
       i = $i2;
-      if (U8[i * 2 + 228371] === U8[effect]) {
-        Know(U8[i * 2 + 228372], true);
+      if (U8[i * 2 + 236563] === U8[effect]) {
+        Know(U8[i * 2 + 236564], true);
       }
     }
     effect = r32(effect + 5);

@@ -42,7 +42,7 @@ export async function SageMenu() {
       }
     }
   } while (!(choice === 1));
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   S.sp = $sp;
 }
 
@@ -50,8 +50,8 @@ export async function FindNamed(archive: string, wanted: number, id: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 47);
   let n: number = 0, found: boolean = false, ended: boolean = false, suppressed: boolean = false, $r0: boolean = false;
   found = false;
-  suppressed = (U8[143747] !== 0);
-  U8[143747] = true ? 1 : 0;
+  suppressed = (U8[229633] !== 0);
+  U8[229633] = true ? 1 : 0;
   if ((await DaxIo.OpenDax(DaxIo.FolderOf(archive) + archive, ".DAX", $f0 + 16, $f0, $f0 + 8))) {
     ended = false;
     while (!found && !ended) {
@@ -72,7 +72,7 @@ export async function FindNamed(archive: string, wanted: number, id: number) {
     }
     DaxIo.CloseDax($f0, $f0 + 8);
   }
-  U8[143747] = suppressed ? 1 : 0;
+  U8[229633] = suppressed ? 1 : 0;
   $r0 = found;
   S.sp = $sp;
   return $r0;
@@ -88,7 +88,7 @@ export async function FindRecord(name_: number, disk: number, id: number) {
       while (!found && (U8[disk] <= 8)) {
         U8[id] = 0;
         do {
-          found = (DaxIo.RemapId(10, U8[disk], U8[id]) === U8[$f0]) && DataArc.HasBlock(rS(143491) + DataArc.SourceFile(10, U8[disk]), U8[id]);
+          found = (DaxIo.RemapId(10, U8[disk], U8[id]) === U8[$f0]) && DataArc.HasBlock(rS(229377) + DataArc.SourceFile(10, U8[disk]), U8[id]);
           if (!found) {
             U8[id] = U8[id] + 1;
           }
@@ -117,10 +117,10 @@ export async function LoadKind(b: number) {
   w32($f0 + 2, 0);
   wS($f0 + 14, 40, rS(b));
   if ((await FindRecord($f0 + 14, $f0, $f0 + 1))) {
-    saved = U8[143234];
-    U8[143234] = U8[$f0];
+    saved = U8[229120];
+    U8[229120] = U8[$f0];
     (await EclMenu.InitCreature(U8[$f0 + 1], $f0 + 2, $f0 + 6, $f0 + 10));
-    U8[143234] = saved;
+    U8[229120] = saved;
   }
   $r0 = r32($f0 + 2);
   S.sp = $sp;
@@ -132,9 +132,9 @@ export async function Say(s: string) {
 }
 
 export async function Redraw() {
-  (await TextRend.ClearRect(0, 0, 39, 24));
+  TextRend.ClearRect(0, 0, 39, 24);
   (await CharDisp.DisplayNoncombatInterface());
-  (await EclMenu.DisplayPortrait(U8[240458], U8[240459]));
+  (await EclMenu.DisplayPortrait(U8[248650], U8[248651]));
 }
 
 export async function Consult(b: number) {
@@ -148,7 +148,7 @@ export async function Consult(b: number) {
     if (!BeastFil.Tell($f0, creature)) {
       if (ri32($f0 + 16) !== ri32(b + 16)) {
         mv(b, $f0, 32);
-        U8[228370] = true ? 1 : 0;
+        U8[236562] = true ? 1 : 0;
       }
       $r0 = "'YOU KNOW AS MUCH AS I DO ABOUT " + rS(b) + ".'";
     } else {
@@ -156,11 +156,11 @@ export async function Consult(b: number) {
       (await Say("'" + rS(b) + "? FOR " + StrUtil.Count(fee, "GOLD PIECE", "GOLD PIECES") + " I WILL TELL YOU ALL I KNOW.'"));
       if ((await MenuCore.YesNoMenu("pay the sage ", 13, 15, 10)) !== 89) {
         $r0 = "'AS YOU WISH.'";
-      } else if (!(await Money.PayGold(r32(143749), fee))) {
+      } else if (!(await Money.PayGold(r32(229635), fee))) {
         $r0 = "'COME BACK WHEN YOU HAVE THE GOLD.'";
       } else {
         mv(b, $f0, 32);
-        U8[228370] = true ? 1 : 0;
+        U8[236562] = true ? 1 : 0;
         (await Say("SHE TAKES A TOME DOWN FROM A SHELF FILLED WITH MANY OTHERS, AND READS ALOUD."));
         (await CharDisp.MessageWait());
         (await BeastMnu.ShowEntry(b));

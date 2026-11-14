@@ -46,14 +46,14 @@ export async function LoadCharlist(list: number) {
   let p: number = 0, ioRes: number = 0;
   w32(list, 0);
   (await SaveMenu.CheckSaveDir());
-  if (!FileUtil.RecoverFile(rS(143235) + "charlist.txt")) {
+  if (!FileUtil.RecoverFile(rS(229121) + "charlist.txt")) {
     { S.sp = $sp; return; }
   }
-  if (!FileUtil.Exists(rS(143235) + "charlist.txt")) {
+  if (!FileUtil.Exists(rS(229121) + "charlist.txt")) {
     { S.sp = $sp; return; }
   }
   ioRes = rt.IOResult() << 16 >> 16;
-  rt.Assign($f0 + 4, rS(143235) + "charlist.txt");
+  rt.Assign($f0 + 4, rS(229121) + "charlist.txt");
   rt.ResetT($f0 + 4);
   if (rt.IOResult() !== 0) {
     { S.sp = $sp; return; }
@@ -63,7 +63,7 @@ export async function LoadCharlist(list: number) {
     wS($f0 + 12, 40, rt.ReadStrT($f0 + 4)), rt.ReadLnT($f0 + 4);
     ioRes = rt.IOResult() << 16 >> 16;
     if (ioRes === 0) {
-      p = r32(143753);
+      p = r32(229639);
       while ((p !== 0) && (rS(p) !== rS($f0 + 12))) {
         p = r32(p + 260);
       }
@@ -82,7 +82,7 @@ export async function SaveCharlist(list: number, omit: string) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 520);
   let p: number = 0, ioRes: number = 0, ok: boolean = false;
   (await SaveMenu.CheckSaveDir());
-  wS($f0 + 264, 255, rS(143235) + "charlist.txt");
+  wS($f0 + 264, 255, rS(229121) + "charlist.txt");
   do {
     ioRes = rt.IOResult() << 16 >> 16;
     if (FileUtil.MakeTempFolder(rS($f0 + 264))) {
@@ -124,16 +124,16 @@ export async function LoadCharIconAnim(loading: boolean) {
   let i: number = 0, height: number = 0;
   DaxIo.PushState(3);
   {
-    const $w1 = r32(143749);
+    const $w1 = r32(229635);
     if (U8[$w1 + 192] === 2) {
       height = 2;
     } else {
       height = 1;
     }
-    (await MapTiles.LoadIconAnim("CHEAD" + String.fromCharCode(U8[height + 247231]), U8[$w1 + 189], 11));
-    (await MapTiles.LoadIconAnim("CBODY" + String.fromCharCode(U8[height + 247231]), U8[$w1 + 190], U8[$w1 + 191]));
-    VidOps.MergePic(r32(143887), r32(U8[$w1 + 191] * 8 + 143799));
-    VidOps.MergePic(r32(143891), r32(U8[$w1 + 191] * 8 + 143803));
+    (await MapTiles.LoadIconAnim("CHEAD" + String.fromCharCode(U8[height + 255423]), U8[$w1 + 189], 11));
+    (await MapTiles.LoadIconAnim("CBODY" + String.fromCharCode(U8[height + 255423]), U8[$w1 + 190], U8[$w1 + 191]));
+    VidOps.MergePic(r32(229773), r32(U8[$w1 + 191] * 8 + 229685));
+    VidOps.MergePic(r32(229777), r32(U8[$w1 + 191] * 8 + 229689));
     if (loading) {
       for (let $i2 = 0; $i2 <= 15; $i2++) {
         i = $i2;
@@ -142,11 +142,11 @@ export async function LoadCharIconAnim(loading: boolean) {
       }
       for (let $i3 = 1; $i3 <= 6; $i3++) {
         i = $i3;
-        U8[$f0 + U8[i + 140258] + 16] = U8[$w1 + i + 192] & 15;
-        U8[$f0 + (U8[i + 140258] + 8) + 16] = (U8[$w1 + i + 192] & 240) >>> 4;
+        U8[$f0 + U8[i + 226144] + 16] = U8[$w1 + i + 192] & 15;
+        U8[$f0 + (U8[i + 226144] + 8) + 16] = (U8[$w1 + i + 192] & 240) >>> 4;
       }
-      (await Blit.RemapPic($f0, $f0 + 16, 0, false, r32(U8[$w1 + 191] * 8 + 143799)));
-      (await Blit.RemapPic($f0, $f0 + 16, 0, false, r32(U8[$w1 + 191] * 8 + 143803)));
+      (await Blit.RemapPic($f0, $f0 + 16, 0, false, r32(U8[$w1 + 191] * 8 + 229685)));
+      (await Blit.RemapPic($f0, $f0 + 16, 0, false, r32(U8[$w1 + 191] * 8 + 229689)));
     }
   }
   MapTiles.FreeIconAnim(11);
@@ -165,7 +165,7 @@ export async function SaveChar(creature: number, fname: string) {
     wS($f0 + 1041, 4, ".sav");
     wS($f0 + 1028, 12, fname);
   }
-  FileUtil.NewSet($f0, rS(143235));
+  FileUtil.NewSet($f0, rS(229121));
   ok = CommitWhole($f0, (await WriteCharFiles($f0, creature, rS($f0 + 1028), rS($f0 + 1041))));
   if (!ok) {
     (await TextRend.DisplayAndPause(14, "Could not save " + rt.Copy(rS(creature), 1, 15) + "."));
@@ -196,7 +196,7 @@ export async function SaveChar(creature: number, fname: string) {
 export async function EraseChar(name_: string) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1032);
   let erased: boolean = false;
-  FileUtil.NewSet($f0, rS(143235));
+  FileUtil.NewSet($f0, rS(229121));
   SaveMenu.RemoveCharFiles($f0, CharFileName(name_), ".cha");
   erased = FileUtil.CommitSet($f0);
   (await LoadCharlist($f0 + 1028));
@@ -239,7 +239,7 @@ export async function LoadChar(name_: string, creature: number, savedGame: boole
   if (!whole) {
     { S.sp = $sp; return $r0; }
   }
-  if ((U8[141191] !== 0) && CharHlp.ComesUnderPlayer(creature)) {
+  if ((U8[227077] !== 0) && CharHlp.ComesUnderPlayer(creature)) {
     U8[creature + 271] = 0;
   }
   if (FileUtil.Exists(name_ + ".itm")) {
@@ -359,7 +359,7 @@ export async function SaveGame() {
 
 export async function QuitToDos(askSave: boolean) {
   if ((await MenuCore.YesNoMenu("Exit to DOS? ", 14, 10, 15)) === 89) {
-    if ((!askSave || (U8[143748] !== 0)) || (r32(143753) === 0)) {
+    if ((!askSave || (U8[229634] !== 0)) || (r32(229639) === 0)) {
       (await GameIo.ExitGame());
     } else if ((await MenuCore.YesNoMenu("Save first? ", 14, 10, 15)) === 78) {
       (await GameIo.ExitGame());
@@ -395,26 +395,26 @@ export async function QuickLoad() {
   if (!QuickLoadable()) {
     (await TextRend.DisplayAndPause(14, "There is no quick save."));
     TextRend.ClearBottomLine();
-    U8[141221] = 1;
+    U8[227107] = 1;
     return;
   }
   FreeParty();
   (await LoadSlot(90));
-  U8[141221] = 1;
-  U8[141222] = 1;
+  U8[227107] = 1;
+  U8[227108] = 1;
 }
 
 export function AddCharToParty(creature: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
   let p: number = 0;
   U8[creature + 191] = 255;
-  if (r32(143753) === 0) {
-    w32(143753, creature);
+  if (r32(229639) === 0) {
+    w32(229639, creature);
   } else {
     w32(Party.LastCreature() + 260, creature);
   }
   rt.fill($f0, 8, 0);
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     let $t2;
     if (($t2 = U8[p + 191], ($t2 >= 0 && $t2 <= 7))) {
@@ -422,16 +422,16 @@ export function AddCharToParty(creature: number) {
     }
     p = r32(p + 260);
   }
-  w32(143749, creature);
+  w32(229635, creature);
   {
-    const $w3 = r32(143749);
+    const $w3 = r32(229635);
     U8[$w3 + 191] = 0;
     while ((U8[$w3 + 191] < 8) && (U8[$f0 + U8[$w3 + 191]] !== 0)) {
       U8[$w3 + 191] = U8[$w3 + 191] + 1;
     }
   }
   let $t5;
-  $t5 = r32(141151) + 1660, w16($t5, r16($t5) + 1);
+  $t5 = r32(227037) + 1660, w16($t5, r16($t5) + 1);
   ClassCal.RecalcBaseSkills(creature);
   S.sp = $sp;
 }
@@ -442,24 +442,24 @@ export async function CheckFileElseQuit(name_: string) {
   if (FileUtil.Exists(name_)) {
     { S.sp = $sp; return; }
   }
-  wS($f0, 40, "Save and exit  Insert disk #" + StrUtil.NumStr(U8[143234]));
+  wS($f0, 40, "Save and exit  Insert disk #" + StrUtil.NumStr(U8[229120]));
   do {
     ch = (await MenuCore.MenuHorizontal("", rS($f0), 13, 10, 15, false, false, $f0 + 41)) & 255;
     saving = !(U8[$f0 + 41] !== 0) && (ch === 83);
     if (saving) {
-      x = I8[145546];
-      y = I8[145547];
-      disk = U8[143234];
-      U8[145546] = I8[145546] - I8[U8[145548] + 132927];
-      U8[145547] = I8[145547] - I8[U8[145548] + 132936];
-      View3D.WrapCoords(145546, 145547);
+      x = I8[231432];
+      y = I8[231433];
+      disk = U8[229120];
+      U8[231432] = I8[231432] - I8[U8[231434] + 218813];
+      U8[231433] = I8[231433] - I8[U8[231434] + 218822];
+      View3D.WrapCoords(231432, 231433);
       DaxIo.PopState();
       if ((await SaveGame())) {
         (await GameIo.ExitGame());
       }
-      U8[145546] = x;
-      U8[145547] = y;
-      U8[143234] = disk;
+      U8[231432] = x;
+      U8[231433] = y;
+      U8[229120] = disk;
       (await CharDisp.DisplayNoncombatInterface());
     }
   } while (!(!saving));
@@ -488,51 +488,51 @@ export function FreeCreature(creature: number) {
 
 export function RemoveCreature(suppressSizeDec: boolean, freeAnim: boolean) {
   let prev: number = 0, removed: number = 0;
-  if (r32(143753) === 0) {
+  if (r32(229639) === 0) {
     return;
   }
-  removed = r32(143749);
-  prev = r32(143753);
-  if (prev !== r32(143749)) {
-    while ((r32(prev + 260) !== r32(143749)) && (r32(prev + 260) !== 0)) {
+  removed = r32(229635);
+  prev = r32(229639);
+  if (prev !== r32(229635)) {
+    while ((r32(prev + 260) !== r32(229635)) && (r32(prev + 260) !== 0)) {
       prev = r32(prev + 260);
     }
     if (r32(prev + 260) !== 0) {
       if (freeAnim) {
-        MapTiles.FreeIconAnim(U8[r32(143749) + 191]);
+        MapTiles.FreeIconAnim(U8[r32(229635) + 191]);
       }
-      w32(prev + 260, r32(r32(143749) + 260));
-      FreeCreature(r32(143749));
-      w32(143749, prev);
+      w32(prev + 260, r32(r32(229635) + 260));
+      FreeCreature(r32(229635));
+      w32(229635, prev);
       if (!suppressSizeDec) {
         let $t2;
-        $t2 = r32(141151) + 1660, w16($t2, r16($t2) - 1);
+        $t2 = r32(227037) + 1660, w16($t2, r16($t2) - 1);
       }
     }
   } else {
     if (freeAnim) {
-      MapTiles.FreeIconAnim(U8[r32(143749) + 191]);
+      MapTiles.FreeIconAnim(U8[r32(229635) + 191]);
     }
-    w32(143753, r32(r32(143749) + 260));
-    prev = r32(r32(143749) + 260);
-    FreeCreature(r32(143749));
-    w32(143749, prev);
+    w32(229639, r32(r32(229635) + 260));
+    prev = r32(r32(229635) + 260);
+    FreeCreature(r32(229635));
+    w32(229635, prev);
     if (!suppressSizeDec) {
       let $t3;
-      $t3 = r32(141151) + 1660, w16($t3, r16($t3) - 1);
+      $t3 = r32(227037) + 1660, w16($t3, r16($t3) - 1);
     }
   }
-  if ((r32(143749) !== removed) && (r32(143757) === removed)) {
-    w32(143757, r32(143749));
+  if ((r32(229635) !== removed) && (r32(229643) === removed)) {
+    w32(229643, r32(229635));
   }
 }
 
 export function FreeParty() {
-  while (r32(143753) !== 0) {
-    w32(143749, r32(143753));
+  while (r32(229639) !== 0) {
+    w32(229635, r32(229639));
     RemoveCreature(false, true);
   }
-  w32(143749, 0);
+  w32(229635, 0);
 }
 
 export async function RewriteSaveFile(f: number, name_: string) {
@@ -552,7 +552,7 @@ export function CharFileName(name_: string) {
 
 export function CharFileBase(name_: string) {
   let $r0: string = "";
-  $r0 = rS(143235) + CharFileName(name_);
+  $r0 = rS(229121) + CharFileName(name_);
   return $r0;
 }
 
@@ -624,7 +624,7 @@ export async function WriteCharFiles(s: number, creature: number, base: string, 
 export function RecoverChar(name_: string) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1028);
   let $r0: boolean = false;
-  FileUtil.NewSet($f0, rS(143235));
+  FileUtil.NewSet($f0, rS(229121));
   SaveMenu.RemoveCharFiles($f0, CharFileName(name_), ".cha");
   $r0 = FileUtil.RecoverSet($f0);
   S.sp = $sp;
@@ -667,23 +667,23 @@ export async function LoadSlot(letter: number) {
     { S.sp = $sp; return; }
   }
   TextRend.DisplayString(0, 24, 10, "Loading...Please Wait");
-  res = rt.BlockRead($f0 + 328, 143234, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 229120, 1, true) & 65535;
   let $t1;
-  if (!($t1 = U8[143234], ($t1 >= 1 && $t1 <= 8))) {
-    U8[143234] = 1;
+  if (!($t1 = U8[229120], ($t1 >= 1 && $t1 <= 8))) {
+    U8[229120] = 1;
   }
-  res = rt.BlockRead($f0 + 328, r32(141147), 2048, true) & 65535;
-  res = rt.BlockRead($f0 + 328, r32(141151), 2048, true) & 65535;
-  res = rt.BlockRead($f0 + 328, r32(141155), 1024, true) & 65535;
+  res = rt.BlockRead($f0 + 328, r32(227033), 2048, true) & 65535;
+  res = rt.BlockRead($f0 + 328, r32(227037), 2048, true) & 65535;
+  res = rt.BlockRead($f0 + 328, r32(227041), 1024, true) & 65535;
   rt.Seek($f0 + 328, rt.FilePos($f0 + 328) + 7680);
-  res = rt.BlockRead($f0 + 328, 145546, 1, true) & 65535;
-  res = rt.BlockRead($f0 + 328, 145547, 1, true) & 65535;
-  res = rt.BlockRead($f0 + 328, 145548, 1, true) & 65535;
-  res = rt.BlockRead($f0 + 328, 145549, 1, true) & 65535;
-  res = rt.BlockRead($f0 + 328, 145550, 1, true) & 65535;
-  U8[145548] = U8[145548] & 6;
-  res = rt.BlockRead($f0 + 328, 141223, 1, true) & 65535;
-  res = rt.BlockRead($f0 + 328, 141176, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 231432, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 231433, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 231434, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 231435, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 231436, 1, true) & 65535;
+  U8[231434] = U8[231434] & 6;
+  res = rt.BlockRead($f0 + 328, 227109, 1, true) & 65535;
+  res = rt.BlockRead($f0 + 328, 227062, 1, true) & 65535;
   res = rt.BlockRead($f0 + 328, $f0 + 592, 1, true) & 65535;
   res = rt.BlockRead($f0 + 328, $f0, 328, true) & 65535;
   rt.Close($f0 + 328);
@@ -700,11 +700,11 @@ export async function LoadSlot(letter: number) {
     i = $i2;
     found = StrUtil.FitLength($f0 + i * 41 - 41, 40);
   }
-  w16(r32(141151) + 1660, 0);
+  w16(r32(227037) + 1660, 0);
   for (let $i3 = 1, $e3 = U8[$f0 + 592]; $i3 <= $e3; $i3++) {
     i = $i3;
     wS($f0 + 336, 255, CharFileName(rS($f0 + i * 41 - 41)));
-    if (FileUtil.Exists(rS(143235) + rS($f0 + 336) + ".sav")) {
+    if (FileUtil.Exists(rS(229121) + rS($f0 + 336) + ".sav")) {
       creature = rt.getMem(378);
       if ((await LoadChar(rS($f0 + 336), creature, true))) {
         AddCharToParty(creature);
@@ -714,34 +714,34 @@ export async function LoadSlot(letter: number) {
       (await SaveMenu.CheckSaveDir());
     }
   }
-  w32(143749, r32(143753));
-  while (r32(143749) !== 0) {
+  w32(229635, r32(229639));
+  while (r32(229635) !== 0) {
     (await LoadCharIconAnim(true));
-    w32(143749, r32(r32(143749) + 260));
+    w32(229635, r32(r32(229635) + 260));
   }
-  w32(143749, r32(143753));
-  U8[143234] = r16(r32(141151) + 1572) & 255;
+  w32(229635, r32(229639));
+  U8[229120] = r16(r32(227037) + 1572) & 255;
   let $t5;
-  if (!($t5 = U8[143234], ($t5 >= 1 && $t5 <= 8))) {
-    U8[143234] = 1;
+  if (!($t5 = U8[229120], ($t5 >= 1 && $t5 <= 8))) {
+    U8[229120] = 1;
   }
-  if (U8[141223] < 2) {
-    (await View3D.Load3DMap(U8[r32(141147) + 394]));
+  if (U8[227109] < 2) {
+    (await View3D.Load3DMap(U8[r32(227033) + 394]));
   }
-  if (U8[141223] > 1) {
+  if (U8[227109] > 1) {
     (await MapTiles.LoadIconAnim("ICON", 0, 11));
   } else {
     for (let $i6 = 1; $i6 <= 3; $i6++) {
       i = $i6;
-      w16(i * 4 + 145547, r16(r32(141147) + (19193 + i) * 2 - 37376));
-      w16(i * 4 + 145549, r16(r32(141147) + (19196 + i) * 2 - 37376));
-      if (ri16(i * 4 + 145547) >= 0) {
-        (await View3D.LoadWallSet(ri16(i * 4 + 145547), ri16(i * 4 + 145549)));
+      w16(i * 4 + 231433, r16(r32(227033) + (19193 + i) * 2 - 37376));
+      w16(i * 4 + 231435, r16(r32(227033) + (19196 + i) * 2 - 37376));
+      if (ri16(i * 4 + 231433) >= 0) {
+        (await View3D.LoadWallSet(ri16(i * 4 + 231433), ri16(i * 4 + 231435)));
       }
     }
   }
-  w16(r32(141147) + 1022, 0);
-  if (r16(r32(141147) + 836) !== 0) {
+  w16(r32(227033) + 1022, 0);
+  if (r16(r32(227033) + 836) !== 0) {
     (await Ending.YarashComplete(false));
   }
   TextRend.ClearBottomLine();
@@ -752,43 +752,43 @@ export async function SaveToSlot(letter: number, desc: string, area: string) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1642);
   let n: number = 0, p: number = 0, opened: boolean = false, $r0: boolean = false;
   $r0 = false;
-  if ((U8[141212] !== 0)) {
+  if ((U8[227098] !== 0)) {
     { S.sp = $sp; return $r0; }
   }
   Dos.GetDate($f0 + 1634, $f0 + 1636, $f0 + 1638, $f0 + 1640);
-  w16(r32(141147) + 484, U8[146747]);
+  w16(r32(227033) + 484, U8[232633]);
   rt.fill($f0, 328, 0);
   (await SaveMenu.CheckSaveDir());
-  FileUtil.NewSet($f0 + 328, rS(143235));
+  FileUtil.NewSet($f0 + 328, rS(229121));
   wS($f0 + 1377, 255, SaveMenu.SlotFile(letter, ".dat"));
   opened = (await RewriteSaveFile($f0 + 1356, rS($f0 + 1377)));
   U8[$f0 + 1633] = opened ? 1 : 0;
   TextRend.ClearBottomLine();
   TextRend.DisplayString(0, 24, 10, "Saving...Please Wait");
-  mv($f0 + 1365, r32(141147) + 1012, 12);
+  mv($f0 + 1365, r32(227033) + 1012, 12);
   for (let $i1 = 1; $i1 <= 3; $i1++) {
     n = $i1;
-    w16(r32(141147) + (19193 + n) * 2 - 37376, ri16(n * 4 + 145547));
-    w16(r32(141147) + (19196 + n) * 2 - 37376, ri16(n * 4 + 145549));
+    w16(r32(227033) + (19193 + n) * 2 - 37376, ri16(n * 4 + 231433));
+    w16(r32(227033) + (19196 + n) * 2 - 37376, ri16(n * 4 + 231435));
   }
-  w16(r32(141147) + 504, U8[141163]);
-  w16(r32(141147) + 510, (((1 - U8[141180]) * 4) + ((U8[141177] * U8[141179]) * 2)) + (U8[141177] * U8[141178]));
-  w16(r32(141151) + 1572, U8[143234]);
-  FileUtil.WriteChecked($f0 + 1356, 143234, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, r32(141147), 2048, $f0 + 1633);
-  mv(r32(141147) + 1012, $f0 + 1365, 12);
-  FileUtil.WriteChecked($f0 + 1356, r32(141151), 2048, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, r32(141155), 1024, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, r32(141159), 7680, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 145546, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 145547, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 145548, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 145549, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 145550, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 141223, 1, $f0 + 1633);
-  FileUtil.WriteChecked($f0 + 1356, 141176, 1, $f0 + 1633);
+  w16(r32(227033) + 504, U8[227049]);
+  w16(r32(227033) + 510, (((1 - U8[227066]) * 4) + ((U8[227063] * U8[227065]) * 2)) + (U8[227063] * U8[227064]));
+  w16(r32(227037) + 1572, U8[229120]);
+  FileUtil.WriteChecked($f0 + 1356, 229120, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, r32(227033), 2048, $f0 + 1633);
+  mv(r32(227033) + 1012, $f0 + 1365, 12);
+  FileUtil.WriteChecked($f0 + 1356, r32(227037), 2048, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, r32(227041), 1024, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, r32(227045), 7680, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 231432, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 231433, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 231434, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 231435, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 231436, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 227109, 1, $f0 + 1633);
+  FileUtil.WriteChecked($f0 + 1356, 227062, 1, $f0 + 1633);
   U8[$f0 + 1364] = 0;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (U8[$f0 + 1364] < 8)) {
     U8[$f0 + 1364] = U8[$f0 + 1364] + 1;
     wS($f0 + U8[$f0 + 1364] * 41 - 41, 40, SaveMenu.MemberName(letter, U8[$f0 + 1364]));
@@ -802,7 +802,7 @@ export async function SaveToSlot(letter: number, desc: string, area: string) {
   if ((U8[$f0 + 1633] !== 0)) {
     FileUtil.AddToSet($f0 + 328, SaveMenu.SlotName(letter, ".dat"), true);
   }
-  p = r32(143753);
+  p = r32(229639);
   for (let $i3 = 1; $i3 <= 8; $i3++) {
     n = $i3;
     if (n <= U8[$f0 + 1364]) {
@@ -817,7 +817,7 @@ export async function SaveToSlot(letter: number, desc: string, area: string) {
   BeastFil.Flush();
   TextRend.ClearBottomLine();
   if ((U8[$f0 + 1633] !== 0)) {
-    U8[143748] = 1;
+    U8[229634] = 1;
   } else {
     (await TextRend.DisplayAndPause(14, "The game was not saved."));
     TextRend.ClearBottomLine();

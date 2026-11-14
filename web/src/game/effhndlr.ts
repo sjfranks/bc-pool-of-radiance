@@ -41,30 +41,30 @@ export const ANIMAL_TYPES = rt.setR(11, 11, 14, 15);
 export const OTHERWORLDLY_TYPE = 7;
 export const PETRIFY_GAZE_RANGE = 3;
 
-export const $at = { mundaneCheck: 247720 };
+export const $at = { mundaneCheck: 255912 };
 
 export function EffBless(creature: number, p: number, removed: boolean) {
-  U8[144908] = U8[144908] + 5;
-  U8[144906] = I8[144906] + 1;
+  U8[230794] = U8[230794] + 5;
+  U8[230792] = I8[230792] + 1;
 }
 
 export function EffCurse(creature: number, p: number, removed: boolean) {
-  if (U8[144908] < 5) {
-    U8[144908] = 0;
+  if (U8[230794] < 5) {
+    U8[230794] = 0;
   } else {
-    U8[144908] = U8[144908] - 5;
+    U8[230794] = U8[230794] - 5;
   }
-  U8[144906] = I8[144906] - 1;
+  U8[230792] = I8[230792] - 1;
 }
 
 export function EffUndeadSlayer(creature: number, p: number, removed: boolean) {
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  if (U8[r32(144909) + 159] === 4) {
-    U8[144906] = I8[144906] + 2;
-    U8[144897] = U8[144897] + 2;
+  if (U8[r32(230795) + 159] === 4) {
+    U8[230792] = I8[230792] + 2;
+    U8[230783] = U8[230783] + 2;
   }
 }
 
@@ -75,11 +75,11 @@ export async function EffTrainStart(creature: number, p: number, removed: boolea
 
 export function EffFlameTongue(creature: number, p: number, removed: boolean) {
   let bonus: number = 0;
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  switch (U8[r32(144909) + 159]) {
+  switch (U8[r32(230795) + 159]) {
     case 10: {
       bonus = 1;
       break;
@@ -96,9 +96,9 @@ export function EffFlameTongue(creature: number, p: number, removed: boolean) {
       bonus = 0;
     }
   }
-  U8[144906] = I8[144906] + bonus;
-  U8[144897] = U8[144897] + bonus;
-  U8[144898] = 9;
+  U8[230792] = I8[230792] + bonus;
+  U8[230783] = U8[230783] + bonus;
+  U8[230784] = 9;
 }
 
 export async function EffTrainManual(creature: number, p: number, removed: boolean) {
@@ -121,12 +121,12 @@ export async function EffTrainManual(creature: number, p: number, removed: boole
 }
 
 export function EffProtEvil(creature: number, p: number, removed: boolean) {
-  Protection(creature, rt.inS(C_ALIGN.EVIL_ALIGNMENTS, U8[r32(143749) + 160]));
+  Protection(creature, rt.inS(C_ALIGN.EVIL_ALIGNMENTS, U8[r32(229635) + 160]));
 }
 
 export function EffProtGood(creature: number, p: number, removed: boolean) {
   let $t1;
-  Protection(creature, ($t1 = U8[r32(143749) + 160], $t1 === 0 || $t1 === 3 || $t1 === 6));
+  Protection(creature, ($t1 = U8[r32(229635) + 160], $t1 === 0 || $t1 === 3 || $t1 === 6));
 }
 
 export function EffResistCold(creature: number, p: number, removed: boolean) {
@@ -150,7 +150,7 @@ export function EffCharm(creature: number, p: number, removed: boolean) {
       w32(r32(creature + 264) + 10, 0);
       CharHlp.CountTeams();
     }
-    U8[144908] = 100;
+    U8[230794] = 100;
   }
 }
 
@@ -207,14 +207,14 @@ export function EffShield(creature: number, p: number, removed: boolean) {
   if (U8[creature + 273] < 57) {
     U8[creature + 273] = 57;
   }
-  w16(240560, ri16(240560) + 1);
-  if (rt.inS(C_SPELL.MAGIC_MISSILES, U8[144900])) {
-    U8[144897] = 0;
+  w16(248752, ri16(248752) + 1);
+  if (rt.inS(C_SPELL.MAGIC_MISSILES, U8[230786])) {
+    U8[230783] = 0;
   }
 }
 
 export function EffGnomeHitBonus(creature: number, p: number, removed: boolean) {
-  RacialFoeBonus(creature, 247721, 5);
+  RacialFoeBonus(creature, 255913, 5);
 }
 
 export function EffResistFire(creature: number, p: number, removed: boolean) {
@@ -234,9 +234,9 @@ export async function EffSlowPoisonEnd(creature: number, p: number, removed: boo
   if (CharHlp.HasEffect(creature, 55, $f0)) {
     (await InflictStatusMsg(creature, 6, "dies from poison"));
   }
-  U8[144903] = 1;
+  U8[230789] = 1;
   (await FxEngine.RemoveEffect(creature, 15, 0));
-  U8[144903] = 0;
+  U8[230789] = 0;
   S.sp = $sp;
 }
 
@@ -276,23 +276,23 @@ export async function EffSpiritualHammer(creature: number, p: number, removed: b
 
 export function EffInvisible(creature: number, p: number, removed: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
-  if (!CharHlp.HasEffect(r32(143749), 24, $f0)) {
-    U8[247481] = 1;
+  if (!CharHlp.HasEffect(r32(229635), 24, $f0)) {
+    U8[255673] = 1;
   } else {
-    Bestiary.Learn(r32(143749), creature, 52);
+    Bestiary.Learn(r32(229635), creature, 52);
   }
-  U8[144906] = I8[144906] - 4;
+  U8[230792] = I8[230792] - 4;
   S.sp = $sp;
 }
 
 export function EffDwarfHitBonus(creature: number, p: number, removed: boolean) {
-  RacialFoeBonus(creature, 247801, 11);
+  RacialFoeBonus(creature, 255993, 11);
 }
 
 export async function EffMirrorImage(creature: number, p: number, removed: boolean) {
   if (FxEngine.ImageStruck(p)) {
-    if (U8[144900] > 0) {
-      if (U8[144904] === 0) {
+    if (U8[230786] > 0) {
+      if (U8[230790] === 0) {
         NullifyAttack(0);
         (await FxEngine.LoseImage(creature, p));
       }
@@ -301,7 +301,7 @@ export async function EffMirrorImage(creature: number, p: number, removed: boole
 }
 
 export function EffEnfeeble(creature: number, p: number, removed: boolean) {
-  U8[144897] = U8[144897] - Math.trunc(U8[144897] / 4);
+  U8[230783] = U8[230783] - Math.trunc(U8[230783] / 4);
 }
 
 export async function EffCoughing(creature: number, p: number, removed: boolean) {
@@ -317,7 +317,7 @@ export async function EffCoughing(creature: number, p: number, removed: boolean)
     U8[creature + 274] = 50;
   }
   U8[creature + 273] = U8[creature + 274];
-  if (creature === r32(143749)) {
+  if (creature === r32(229635)) {
     (await CharDisp.CombatPrintCreatureInfo(creature));
   }
 }
@@ -326,7 +326,7 @@ export async function EffAnimateDead(creature: number, p: number, removed: boole
   let side: number = 0;
   U8[p + 4] = false ? 1 : 0;
   side = Math.trunc(U8[p + 3] / 16) & 1;
-  if (U8[144903] === 0) {
+  if (U8[230789] === 0) {
     (await InflictStatusMsg(creature, 6, "collapses"));
   }
   U8[creature + 270] = side;
@@ -341,10 +341,10 @@ export async function EffAnimateDead(creature: number, p: number, removed: boole
 }
 
 export function EffBlind(creature: number, p: number, removed: boolean) {
-  U8[144906] = I8[144906] - 4;
+  U8[230792] = I8[230792] - 4;
   U8[creature + 273] = U8[creature + 273] - 4;
   U8[creature + 274] = U8[creature + 274] - 4;
-  w16(240560, ri16(240560) - 4);
+  w16(248752, ri16(248752) - 4);
 }
 
 export async function EffDiseased(creature: number, p: number, removed: boolean) {
@@ -353,20 +353,20 @@ export async function EffDiseased(creature: number, p: number, removed: boolean)
 }
 
 export function EffAlliedPrayer(creature: number, p: number, removed: boolean) {
-  w16(240560, ri16(240560) + 1);
-  U8[144906] = I8[144906] + 1;
+  w16(248752, ri16(248752) + 1);
+  U8[230792] = I8[230792] + 1;
 }
 
 export function EffBestowCurse(creature: number, p: number, removed: boolean) {
-  U8[144906] = I8[144906] - 4;
-  w16(240560, ri16(240560) - 4);
+  U8[230792] = I8[230792] - 4;
+  w16(248752, ri16(248752) - 4);
 }
 
 export function EffBlinking(creature: number, p: number, removed: boolean) {
   if (I8[r32(creature + 264) + 3] > 0) {
-    U8[247481] = 1;
-    U8[144907] = true ? 1 : 0;
-    Bestiary.Learn(creature, r32(143749), 42);
+    U8[255673] = 1;
+    U8[230793] = true ? 1 : 0;
+    Bestiary.Learn(creature, r32(229635), 42);
   }
 }
 
@@ -376,13 +376,13 @@ export async function EffHasted(creature: number, p: number, removed: boolean) {
     (await CharDisp.PrintNameString(creature, "ages", 10, true));
     w16(creature + 48, r16(creature + 48) + 1);
   }
-  U8[144899] = CharHlp.HasteSlowRate(creature, U8[144899]);
+  U8[230785] = CharHlp.HasteSlowRate(creature, U8[230785]);
 }
 
 export async function EffCastCloud(creature: number, p: number, removed: boolean) {
   let node: number = 0, cloudNum: number = 0;
   cloudNum = Math.trunc(U8[p + 3] / 16);
-  node = r32(146453);
+  node = r32(232339);
   while ((node !== 0) && !((r32(node) === creature) && (U8[node + 28] === cloudNum))) {
     node = r32(node + 4);
   }
@@ -395,18 +395,18 @@ export async function EffCastCloud(creature: number, p: number, removed: boolean
 
 export async function EffProtNormalMissiles(creature: number, p: number, removed: boolean) {
   let missile: number = 0;
-  missile = FindDamagingWeapon(r32(143749));
+  missile = FindDamagingWeapon(r32(229635));
   if (missile !== 0) {
     if (I8[missile + 50] === 0) {
       (await AvoidRanged(creature, 100, 255));
-    } else if (CbtMap.CalcDistance(r32(143749), creature) > 1) {
+    } else if (CbtMap.CalcDistance(r32(229635), creature) > 1) {
       Dice.ReduceDamagePerDie(1);
     }
   }
 }
 
 export function EffSlowed(creature: number, p: number, removed: boolean) {
-  U8[144899] = CharHlp.HasteSlowRate(creature, U8[144899]);
+  U8[230785] = CharHlp.HasteSlowRate(creature, U8[230785]);
 }
 
 export async function EffDiseaseStrength(creature: number, p: number, removed: boolean) {
@@ -454,20 +454,20 @@ export async function EffDiseaseHitPoints(creature: number, p: number, removed: 
 
 export function EffDwarfGiantDefense(creature: number, p: number, removed: boolean) {
   let $t1;
-  if (($t1 = U8[r32(143749) + 159], $t1 === 0 || $t1 === 1 || $t1 === 2 || $t1 === 10)) {
+  if (($t1 = U8[r32(229635) + 159], $t1 === 0 || $t1 === 1 || $t1 === 2 || $t1 === 10)) {
     let $t2;
-    if (($t2 = U8[r32(143749) + 108] & 127, $t2 === 1 || $t2 === 2)) {
-      if (NamedIn(r32(143749), 247977, 6)) {
-        U8[144906] = I8[144906] - 4;
+    if (($t2 = U8[r32(229635) + 108] & 127, $t2 === 1 || $t2 === 2)) {
+      if (NamedIn(r32(229635), 256169, 6)) {
+        U8[230792] = I8[230792] - 4;
       }
     }
   }
 }
 
 export function EffGnomeBugDefense(creature: number, p: number, removed: boolean) {
-  if (U8[r32(143749) + 159] === 1) {
-    if ((rS(r32(143749)) === "BUGBEAR") || (rS(r32(143749)) === "GNOLL")) {
-      U8[144906] = I8[144906] - 4;
+  if (U8[r32(229635) + 159] === 1) {
+    if ((rS(r32(229635)) === "BUGBEAR") || (rS(r32(229635)) === "GNOLL")) {
+      U8[230792] = I8[230792] - 4;
     }
   }
 }
@@ -476,8 +476,8 @@ export function EffPrayer(creature: number, p: number, removed: boolean) {
   if (CharHlp.Team(creature) === FxEngine.PrayerSide(p)) {
     EffAlliedPrayer(creature, p, removed);
   } else {
-    U8[144906] = I8[144906] - 1;
-    w16(240560, ri16(240560) - 1);
+    U8[230792] = I8[230792] - 1;
+    w16(248752, ri16(248752) - 1);
   }
 }
 
@@ -499,7 +499,7 @@ export function EffRingInvis(creature: number, p: number, removed: boolean) {
 }
 
 export async function EffMummyRot(creature: number, p: number, removed: boolean) {
-  if (U8[144903] !== 0) {
+  if (U8[230789] !== 0) {
     return;
   }
   (await CharDisp.PrintNameString(creature, "Rots...", 10, true));
@@ -515,8 +515,8 @@ export async function EffMummyRot(creature: number, p: number, removed: boolean)
 
 export function EffImmobile(creature: number, p: number, removed: boolean) {
   U8[r32(creature + 264) + 6] = 0;
-  if (U8[144902] !== 0) {
-    U8[144899] = 0;
+  if (U8[230788] !== 0) {
+    U8[230785] = 0;
   }
 }
 
@@ -525,11 +525,11 @@ export function EffTrollRegen(creature: number, p: number, removed: boolean) {
 }
 
 export function EffRingFireRes(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 1) !== 0) {
+  if ((U8[230784] & 1) !== 0) {
     NoteFireResisted(creature);
     Dice.ReduceDamagePerDie(2);
-    w16(240560, ri16(240560) + 4);
-    if ((U8[144898] & 8) === 0) {
+    w16(248752, ri16(248752) + 4);
+    if ((U8[230784] & 8) === 0) {
       NullifyAttack(0);
     }
   }
@@ -582,8 +582,8 @@ export async function EffPoisonHitM2(creature: number, p: number, removed: boole
 }
 
 export function EffDustOfDisappearance(creature: number, p: number, removed: boolean) {
-  U8[247481] = 1;
-  U8[144906] = I8[144906] - 4;
+  U8[255673] = 1;
+  U8[230792] = I8[230792] - 4;
 }
 
 export function EffCamouflage(creature: number, p: number, removed: boolean) {
@@ -598,18 +598,18 @@ export async function EffBloodDrain(creature: number, p: number, removed: boolea
   let dmg: number = 0;
   if ((await FxEngine.HoldTarget(creature, p, removed, 75, $f0)) === 0) {
     if ((U8[$f0] !== 0) && (U8[creature + 269] !== 0)) {
-      if (U8[r32(144909) + 269] !== 0) {
+      if (U8[r32(230795) + 269] !== 0) {
         U8[r32(creature + 264) + 16] = 1;
       }
     }
   } else {
     (await CharDisp.PrintNameString(creature, "Sucks some Blood", 10, true));
     dmg = Dice.RollDamageDice(1, 4) & 255;
-    U8[144898] = 128;
-    (await FxEngine.InflictNonWeaponDamage(r32(144909), dmg, 0, false));
+    U8[230784] = 128;
+    (await FxEngine.InflictNonWeaponDamage(r32(230795), dmg, 0, false));
     if (CharHlp.EndActions(creature)) {
     }
-    if ((U8[r32(144909) + 269] !== 0) && (Math.trunc(r16(p + 1) / 16) > dmg)) {
+    if ((U8[r32(230795) + 269] !== 0) && (Math.trunc(r16(p + 1) / 16) > dmg)) {
       w16(p + 1, r16(p + 1) - (dmg * 16));
     } else {
       (await FxEngine.RemoveEffect(creature, 75, p));
@@ -624,8 +624,8 @@ export async function EffBloodAttach(creature: number, p: number, removed: boole
     { S.sp = $sp; return; }
   }
   FxEngine.AddEffect(creature, 75, 207, U8[$f0], true);
-  (await Immobilize(r32(144909)));
-  Bestiary.Learn(creature, r32(144909), 47);
+  (await Immobilize(r32(230795)));
+  Bestiary.Learn(creature, r32(230795), 47);
   S.sp = $sp;
 }
 
@@ -634,11 +634,11 @@ export async function EffBiteHold(creature: number, p: number, removed: boolean)
   if (!HoldSlot(creature, $f0)) {
     { S.sp = $sp; return; }
   }
-  if (U8[r32(144909) + 16] < 19) {
+  if (U8[r32(230795) + 16] < 19) {
     FxEngine.AddEffect(creature, 74, 0, U8[$f0], true);
-    (await Immobilize(r32(144909)));
-    (await CharDisp.PrintNameString(r32(144909), "is held fast", 10, true));
-    Bestiary.Learn(creature, r32(144909), 56);
+    (await Immobilize(r32(230795)));
+    (await CharDisp.PrintNameString(r32(230795), "is held fast", 10, true));
+    Bestiary.Learn(creature, r32(230795), 56);
   }
   S.sp = $sp;
 }
@@ -657,7 +657,7 @@ export async function EffHealWake(creature: number, p: number, removed: boolean)
 }
 
 export async function EffFireTouch(creature: number, p: number, removed: boolean) {
-  U8[144898] = 9;
+  U8[230784] = 9;
   if (AttackTarget(creature) !== 0) {
     Bestiary.Learn(creature, AttackTarget(creature), 38);
     (await FxEngine.InflictNonWeaponDamage(AttackTarget(creature), Dice.RollDamageDice(2, 10), 0, false));
@@ -665,7 +665,7 @@ export async function EffFireTouch(creature: number, p: number, removed: boolean
 }
 
 export async function EffAcidSquirt(creature: number, p: number, removed: boolean) {
-  U8[144898] = 16;
+  U8[230784] = 16;
   if (AttackTarget(creature) !== 0) {
     Bestiary.Learn(creature, AttackTarget(creature), 48);
     (await FxEngine.InflictNonWeaponDamage(AttackTarget(creature), Dice.RollDamageDice(1, 4), 0, false));
@@ -675,7 +675,7 @@ export async function EffAcidSquirt(creature: number, p: number, removed: boolea
 export async function EffDragonFear(creature: number, p: number, removed: boolean) {
   let q: number = 0, saved: boolean = false;
   Bestiary.Learn(creature, 0, 46);
-  q = r32(143753);
+  q = r32(229639);
   while (q !== 0) {
     if (U8[q + 269] !== 0) {
       if (CharHlp.Team(q) !== CharHlp.Team(creature)) {
@@ -699,13 +699,13 @@ export async function EffDragonFear(creature: number, p: number, removed: boolea
 export async function EffMummyFear(creature: number, p: number, removed: boolean) {
   let q: number = 0, bonus: number = 0, saved: boolean = false;
   Bestiary.Learn(creature, 0, 46);
-  q = r32(143753);
+  q = r32(229639);
   while (q !== 0) {
     (await FxEngine.RemoveEffect(q, 82, 0));
     if (U8[q + 269] !== 0) {
       if (CharHlp.Team(q) !== CharHlp.Team(creature)) {
         bonus = 0;
-        if (U8[CharHlp.Team(q) + 144894] >= 6) {
+        if (U8[CharHlp.Team(q) + 230780] >= 6) {
           bonus = (bonus + 1) & 255;
         }
         if (I8[q + 46] === 7) {
@@ -722,35 +722,35 @@ export async function EffMummyFear(creature: number, p: number, removed: boolean
 export async function EffPetrifyGaze(creature: number, p: number, removed: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let item: number = 0, reflected: boolean = false;
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     { S.sp = $sp; return; }
   }
-  if (!PetrifyGazeReaches(creature, r32(144909))) {
+  if (!PetrifyGazeReaches(creature, r32(230795))) {
     { S.sp = $sp; return; }
   }
-  Bestiary.Learn(creature, r32(144909), 36);
+  Bestiary.Learn(creature, r32(230795), 36);
   (await CharDisp.PrintNameString(creature, "gazes...", 10, false));
-  (await CharDisp.AnimateBetween(creature, r32(144909), 18, 4, 45));
+  (await CharDisp.AnimateBetween(creature, r32(230795), 18, 4, 45));
   if (CharHlp.HasEffect(creature, 127, $f0)) {
     reflected = false;
-    item = r32(r32(144909) + 200);
+    item = r32(r32(230795) + 200);
     while ((item !== 0) && !reflected) {
       if ((U8[item + 52] !== 0) && IsMirror(item)) {
-        (await CharDisp.PrintNameString(r32(144909), "reflects it!", 12, false));
-        (await CharDisp.AnimateBetween(r32(144909), creature, 18, 4, 45));
+        (await CharDisp.PrintNameString(r32(230795), "reflects it!", 12, false));
+        (await CharDisp.AnimateBetween(r32(230795), creature, 18, 4, 45));
         reflected = true;
-        w32(144909, creature);
+        w32(230795, creature);
       }
       item = r32(item + 42);
     }
   }
-  if (SilverShielded(r32(144909))) {
-    (await CharDisp.PrintNameString(r32(144909), "is shielded from it!", 12, false));
+  if (SilverShielded(r32(230795))) {
+    (await CharDisp.PrintNameString(r32(230795), "is shielded from it!", 12, false));
     { S.sp = $sp; return; }
   }
-  if (!(await FxEngine.RollSavingThrow(r32(144909), 1, 0))) {
-    (await InflictStatusMsg(r32(144909), 7, "is Stoned"));
+  if (!(await FxEngine.RollSavingThrow(r32(230795), 1, 0))) {
+    (await InflictStatusMsg(r32(230795), 7, "is Stoned"));
   }
   S.sp = $sp;
 }
@@ -759,14 +759,14 @@ export async function EffCharmGaze(creature: number, p: number, removed: boolean
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let target: number = 0;
   target = AttackTarget(creature);
-  w32(144909, target);
+  w32(230795, target);
   if (target === 0) {
     { S.sp = $sp; return; }
   }
   if (!(await CbtActs.CanTarget(creature, target, true))) {
     { S.sp = $sp; return; }
   }
-  if (!InSight(creature, target, U8[136668])) {
+  if (!InSight(creature, target, U8[222554])) {
     { S.sp = $sp; return; }
   }
   (await CharDisp.PrintNameString(creature, "Gazes...", 10, false));
@@ -841,7 +841,7 @@ export async function DrainLevels(creature: number, levels: number) {
       if (dual && (ClassCal.HitDice(creature, I8[creature + 47]) === 0)) {
         hpPerLevel = 0;
       }
-      if (U8[141207] !== 0) {
+      if (U8[227093] !== 0) {
         (await Debug.PrintHpDebug("max,cur,lost", U8[creature + 50], U8[creature + 283], U8[creature + 117]));
       }
       xpBefore = ri32(creature + 172);
@@ -920,27 +920,27 @@ export async function EffDrainTwo(creature: number, p: number, removed: boolean)
 
 export async function EffRotTouch(creature: number, p: number, removed: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     { S.sp = $sp; return; }
   }
-  Bestiary.Learn(creature, r32(144909), 35);
-  if (FxEngine.DiseaseImmune(r32(144909), 50)) {
+  Bestiary.Learn(creature, r32(230795), 35);
+  if (FxEngine.DiseaseImmune(r32(230795), 50)) {
     { S.sp = $sp; return; }
   }
-  if (!CharHlp.HasEffect(r32(144909), 50, $f0)) {
-    FxEngine.AddEffect(r32(144909), 50, 14400, 255, true);
-    FxEngine.AddEffect(r32(144909), 57, 43200, rt.mul(Dice.RollDice(1, 6), 16) + 15, true);
-    (await CharDisp.PrintNameString(r32(144909), "is Diseased", 10, true));
+  if (!CharHlp.HasEffect(r32(230795), 50, $f0)) {
+    FxEngine.AddEffect(r32(230795), 50, 14400, 255, true);
+    FxEngine.AddEffect(r32(230795), 57, 43200, rt.mul(Dice.RollDice(1, 6), 16) + 15, true);
+    (await CharDisp.PrintNameString(r32(230795), "is Diseased", 10, true));
   }
   S.sp = $sp;
 }
 
 export function EffDisplaced(creature: number, p: number, removed: boolean) {
   if ((U8[p + 3] & 16) === 0) {
-    U8[144907] = true ? 1 : 0;
+    U8[230793] = true ? 1 : 0;
     U8[p + 3] = U8[p + 3] | 16;
-    Bestiary.Learn(creature, r32(143749), 43);
+    Bestiary.Learn(creature, r32(229635), 43);
   }
 }
 
@@ -953,30 +953,30 @@ export function ResetDisplacement(creature: number) {
 }
 
 export function EffConPsnSave(creature: number, p: number, removed: boolean) {
-  if (U8[240562] === 0) {
-    w16(240560, ri16(240560) + AbilAdj.ConSaveBonus(U8[creature + 20]));
+  if (U8[248754] === 0) {
+    w16(248752, ri16(248752) + AbilAdj.ConSaveBonus(U8[creature + 20]));
   }
 }
 
 export async function EffImmuneMM(creature: number, p: number, removed: boolean) {
-  if (rt.inS(C_SPELL.MAGIC_MISSILES, U8[144900])) {
+  if (rt.inS(C_SPELL.MAGIC_MISSILES, U8[230786])) {
     NullifyAttack(0);
     (await CharDisp.PrintNameString(creature, "is unaffected", 10, true));
-    Bestiary.Learn(creature, r32(143749), 13);
+    Bestiary.Learn(creature, r32(229635), 13);
   } else {
     ElementImmunity(creature, 4, 16);
   }
 }
 
 export function EffHalfFire(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 1) !== 0) {
+  if ((U8[230784] & 1) !== 0) {
     HalveDamage(creature, 7);
   }
 }
 
 export function EffHalfBash(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if (w !== 0) {
     if ((U8[CharHlp.BaseItem(U8[w + 46]) + 7] & 128) !== 0) {
       HalveDamage(creature, 3);
@@ -995,15 +995,15 @@ export async function EffFightOn(creature: number, p: number, removed: boolean) 
 
 export function EffNeedSilver(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if ((w === 0) || ((I8[w + 50] === 0) && (U8[w + 49] !== 177))) {
     NoHarmWithoutSilver(creature);
   }
 }
 
 export function EffConSpellSave(creature: number, p: number, removed: boolean) {
-  if ((U8[240562] === 4) || (U8[240562] === 2)) {
-    w16(240560, ri16(240560) + AbilAdj.ConSaveBonus(U8[creature + 20]));
+  if ((U8[248754] === 4) || (U8[248754] === 2)) {
+    w16(248752, ri16(248752) + AbilAdj.ConSaveBonus(U8[creature + 20]));
   }
 }
 
@@ -1040,7 +1040,7 @@ export async function EffCanFightOn(creature: number, p: number, removed: boolea
 }
 
 export function EffTrollBurn(creature: number, p: number, removed: boolean) {
-  if (((U8[144898] & 1) === 0) && ((U8[144898] & 16) === 0)) {
+  if (((U8[230784] & 1) === 0) && ((U8[230784] & 16) === 0)) {
     FxEngine.AddEffect(creature, 102, Dice.RollDice(3, 6), 255, true);
   }
 }
@@ -1087,7 +1087,7 @@ export function EffElfResistance(creature: number, p: number, removed: boolean) 
 
 export function EffImmuneSleepCharm(creature: number, p: number, removed: boolean) {
   let effId: number = 0;
-  effId = U8[144896];
+  effId = U8[230782];
   NullifyAttack(11);
   NullifyAttack(53);
   NoteImmunity(creature, effId);
@@ -1095,7 +1095,7 @@ export function EffImmuneSleepCharm(creature: number, p: number, removed: boolea
 
 export function EffImmuneParalysis(creature: number, p: number, removed: boolean) {
   let effId: number = 0;
-  effId = U8[144896];
+  effId = U8[230782];
   NullifyAttack(52);
   NoteImmunity(creature, effId);
 }
@@ -1106,12 +1106,12 @@ export function EffNoCold(creature: number, p: number, removed: boolean) {
 
 export function EffImmuneParalysisPoison(creature: number, p: number, removed: boolean) {
   let effId: number = 0;
-  effId = U8[144896];
+  effId = U8[230782];
   NullifyAttack(55);
   NullifyAttack(52);
   NoteImmunity(creature, effId);
-  if (U8[240562] === 0) {
-    w16(240560, 100);
+  if (U8[248754] === 0) {
+    w16(248752, 100);
   }
 }
 
@@ -1120,21 +1120,21 @@ export function EffImmuneFire(creature: number, p: number, removed: boolean) {
 }
 
 export function EffEfreetiFire(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 1) !== 0) {
+  if ((U8[230784] & 1) !== 0) {
     NoteFireResisted(creature);
     Dice.ReduceDamagePerDie(1);
   }
 }
 
 export function EffHalfElectricity(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 4) !== 0) {
+  if ((U8[230784] & 4) !== 0) {
     HalveDamage(creature, 9);
   }
 }
 
 export function EffHalfPierce(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if (w !== 0) {
     if (U8[CharHlp.BaseItem(U8[w + 46]) + 7] === 0) {
       HalveDamage(creature, 5);
@@ -1146,7 +1146,7 @@ export function EffHalfPierce(creature: number, p: number, removed: boolean) {
 
 export function EffHalfMagical(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if (w !== 0) {
     if (I8[w + 50] > 0) {
       HalveDamage(creature, 6);
@@ -1156,36 +1156,36 @@ export function EffHalfMagical(creature: number, p: number, removed: boolean) {
 
 export function EffHolyWater(creature: number, p: number, removed: boolean) {
   let item: number = 0;
-  item = r32(r32(143749) + 204);
+  item = r32(r32(229635) + 204);
   if (item !== 0) {
     if (U8[item + 46] === 85) {
-      U8[144897] = Dice.RollDamageDice(1, 6) + 1;
+      U8[230783] = Dice.RollDamageDice(1, 6) + 1;
     }
   }
 }
 
 export function EffHalfCold(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 2) !== 0) {
+  if ((U8[230784] & 2) !== 0) {
     HalveDamage(creature, 8);
   }
 }
 
 export function EffNeedMagic(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if ((w === 0) || (I8[w + 50] === 0)) {
-    if ((I8[r32(143749) + 46] > 0) || (I8[r32(143749) + 115] < 4)) {
-      if (U8[144897] > 0) {
-        Bestiary.Learn(creature, r32(143749), 17);
+    if ((I8[r32(229635) + 46] > 0) || (I8[r32(229635) + 115] < 4)) {
+      if (U8[230783] > 0) {
+        Bestiary.Learn(creature, r32(229635), 17);
       }
-      U8[144897] = 0;
+      U8[230783] = 0;
     }
   }
 }
 
 export async function EffDodgeBoulders(creature: number, p: number, removed: boolean) {
   let item: number = 0;
-  item = r32(r32(143749) + 204);
+  item = r32(r32(229635) + 204);
   if (item !== 0) {
     if ((U8[item + 46] === 87) || (U8[item + 46] === 88)) {
       (await AvoidRanged(creature, 50, 50));
@@ -1194,43 +1194,43 @@ export async function EffDodgeBoulders(creature: number, p: number, removed: boo
 }
 
 export async function EffAnhkhegAcid(creature: number, p: number, removed: boolean) {
-  w32(144909, AttackTarget(creature));
-  if ((r32(144909) === 0) || (U8[r32(144909) + 269] === 0)) {
+  w32(230795, AttackTarget(creature));
+  if ((r32(230795) === 0) || (U8[r32(230795) + 269] === 0)) {
     return;
   }
   if (Dice.RollDice(1, 100) > 25) {
     return;
   }
-  if (CbtMap.CalcDistance(creature, r32(144909)) >= 4) {
+  if (CbtMap.CalcDistance(creature, r32(230795)) >= 4) {
     return;
   }
   if (CharHlp.EndActions(creature)) {
   }
   (await CharDisp.PrintNameString(creature, "Spits Acid", 10, true));
-  Bestiary.Learn(creature, r32(144909), 48);
-  (await CharDisp.AnimateBetween(creature, r32(144909), 23, 1, 30));
-  U8[144898] = 16;
-  (await FxEngine.InflictNonWeaponDamage(r32(144909), Dice.RollDamageDice(8, 4), 2, (await FxEngine.RollSavingThrow(r32(144909), 3, 0))));
+  Bestiary.Learn(creature, r32(230795), 48);
+  (await CharDisp.AnimateBetween(creature, r32(230795), 23, 1, 30));
+  U8[230784] = 16;
+  (await FxEngine.InflictNonWeaponDamage(r32(230795), Dice.RollDamageDice(8, 4), 2, (await FxEngine.RollSavingThrow(r32(230795), 3, 0))));
   (await FxEngine.RemoveEffect(creature, 121, p));
   (await FxEngine.RemoveEffect(creature, 80, 0));
 }
 
 export function EffMummyFire(creature: number, p: number, removed: boolean) {
   let item: number = 0;
-  item = r32(r32(143749) + 204);
+  item = r32(r32(229635) + 204);
   if (item !== 0) {
     if (U8[item + 46] === 86) {
-      U8[144897] = Dice.RollDamageDice(3, 8);
+      U8[230783] = Dice.RollDamageDice(3, 8);
     }
   }
-  if ((U8[144898] & 9) !== 0) {
-    U8[144897] = U8[144897] + U8[144901];
+  if ((U8[230784] & 9) !== 0) {
+    U8[230783] = U8[230783] + U8[230787];
   }
 }
 
 export function EffSilverMagic(creature: number, p: number, removed: boolean) {
   let w: number = 0;
-  w = FindDamagingWeapon(r32(143749));
+  w = FindDamagingWeapon(r32(229635));
   if (w !== 0) {
     if ((I8[w + 50] === 0) && (U8[w + 49] === 177)) {
       HalveDamage(creature, 41);
@@ -1248,33 +1248,33 @@ export function EffHalfElfResistance(creature: number, p: number, removed: boole
 
 export function EffNoCharmPoison(creature: number, p: number, removed: boolean) {
   let effId: number = 0;
-  effId = U8[144896];
+  effId = U8[230782];
   NullifyAttack(11);
   NullifyAttack(53);
   NullifyAttack(52);
   NullifyAttack(55);
   NoteImmunity(creature, effId);
-  if (U8[240562] === 0) {
-    w16(240560, 100);
+  if (U8[248754] === 0) {
+    w16(248752, 100);
   }
 }
 
 export function EffGazeBlock(creature: number, p: number, removed: boolean) {
   let item: number = 0, j: number = 0;
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  item = r32(r32(144909) + 200);
-  while ((item !== 0) && (U8[247481] === 0)) {
+  item = r32(r32(230795) + 200);
+  while ((item !== 0) && (U8[255673] === 0)) {
     if (U8[item + 52] !== 0) {
       if (IsMirror(item)) {
-        U8[247481] = 1;
+        U8[255673] = 1;
       }
       for (let $i2 = 1; $i2 <= 3; $i2++) {
         j = $i2;
         if ((U8[item + j + 46] === 152) && (U8[item + 49] === 252)) {
-          U8[247481] = 1;
+          U8[255673] = 1;
         }
       }
     }
@@ -1319,16 +1319,16 @@ export async function EffGauntlets(creature: number, p: number, removed: boolean
       q = next;
     }
   } else {
-    if (FxEngine.AdjustForNewStrength(creature, 18, 100, $f0) && (creature === r32(143749))) {
-      if (U8[141176] === 5) {
-        U8[141176] = 2;
+    if (FxEngine.AdjustForNewStrength(creature, 18, 100, $f0) && (creature === r32(229635))) {
+      if (U8[227062] === 5) {
+        U8[227062] = 2;
         (await CharDisp.PrintNameString(creature, "is stronger", 10, true));
-        U8[141176] = 5;
+        U8[227062] = 5;
       } else {
         (await CharDisp.PrintNameString(creature, "is stronger", 10, true));
       }
     }
-    U8[144905] = 1;
+    U8[230791] = 1;
     FxEngine.AddEffect(creature, 38, 0, U8[$f0], true);
   }
   S.sp = $sp;
@@ -1343,12 +1343,12 @@ export async function EffAlignedWeapon(creature: number, p: number, removed: boo
   if ((U8[item + 61] & 15) !== U8[creature + 160]) {
     U8[item + 52] = 0;
     dmg = Math.trunc(U8[item + 61] / 16);
-    U8[144898] = 8;
-    if (U8[141176] === 5) {
+    U8[230784] = 8;
+    if (U8[227062] === 5) {
       (await CharDisp.DisplayCombatInterface());
     }
     (await FxEngine.InflictItemShock(creature, item, dmg));
-    U8[144905] = 1;
+    U8[230791] = 1;
   }
 }
 
@@ -1393,8 +1393,8 @@ export async function InflictStatusMsg(creature: number, status_: number, msg: s
     (await CbtMap.CreatureDowned(creature));
   }
   (await TextRend.PauseOnly());
-  (await CharDisp.ClearMessageWindow());
-  (await CharDisp.RedrawPartyOutOfCombat());
+  CharDisp.ClearMessageWindow();
+  CharDisp.RedrawPartyOutOfCombat();
 }
 
 export async function EffSticksToSnakes(creature: number, p: number, removed: boolean) {
@@ -1406,14 +1406,14 @@ export async function EffSticksToSnakes(creature: number, p: number, removed: bo
     (await FxEngine.RemoveEffect(creature, 142, p));
   }
   (await CharDisp.PrintNameStringAnim(creature, true, "is fighting with snakes"));
-  (await CharDisp.ClearMessageWindow());
+  CharDisp.ClearMessageWindow();
   if (CharHlp.EndActions(creature)) {
   }
 }
 
 export function EffDispelEvil(creature: number, p: number, removed: boolean) {
-  if (DispelEvilReaches(r32(143749))) {
-    U8[144906] = I8[144906] - 7;
+  if (DispelEvilReaches(r32(229635))) {
+    U8[230792] = I8[230792] - 7;
   }
 }
 
@@ -1466,7 +1466,7 @@ export async function EffConfusion(creature: number, p: number, removed: boolean
     }
   } else if (($c1 >= 11 && $c1 <= 60)) {
     (await CharDisp.PrintNameStringAnim(creature, true, "is confused"));
-    (await CharDisp.ClearMessageWindow());
+    CharDisp.ClearMessageWindow();
     if (CharHlp.EndActions(creature)) {
     }
   } else if (($c1 >= 61 && $c1 <= 80)) {
@@ -1476,7 +1476,7 @@ export async function EffConfusion(creature: number, p: number, removed: boolean
     }
   } else {
     (await CharDisp.PrintNameStringAnim(creature, true, "is enraged"));
-    (await CharDisp.ClearMessageWindow());
+    CharDisp.ClearMessageWindow();
   }
   if ((await FxEngine.RollSavingThrow(creature, 4, -2))) {
     (await FxEngine.RemoveEffect(creature, 146, p));
@@ -1492,7 +1492,7 @@ export function EffConfusedBerserk(creature: number, p: number, removed: boolean
     }
     U8[creature + 270] = U8[p + 3] << 24 >> 24;
     CharHlp.CountTeams();
-  } else if (U8[141176] === 5) {
+  } else if (U8[227062] === 5) {
     U8[creature + 271] = 1;
     if (!CharHlp.IsNpc(creature) || (U8[creature + 132] === 179)) {
       U8[creature + 132] = 179;
@@ -1501,9 +1501,9 @@ export function EffConfusedBerserk(creature: number, p: number, removed: boolean
     }
     w32(r32(creature + 264) + 10, 0);
     Pathing.SaveTargets($f0);
-    Pathing.BuildTargetList(CbtMap.CombatCellX(creature), CbtMap.CombatCellY(creature), 255, 255, CbtMap.GetIconSize(creature), r32(144641));
-    if (U8[144645] >= 2) {
-      w32(r32(creature + 264) + 10, r32(U8[144649] * 4 + 144292));
+    Pathing.BuildTargetList(CbtMap.CombatCellX(creature), CbtMap.CombatCellY(creature), 255, 255, CbtMap.GetIconSize(creature), r32(230527));
+    if (U8[230531] >= 2) {
+      w32(r32(creature + 264) + 10, r32(U8[230535] * 4 + 230178));
     }
     Pathing.RestoreTargets($f0);
     if (r32(r32(creature + 264) + 10) !== 0) {
@@ -1536,48 +1536,48 @@ export function EffFear(creature: number, p: number, removed: boolean) {
 }
 
 export function EffFireShieldHot(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 2) !== 0) {
-    w16(240560, ri16(240560) + 2);
+  if ((U8[230784] & 2) !== 0) {
+    w16(248752, ri16(248752) + 2);
   }
 }
 
 export function EffFireShieldCold(creature: number, p: number, removed: boolean) {
-  if ((U8[144898] & 1) !== 0) {
-    w16(240560, ri16(240560) + 2);
+  if ((U8[230784] & 1) !== 0) {
+    w16(248752, ri16(248752) + 2);
   }
 }
 
 export async function EffFireShieldZap(creature: number, p: number, removed: boolean) {
   let dmg: number = 0, elem: number = 0, attacker: number = 0;
-  attacker = r32(143749);
-  if (((attacker === 0) || (attacker === creature)) || (U8[144897] === 0)) {
+  attacker = r32(229635);
+  if (((attacker === 0) || (attacker === creature)) || (U8[230783] === 0)) {
     return;
   }
   if (CbtMap.CalcDistance(attacker, creature) < 2) {
-    dmg = U8[144897];
-    elem = U8[144898];
+    dmg = U8[230783];
+    elem = U8[230784];
     (await CharDisp.PrintNameString(attacker, "gets zapped", 10, true));
-    U8[144898] = 8;
+    U8[230784] = 8;
     if (dmg > 127) {
       (await FxEngine.InflictNonWeaponDamage(attacker, 255, 0, false));
     } else {
       (await FxEngine.InflictNonWeaponDamage(attacker, dmg * 2, 0, false));
     }
-    U8[144897] = dmg;
-    U8[144898] = elem;
+    U8[230783] = dmg;
+    U8[230784] = elem;
   }
 }
 
 export function EffMinorGlobe(creature: number, p: number, removed: boolean) {
-  if (CharHlp.IsSpell(U8[144900])) {
-    if (U8[U8[144900] * 16 + 136507] <= 3) {
+  if (CharHlp.IsSpell(U8[230786])) {
+    if (U8[U8[230786] * 16 + 222393] <= 3) {
       NullifyAttack(0);
     }
   }
 }
 
 export async function EffFeeblemind(creature: number, p: number, removed: boolean) {
-  if ((U8[141176] === 5) && (r32(creature + 264) !== 0)) {
+  if ((U8[227062] === 5) && (r32(creature + 264) !== 0)) {
     U8[r32(creature + 264) + 1] = 0;
     if (U8[r32(creature + 264)] > 0) {
       (await CharDisp.PrintNameString(creature, "lost a spell", 12, true));
@@ -1589,30 +1589,30 @@ export async function EffFeeblemind(creature: number, p: number, removed: boolea
 
 export function EffInvisibleToAnimals(creature: number, p: number, removed: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
-  if (rt.inS(ANIMAL_TYPES, U8[r32(143749) + 159])) {
-    if (!CharHlp.HasEffect(r32(143749), 24, $f0)) {
-      U8[247481] = 1;
+  if (rt.inS(ANIMAL_TYPES, U8[r32(229635) + 159])) {
+    if (!CharHlp.HasEffect(r32(229635), 24, $f0)) {
+      U8[255673] = 1;
     }
-    U8[144906] = I8[144906] - 4;
+    U8[230792] = I8[230792] - 4;
   }
   S.sp = $sp;
 }
 
 export function EffEntangle(creature: number, p: number, removed: boolean) {
-  if (U8[144902] !== 0) {
+  if (U8[230788] !== 0) {
     if (U8[p + 3] === 0) {
-      U8[144899] = 0;
+      U8[230785] = 0;
     } else {
-      U8[144899] = Math.trunc(U8[144899] / 2);
+      U8[230785] = Math.trunc(U8[230785] / 2);
     }
   }
 }
 
 export async function TouchImmune(target: number, effId: number) {
   let immune: boolean = false, $r0: boolean = false;
-  U8[247720] = true ? 1 : 0;
+  U8[255912] = true ? 1 : 0;
   immune = (await FxEngine.EffectImmune(target, effId));
-  U8[247720] = false ? 1 : 0;
+  U8[255912] = false ? 1 : 0;
   if (immune) {
     (await CharDisp.PrintNameString(target, "is Unaffected", 10, true));
   }
@@ -1633,7 +1633,7 @@ export function InSight(gazer: number, target: number, range: number) {
   w16($f0, range);
   U8[$f0 + 2] = CbtMap.CombatCellX(target);
   U8[$f0 + 3] = CbtMap.CombatCellY(target);
-  $r0 = Pathing.WalkLine(CbtMap.CombatCellX(gazer), CbtMap.CombatCellY(gazer), $f0 + 2, $f0 + 3, $f0, r32(144641));
+  $r0 = Pathing.WalkLine(CbtMap.CombatCellX(gazer), CbtMap.CombatCellY(gazer), $f0 + 2, $f0 + 3, $f0, r32(230527));
   S.sp = $sp;
   return $r0;
 }
@@ -1661,9 +1661,9 @@ export function AttackTarget(creature: number) {
 }
 
 export function NullifyAttack(effId: number) {
-  if ((effId === 0) || (U8[144896] === effId)) {
-    U8[144897] = 0;
-    U8[144896] = 0;
+  if ((effId === 0) || (U8[230782] === effId)) {
+    U8[230783] = 0;
+    U8[230782] = 0;
   }
 }
 
@@ -1690,8 +1690,8 @@ export function ImmunityFact(effId: number) {
 }
 
 export function NoteNullified(creature: number, effId: number, dmg: number, fact: number) {
-  if (((effId !== 0) && (U8[144896] === 0)) || ((dmg !== 0) && (U8[144897] === 0))) {
-    Bestiary.Learn(creature, r32(143749), fact);
+  if (((effId !== 0) && (U8[230782] === 0)) || ((dmg !== 0) && (U8[230783] === 0))) {
+    Bestiary.Learn(creature, r32(229635), fact);
   }
 }
 
@@ -1700,28 +1700,28 @@ export function NoteImmunity(creature: number, effId: number) {
 }
 
 export function HalveDamage(creature: number, fact: number) {
-  if (U8[144897] > 0) {
-    Bestiary.Learn(creature, r32(143749), fact);
+  if (U8[230783] > 0) {
+    Bestiary.Learn(creature, r32(229635), fact);
   }
-  U8[144897] = Math.trunc(U8[144897] / 2);
+  U8[230783] = Math.trunc(U8[230783] / 2);
 }
 
 export function NoteFireResisted(creature: number) {
-  if (U8[144897] > 0) {
-    Bestiary.Learn(creature, r32(143749), 51);
+  if (U8[230783] > 0) {
+    Bestiary.Learn(creature, r32(229635), 51);
   }
 }
 
 export function NoHarmWithoutSilver(creature: number) {
-  if (U8[144897] > 0) {
-    Bestiary.Learn(creature, r32(143749), 40);
+  if (U8[230783] > 0) {
+    Bestiary.Learn(creature, r32(229635), 40);
   }
-  U8[144897] = 0;
+  U8[230783] = 0;
 }
 
 export function AddEffectIfNoLock(creature: number, effId: number, strength: number, minutes: number) {
   let $r0: boolean = false;
-  if (U8[144903] !== 0) {
+  if (U8[230789] !== 0) {
     $r0 = false;
   } else {
     $r0 = true;
@@ -1734,25 +1734,25 @@ export async function TickDamage(creature: number, source: number) {
   let $r0: boolean = false;
   $r0 = U8[creature + 283] > 1;
   if (U8[creature + 283] > 1) {
-    U8[144898] = source;
+    U8[230784] = source;
     (await FxEngine.InflictNonWeaponDamage(creature, 1, 0, false));
-    (await CharDisp.RedrawPartyOutOfCombat());
+    CharDisp.RedrawPartyOutOfCombat();
   }
   return $r0;
 }
 
 export function ResistElement(elem: number) {
-  if ((U8[144898] & elem) !== 0) {
-    U8[144897] = Math.trunc(U8[144897] / 2);
-    w16(240560, ri16(240560) + 3);
+  if ((U8[230784] & elem) !== 0) {
+    U8[230783] = Math.trunc(U8[230783] / 2);
+    w16(248752, ri16(248752) + 3);
   }
 }
 
 export function ElementImmunity(creature: number, elem: number, fact: number) {
   let effId: number = 0, dmg: number = 0;
-  effId = U8[144896];
-  dmg = U8[144897];
-  if ((U8[144898] & elem) !== 0) {
+  effId = U8[230782];
+  dmg = U8[230783];
+  if ((U8[230784] & elem) !== 0) {
     NullifyAttack(0);
     NoteNullified(creature, effId, dmg, fact);
   }
@@ -1779,14 +1779,14 @@ export function NamedIn(creature: number, names: number, count: number) {
 }
 
 export function RacialFoeBonus(creature: number, names: number, count: number) {
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  if (U8[r32(144909) + 159] <= 1) {
-    if (U8[r32(144909) + 108] === 1) {
-      if (NamedIn(r32(144909), names, count)) {
-        U8[144906] = I8[144906] + 1;
+  if (U8[r32(230795) + 159] <= 1) {
+    if (U8[r32(230795) + 108] === 1) {
+      if (NamedIn(r32(230795), names, count)) {
+        U8[230792] = I8[230792] + 1;
       }
     }
   }
@@ -1807,11 +1807,11 @@ export function IsMirror(item: number) {
 export function HoldSlot(creature: number, slot: number) {
   let $r0: boolean = false;
   $r0 = false;
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return $r0;
   }
-  U8[slot] = CbtMap.CombatSlot(r32(144909));
+  U8[slot] = CbtMap.CombatSlot(r32(230795));
   $r0 = U8[slot] !== 0;
   return $r0;
 }
@@ -1822,25 +1822,25 @@ export async function Immobilize(victim: number) {
 }
 
 export function Protection(creature: number, foe: boolean) {
-  if (foe && (CharHlp.Team(r32(143749)) !== CharHlp.Team(creature))) {
-    w16(240560, ri16(240560) + 2);
-    U8[144906] = I8[144906] - 2;
+  if (foe && (CharHlp.Team(r32(229635)) !== CharHlp.Team(creature))) {
+    w16(248752, ri16(248752) + 2);
+    U8[230792] = I8[230792] - 2;
   }
 }
 
 export async function AvoidRanged(creature: number, pct: number, fact: number) {
   let phase: number = 0;
-  if (r32(r32(143749) + 204) !== 0) {
-    if (CbtMap.CalcDistance(r32(143749), creature) > 1) {
+  if (r32(r32(229635) + 204) !== 0) {
+    if (CbtMap.CalcDistance(r32(229635), creature) > 1) {
       if (Dice.RollDice(1, 100) <= pct) {
         (await CharDisp.PrintNameString(creature, "Avoids it", 10, true));
-        Bestiary.Learn(creature, r32(143749), fact);
-        U8[144897] = 0;
-        U8[144907] = true ? 1 : 0;
-        phase = U8[r32(r32(143749) + 264) + 4];
+        Bestiary.Learn(creature, r32(229635), fact);
+        U8[230783] = 0;
+        U8[230793] = true ? 1 : 0;
+        phase = U8[r32(r32(229635) + 264) + 4];
         if ((phase >= 1) && (phase <= 2)) {
-          if (U8[phase + 247513] > 0) {
-            U8[phase + 247513] = U8[phase + 247513] - 1;
+          if (U8[phase + 255705] > 0) {
+            U8[phase + 255705] = U8[phase + 255705] - 1;
           }
         }
       }
@@ -1864,31 +1864,31 @@ export function FindDamagingWeapon(creature: number) {
 }
 
 export async function PoisonTouch(creature: number, saveMod: number) {
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  Bestiary.Learn(creature, r32(144909), 32);
-  if (!(await FxEngine.RollSavingThrow(r32(144909), 0, saveMod + AbilAdj.ConPoisonSave(U8[r32(144909) + 20])))) {
-    if (!(await TouchImmune(r32(144909), 55))) {
-      (await CharDisp.PrintNameString(r32(144909), "is Poisoned", 10, false));
+  Bestiary.Learn(creature, r32(230795), 32);
+  if (!(await FxEngine.RollSavingThrow(r32(230795), 0, saveMod + AbilAdj.ConPoisonSave(U8[r32(230795) + 20])))) {
+    if (!(await TouchImmune(r32(230795), 55))) {
+      (await CharDisp.PrintNameString(r32(230795), "is Poisoned", 10, false));
       (await TextRend.PauseOnly());
-      FxEngine.AddEffect(r32(144909), 55, 0, 255, false);
-      (await InflictStatusMsg(r32(144909), 6, "is killed"));
+      FxEngine.AddEffect(r32(230795), 55, 0, 255, false);
+      (await InflictStatusMsg(r32(230795), 6, "is killed"));
     }
   }
 }
 
 export async function ParalysisTouch(creature: number, minutes: number, saveMod: number) {
-  w32(144909, AttackTarget(creature));
-  if (r32(144909) === 0) {
+  w32(230795, AttackTarget(creature));
+  if (r32(230795) === 0) {
     return;
   }
-  Bestiary.Learn(creature, r32(144909), 33);
-  if (!(await FxEngine.RollSavingThrow(r32(144909), 0, saveMod))) {
-    if (!(await TouchImmune(r32(144909), 52))) {
-      (await CharDisp.PrintNameStringAnim(r32(144909), true, "is Paralyzed"));
-      FxEngine.AddEffect(r32(144909), 52, minutes, 12, false);
+  Bestiary.Learn(creature, r32(230795), 33);
+  if (!(await FxEngine.RollSavingThrow(r32(230795), 0, saveMod))) {
+    if (!(await TouchImmune(r32(230795), 52))) {
+      (await CharDisp.PrintNameStringAnim(r32(230795), true, "is Paralyzed"));
+      FxEngine.AddEffect(r32(230795), 52, minutes, 12, false);
     }
   }
 }
@@ -1903,11 +1903,11 @@ export async function DrainTouch(creature: number, levels: number) {
 
 export function MagicResistance(creature: number, pct: number) {
   let lvl: number = 0, chance: number = 0;
-  if (U8[144900] === 0) {
+  if (U8[230786] === 0) {
     lvl = 11;
   } else {
-    lvl = CharHlp.GetCasterLevel(U8[144900]) & 255;
-    if ((U8[146457] !== 0) && (lvl > 6)) {
+    lvl = CharHlp.GetCasterLevel(U8[230786]) & 255;
+    if ((U8[232343] !== 0) && (lvl > 6)) {
       lvl = 6;
     }
   }
@@ -1917,14 +1917,14 @@ export function MagicResistance(creature: number, pct: number) {
   } else if (chance > 100) {
     chance = 100;
   }
-  if ((U8[144896] === 0) && ((U8[144898] & 8) === 0)) {
+  if ((U8[230782] === 0) && ((U8[230784] & 8) === 0)) {
     return;
   }
-  if ((U8[247720] !== 0)) {
+  if ((U8[255912] !== 0)) {
     return;
   }
   if (Dice.RollDice(1, 100) <= chance) {
     NullifyAttack(0);
-    Bestiary.Learn(creature, r32(143749), 18);
+    Bestiary.Learn(creature, r32(229635), 18);
   }
 }

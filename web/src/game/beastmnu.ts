@@ -45,7 +45,7 @@ export async function PickBeast(prompt: string) {
 export async function ShowEntry(b: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let ch: number = 0;
-  U8[145643] = 1;
+  U8[231529] = 1;
   (await DrawEntry(b));
   do {
     ch = (await MenuCore.MenuHorizontal(rS(b) + ": ", "Exit", 13, 10, 15, false, false, $f0)) & 255;
@@ -54,7 +54,7 @@ export async function ShowEntry(b: number) {
 }
 
 export async function DrawFrame(title: string) {
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   TextRend.DisplayCentered(1, 38, 1, 15, title);
 }
@@ -230,7 +230,7 @@ export async function DrawEntry(b: number) {
 export async function EntryPages(order: number, n: number, sel: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let ch: number = 0, b: number = 0;
-  U8[145643] = 1;
+  U8[231529] = 1;
   do {
     b = At(order, r16(sel));
     (await DrawEntry(b));
@@ -265,12 +265,12 @@ export async function ListPages(prompt: string, pick: boolean) {
   order = SortedOrder(n);
   top_ = 1;
   w16($f0, 1);
-  U8[145643] = 1;
+  U8[231529] = 1;
   do {
     (await DrawList(order, n, top_, r16($f0)));
     PageShape(n, top_, $f0 + 4, $f0 + 2);
-    U8[227081] = true ? 1 : 0;
-    U8[227082] = true ? 1 : 0;
+    U8[235273] = true ? 1 : 0;
+    U8[235274] = true ? 1 : 0;
     if (n === 0) {
       ch = (await MenuCore.MenuHorizontal(prompt, "Exit", 13, 10, 15, true, false, $f0 + 6)) & 255;
     } else if (pick) {
@@ -326,7 +326,7 @@ export async function ListPages(prompt: string, pick: boolean) {
           case 86: case 13: {
             (await EntryPages(order, n, $f0));
             top_ = ((Math.trunc((r16($f0) - 1) / 36) * 36) + 1) & 65535;
-            U8[145643] = 1;
+            U8[231529] = 1;
             break;
           }
           case 78: {

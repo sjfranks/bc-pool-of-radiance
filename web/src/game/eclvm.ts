@@ -70,173 +70,173 @@ export const WILD_WEST_SCRIPT = 25;
 export const WILD_CENTRAL_SCRIPT = 26;
 export const WILD_EAST_SCRIPT = 27;
 
-export const $at = { eclStop: 253811, newEclFlag: 253812, restoreChar: 253813, filesLoaded: 253814, enteringLoop: 253815, piecesLoaded: 253816, mapLoaded: 253817, creatureCnt: 253818, monId: 253819, monPicId: 253820, monstersOn: 253821, DUEL_WHO: 253822, searchModeFlag: 253837, ecl3dClearFlag: 253838, protNewLine: 253839 };
+export const $at = { eclStop: 262003, newEclFlag: 262004, restoreChar: 262005, filesLoaded: 262006, enteringLoop: 262007, piecesLoaded: 262008, mapLoaded: 262009, creatureCnt: 262010, monId: 262011, monPicId: 262012, monstersOn: 262013, DUEL_WHO: 262014, searchModeFlag: 262029, ecl3dClearFlag: 262030, protNewLine: 262031 };
 
 export async function GameLoop() {
   let cmd: number = 0;
-  U8[253816] = 0;
-  U8[253817] = 0;
-  U8[253813] = 0;
-  U8[253814] = 0;
-  U8[253815] = 1;
+  U8[262008] = 0;
+  U8[262009] = 0;
+  U8[262005] = 0;
+  U8[262006] = 0;
+  U8[262007] = 1;
   ForgetMonsters();
-  U8[141176] = 4;
-  U8[253812] = 0;
-  U8[146747] = r16(r32(141147) + 484) & 255;
-  switch (U8[146747]) {
+  U8[227062] = 4;
+  U8[262004] = 0;
+  U8[232633] = r16(r32(227033) + 484) & 255;
+  switch (U8[232633]) {
     case 25: case 26: case 27: {
-      if (r16(r32(141147) + 460) === 0) {
-        U8[141176] = 3;
+      if (r16(r32(227033) + 460) === 0) {
+        U8[227062] = 3;
       }
       break;
     }
   }
-  (await EclMenu.LoadEclScript(U8[146747]));
+  (await EclMenu.LoadEclScript(U8[232633]));
   EclMenu.EclInit();
-  (await CallEclScript(r16(141172)));
-  if (U8[141176] !== 3) {
-    if (U8[253815] === 1) {
+  (await CallEclScript(r16(227058)));
+  if (U8[227062] !== 3) {
+    if (U8[262007] === 1) {
       (await CharDisp.DisplayNoncombatInterface());
-      U8[253815] = 0;
+      U8[262007] = 0;
     }
     (await MapView.DisplayMapView());
   }
-  w16(r32(141147) + 484, U8[146747]);
-  while (!(U8[141224] !== 0) && !(await Reloading())) {
+  w16(r32(227033) + 484, U8[232633]);
+  while (!(U8[227110] !== 0) && !(await Reloading())) {
     cmd = (await Explore.MapMainMenu()) & 255;
-    w32(143757, r32(143749));
-    w16(r32(141147) + 484, U8[146747]);
-    while ((((r16(r32(141151) + 1428) > 1) || (rt.UpCase(cmd) === 69)) && !(U8[141224] !== 0)) && !(await Reloading())) {
+    w32(229643, r32(229635));
+    w16(r32(227033) + 484, U8[232633]);
+    while ((((r16(r32(227037) + 1428) > 1) || (rt.UpCase(cmd) === 69)) && !(U8[227110] !== 0)) && !(await Reloading())) {
       if (rt.UpCase(cmd) === 69) {
         (await EnterCamp());
       } else {
-        U8[253837] = r16(r32(141151) + 1428) & 1;
-        w16(r32(141151) + 1428, 1);
+        U8[262029] = r16(r32(227037) + 1428) & 1;
+        w16(r32(227037) + 1428, 1);
         (await MapView.DisplayMapView());
-        (await CallEclScript(r16(141166)));
-        if (U8[253812] !== 0) {
+        (await CallEclScript(r16(227052)));
+        if (U8[262004] !== 0) {
           (await NewEclDone());
         }
-        w16(r32(141151) + 1428, U8[253837]);
+        w16(r32(227037) + 1428, U8[262029]);
       }
-      if (!(U8[141224] !== 0) && !(await Reloading())) {
+      if (!(U8[227110] !== 0) && !(await Reloading())) {
         cmd = (await Explore.MapMainMenu()) & 255;
-        w32(143757, r32(143749));
+        w32(229643, r32(229635));
       }
     }
     if (!(await Reloading())) {
-      if (!(U8[141224] !== 0)) {
-        (await CallEclScript(r16(141164)));
+      if (!(U8[227110] !== 0)) {
+        (await CallEclScript(r16(227050)));
       }
-      if (U8[253812] !== 0) {
+      if (U8[262004] !== 0) {
         (await NewEclDone());
-      } else if (!(U8[141224] !== 0) && !(await Reloading())) {
-        w16(r32(141147) + 480, I8[145546]);
-        w16(r32(141147) + 482, I8[145547]);
+      } else if (!(U8[227110] !== 0) && !(await Reloading())) {
+        w16(r32(227033) + 480, I8[231432]);
+        w16(r32(227033) + 482, I8[231433]);
         (await Explore.ResolveMovement());
         (await MapView.DisplayMapView());
-        if ((I8[145546] !== r16(r32(141147) + 480)) || (I8[145547] !== r16(r32(141147) + 482))) {
-          (await SoundDrv.SoundEffect(r16(132907), 1));
+        if ((I8[231432] !== r16(r32(227033) + 480)) || (I8[231433] !== r16(r32(227033) + 482))) {
+          SoundDrv.SoundEffect(r16(218793), 1);
         }
-        U8[146748] = false ? 1 : 0;
-        U8[240668] = true ? 1 : 0;
-        (await CallEclScript(r16(141166)));
-        if (U8[253812] !== 0) {
+        U8[232634] = false ? 1 : 0;
+        U8[248860] = true ? 1 : 0;
+        (await CallEclScript(r16(227052)));
+        if (U8[262004] !== 0) {
           (await NewEclDone());
         }
       }
     }
   }
-  U8[141224] = false ? 1 : 0;
+  U8[227110] = false ? 1 : 0;
 }
 
 export function ResetGame() {
-  U8[253837] = 0;
-  U8[253838] = 0;
-  U8[253839] = 0;
+  U8[262029] = 0;
+  U8[262030] = 0;
+  U8[262031] = 0;
 }
 
 export async function RunDemo() {
-  U8[253816] = 0;
-  U8[253817] = 0;
-  U8[253813] = 0;
-  U8[253814] = 0;
-  U8[253815] = 1;
-  U8[253812] = 0;
+  U8[262008] = 0;
+  U8[262009] = 0;
+  U8[262005] = 0;
+  U8[262006] = 0;
+  U8[262007] = 1;
+  U8[262004] = 0;
   ForgetMonsters();
   (await EclMenu.LoadEclScript(1));
   EclMenu.EclInit();
-  (await CallEclScript(r16(141172)));
+  (await CallEclScript(r16(227058)));
   FreeEclStack();
 }
 
 export async function CallEclScript(address: number) {
-  w16(141174, address);
-  U8[253811] = 0;
-  while (((U8[253811] === 0) && !(U8[141224] !== 0)) && !(await Reloading())) {
-    U8[146547] = U8[r32(141159) + r16(141174) - 39168];
-    if ((U8[141214] !== 0)) {
-      rt.WriteT(224333, EclTrace.OpName(U8[146547]) + "\n");
+  w16(227060, address);
+  U8[262003] = 0;
+  while (((U8[262003] === 0) && !(U8[227110] !== 0)) && !(await Reloading())) {
+    U8[232433] = U8[r32(227045) + r16(227060) - 39168];
+    if ((U8[227100] !== 0)) {
+      rt.WriteT(232659, EclTrace.OpName(U8[232433]) + "\n");
     }
-    if ((U8[240359] !== 0) && !Wilds.KeepsWide(U8[146547])) {
+    if ((U8[248551] !== 0) && !Wilds.KeepsWide(U8[232433])) {
       (await CharDisp.SetWildView(false));
     }
     (await ExecNextEclCmd());
   }
-  U8[253811] = 0;
+  U8[262003] = 0;
 }
 
 export async function Reloading() {
   let $r0: boolean = false;
-  $r0 = ((U8[250681] !== 0) || (U8[141221] !== 0)) || (await GameIo.DemoEnding());
+  $r0 = ((U8[258873] !== 0) || (U8[227107] !== 0)) || (await GameIo.DemoEnding());
   return $r0;
 }
 
 export function ForgetMonsters() {
   Bestiary.NewEncounter();
-  U8[253818] = 0;
-  U8[253819] = 0;
-  U8[253820] = 0;
-  U8[253821] = 0;
+  U8[262010] = 0;
+  U8[262011] = 0;
+  U8[262012] = 0;
+  U8[262013] = 0;
 }
 
 export function FreeEclStack() {
-  while (r32(146539) !== 0) {
-    w32(146543, r32(r32(146539) + 2));
-    rt.freeMem(r32(146539));
-    w32(146539, r32(146543));
+  while (r32(232425) !== 0) {
+    w32(232429, r32(r32(232425) + 2));
+    rt.freeMem(r32(232425));
+    w32(232425, r32(232429));
   }
 }
 
 export function RestoreLoadedChar() {
-  if (U8[253813] !== 0) {
-    w32(143749, r32(143757));
-    U8[253813] = 0;
+  if (U8[262005] !== 0) {
+    w32(229635, r32(229643));
+    U8[262005] = 0;
   }
 }
 
 export async function EclExit() {
-  if (U8[240669] !== 0) {
+  if (U8[248861] !== 0) {
     (await Border.DrawWindow(1, 1, 15, 15, 0, 15, ""));
-    if (r16(r32(141147) + 460) !== 0) {
+    if (r16(r32(227033) + 460) !== 0) {
       (await Border.DrawWindow(3, 3, 13, 13, 0, 15, ""));
     }
   }
   RestoreLoadedChar();
-  rt.fill(240666, 2, 0);
-  U8[146748] = false ? 1 : 0;
-  U8[240669] = 0;
-  U8[253811] = 1;
-  w16(141174, r16(141174) + 1);
+  rt.fill(248858, 2, 0);
+  U8[232634] = false ? 1 : 0;
+  U8[248861] = 0;
+  U8[262003] = 1;
+  w16(227060, r16(227060) + 1);
   FreeEclStack();
-  U8[143770] = 17;
-  U8[143769] = 1;
-  U8[253838] = 0;
+  U8[229656] = 17;
+  U8[229655] = 1;
+  U8[262030] = 0;
 }
 
 export function EclGoto() {
   EclVars.LoadEclVars(1);
-  w16(141174, EclVars.CombineBytesToWord(U8[146676], U8[146612]));
+  w16(227060, EclVars.CombineBytesToWord(U8[232562], U8[232498]));
 }
 
 export function EclGosubCmd() {
@@ -246,8 +246,8 @@ export function EclGosubCmd() {
 
 export async function EclCompare() {
   EclVars.LoadEclVars(2);
-  if ((U8[146548] >= 128) || (U8[146549] >= 128)) {
-    EclMenu.EclCompareStr(rS(r32(146740)), rS(r32(146740) + 256));
+  if ((U8[232434] >= 128) || (U8[232435] >= 128)) {
+    EclMenu.EclCompareStr(rS(r32(232626)), rS(r32(232626) + 256));
   } else {
     EclMenu.EclCompareInt((await EclVars.GetEclVar(1)), (await EclVars.GetEclVar(2)));
   }
@@ -261,8 +261,8 @@ export async function EclArith() {
     i = $i1;
     w16($f0 + i * 2 - 2, (await EclVars.GetEclVar(i)));
   }
-  address = EclVars.CombineBytesToWord(U8[146678], U8[146614]) & 65535;
-  switch (U8[146547]) {
+  address = EclVars.CombineBytesToWord(U8[232564], U8[232500]) & 65535;
+  switch (U8[232433]) {
     case 4: {
       r = (r16($f0) + r16($f0 + 2)) & 65535;
       break;
@@ -295,7 +295,7 @@ export async function EclRandom() {
   if (n < 255) {
     n = (n + 1) & 255;
   }
-  address = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
   roll = TpRand.Random(n) & 255;
   (await EclVars.WriteGbvm(address, roll));
 }
@@ -303,25 +303,25 @@ export async function EclRandom() {
 export async function EclSave() {
   let v: number = 0, address: number = 0;
   EclVars.LoadEclVars(2);
-  address = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
-  if (U8[146548] < 128) {
+  address = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
+  if (U8[232434] < 128) {
     v = (await EclVars.GetEclVar(1)) & 65535;
     (await EclVars.WriteGbvm(address, v));
   } else {
-    EclVars.WriteGbvmString(address, rS(r32(146740)));
+    EclVars.WriteGbvmString(address, rS(r32(232626)));
     if (address === 27392) {
-      (await CharDisp.DisplayParty(r32(143749)));
+      CharDisp.DisplayParty(r32(229635));
     }
   }
 }
 
 export async function EclLoadChar() {
   let p: number = 0, idx: number = 0, i: number = 0, flag80: number = 0, wasSaved: boolean = false;
-  U8[253813] = 1;
+  U8[262005] = 1;
   EclVars.LoadEclVars(1);
   i = 0;
   idx = (await EclVars.GetEclVar(1)) & 255;
-  p = r32(143753);
+  p = r32(229639);
   flag80 = idx & 128;
   idx = idx & 127;
   if (idx > 0) {
@@ -331,44 +331,44 @@ export async function EclLoadChar() {
     }
   }
   if (p !== 0) {
-    w32(143749, p);
+    w32(229635, p);
   }
-  if (((flag80 !== 0) && (U8[146744] !== 0)) && (U8[146745] !== 0)) {
+  if (((flag80 !== 0) && (U8[232630] !== 0)) && (U8[232631] !== 0)) {
     if (p !== 0) {
-      wasSaved = r32(143757) === r32(143749);
+      wasSaved = r32(229643) === r32(229635);
       if (wasSaved) {
-        U8[253813] = 0;
+        U8[262005] = 0;
       }
       SaveLoad.RemoveCreature(false, true);
-      (await CharDisp.DisplayParty(r32(143749)));
+      CharDisp.DisplayParty(r32(229635));
     }
-    U8[146744] = false ? 1 : 0;
-    U8[146745] = false ? 1 : 0;
+    U8[232630] = false ? 1 : 0;
+    U8[232631] = false ? 1 : 0;
   }
 }
 
 export async function EclSetupMon() {
   EclVars.LoadEclVars(3);
-  U8[253819] = (await EclVars.GetEclVar(1));
-  w16(r32(141151) + 1408, (await EclVars.GetEclVar(2)));
-  U8[253820] = (await EclVars.GetEclVar(3));
-  w16(r32(141151) + 1410, EclMenu.MaxMonsterDist(I8[145546], I8[145547], U8[145548]));
-  if (r16(r32(141151) + 1408) < r16(r32(141151) + 1410)) {
-    w16(r32(141151) + 1410, r16(r32(141151) + 1408));
+  U8[262011] = (await EclVars.GetEclVar(1));
+  w16(r32(227037) + 1408, (await EclVars.GetEclVar(2)));
+  U8[262012] = (await EclVars.GetEclVar(3));
+  w16(r32(227037) + 1410, EclMenu.MaxMonsterDist(I8[231432], I8[231433], U8[231434]));
+  if (r16(r32(227037) + 1408) < r16(r32(227037) + 1410)) {
+    w16(r32(227037) + 1410, r16(r32(227037) + 1408));
   }
-  (await EclMenu.DisplayMonster(U8[253819], U8[253820], r16(r32(141151) + 1410) & 255, 240666));
+  (await EclMenu.DisplayMonster(U8[262011], U8[262012], r16(r32(227037) + 1410) & 255, 248858));
 }
 
 export async function EclLoadMon() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 403);
   let id: number = 0, count: number = 0, picId: number = 0, i: number = 0, p: number = 0, q: number = 0, savedCur: number = 0, invHead: number = 0, effHead: number = 0;
-  savedCur = r32(143749);
+  savedCur = r32(229635);
   i = 1;
   EclVars.LoadEclVars(3);
-  if (U8[253818] >= 63) {
+  if (U8[262010] >= 63) {
     { S.sp = $sp; return; }
   }
-  if (U8[240665] > 12) {
+  if (U8[248857] > 12) {
     { S.sp = $sp; return; }
   }
   p = 0;
@@ -385,25 +385,25 @@ export async function EclLoadMon() {
   }
   picId = (await EclVars.GetEclVar(3)) & 255;
   wS($f0 + 382, 12, "CPIC");
-  (await MapTiles.LoadIconAnim(rS($f0 + 382), picId, U8[240665]));
+  (await MapTiles.LoadIconAnim(rS($f0 + 382), picId, U8[248857]));
   p = Party.LastCreature();
   w32(p + 260, r32($f0));
   p = r32(p + 260);
-  U8[p + 191] = U8[240665];
+  U8[p + 191] = U8[248857];
   w32(p + 260, 0);
-  U8[253818] = U8[253818] + 1;
+  U8[262010] = U8[262010] + 1;
   i = (i + 1) & 255;
-  while ((i <= count) && (U8[253818] < 63)) {
+  while ((i <= count) && (U8[262010] < 63)) {
     q = rt.getMem(378);
     w32(p + 260, q);
     p = r32(p + 260);
     mv(p, $f0 + 4, 378);
-    U8[p + 191] = U8[240665];
+    U8[p + 191] = U8[248857];
     w32(p + 260, 0);
     w32(p + 127, 0);
     w32(p + 200, 0);
     i = (i + 1) & 255;
-    U8[253818] = U8[253818] + 1;
+    U8[262010] = U8[262010] + 1;
     while (r32($f0 + 395) !== 0) {
       CharHlp.PrependItemCopy(p + 200, r32($f0 + 395));
       w32($f0 + 395, r32(r32($f0 + 395) + 42));
@@ -415,19 +415,19 @@ export async function EclLoadMon() {
     }
     w32($f0 + 399, effHead);
   }
-  U8[240665] = U8[240665] + 1;
-  U8[253821] = 1;
-  w32(143749, savedCur);
+  U8[248857] = U8[248857] + 1;
+  U8[262013] = 1;
+  w32(229635, savedCur);
   S.sp = $sp;
 }
 
 export async function EclApproach() {
-  if (r16(r32(141151) + 1410) > 0) {
+  if (r16(r32(227037) + 1410) > 0) {
     let $t1;
-    $t1 = r32(141151) + 1410, w16($t1, r16($t1) - 1);
-    (await EclMenu.DisplayMonster(U8[253819], U8[253820], r16(r32(141151) + 1410) & 255, 240666));
+    $t1 = r32(227037) + 1410, w16($t1, r16($t1) - 1);
+    (await EclMenu.DisplayMonster(U8[262011], U8[262012], r16(r32(227037) + 1410) & 255, 248858));
   }
-  w16(141174, r16(141174) + 1);
+  w16(227060, r16(227060) + 1);
 }
 
 export async function EclPicture() {
@@ -437,27 +437,27 @@ export async function EclPicture() {
   if (picId !== 255) {
     (await CharDisp.SetWildView(false));
   }
-  if ((r16(r32(141147) + 460) === 0) && (picId !== 255)) {
+  if ((r16(r32(227033) + 460) === 0) && (picId !== 255)) {
     (await Border.DrawWindow(3, 3, 13, 13, 0, 15, ""));
   }
   if (picId !== 255) {
-    U8[240667] = true ? 1 : 0;
-    U8[146748] = true ? 1 : 0;
-    if (r16(r32(141151) + 1474) === 255) {
-      (await Portrait.LoadAnimation("PIC", picId, 0, 145563));
-      (await Portrait.DisplayImageBuf(3, 3, true, r32(145569)));
+    U8[248859] = true ? 1 : 0;
+    U8[232634] = true ? 1 : 0;
+    if (r16(r32(227037) + 1474) === 255) {
+      (await Portrait.LoadAnimation("PIC", picId, 0, 231449));
+      Portrait.DisplayImageBuf(3, 3, true, r32(231455));
     } else {
-      (await EclMenu.DisplayPortrait(r16(r32(141151) + 1474) & 255, picId));
+      (await EclMenu.DisplayPortrait(r16(r32(227037) + 1474) & 255, picId));
     }
   } else {
-    if (((U8[141222] > 1) || (U8[141223] === 1)) && ((U8[146748] !== 0) || (U8[146749] !== 0))) {
+    if (((U8[227108] > 1) || (U8[227109] === 1)) && ((U8[232634] !== 0) || (U8[232635] !== 0))) {
       (await MapView.DisplayMapView());
-      U8[146748] = false ? 1 : 0;
-      U8[146749] = false ? 1 : 0;
-      U8[240668] = true ? 1 : 0;
+      U8[232634] = false ? 1 : 0;
+      U8[232635] = false ? 1 : 0;
+      U8[248860] = true ? 1 : 0;
     }
-    U8[240666] = false ? 1 : 0;
-    U8[240667] = false ? 1 : 0;
+    U8[248858] = false ? 1 : 0;
+    U8[248859] = false ? 1 : 0;
   }
 }
 
@@ -466,7 +466,7 @@ export async function EclInputNum() {
   let v: number = 0, address: number = 0;
   EclVars.LoadEclVars(2);
   wS($f0, 1, "");
-  address = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
   v = (await TextRend.ReadNumber(rS($f0), 10)) & 65535;
   (await EclVars.WriteGbvm(address, v));
   S.sp = $sp;
@@ -477,7 +477,7 @@ export async function EclInputStr() {
   let address: number = 0;
   EclVars.LoadEclVars(2);
   wS($f0, 1, "");
-  address = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
   wS($f0 + 2, 255, (await TextRend.ReadString(rS($f0), 10, 40)));
   if (rS($f0 + 2) === "") {
     wS($f0 + 2, 255, " ");
@@ -488,84 +488,84 @@ export async function EclInputStr() {
 
 export async function EclPrint() {
   EclVars.LoadEclVars(1);
-  U8[250682] = 0;
-  U8[141225] = 1;
-  if (U8[146548] < 128) {
-    wS(r32(146740), 255, StrUtil.NumStr((await EclVars.GetEclVar(1))));
+  U8[258874] = 0;
+  U8[227111] = 1;
+  if (U8[232434] < 128) {
+    wS(r32(232626), 255, StrUtil.NumStr((await EclVars.GetEclVar(1))));
   }
-  JrnlSeen.Scan(rS(r32(146740)));
-  if (U8[146547] === 17) {
-    (await TextRend.ShowMessage(10, false, rS(r32(146740))));
+  JrnlSeen.Scan(rS(r32(232626)));
+  if (U8[232433] === 17) {
+    (await TextRend.ShowMessage(10, false, rS(r32(232626))));
   } else {
-    U8[143770] = 17;
-    U8[143769] = 1;
-    (await TextRend.DisplayMessageWindow(1, 17, 38, 22, 10, true, rS(r32(146740))));
+    U8[229656] = 17;
+    U8[229655] = 1;
+    (await TextRend.DisplayMessageWindow(1, 17, 38, 22, 10, true, rS(r32(232626))));
   }
-  U8[141225] = 0;
+  U8[227111] = 0;
 }
 
 export function EclReturn() {
-  w16(141174, r16(141174) + 1);
-  if (r32(146539) !== 0) {
-    w16(141174, r16(r32(146539)));
-    w32(146543, r32(r32(146539) + 2));
-    rt.freeMem(r32(146539));
-    w32(146539, r32(146543));
+  w16(227060, r16(227060) + 1);
+  if (r32(232425) !== 0) {
+    w16(227060, r16(r32(232425)));
+    w32(232429, r32(r32(232425) + 2));
+    rt.freeMem(r32(232425));
+    w32(232425, r32(232429));
   }
 }
 
 export async function EclCompareAnd() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
   let i: number = 0;
-  rt.fill(240659, 6, 0);
+  rt.fill(248851, 6, 0);
   EclVars.LoadEclVars(4);
   for (let $i1 = 1; $i1 <= 4; $i1++) {
     i = $i1;
     w16($f0 + i * 2 - 2, (await EclVars.GetEclVar(i)));
   }
   if ((r16($f0) === r16($f0 + 2)) && (r16($f0 + 4) === r16($f0 + 6))) {
-    U8[240659] = true ? 1 : 0;
+    U8[248851] = true ? 1 : 0;
   } else {
-    U8[240660] = true ? 1 : 0;
+    U8[248852] = true ? 1 : 0;
   }
   S.sp = $sp;
 }
 
 export async function EclIf() {
-  w16(141174, r16(141174) + 1);
-  switch (U8[146547]) {
+  w16(227060, r16(227060) + 1);
+  switch (U8[232433]) {
     case 22: {
-      if (!(U8[240659] !== 0)) {
+      if (!(U8[248851] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
     }
     case 23: {
-      if (!(U8[240660] !== 0)) {
+      if (!(U8[248852] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
     }
     case 24: {
-      if (!(U8[240661] !== 0)) {
+      if (!(U8[248853] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
     }
     case 25: {
-      if (!(U8[240662] !== 0)) {
+      if (!(U8[248854] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
     }
     case 26: {
-      if (!(U8[240663] !== 0)) {
+      if (!(U8[248855] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
     }
     case 27: {
-      if (!(U8[240664] !== 0)) {
+      if (!(U8[248856] !== 0)) {
         (await EclVars.SkipEclCmd());
       }
       break;
@@ -577,17 +577,17 @@ export async function EclNewEcl() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 21);
   let id: number = 0;
   EclVars.LoadEclVars(1);
-  w16(r32(141147) + 484, U8[146747]);
+  w16(r32(227033) + 484, U8[232633]);
   id = (await EclVars.GetEclVar(1)) & 255;
-  U8[146747] = id;
-  wS($f0, 20, (await DaxIo.ArchiveName("ECL" + StrUtil.NumStr(U8[143234]))));
+  U8[232633] = id;
+  wS($f0, 20, (await DaxIo.ArchiveName("ECL" + StrUtil.NumStr(U8[229120]))));
   (await SaveLoad.CheckFileElseQuit(DaxIo.FolderOf(rS($f0)) + rS($f0) + ".dax"));
   (await EclMenu.LoadEclScript(id));
   FreeEclStack();
   EclMenu.EclInit();
-  U8[253811] = 1;
-  U8[253812] = 1;
-  U8[253814] = 0;
+  U8[262003] = 1;
+  U8[262004] = 1;
+  U8[262006] = 0;
   S.sp = $sp;
 }
 
@@ -595,26 +595,26 @@ export async function EclLoadFiles() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 3);
   let i: number = 0;
   EclVars.LoadEclVars(3);
-  U8[253814] = 1;
+  U8[262006] = 1;
   for (let $i1 = 1; $i1 <= 3; $i1++) {
     i = $i1;
     U8[$f0 + i - 1] = (await EclVars.GetEclVar(i));
   }
-  if (U8[146547] === 33) {
-    U8[253817] = 1;
-    if (((U8[$f0] !== 255) && (U8[$f0] !== 127)) && (r16(r32(141147) + 460) !== 0)) {
-      w16(r32(141147) + 394, U8[$f0]);
+  if (U8[232433] === 33) {
+    U8[262009] = 1;
+    if (((U8[$f0] !== 255) && (U8[$f0] !== 127)) && (r16(r32(227033) + 460) !== 0)) {
+      w16(r32(227033) + 394, U8[$f0]);
       (await View3D.Load3DMap(U8[$f0]));
-      w16(r32(141151) + 1426, 0);
+      w16(r32(227037) + 1426, 0);
     }
-    if ((U8[$f0 + 2] !== 255) && (r16(r32(141147) + 460) === 0)) {
+    if ((U8[$f0 + 2] !== 255) && (r16(r32(227033) + 460) === 0)) {
       (await MapTiles.Load24x24Set("BACPAC", 0));
     }
   } else {
-    U8[253816] = 1;
+    U8[262008] = 1;
     if (U8[$f0] === 127) {
       (await View3D.LoadWallSet(0, 1));
-    } else if ((r16(r32(141147) + 462) !== 0) && (r16(r32(141147) + 464) !== 0)) {
+    } else if ((r16(r32(227033) + 462) !== 0) && (r16(r32(227033) + 464) !== 0)) {
       (await View3D.LoadWallSet(U8[$f0], 1));
       (await View3D.LoadWallSet(U8[$f0 + 2], 3));
     } else {
@@ -623,16 +623,16 @@ export async function EclLoadFiles() {
         if (U8[$f0 + i - 1] !== 255) {
           (await View3D.LoadWallSet(U8[$f0 + i - 1], i));
         } else {
-          w16(i * 4 + 145547, -1);
-          w16(i * 4 + 145549, -1);
+          w16(i * 4 + 231433, -1);
+          w16(i * 4 + 231435, -1);
         }
       }
     }
   }
-  if (((U8[253815] !== 0) && (U8[253816] !== 0)) && (U8[253817] !== 0)) {
+  if (((U8[262007] !== 0) && (U8[262008] !== 0)) && (U8[262009] !== 0)) {
     (await CharDisp.DisplayNoncombatInterface());
-    (await CharDisp.DisplayParty(r32(143749)));
-    U8[253815] = 0;
+    CharDisp.DisplayParty(r32(229635));
+    U8[262007] = 0;
   }
   S.sp = $sp;
 }
@@ -642,8 +642,8 @@ export async function EclAndOr() {
   EclVars.LoadEclVars(3);
   v1 = (await EclVars.GetEclVar(1)) & 65535;
   v2 = (await EclVars.GetEclVar(2)) & 65535;
-  address = EclVars.CombineBytesToWord(U8[146678], U8[146614]) & 65535;
-  if (U8[146547] === 47) {
+  address = EclVars.CombineBytesToWord(U8[232564], U8[232500]) & 65535;
+  if (U8[232433] === 47) {
     r = (v1 & v2) & 255;
   } else {
     r = (v1 | v2) & 255;
@@ -655,9 +655,9 @@ export async function EclAndOr() {
 export async function EclGetTable() {
   let addr1: number = 0, addr2: number = 0, sum: number = 0, v: number = 0, idx: number = 0;
   EclVars.LoadEclVars(3);
-  addr1 = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  addr1 = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   idx = (await EclVars.GetEclVar(2)) & 255;
-  addr2 = EclVars.CombineBytesToWord(U8[146678], U8[146614]) & 65535;
+  addr2 = EclVars.CombineBytesToWord(U8[232564], U8[232500]) & 65535;
   sum = (addr1 + idx) & 65535;
   v = (await EclVars.ReadGbvm(sum)) & 65535;
   (await EclVars.WriteGbvm(addr2, v));
@@ -667,7 +667,7 @@ export async function EclSaveTable() {
   let idx: number = 0, address: number = 0, v: number = 0, sum: number = 0;
   EclVars.LoadEclVars(3);
   v = (await EclVars.GetEclVar(1)) & 65535;
-  address = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
   idx = (await EclVars.GetEclVar(3)) & 65535;
   sum = (address + idx) & 65535;
   (await EclVars.WriteGbvm(sum, v));
@@ -676,13 +676,13 @@ export async function EclSaveTable() {
 export async function EclVMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 269);
   let count: number = 0, i: number = 0, address: number = 0, key: number = 0;
-  U8[250682] = 0;
+  U8[258874] = 0;
   U8[$f0 + 268] = true ? 1 : 0;
   wS($f0 + 264, 1, "");
   i = 1;
   EclVars.LoadEclVars(3);
-  address = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
-  wS($f0, 255, rS(r32(146740)));
+  address = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
+  wS($f0, 255, rS(r32(232626)));
   count = (await EclVars.GetEclVar(3)) & 255;
   EclVars.LoadEclList(count);
   if (count > 20) {
@@ -690,11 +690,11 @@ export async function EclVMenu() {
   }
   MenuCore.AllocStringList(count, $f0 + 256);
   w32($f0 + 260, r32($f0 + 256));
-  U8[143769] = 1;
-  U8[143770] = 17;
+  U8[229655] = 1;
+  U8[229656] = 17;
   (await TextRend.ShowMessage(10, true, rS($f0)));
   while (r32($f0 + 256) !== 0) {
-    wS(r32($f0 + 256), 40, rS(r32(146740) + i * 256 - 256));
+    wS(r32($f0 + 256), 40, rS(r32(232626) + i * 256 - 256));
     U8[r32($f0 + 256) + 41] = 0;
     w32($f0 + 256, r32(r32($f0 + 256) + 42));
     i = (i + 1) & 255;
@@ -703,11 +703,11 @@ export async function EclVMenu() {
   do {
     w32($f0 + 256, r32($f0 + 260));
     U8[$f0 + 268] = true ? 1 : 0;
-    key = (await MenuCore.MenuVertical(rS($f0 + 264), rS($f0 + 264), 13, 10, 15, 1, U8[143770] + 1, 38, 22, r32($f0 + 256), false, $f0 + 268, $f0 + 266, $f0 + 256)) & 255;
+    key = (await MenuCore.MenuVertical(rS($f0 + 264), rS($f0 + 264), 13, 10, 15, 1, U8[229656] + 1, 38, 22, r32($f0 + 256), false, $f0 + 268, $f0 + 266, $f0 + 256)) & 255;
   } while (!((r32($f0 + 256) !== 0) || (r32($f0 + 260) === 0)));
   (await EclVars.WriteGbvm(address, ri16($f0 + 266)));
   MenuCore.FreeStringList($f0 + 260);
-  (await TextRend.ClearRect(1, 17, 38, 22));
+  TextRend.ClearRect(1, 17, 38, 22);
   S.sp = $sp;
 }
 
@@ -717,7 +717,7 @@ export async function EclHMenu() {
   wS($f0, 1, "");
   wS($f0 + 2, 50, "");
   EclVars.LoadEclVars(2);
-  address = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   count = (await EclVars.GetEclVar(2)) & 255;
   EclVars.LoadEclList(count);
   if (count > 20) {
@@ -730,33 +730,33 @@ export async function EclHMenu() {
     enterOk = true;
     hlCol = 15;
     mCol = 15;
-    if (rS(r32(146740)) === "PRESS <RETURN> OR BUTTON TO CONTINUE") {
-      wS(r32(146740), 255, "PRESS <ENTER>/<RETURN> TO CONTINUE");
+    if (rS(r32(232626)) === "PRESS <RETURN> OR BUTTON TO CONTINUE") {
+      wS(r32(232626), 255, "PRESS <ENTER>/<RETURN> TO CONTINUE");
     }
   } else {
     enterOk = false;
     hlCol = 15;
     mCol = 10;
   }
-  anim = (U8[146748] !== 0) && (U8[240668] !== 0);
+  anim = (U8[232634] !== 0) && (U8[248860] !== 0);
   wS($f0 + 53, 255, "");
   for (let $i1 = 1, $e1 = count - 1; $i1 <= $e1; $i1++) {
     i = $i1;
-    wS($f0 + 2, 50, rS($f0 + 2) + StrUtil.MarkHotkey(rS(r32(146740) + i * 256 - 256), $f0 + 53) + " ");
+    wS($f0 + 2, 50, rS($f0 + 2) + StrUtil.MarkHotkey(rS(r32(232626) + i * 256 - 256), $f0 + 53) + " ");
   }
-  wS($f0 + 2, 50, rS($f0 + 2) + StrUtil.MarkHotkey(rS(r32(146740) + count * 256 - 256), $f0 + 53));
+  wS($f0 + 2, 50, rS($f0 + 2) + StrUtil.MarkHotkey(rS(r32(232626) + count * 256 - 256), $f0 + 53));
   ch = (await EclMenu.MenuHorizontalCharacterSelect(rS($f0), rS($f0 + 2), 13, mCol, hlCol, enterOk, anim)) & 255;
   (await EclVars.WriteGbvm(address, ch));
-  (await TextRend.ClearRect(0, 24, 39, 24));
+  TextRend.ClearRect(0, 24, 39, 24);
   S.sp = $sp;
 }
 
 export function EclClearMon() {
-  w16(141174, r16(141174) + 1);
+  w16(227060, r16(227060) + 1);
   Bestiary.NewEncounter();
-  U8[253818] = 0;
-  U8[253821] = 0;
-  U8[240665] = 8;
+  U8[262010] = 0;
+  U8[262013] = 0;
+  U8[248857] = 8;
   CharHlp.ClearTreasure();
 }
 
@@ -764,7 +764,7 @@ export async function EclPartyStr() {
   let hp: number = 0, th: number = 0, mage: number = 0, cleric: number = 0, ac: number = 0, strength: number = 0, address: number = 0, p: number = 0;
   EclVars.LoadEclVars(1);
   strength = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     hp = U8[p + 283];
     ac = U8[p + 273];
@@ -784,7 +784,7 @@ export async function EclPartyStr() {
     strength = (strength + Math.trunc(((cleric * 4) + (((hp + (ac * 5)) + (th * 5)) + (mage * 8))) / 10)) & 65535;
     p = r32(p + 260);
   }
-  address = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   if (strength > 255) {
     strength = 255;
   }
@@ -801,18 +801,18 @@ export async function EclCheckParty() {
     (await EclVars.WriteGbvm(addr4, (found ? 1 : 0)));
   }
   EclVars.LoadEclVars(6);
-  p = r32(143753);
+  p = r32(229639);
   found = false;
-  if (U8[146548] === 1) {
-    attr = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  if (U8[232434] === 1) {
+    attr = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   } else {
     attr = (await EclVars.GetEclVar(1)) & 65535;
   }
   effId = (await EclVars.GetEclVar(2)) & 255;
-  addr1 = EclVars.CombineBytesToWord(U8[146678], U8[146614]) & 65535;
-  addr2 = EclVars.CombineBytesToWord(U8[146679], U8[146615]) & 65535;
-  addr3 = EclVars.CombineBytesToWord(U8[146680], U8[146616]) & 65535;
-  addr4 = EclVars.CombineBytesToWord(U8[146681], U8[146617]) & 65535;
+  addr1 = EclVars.CombineBytesToWord(U8[232564], U8[232500]) & 65535;
+  addr2 = EclVars.CombineBytesToWord(U8[232565], U8[232501]) & 65535;
+  addr3 = EclVars.CombineBytesToWord(U8[232566], U8[232502]) & 65535;
+  addr4 = EclVars.CombineBytesToWord(U8[232567], U8[232503]) & 65535;
   sum = 0;
   count = 0;
   U8[$f0 + 4] = 255;
@@ -860,7 +860,7 @@ export async function EclCheckParty() {
 export async function EclPartySurprise() {
   let p: number = 0, mod1: number = 0, addr1: number = 0, addr2: number = 0;
   EclVars.LoadEclVars(2);
-  p = r32(143753);
+  p = r32(229639);
   mod1 = 0;
   while (p !== 0) {
     if (I8[p + 154] > 0) {
@@ -868,8 +868,8 @@ export async function EclPartySurprise() {
     }
     p = r32(p + 260);
   }
-  addr1 = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
-  addr2 = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
+  addr1 = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
+  addr2 = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
   (await EclVars.WriteGbvm(addr1, mod1));
   (await EclVars.WriteGbvm(addr2, 0));
 }
@@ -899,42 +899,42 @@ export async function EclSurprise() {
 
 export async function EclCombat() {
   let dist: number = 0, mode: number = 0;
-  w16(141174, r16(141174) + 1);
-  if ((U8[253821] === 0) && !(U8[146746] !== 0)) {
-    if (r16(r32(141151) + 1752) === 1) {
-      w16(r32(141151) + 1752, 0);
+  w16(227060, r16(227060) + 1);
+  if ((U8[262013] === 0) && !(U8[232632] !== 0)) {
+    if (r16(r32(227037) + 1752) === 1) {
+      w16(r32(227037) + 1752, 0);
       (await Shop.ShopMainMenu());
-    } else if (r16(r32(141151) + 1752) === 2) {
-      w16(r32(141151) + 1752, 0);
+    } else if (r16(r32(227037) + 1752) === 2) {
+      w16(r32(227037) + 1752, 0);
       (await VaultMnu.VaultMenu());
-    } else if ((r16(r32(141151) + 1476) === 1) || (r16(r32(141151) + 1476) === 2)) {
-      mode = r16(r32(141151) + 1476) & 255;
-      w16(r32(141151) + 1476, 0);
+    } else if ((r16(r32(227037) + 1476) === 1) || (r16(r32(227037) + 1476) === 2)) {
+      mode = r16(r32(227037) + 1476) & 255;
+      w16(r32(227037) + 1476, 0);
       (await Temple.TempleMainMenu(mode));
     } else {
       (await PostCbt.PostCombat());
     }
   } else {
-    dist = EclMenu.MaxMonsterDist(I8[145546], I8[145547], U8[145548]) & 65535;
-    if (dist < r16(r32(141151) + 1410)) {
-      w16(r32(141151) + 1410, dist);
+    dist = EclMenu.MaxMonsterDist(I8[231432], I8[231433], U8[231434]) & 65535;
+    if (dist < r16(r32(227037) + 1410)) {
+      w16(r32(227037) + 1410, dist);
     }
     (await Combat.CombatMain());
     (await PostCbt.PostCombat());
-    if (r16(r32(141147) + 460) === 0) {
+    if (r16(r32(227033) + 460) === 0) {
       (await MapTiles.Load24x24Set("BACPAC", 0));
       (await MapTiles.LoadWildIcons());
     }
-    U8[146746] = false ? 1 : 0;
+    U8[232632] = false ? 1 : 0;
   }
-  if (U8[141223] === 1) {
-    U8[141176] = 4;
+  if (U8[227109] === 1) {
+    U8[227062] = 4;
   } else {
-    U8[141176] = 3;
+    U8[227062] = 3;
   }
-  w16(r32(141151) + 1428, r16(r32(141151) + 1428) & 1);
-  rt.fill(240666, 2, 0);
-  U8[146748] = false ? 1 : 0;
+  w16(r32(227037) + 1428, r16(r32(227037) + 1428) & 1);
+  rt.fill(248858, 2, 0);
+  U8[232634] = false ? 1 : 0;
   (await CharDisp.DisplayNoncombatInterface());
 }
 
@@ -951,8 +951,8 @@ export async function EclOnGoto() {
   i = 0;
   while ((i < count) && !done) {
     if (sel === i) {
-      if (U8[146547] === 37) {
-        w16(141174, EclVars.CombineBytesToWord(U8[(i + 1) + 146675], U8[(i + 1) + 146611]));
+      if (U8[232433] === 37) {
+        w16(227060, EclVars.CombineBytesToWord(U8[(i + 1) + 232561], U8[(i + 1) + 232497]));
       } else {
         EclMenu.EclGosub(i + 1);
       }
@@ -969,11 +969,11 @@ export async function EclTreasure() {
   EclVars.LoadEclVars(8);
   for (let $i1 = 0; $i1 <= 6; $i1++) {
     i = $i1;
-    w32(i * 4 + 144862, (await EclVars.GetEclVar((i & 255) + 1)));
+    w32(i * 4 + 230748, (await EclVars.GetEclVar((i & 255) + 1)));
   }
   tId = (await EclVars.GetEclVar(8)) & 255;
   if (tId < 128) {
-    (await DaxIo.LoadDax("ITEM" + StrUtil.NumStr(U8[143234]), ".dax", tId, $f0 + 64, $f0 + 66));
+    (await DaxIo.LoadDax("ITEM" + StrUtil.NumStr(U8[229120]), ".dax", tId, $f0 + 64, $f0 + 66));
     if (r16($f0 + 64) === 0) {
       (await TextRend.DisplayAndPause(15, "Unable to find item file"));
       (await GameIo.ExitGame());
@@ -982,7 +982,7 @@ export async function EclTreasure() {
     while ((r16($f0 + 64) - offset) >= 63) {
       DiskRec.ItemFromDisk(r32($f0 + 66) + offset, $f0);
       offset = (offset + 63) & 65535;
-      CharHlp.PrependItemCopy(144890, $f0);
+      CharHlp.PrependItemCopy(230776, $f0);
     }
     rt.freeMem(r32($f0 + 66));
   } else {
@@ -1076,9 +1076,9 @@ export async function EclTreasure() {
         itemId = 69;
       }
       RandItem.GenerateRandomItem(itemId, $f0);
-      CharHlp.PrependItemCopy(144890, $f0);
+      CharHlp.PrependItemCopy(230776, $f0);
     }
-    CharHlp.LabelItems(r32(144890));
+    CharHlp.LabelItems(r32(230776));
   }
   S.sp = $sp;
 }
@@ -1094,11 +1094,11 @@ export async function EclRob() {
   fraction = (100 - pct) / 100;
   chance = (await EclVars.GetEclVar(3)) & 255;
   if (whole === 0) {
-    EclMenu.RobMoney(fraction, r32(143749));
-    (await EclMenu.RobItems(chance, r32(143749)));
-    CharHlp.RecalcStats(r32(143749));
+    EclMenu.RobMoney(fraction, r32(229635));
+    (await EclMenu.RobItems(chance, r32(229635)));
+    CharHlp.RecalcStats(r32(229635));
   } else {
-    p = r32(143753);
+    p = r32(229639);
     while (p !== 0) {
       EclMenu.RobMoney(fraction, p);
       (await EclMenu.RobItems(chance, p));
@@ -1106,71 +1106,71 @@ export async function EclRob() {
       p = r32(p + 260);
     }
   }
-  (await CharDisp.DisplayParty(r32(143749)));
+  CharDisp.DisplayParty(r32(229635));
 }
 
 export async function EclEncounter() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1074);
   let sel: number = 0, fleePar: number = 0, fleeMon: number = 0, i: number = 0, waited: boolean = false, clearW: boolean = false, anim: boolean = false, choice: number = 0, k: number = 0, tried: number = 0, address: number = 0;
   async function ApproachOrWait() {
-    if (r16(r32(141151) + 1410) !== 0) {
+    if (r16(r32(227037) + 1410) !== 0) {
       let $t1;
-      $t1 = r32(141151) + 1410, w16($t1, r16($t1) - 1);
-      (await EclMenu.DisplayMonster(U8[253819], U8[253820], r16(r32(141151) + 1410) & 255, 240666));
+      $t1 = r32(227037) + 1410, w16($t1, r16($t1) - 1);
+      (await EclMenu.DisplayMonster(U8[262011], U8[262012], r16(r32(227037) + 1410) & 255, 248858));
     } else {
       (await TextRend.ShowMessage(10, true, "Both sides wait."));
     }
     waited = true;
   }
   async function ApproachOrParley() {
-    if (r16(r32(141151) + 1410) <= 0) {
+    if (r16(r32(227037) + 1410) <= 0) {
       (await EclVars.WriteGbvm(address, 3));
     } else {
       let $t2;
-      $t2 = r32(141151) + 1410, w16($t2, r16($t2) - 1);
-      (await EclMenu.DisplayMonster(U8[253819], U8[253820], r16(r32(141151) + 1410) & 255, 240666));
+      $t2 = r32(227037) + 1410, w16($t2, r16($t2) - 1);
+      (await EclMenu.DisplayMonster(U8[262011], U8[262012], r16(r32(227037) + 1410) & 255, 248858));
       waited = true;
     }
   }
   async function MonstersFlee() {
     (await EclVars.WriteGbvm(address, 0));
-    U8[143769] = 1;
-    U8[143770] = 17;
+    U8[229655] = 1;
+    U8[229656] = 17;
     (await TextRend.ShowMessage(10, true, "The monsters flee."));
   }
-  U8[146751] = 1;
-  U8[250682] = 0;
-  U8[141225] = 1;
+  U8[232637] = 1;
+  U8[258874] = 0;
+  U8[227111] = 1;
   EclMenu.MoveExtremes($f0 + 1029, $f0 + 1030);
   wS($f0 + 1072, 1, "");
   EclVars.LoadEclVars(14);
-  U8[253819] = (await EclVars.GetEclVar(1));
-  w16(r32(141151) + 1408, (await EclVars.GetEclVar(2)));
-  U8[253820] = (await EclVars.GetEclVar(3));
-  address = EclVars.CombineBytesToWord(U8[146679], U8[146615]) & 65535;
+  U8[262011] = (await EclVars.GetEclVar(1));
+  w16(r32(227037) + 1408, (await EclVars.GetEclVar(2)));
+  U8[262012] = (await EclVars.GetEclVar(3));
+  address = EclVars.CombineBytesToWord(U8[232565], U8[232501]) & 65535;
   for (let $i3 = 0; $i3 <= 4; $i3++) {
     i = $i3;
     U8[$f0 + i] = (await EclVars.GetEclVar(i + 5));
   }
   for (let $i4 = 1; $i4 <= 3; $i4++) {
     i = $i4;
-    wS($f0 + i * 256 - 251, 255, rS(r32(146740) + i * 256 - 256));
+    wS($f0 + i * 256 - 251, 255, rS(r32(232626) + i * 256 - 256));
   }
   fleePar = (await EclVars.GetEclVar(13)) & 255;
   fleeMon = (await EclVars.GetEclVar(14)) & 255;
-  w16(r32(141151) + 1410, EclMenu.MaxMonsterDist(I8[145546], I8[145547], U8[145548]));
-  if (r16(r32(141151) + 1408) < r16(r32(141151) + 1410)) {
-    w16(r32(141151) + 1410, r16(r32(141151) + 1408));
+  w16(r32(227037) + 1410, EclMenu.MaxMonsterDist(I8[231432], I8[231433], U8[231434]));
+  if (r16(r32(227037) + 1408) < r16(r32(227037) + 1410)) {
+    w16(r32(227037) + 1410, r16(r32(227037) + 1408));
   }
-  (await EclMenu.DisplayMonster(U8[253819], U8[253820], r16(r32(141151) + 1410) & 255, 240666));
+  (await EclMenu.DisplayMonster(U8[262011], U8[262012], r16(r32(227037) + 1410) & 255, 248858));
   do {
-    anim = (U8[146748] !== 0) && (U8[240668] !== 0);
+    anim = (U8[232634] !== 0) && (U8[248860] !== 0);
     clearW = true;
     waited = false;
-    U8[143769] = 1;
-    U8[143770] = 17;
-    if (r16(r32(141151) + 1410) <= 2) {
-      k = (r16(r32(141151) + 1410) + 1) & 255;
+    U8[229655] = 1;
+    U8[229656] = 17;
+    if (r16(r32(227037) + 1410) <= 2) {
+      k = (r16(r32(227037) + 1410) + 1) & 255;
       tried = 0;
       do {
         wS($f0 + 773, 255, rS($f0 + k * 256 - 251));
@@ -1185,13 +1185,13 @@ export async function EclEncounter() {
       clearW = false;
     }
     (await TextRend.ShowMessage(10, clearW, rS($f0 + 773)));
-    if ((r16(r32(141151) + 1410) === 0) || (r16(r32(141147) + 460) === 0)) {
+    if ((r16(r32(227037) + 1410) === 0) || (r16(r32(227033) + 460) === 0)) {
       wS($f0 + 1031, 40, "~COMBAT ~WAIT ~FLEE ~PARLAY");
     } else {
       wS($f0 + 1031, 40, "~COMBAT ~WAIT ~FLEE ~ADVANCE");
     }
     sel = (await EclMenu.MenuHorizontalCharacterSelect(rS($f0 + 1072), rS($f0 + 1031), 13, 10, 15, false, anim)) & 255;
-    if (((r16(r32(141151) + 1410) === 0) || (r16(r32(141147) + 460) === 0)) && (sel === 3)) {
+    if (((r16(r32(227037) + 1410) === 0) || (r16(r32(227033) + 460) === 0)) && (sel === 3)) {
       sel = 4;
     }
     choice = U8[$f0 + sel];
@@ -1291,9 +1291,9 @@ export async function EclEncounter() {
       }
     }
   } while (!(!waited));
-  (await TextRend.ClearRect(0, 24, 39, 24));
-  U8[141225] = 0;
-  U8[146751] = 0;
+  TextRend.ClearRect(0, 24, 39, 24);
+  U8[227111] = 0;
+  U8[232637] = 0;
   S.sp = $sp;
 }
 
@@ -1307,16 +1307,16 @@ export async function EclParlay() {
     U8[$f0 + i] = (await EclVars.GetEclVar(i + 1));
   }
   sel = (await EclMenu.MenuHorizontalCharacterSelect(String.fromCharCode(space), "~HAUGHTY ~SLY ~NICE ~MEEK ~ABUSIVE", 13, 10, 15, false, false)) & 255;
-  address = EclVars.CombineBytesToWord(U8[146681], U8[146617]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232567], U8[232503]) & 65535;
   v5 = U8[$f0 + sel];
   (await EclVars.WriteGbvm(address, v5));
   S.sp = $sp;
 }
 
 export function SetFoundFlags(found: boolean) {
-  rt.fill(240659, 6, 0);
-  U8[240659] = found ? 1 : 0;
-  U8[240660] = !found ? 1 : 0;
+  rt.fill(248851, 6, 0);
+  U8[248851] = found ? 1 : 0;
+  U8[248852] = !found ? 1 : 0;
 }
 
 export async function EclFindItem() {
@@ -1338,21 +1338,21 @@ export async function EclUseUpItem() {
     }
     (await CharHlp.UseUpItem(r32($f0), item));
     CharHlp.RecalcStats(r32($f0));
-    (await CharDisp.DisplayParty(r32(143749)));
+    CharDisp.DisplayParty(r32(229635));
   }
   S.sp = $sp;
 }
 
 export async function EclDelay() {
-  w16(141174, r16(141174) + 1);
+  w16(227060, r16(227060) + 1);
   (await TextRend.PauseOnly());
 }
 
 export async function EclDamage() {
   let attack: number = 0, dieCount: number = 0, sides: number = 0, i: number = 0, saveMod: number = 0, value: number = 0, bonus: number = 0, count: number = 0, saveType: number = 0, k: number = 0, dmg: number = 0, p: number = 0, q: number = 0, savedCur: number = 0, allParty: number = 0;
-  savedCur = r32(143749);
+  savedCur = r32(229635);
   allParty = 0;
-  p = r32(143753);
+  p = r32(229639);
   EclVars.LoadEclVars(5);
   attack = (await EclVars.GetEclVar(1)) & 255;
   dieCount = (await EclVars.GetEclVar(2)) & 255;
@@ -1363,7 +1363,7 @@ export async function EclDamage() {
   if ((attack & 64) !== 0) {
     allParty = 1;
   } else {
-    count = Dice.RollDice(1, r16(r32(141151) + 1660) & 255) & 255;
+    count = Dice.RollDice(1, r16(r32(227037) + 1660) & 255) & 255;
   }
   if ((attack & 128) !== 0) {
     saveMod = attack & 31;
@@ -1380,8 +1380,8 @@ export async function EclDamage() {
         p = r32(p + 260);
       }
     } else if ((value & 128) !== 0) {
-      if ((saveType === 0) || !(await FxEngine.RollSavingThrow(r32(143749), saveType - 1, saveMod))) {
-        (await EclMenu.EclInflictDamage(dmg, r32(143749)));
+      if ((saveType === 0) || !(await FxEngine.RollSavingThrow(r32(229635), saveType - 1, saveMod))) {
+        (await EclMenu.EclInflictDamage(dmg, r32(229635)));
       }
     } else {
       for (let $i2 = 2, $e2 = count; $i2 <= $e2; $i2++) {
@@ -1393,15 +1393,15 @@ export async function EclDamage() {
       }
     }
   } else {
-    q = r32(143753);
+    q = r32(229639);
     while (q !== 0) {
       EffHndlr.ResetDisplacement(q);
       q = r32(q + 260);
     }
     for (let $i4 = 1, $e4 = attack; $i4 <= $e4; $i4++) {
       i = $i4;
-      p = r32(143753);
-      count = Dice.RollDice(1, r16(r32(141151) + 1660) & 255) & 255;
+      p = r32(229639);
+      count = Dice.RollDice(1, r16(r32(227037) + 1660) & 255) & 255;
       k = 1;
       while (k < count) {
         p = r32(p + 260);
@@ -1413,31 +1413,31 @@ export async function EclDamage() {
       dmg = (bonus + Dice.RollDice(dieCount, sides)) & 65535;
     }
   }
-  q = r32(143753);
-  U8[141224] = true ? 1 : 0;
+  q = r32(229639);
+  U8[227110] = true ? 1 : 0;
   while (q !== 0) {
     if (U8[q + 269] !== 0) {
-      U8[141224] = false ? 1 : 0;
+      U8[227110] = false ? 1 : 0;
     }
     q = r32(q + 260);
   }
-  if ((U8[141224] !== 0)) {
+  if ((U8[227110] !== 0)) {
     (await Border.DrawWindow(1, 1, 38, 22, 0, 15, "The END!"));
-    U8[143769] = 2;
-    U8[143770] = 2;
+    U8[229655] = 2;
+    U8[229656] = 2;
     (await TextRend.DisplayMessageWindow(1, 1, 38, 22, 10, true, "The entire party is killed!"));
     (await Crt.Delay(3000));
   }
-  w32(143749, savedCur);
+  w32(229635, savedCur);
   (await TextRend.DisplayAndPause(15, C_MSG.CONTINUE_PROMPT));
 }
 
 export async function EclSpriteOff() {
-  w16(141174, r16(141174) + 1);
-  if ((U8[146749] !== 0)) {
+  w16(227060, r16(227060) + 1);
+  if ((U8[232635] !== 0)) {
     (await MapView.DisplayMapView());
-    U8[146749] = false ? 1 : 0;
-    U8[146748] = false ? 1 : 0;
+    U8[232635] = false ? 1 : 0;
+    U8[232634] = false ? 1 : 0;
   }
 }
 
@@ -1453,38 +1453,38 @@ export async function EclClock() {
 }
 
 export function EclPrintRet() {
-  w16(141174, r16(141174) + 1);
-  U8[143769] = 1;
-  U8[143770] = U8[143770] + 1;
-  U8[253839] = 0;
+  w16(227060, r16(227060) + 1);
+  U8[229655] = 1;
+  U8[229656] = U8[229656] + 1;
+  U8[262031] = 0;
 }
 
-export async function EclClearBox() {
-  w16(141174, r16(141174) + 1);
-  (await TextRend.ClearRect(1, 1, 15, 15));
-  U8[253838] = 1;
+export function EclClearBox() {
+  w16(227060, r16(227060) + 1);
+  TextRend.ClearRect(1, 1, 15, 15);
+  U8[262030] = 1;
 }
 
 export async function EclWho() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 260);
   let at: number = 0, i: number = 0, back: number = 0;
-  at = r16(141174);
+  at = r16(227060);
   back = 0;
   for (let $i1 = 1; $i1 <= 3; $i1++) {
     i = $i1;
-    if ((U8[i * 5 + 253817] === U8[146747]) && (r16(i * 5 + 253818) === at)) {
-      back = r16(i * 5 + 253820);
+    if ((U8[i * 5 + 262009] === U8[232633]) && (r16(i * 5 + 262010) === at)) {
+      back = r16(i * 5 + 262012);
     }
   }
   EclVars.LoadEclVars(1);
-  (await TextRend.ClearRect(1, 17, 38, 22));
-  wS($f0, 255, rS(r32(146740)));
-  w32($f0 + 256, r32(143749));
+  TextRend.ClearRect(1, 17, 38, 22);
+  wS($f0, 255, rS(r32(232626)));
+  w32($f0 + 256, r32(229635));
   (await CharDisp.SelectChar(rS($f0), back !== 0, $f0 + 256));
   if (r32($f0 + 256) === 0) {
-    w16(141174, back);
+    w16(227060, back);
   } else {
-    w32(143749, r32($f0 + 256));
+    w32(229635, r32($f0 + 256));
   }
   S.sp = $sp;
 }
@@ -1493,37 +1493,37 @@ export async function EclAddNpc() {
   let id: number = 0, morale: number = 0, partySize: number = 0;
   EclVars.LoadEclVars(2);
   id = (await EclVars.GetEclVar(1)) & 255;
-  partySize = r16(r32(141151) + 1660) & 255;
+  partySize = r16(r32(227037) + 1660) & 255;
   (await EclMenu.AddCreatureToParty(id));
-  if (r16(r32(141151) + 1660) === partySize) {
+  if (r16(r32(227037) + 1660) === partySize) {
     return;
   }
   morale = (await EclVars.GetEclVar(2)) & 255;
   morale = Math.trunc(morale / 2);
   morale = morale | 128;
-  U8[r32(143749) + 132] = morale;
+  U8[r32(229635) + 132] = morale;
   if (id !== 24) {
-    U8[r32(143749) + 270] = 0;
+    U8[r32(229635) + 270] = 0;
   } else {
-    U8[r32(143749) + 270] = 1;
+    U8[r32(229635) + 270] = 1;
   }
-  if ((U8[141212] !== 0)) {
-    U8[r32(143749) + 271] = 1;
+  if ((U8[227098] !== 0)) {
+    U8[r32(229635) + 271] = 1;
   }
-  CharHlp.RecalcStats(r32(143749));
-  (await CharDisp.DisplayParty(r32(143749)));
+  CharHlp.RecalcStats(r32(229635));
+  CharDisp.DisplayParty(r32(229635));
 }
 
 export async function EclSpell() {
   let spellId: number = 0, slot: number = 0, idx: number = 0, k: number = 0, p: number = 0, found: boolean = false, addr1: number = 0, addr2: number = 0;
   EclVars.LoadEclVars(3);
   spellId = (await EclVars.GetEclVar(1)) & 255;
-  addr1 = EclVars.CombineBytesToWord(U8[146677], U8[146613]) & 65535;
-  addr2 = EclVars.CombineBytesToWord(U8[146678], U8[146614]) & 65535;
+  addr1 = EclVars.CombineBytesToWord(U8[232563], U8[232499]) & 65535;
+  addr2 = EclVars.CombineBytesToWord(U8[232564], U8[232500]) & 65535;
   slot = 255;
   idx = 0;
   found = false;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && !found) {
     if (U8[p + 268] === 0) {
       for (let $i2 = 1; $i2 <= 20; $i2++) {
@@ -1546,19 +1546,19 @@ export async function EclSpell() {
 export async function EclCall() {
   let address: number = 0, hold: number = 0;
   EclVars.LoadEclVars(1);
-  address = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   switch (address) {
     case 11408: {
-      U8[145550] = View3D.GetMapEvent(I8[145546], I8[145547]);
-      if (U8[253814] !== 0) {
-        if (((((U8[146748] !== 0) || (U8[146749] !== 0)) || (U8[146750] !== 0)) || (U8[247244] !== 0)) || (U8[247245] !== 0)) {
+      U8[231436] = View3D.GetMapEvent(I8[231432], I8[231433]);
+      if (U8[262006] !== 0) {
+        if (((((U8[232634] !== 0) || (U8[232635] !== 0)) || (U8[232636] !== 0)) || (U8[255436] !== 0)) || (U8[255437] !== 0)) {
           (await MapView.DisplayMapView());
-          (await CharDisp.PrintMiscInfo());
-          U8[247245] = false ? 1 : 0;
-          U8[146750] = false ? 1 : 0;
-          U8[247244] = false ? 1 : 0;
-          U8[146748] = false ? 1 : 0;
-          U8[146749] = false ? 1 : 0;
+          CharDisp.PrintMiscInfo();
+          U8[255437] = false ? 1 : 0;
+          U8[232636] = false ? 1 : 0;
+          U8[255436] = false ? 1 : 0;
+          U8[232634] = false ? 1 : 0;
+          U8[232635] = false ? 1 : 0;
         }
       }
       break;
@@ -1574,13 +1574,13 @@ export async function EclCall() {
       break;
     }
     case 47619: {
-      switch (r16(247242)) {
+      switch (r16(255434)) {
         case 8: {
-          (await SoundDrv.SoundEffect(r16(132907), 1));
+          SoundDrv.SoundEffect(r16(218793), 1);
           break;
         }
         case 10: {
-          (await SoundDrv.SoundCommand(r16(132909)));
+          SoundDrv.SoundCommand(r16(218795));
           break;
         }
       }
@@ -1591,25 +1591,25 @@ export async function EclCall() {
       break;
     }
     case 49176: {
-      if (U8[141223] === 1) {
-        U8[145549] = View3D.GetWallType(I8[145546], I8[145547], U8[145548]);
+      if (U8[227109] === 1) {
+        U8[231435] = View3D.GetWallType(I8[231432], I8[231433], U8[231434]);
       }
       break;
     }
     case 2054: {
-      if ((U8[141212] !== 0)) {
+      if ((U8[227098] !== 0)) {
         (await Border.DrawWindow(3, 3, 13, 13, 0, 15, ""));
       }
       break;
     }
     case 33795: {
-      if (U8[145563] > 1) {
-        U8[145564] = U8[145564] + 1;
-        if ((U8[145564] < 1) || (U8[145564] > U8[145563])) {
-          U8[145564] = 1;
+      if (U8[231449] > 1) {
+        U8[231450] = U8[231450] + 1;
+        if ((U8[231450] < 1) || (U8[231450] > U8[231449])) {
+          U8[231450] = 1;
         }
-        (await Portrait.DisplayImageBuf(3, 3, true, r32(U8[145564] * 8 + 145561)));
-        hold = (ri32(U8[145564] * 8 + 145557) * 10) | 0;
+        Portrait.DisplayImageBuf(3, 3, true, r32(U8[231450] * 8 + 231447));
+        hold = (ri32(U8[231450] * 8 + 231443) * 10) | 0;
         if (hold < 25) {
           hold = 25;
         }
@@ -1623,14 +1623,14 @@ export async function EclCall() {
 export async function EnterCamp() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   U8[$f0] = false ? 1 : 0;
-  (await CallEclScript(r16(141168)));
+  (await CallEclScript(r16(227054)));
   (await Camp.CampMainMenu($f0));
   if ((U8[$f0] !== 0)) {
     (await CharDisp.DisplayNoncombatInterface());
-    (await CallEclScript(r16(141170)));
+    (await CallEclScript(r16(227056)));
   }
   (await MapView.DisplayMapView());
-  U8[143748] = 0;
+  U8[229634] = 0;
   S.sp = $sp;
 }
 
@@ -1642,8 +1642,8 @@ export async function EclProgram() {
   switch (v) {
     case 0: {
       (await CharGen.MainMenu(true, false));
-      if (U8[141221] !== 0) {
-        U8[253811] = 1;
+      if (U8[227107] !== 0) {
+        U8[262003] = 1;
       } else {
         (await CharDisp.DisplayNoncombatInterface());
       }
@@ -1654,9 +1654,9 @@ export async function EclProgram() {
       break;
     }
     case 9: {
-      savedIp = r16(141174);
+      savedIp = r16(227060);
       (await EnterCamp());
-      w16(141174, savedIp);
+      w16(227060, savedIp);
       (await EclExit());
       break;
     }
@@ -1669,7 +1669,7 @@ export async function EclProgram() {
       break;
     }
     case 3: {
-      if ((U8[141212] !== 0)) {
+      if ((U8[227098] !== 0)) {
         (await EclExit());
       }
       break;
@@ -1679,34 +1679,34 @@ export async function EclProgram() {
 
 export async function EclProtection() {
   let address: number = 0, a: number = 0, i: number = 0, c: number = 0, done: boolean = false;
-  rt.fill(240666, 2, 0);
-  U8[146748] = false ? 1 : 0;
+  rt.fill(248858, 2, 0);
+  U8[232634] = false ? 1 : 0;
   EclVars.LoadEclVars(1);
-  address = EclVars.CombineBytesToWord(U8[146676], U8[146612]) & 65535;
+  address = EclVars.CombineBytesToWord(U8[232562], U8[232498]) & 65535;
   i = 0;
   done = false;
-  if ((U8[253838] !== 0) && (U8[143770] > 13)) {
-    U8[143770] = 5;
-    U8[143769] = 2;
-    U8[240669] = 1;
+  if ((U8[262030] !== 0) && (U8[229656] > 13)) {
+    U8[229656] = 5;
+    U8[229655] = 2;
+    U8[248861] = 1;
   }
-  U8[253839] = 1;
+  U8[262031] = 1;
   do {
     a = (address + i) & 65535;
     c = ((await EclVars.ReadGbvm(a)) + 1) & 255;
     if (c > 1) {
-      TextRend.RenderChar(U8[143769], U8[143770], 15, 0, 1, c, 0);
-      U8[143769] = U8[143769] + 1;
+      TextRend.RenderChar(U8[229655], U8[229656], 15, 0, 1, c, 0);
+      U8[229655] = U8[229655] + 1;
       i = (i + 1) & 65535;
     } else {
       done = true;
     }
-  } while (!(done || (U8[143769] > 38)));
-  U8[143770] = U8[143770] + 1;
+  } while (!(done || (U8[229655] > 38)));
+  U8[229656] = U8[229656] + 1;
 }
 
 export async function ExecNextEclCmd() {
-  switch (U8[146547]) {
+  switch (U8[232433]) {
     case 0: {
       (await EclExit());
       break;
@@ -1900,7 +1900,7 @@ export async function ExecNextEclCmd() {
       break;
     }
     case 61: {
-      (await EclClearBox());
+      EclClearBox();
       break;
     }
     case 128: {
@@ -1915,49 +1915,49 @@ export async function ExecNextEclCmd() {
 
 export async function NewEclDone() {
   do {
-    U8[145550] = View3D.GetMapEvent(I8[145546], I8[145547]);
-    w16(r32(141151) + 1450, 0);
-    w32(143757, r32(143749));
-    U8[141222] = U8[141223];
-    U8[141223] = 1;
-    (await CallEclScript(r16(141172)));
-    U8[141176] = 4;
-    if (r16(r32(141147) + 460) === 0) {
-      switch (U8[146747]) {
+    U8[231436] = View3D.GetMapEvent(I8[231432], I8[231433]);
+    w16(r32(227037) + 1450, 0);
+    w32(229643, r32(229635));
+    U8[227108] = U8[227109];
+    U8[227109] = 1;
+    (await CallEclScript(r16(227058)));
+    U8[227062] = 4;
+    if (r16(r32(227033) + 460) === 0) {
+      switch (U8[232633]) {
         case 25: {
-          U8[141223] = 2;
-          U8[141176] = 3;
+          U8[227109] = 2;
+          U8[227062] = 3;
           break;
         }
         case 26: {
-          U8[141223] = 3;
-          U8[141176] = 3;
-          if ((r16(r32(141147) + 870) === 254) && (r16(r32(141147) + 836) === 0)) {
+          U8[227109] = 3;
+          U8[227062] = 3;
+          if ((r16(r32(227033) + 870) === 254) && (r16(r32(227033) + 836) === 0)) {
             (await Ending.YarashComplete(true));
           }
           break;
         }
         case 27: {
-          U8[141223] = 4;
-          U8[141176] = 3;
+          U8[227109] = 4;
+          U8[227062] = 3;
           break;
         }
       }
     }
-    if ((U8[141222] > 1) && (U8[141223] === 1)) {
+    if ((U8[227108] > 1) && (U8[227109] === 1)) {
       (await Border.DrawWindow(3, 3, 13, 13, 0, 10, ""));
     }
-    if ((((U8[141222] > 1) || (U8[141223] === 1)) && (U8[253814] !== 0)) || ((U8[141222] === 1) && (U8[141223] === 1))) {
+    if ((((U8[227108] > 1) || (U8[227109] === 1)) && (U8[262006] !== 0)) || ((U8[227108] === 1) && (U8[227109] === 1))) {
       (await MapView.DisplayMapView());
     }
-    U8[253812] = 0;
-    (await CallEclScript(r16(141164)));
-    if (U8[253812] === 0) {
-      (await CallEclScript(r16(141166)));
-      w32(143749, r32(143757));
-      (await CharDisp.DisplayParty(r32(143749)));
+    U8[262004] = 0;
+    (await CallEclScript(r16(227050)));
+    if (U8[262004] === 0) {
+      (await CallEclScript(r16(227052)));
+      w32(229635, r32(229643));
+      CharDisp.DisplayParty(r32(229635));
     }
-  } while (!(U8[253812] === 0));
+  } while (!(U8[262004] === 0));
 }
 
 export function $init() {

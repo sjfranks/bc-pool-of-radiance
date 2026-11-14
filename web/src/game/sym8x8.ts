@@ -13,9 +13,9 @@ import * as StrUtil from './strutil';
 export async function Load8x8Set(fileID: number, setId: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   if ((setId >= 0 && setId <= 4)) {
-    wS($f0, 1, rt.fmtI(U8[143234], 0));
-    (await Blit.LoadPic("8x8d" + rS($f0), fileID, true, 13, setId * 4 + 143771));
-    if (r32(setId * 4 + 143771) === 0) {
+    wS($f0, 1, rt.fmtI(U8[229120], 0));
+    (await Blit.LoadPic("8x8d" + rS($f0), fileID, true, 13, setId * 4 + 229657));
+    if (r32(setId * 4 + 229657) === 0) {
       (await GameIo.FatalError("Unable to load 8x8D" + rS($f0) + "-" + StrUtil.NumStr(fileID)));
     }
   }
@@ -38,22 +38,22 @@ export async function Put8x8Sym(col: number, row: number, symbol: number, inComb
   } else if ($c1 === 0 || ($c1 >= 287 && $c1 <= 65535)) {
     (await GameIo.FatalError("Bad symbol number in Put8x8Symbol."));
   }
-  if (r32(setIdx * 4 + 143771) !== 0) {
-    symbol = (symbol - r16(setIdx * 2 + 132917)) & 65535;
+  if (r32(setIdx * 4 + 229657) !== 0) {
+    symbol = (symbol - r16(setIdx * 2 + 218803)) & 65535;
     {
-      const $w2 = r32(setIdx * 4 + 143771);
+      const $w2 = r32(setIdx * 4 + 229657);
       if (((r16($w2) !== 8) || (r16($w2 + 2) !== 1)) || (symbol >= U8[$w2 + 8])) {
         return;
       }
     }
     if (inCombat) {
-      Blit.BlitTileCell(col, row, symbol, (other ? 1 : 0), r32(setIdx * 4 + 143771), r32(141249));
+      Blit.BlitTileCell(col, row, symbol, (other ? 1 : 0), r32(setIdx * 4 + 229657), r32(227135));
     } else {
       {
-        const $w3 = r32(setIdx * 4 + 143771);
-        mv(r32(143791) + 27, $w3 + (symbol * r16($w3 + 17)) + 27, r16($w3 + 17));
+        const $w3 = r32(setIdx * 4 + 229657);
+        mv(r32(229677) + 27, $w3 + (symbol * r16($w3 + 17)) + 27, r16($w3 + 17));
       }
-      (await Blit.ShowPic(col, row, r32(143791)));
+      Blit.ShowPic(col, row, r32(229677));
     }
   }
 }

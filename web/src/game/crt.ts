@@ -22,13 +22,13 @@ export const Yellow = 14;
 export const White = 15;
 export const Blink = 128;
 
-export const $at = { CheckBreak: 65792, pendingScan: 131602 };
+export const $at = { CheckBreak: 151678, pendingScan: 217488 };
 
 export async function ReadKey() {
   let key: number = 0, $r0: number = 0;
-  if (U8[131602] !== 0) {
-    $r0 = U8[131602];
-    U8[131602] = 0;
+  if (U8[217488] !== 0) {
+    $r0 = U8[217488];
+    U8[217488] = 0;
     return $r0;
   }
   if (!Host.KeyWaiting()) {
@@ -36,7 +36,7 @@ export async function ReadKey() {
   }
   key = Host.PopKey() & 65535;
   if ((key & 255) === 0) {
-    U8[131602] = key >> 8 & 255;
+    U8[217488] = key >> 8 & 255;
   }
   $r0 = key & 255;
   return $r0;
@@ -44,7 +44,7 @@ export async function ReadKey() {
 
 export async function KeyPressed() {
   let $r0: boolean = false;
-  if ((U8[131602] === 0) && !Host.KeyWaiting()) {
+  if ((U8[217488] === 0) && !Host.KeyWaiting()) {
     (await Host.Idle());
     $r0 = Host.KeyWaiting();
   } else {
@@ -64,5 +64,5 @@ export function NoSound() {
 }
 
 export function $init() {
-  U8[65792] = true ? 1 : 0;
+  U8[151678] = true ? 1 : 0;
 }

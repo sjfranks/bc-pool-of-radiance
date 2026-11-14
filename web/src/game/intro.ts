@@ -21,27 +21,27 @@ export async function Introduction() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 260);
   let i: number = 0, deadline: number = 0, now: number = 0, last: number = 0;
   w32($f0, 0);
-  wS($f0 + 4, 255, rS(143491));
-  U8[143491] = 0;
-  wS(143491, 255, GameDirs.OwnFolder("RAVFULL.DAX"));
-  if (FileUtil.Exists(rS(143491) + "RAVFULL.DAX")) {
+  wS($f0 + 4, 255, rS(229377));
+  U8[229377] = 0;
+  wS(229377, 255, GameDirs.OwnFolder("RAVFULL.DAX"));
+  if (FileUtil.Exists(rS(229377) + "RAVFULL.DAX")) {
     (await Blit.LoadPic("RAVFULL", 1, false, 0, $f0));
-    (await Blit.ShowPic(0, 0, r32($f0)));
+    Blit.ShowPic(0, 0, r32($f0));
     (await TextRend.DelayOrKey(2));
   }
-  U8[143491] = 0;
+  U8[229377] = 0;
   (await Blit.LoadPic("title", 1, false, 0, $f0));
-  (await Blit.ShowPic(0, 0, r32($f0)));
-  (await SoundDrv.PlayMusic(21));
+  Blit.ShowPic(0, 0, r32($f0));
+  SoundDrv.PlayMusic(21);
   (await TextRend.DelayOrKey(5));
-  if (!(U8[141146] !== 0)) {
-    wS(143491, 255, rS($f0 + 4));
+  if (!(U8[227032] !== 0)) {
+    wS(229377, 255, rS($f0 + 4));
     Blit.FreePic($f0);
     { S.sp = $sp; return; }
   }
   (await Blit.LoadPic("title", 2, false, 0, $f0));
-  wS(143491, 255, rS($f0 + 4));
-  (await Blit.ShowPic(0, 0, r32($f0)));
+  wS(229377, 255, rS($f0 + 4));
+  Blit.ShowPic(0, 0, r32($f0));
   Blit.FreePic($f0);
   last = (await TextRend.GetTicks()) | 0;
   deadline = (last + 500) | 0;
@@ -52,17 +52,17 @@ export async function Introduction() {
       if (Blit.HasPalette() && (TpRand.Random(290) === 0)) {
         for (let $i2 = 0, $e2 = TpRand.Random(3) + 1; $i2 <= $e2; $i2++) {
           i = $i2;
-          (await Blit.SetPaletteRegister(1, 9));
+          Blit.SetPaletteRegister(1, 9);
           (await Crt.Delay(150));
-          (await Blit.SetPaletteRegister(1, 11));
+          Blit.SetPaletteRegister(1, 11);
           (await Crt.Delay(100));
-          (await Blit.SetPaletteRegister(1, 15));
+          Blit.SetPaletteRegister(1, 15);
           (await Crt.Delay(50));
-          (await Blit.SetPaletteRegister(1, 11));
+          Blit.SetPaletteRegister(1, 11);
           (await Crt.Delay(100));
-          (await Blit.SetPaletteRegister(1, 9));
+          Blit.SetPaletteRegister(1, 9);
           (await Crt.Delay(150));
-          (await Blit.SetPaletteRegister(1, 1));
+          Blit.SetPaletteRegister(1, 1);
         }
       }
     }
@@ -80,7 +80,7 @@ export async function Credits() {
   TextRend.DisplayString(2, 3, 10, "david cook,steve winter,mike breault");
   TextRend.DisplayString(1, 5, 10, "game created by:");
   TextRend.DisplayString(18, 5, 14, "ssi special projects");
-  TextRend.DisplayCentered(0, 39, 6, 11, rS(131605));
+  TextRend.DisplayCentered(0, 39, 6, 11, rS(217491));
   TextRend.DisplayString(2, 7, 14, "programming:");
   TextRend.DisplayString(20, 7, 14, "original");
   TextRend.DisplayString(2, 8, 11, "scot bayless");

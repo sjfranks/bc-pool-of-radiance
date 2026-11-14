@@ -23,22 +23,22 @@ import * as ShopBuy from './shopbuy';
 
 
 export async function ShopMainMenu() {
-  (await CounterMenu(false, 20));
+  (await CounterMenu(false, 21));
 }
 
 export async function CounterMenu(atTemple: boolean, command: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 50);
   let done: boolean = false, c: number = 0;
-  U8[141176] = 1;
+  U8[227062] = 1;
   (await CharDisp.DisplayNoncombatInterface());
-  (await CharDisp.DisplayParty(r32(143749)));
-  rt.fill(144862, 28, 0);
+  CharDisp.DisplayParty(r32(229635));
+  rt.fill(230748, 28, 0);
   done = false;
   if (atTemple) {
     wS($f0 + 41, 4, "Heal");
   } else {
     wS($f0 + 41, 4, "Buy");
-    CharHlp.LabelItems(r32(144890));
+    CharHlp.LabelItems(r32(230776));
   }
   do {
     Money.DetermineTreasure($f0 + 47, $f0 + 48);
@@ -115,19 +115,19 @@ export async function CounterMenu(atTemple: boolean, command: number) {
         }
       }
     }
-    (await CharDisp.DisplayParty(r32(143749)));
+    CharDisp.DisplayParty(r32(229635));
   } while (!(done));
   S.sp = $sp;
 }
 
 export async function GiveItemCopyToCreature(item: number, failed: number) {
-  if (ViewChar.CannotCarryItem(r32(143749), item)) {
+  if (ViewChar.CannotCarryItem(r32(229635), item)) {
     (await CharDisp.PrintBottomLine("OverLoaded"));
     U8[failed] = true ? 1 : 0;
   } else {
     U8[failed] = false ? 1 : 0;
-    (await CharHlp.AddToInventory(r32(143749), item));
-    CharHlp.RecalcStats(r32(143749));
+    (await CharHlp.AddToInventory(r32(229635), item));
+    CharHlp.RecalcStats(r32(229635));
   }
 }
 
@@ -136,13 +136,13 @@ export async function BuyItem(item: number) {
   let price: number = 0, payer: number = 0;
   if ((await WantsItem(item))) {
     price = r16(item + 58);
-    payer = MoneyCal.WhoPays(r32(143749), price) & 255;
+    payer = MoneyCal.WhoPays(r32(229635), price) & 255;
     if (payer === 0) {
       (await CharDisp.PrintBottomLine("Not enough money."));
     } else {
       (await GiveItemCopyToCreature(item, $f0));
       if (!(U8[$f0] !== 0)) {
-        Money.PayBy(r32(143749), payer, price);
+        Money.PayBy(r32(229635), payer, price);
       }
     }
   }
@@ -162,29 +162,29 @@ export async function WantsItem(item: number) {
       if (id !== 0) {
         spells = (spells + 1) & 255;
         lines = (lines + 1) & 255;
-        if (I8[id * 16 + 136507] !== lastLevel) {
-          lastLevel = I8[id * 16 + 136507];
+        if (I8[id * 16 + 222393] !== lastLevel) {
+          lastLevel = I8[id * 16 + 222393];
           lines = (lines + 1) & 255;
         }
       }
     }
     if (spells > 0) {
       (await CharDisp.MessageText("The scroll holds:", 10, true));
-      row = U8[143770];
+      row = U8[229656];
       headings = (row + lines) <= 22;
       lastLevel = 0;
       for (let $i2 = 1; $i2 <= 3; $i2++) {
         i = $i2;
         id = CharHlp.ScrollSpellAt(item, i) & 255;
         if (id !== 0) {
-          if (headings && (I8[id * 16 + 136507] !== lastLevel)) {
-            lastLevel = I8[id * 16 + 136507];
+          if (headings && (I8[id * 16 + 222393] !== lastLevel)) {
+            lastLevel = I8[id * 16 + 222393];
             row = (row + 1) & 255;
             TextRend.DisplayString(1, row, 13, Magic.LevelHeading(lastLevel));
           }
           row = (row + 1) & 255;
           if (row <= 22) {
-            TextRend.DisplayString(1, row, 15, Magic.SpellLine(r32(143749), id, 2));
+            TextRend.DisplayString(1, row, 15, Magic.SpellLine(r32(229635), id, 2));
           }
         }
       }

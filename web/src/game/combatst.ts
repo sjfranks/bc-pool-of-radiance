@@ -31,32 +31,32 @@ import * as Bestiary from './bestiary';
 import * as WideView from './wideview';
 
 
-export const $at = { quadDir: 249967, terrainCls: 249971, quadFree: 249972, placeX: 250500, placeY: 250502, teamRows: 250504, teamDir: 250506 };
+export const $at = { quadDir: 258159, terrainCls: 258163, quadFree: 258164, placeX: 258692, placeY: 258694, teamRows: 258696, teamDir: 258698 };
 
 export async function CombatStart() {
   let p: number = 0;
-  Portrait.FreeAnimation(145563);
-  Blit.FreePic(145630);
-  Blit.FreePic(145636);
-  U8[145629] = 255;
-  U8[145635] = 255;
+  Portrait.FreeAnimation(231449);
+  Blit.FreePic(231516);
+  Blit.FreePic(231522);
+  U8[231515] = 255;
+  U8[231521] = 255;
   TextRend.ClearBottomLine();
   (await TextRend.PauseOnly());
   TextRend.DisplayString(0, 24, 10, "A battle begins...");
-  (await SoundDrv.PlayMusic(22));
-  U8[146532] = U8[141192] !== 0 ? 1 : 0;
-  U8[146459] = 0;
-  U8[144906] = 0;
-  U8[144640] = 0;
-  w32(146453, 0);
-  w32(143761, 0);
-  U8[247518] = 0;
-  rt.wSet(247482, 0, 32, rt.setR());
-  rt.fill(240563, 72, 0);
-  rt.fill(144584, 56, 0);
-  w16(r32(141151) + 1638, 0);
-  if (r16(r32(141151) + 1420) > 100) {
-    w16(r32(141151) + 1420, 100);
+  SoundDrv.PlayMusic(22);
+  U8[232418] = U8[227078] !== 0 ? 1 : 0;
+  U8[232345] = 0;
+  U8[230792] = 0;
+  U8[230526] = 0;
+  w32(232339, 0);
+  w32(229647, 0);
+  U8[255710] = 0;
+  rt.wSet(255674, 0, 32, rt.setR());
+  rt.fill(248755, 72, 0);
+  rt.fill(230470, 56, 0);
+  w16(r32(227037) + 1638, 0);
+  if (r16(r32(227037) + 1420) > 100) {
+    w16(r32(227037) + 1420, 100);
   }
   (await LoadCombatTileSet());
   (await GameIo.DiscardPendingKeys());
@@ -65,16 +65,16 @@ export async function CombatStart() {
   (await PlaceAllCreatures());
   (await GameIo.DiscardPendingKeys());
   (await CbtActs.UseLeadership());
-  (await Blit.AllocPic(24, 3, 4, 1, 146533));
-  if (U8[141197] !== 0) {
+  (await Blit.AllocPic(24, 3, 4, 1, 232419));
+  if (U8[227083] !== 0) {
     CbtMap.SetLayout((await WideView.Enter(144, 38)));
   } else {
     CbtMap.SetLayout(false);
   }
-  U8[r32(144641) + 2] = CbtMap.CombatCellX(r32(143753)) - I8[227029];
-  U8[r32(144641) + 3] = CbtMap.CombatCellY(r32(143753)) - I8[227030];
+  U8[r32(230527) + 2] = CbtMap.CombatCellX(r32(229639)) - I8[235221];
+  U8[r32(230527) + 3] = CbtMap.CombatCellY(r32(229639)) - I8[235222];
   (await CharDisp.DisplayCombatInterface());
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     EffHndlr.ResetDisplacement(p);
     Bestiary.Met(p);
@@ -209,24 +209,24 @@ export function SprinkleRareFeatures() {
     col = $i1;
     for (let $i2 = 0; $i2 <= 24; $i2++) {
       row = $i2;
-      if (U8[U8[r32(144641) + row * 50 + col + 7] * 3 + 132944] === 22) {
+      if (U8[U8[r32(230527) + row * 50 + col + 7] * 3 + 218830] === 22) {
         roll = Dice.RollDice(1, 100) & 255;
         const $c3 = roll;
         if (($c3 >= 1 && $c3 <= 97)) {
         } else if ($c3 === 98) {
-          U8[r32(144641) + row * 50 + col + 7] = 26;
+          U8[r32(230527) + row * 50 + col + 7] = 26;
         } else if ($c3 === 99) {
-          U8[r32(144641) + row * 50 + col + 7] = 27;
+          U8[r32(230527) + row * 50 + col + 7] = 27;
         } else if ($c3 === 100) {
-          if (U8[146747] !== 10) {
+          if (U8[232633] !== 10) {
             if (Dice.RollDice(1, 100) === 1) {
               switch (Dice.RollDice(1, 10)) {
                 case 1: case 2: case 3: case 4: case 5: case 6: {
-                  U8[r32(144641) + row * 50 + col + 7] = 28;
+                  U8[r32(230527) + row * 50 + col + 7] = 28;
                   break;
                 }
                 case 7: case 8: case 9: case 10: {
-                  U8[r32(144641) + row * 50 + col + 7] = 29;
+                  U8[r32(230527) + row * 50 + col + 7] = 29;
                   break;
                 }
               }
@@ -251,7 +251,7 @@ export function WallBetween(x: number, y: number, dir: number) {
         $r1 = 3;
       }
     } else {
-      if ((py === I8[145547]) && ((pdir === 2) || (pdir === 6))) {
+      if ((py === I8[231433]) && ((pdir === 2) || (pdir === 6))) {
         $r1 = 0;
       } else {
         $r1 = 1;
@@ -261,7 +261,7 @@ export function WallBetween(x: number, y: number, dir: number) {
   }
   opp = (dir + 4) % 8;
   k1 = GetWallKind(x, y, dir) & 255;
-  k2 = GetWallKind(x + I8[dir + 132927], y + I8[dir + 132936], opp) & 255;
+  k2 = GetWallKind(x + I8[dir + 218813], y + I8[dir + 218822], opp) & 255;
   $r0 = k1 | k2;
   return $r0;
 }
@@ -273,7 +273,7 @@ export function BuildDungeonArena() {
     x = ((((dx * 6) + (dy * 5)) + 21) + i) << 24 >> 24;
     y = (((dy * 5) + 10) + j) << 24 >> 24;
     if ((((x >= 0) && (x <= 49)) && (y >= 0)) && (y <= 24)) {
-      U8[r32(144641) + y * 50 + x + 7] = t + 1;
+      U8[r32(230527) + y * 50 + x + 7] = t + 1;
     }
   }
   function DrawFloorWestWall() {
@@ -533,8 +533,8 @@ export function BuildDungeonArena() {
     dy = $i4;
     for (let $i5 = -6; $i5 <= 6; $i5++) {
       dx = $i5;
-      cellX = (I8[145546] + dx) << 24 >> 24;
-      cellY = (I8[145547] + dy) << 24 >> 24;
+      cellX = (I8[231432] + dx) << 24 >> 24;
+      cellY = (I8[231433] + dy) << 24 >> 24;
       wallW = WallBetween(cellX, cellY, 6) & 255;
       wallN = WallBetween(cellX, cellY, 0) & 255;
       wallE = WallBetween(cellX, cellY, 2) & 255;
@@ -550,16 +550,16 @@ export function BuildDungeonArena() {
 export function PlaceRiver() {
   let thresh: number = 0, fordCnt: number = 0, startCol: number = 0, col: number = 0, row: number = 0;
   function PlotFord(r: number, c: number) {
-    U8[r32(144641) + r * 50 + c + 7] = 52;
-    U8[r32(144641) + r * 50 + (c + 1) + 7] = 53;
+    U8[r32(230527) + r * 50 + c + 7] = 52;
+    U8[r32(230527) + r * 50 + (c + 1) + 7] = 53;
     fordCnt = (fordCnt + 1) & 255;
   }
   thresh = 0;
   fordCnt = 0;
-  if ((U8[249971] & 32) !== 0) {
+  if ((U8[258163] & 32) !== 0) {
     thresh = 35;
   }
-  if ((U8[249971] & 16) !== 0) {
+  if ((U8[258163] & 16) !== 0) {
     thresh = 75;
   }
   if (Dice.RollDice(1, 100) > thresh) {
@@ -573,8 +573,8 @@ export function PlaceRiver() {
   for (let $i2 = 0; $i2 <= 24; $i2++) {
     row = $i2;
     if (col <= 48) {
-      U8[r32(144641) + row * 50 + col + 7] = 50;
-      U8[r32(144641) + row * 50 + (col + 1) + 7] = 51;
+      U8[r32(230527) + row * 50 + col + 7] = 50;
+      U8[r32(230527) + row * 50 + (col + 1) + 7] = 51;
       if ((Dice.RollDice(1, 20) === 1) || ((fordCnt & 1) !== 0)) {
         PlotFord(row, col);
       }
@@ -592,35 +592,35 @@ export function PlaceRiver() {
 export function PlaceTrees() {
   let dens: number = 0, h: number = 0, col: number = 0, row: number = 0;
   dens = 1;
-  if ((U8[249971] & 4) !== 0) {
+  if ((U8[258163] & 4) !== 0) {
     dens = 3;
   }
-  if ((U8[249971] & 64) !== 0) {
+  if ((U8[258163] & 64) !== 0) {
     dens = 4;
   }
-  if ((U8[249971] & 8) !== 0) {
+  if ((U8[258163] & 8) !== 0) {
     dens = 7;
   }
-  if ((U8[249971] & 128) !== 0) {
+  if ((U8[258163] & 128) !== 0) {
     dens = 0;
   }
   for (let $i1 = 0; $i1 <= 49; $i1++) {
     col = $i1;
     for (let $i2 = 1; $i2 <= 24; $i2++) {
       row = $i2;
-      if (((U8[U8[r32(144641) + row * 50 + col + 7] * 3 + 132944] === 22) && (U8[U8[r32(144641) + (row - 1) * 50 + col + 7] * 3 + 132944] === 22)) && (Dice.RollDice(1, 100) <= dens)) {
+      if (((U8[U8[r32(230527) + row * 50 + col + 7] * 3 + 218830] === 22) && (U8[U8[r32(230527) + (row - 1) * 50 + col + 7] * 3 + 218830] === 22)) && (Dice.RollDice(1, 100) <= dens)) {
         h = Dice.RollDice(1, 10) & 255;
         if (h > 8) {
           h = (Dice.RollDice(1, 2) + 4) & 255;
         } else {
           h = Math.trunc((h + 1) / 2) & 255;
         }
-        if ((U8[249971] & 64) !== 0) {
+        if ((U8[258163] & 64) !== 0) {
           h = (Dice.RollDice(1, 3) + 3) & 255;
         }
-        U8[r32(144641) + row * 50 + col + 7] = (h + 31) + 4;
+        U8[r32(230527) + row * 50 + col + 7] = (h + 31) + 4;
         if (h < 5) {
-          U8[r32(144641) + (row - 1) * 50 + col + 7] = h + 31;
+          U8[r32(230527) + (row - 1) * 50 + col + 7] = h + 31;
         }
       }
     }
@@ -634,18 +634,18 @@ export function ScatterFeatures() {
   tB = 15;
   tC = 40;
   tD = 0;
-  if ((U8[249971] & 2) !== 0) {
+  if ((U8[258163] & 2) !== 0) {
     tB = 45;
     tC = 10;
   }
-  if ((U8[249971] & 4) !== 0) {
+  if ((U8[258163] & 4) !== 0) {
     tB = 25;
   }
-  if ((U8[249971] & 64) !== 0) {
+  if ((U8[258163] & 64) !== 0) {
     tC = 5;
     tD = 30;
   }
-  if ((U8[249971] & 128) !== 0) {
+  if ((U8[258163] & 128) !== 0) {
     tSwamp = 15;
     tC = 25;
     tB = 10;
@@ -654,30 +654,30 @@ export function ScatterFeatures() {
     col = $i1;
     for (let $i2 = 0; $i2 <= 24; $i2++) {
       row = $i2;
-      if (U8[U8[r32(144641) + row * 50 + col + 7] * 3 + 132944] === 22) {
+      if (U8[U8[r32(230527) + row * 50 + col + 7] * 3 + 218830] === 22) {
         r = Dice.RollDice(1, 255) & 255;
         if (r <= tSwamp) {
           r = Dice.RollDice(1, 4) & 255;
-          if (((r === 4) && (row > 0)) && (U8[U8[r32(144641) + (row - 1) * 50 + col + 7] * 3 + 132944] === 22)) {
-            U8[r32(144641) + (row - 1) * 50 + col + 7] = 65;
-            U8[r32(144641) + row * 50 + col + 7] = 64;
+          if (((r === 4) && (row > 0)) && (U8[U8[r32(230527) + (row - 1) * 50 + col + 7] * 3 + 218830] === 22)) {
+            U8[r32(230527) + (row - 1) * 50 + col + 7] = 65;
+            U8[r32(230527) + row * 50 + col + 7] = 64;
           }
           if (r < 4) {
-            U8[r32(144641) + row * 50 + col + 7] = (r + 31) + 29;
+            U8[r32(230527) + row * 50 + col + 7] = (r + 31) + 29;
           }
         } else if (r <= (tA + tSwamp)) {
-          U8[r32(144641) + row * 50 + col + 7] = (Dice.RollDice(1, 3) + 31) + 23;
+          U8[r32(230527) + row * 50 + col + 7] = (Dice.RollDice(1, 3) + 31) + 23;
         } else if (r <= ((tB + tSwamp) + tA)) {
-          U8[r32(144641) + row * 50 + col + 7] = (Dice.RollDice(1, 4) + 31) + 10;
+          U8[r32(230527) + row * 50 + col + 7] = (Dice.RollDice(1, 4) + 31) + 10;
         } else if (r <= (((tD + tB) + tSwamp) + tA)) {
           r = (Math.trunc((Dice.RollDice(1, 10) - 1) / 3) + 1) & 255;
-          U8[r32(144641) + row * 50 + col + 7] = (r + 31) + 25;
+          U8[r32(230527) + row * 50 + col + 7] = (r + 31) + 25;
         } else if (r <= (tA + (((tC + tD) + tB) + tSwamp))) {
           r = Dice.RollDice(1, 4) & 255;
-          if ((r === 4) && ((U8[249971] & 64) === 0)) {
+          if ((r === 4) && ((U8[258163] & 64) === 0)) {
             r = Dice.RollDice(1, 3) & 255;
           }
-          U8[r32(144641) + row * 50 + col + 7] = (r + 31) + 14;
+          U8[r32(230527) + row * 50 + col + 7] = (r + 31) + 14;
         }
       }
     }
@@ -686,16 +686,16 @@ export function ScatterFeatures() {
 
 export function BuildWildernessArena() {
   let mapX: number = 0, mapY: number = 0;
-  rt.fill(r32(144641) + 7, 1250, 23);
-  mapX = U8[r32(141147) + 390] << 24 >> 24;
-  mapY = U8[r32(141147) + 392] << 24 >> 24;
-  if (U8[141223] === 3) {
+  rt.fill(r32(230527) + 7, 1250, 23);
+  mapX = U8[r32(227033) + 390] << 24 >> 24;
+  mapY = U8[r32(227033) + 392] << 24 >> 24;
+  if (U8[227109] === 3) {
     mapX = (mapX + 13) << 24 >> 24;
   }
-  if (U8[141223] === 4) {
+  if (U8[227109] === 4) {
     mapX = (mapX + 26) << 24 >> 24;
   }
-  U8[249971] = TerrainClass(U8[mapY * 44 + mapX + 138584], r16(r32(141147) + 870) === 255);
+  U8[258163] = TerrainClass(U8[mapY * 44 + mapX + 224470], r16(r32(227033) + 870) === 255);
   PlaceRiver();
   PlaceTrees();
   ScatterFeatures();
@@ -704,18 +704,18 @@ export function BuildWildernessArena() {
 
 export async function LoadCombatTileSet() {
   MapTiles.FreeSecondSheet();
-  if (U8[141223] === 1) {
+  if (U8[227109] === 1) {
     (await MapTiles.Load24x24Set("DungCom", 0));
   } else {
     (await MapTiles.Load24x24Set("WildCom", 0));
   }
   (await MapTiles.Load24x24Set("RandCom", 34));
   (await MapTiles.LoadCloudkillArt());
-  w32(144641, rt.getMem(1257));
-  U8[r32(144641) + 4] = false ? 1 : 0;
-  U8[r32(144641) + 5] = 1;
-  U8[r32(144641) + 6] = 0;
-  if (U8[141223] === 1) {
+  w32(230527, rt.getMem(1257));
+  U8[r32(230527) + 4] = false ? 1 : 0;
+  U8[r32(230527) + 5] = 1;
+  U8[r32(230527) + 6] = 0;
+  if (U8[227109] === 1) {
     BuildDungeonArena();
   } else {
     BuildWildernessArena();
@@ -724,23 +724,23 @@ export async function LoadCombatTileSet() {
 
 export function InitCreatureCombatData() {
   let p: number = 0, count: number = 0, m: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   count = 0;
   while (p !== 0) {
     CharHlp.RecalcStats(p);
     count = (count + 1) & 255;
     w32(p + 264, rt.getMem(23));
     rt.fill(r32(p + 264), 23, 0);
-    if (count > r16(r32(141151) + 1660)) {
+    if (count > r16(r32(227037) + 1660)) {
       U8[r32(p + 264) + 19] = 1;
     }
-    U8[r32(p + 264) + 9] = U8[Math.trunc(U8[145548] / 2) + 249967];
+    U8[r32(p + 264) + 9] = U8[Math.trunc(U8[231434] / 2) + 258159];
     if (I8[p + 270] === 1) {
       U8[r32(p + 264) + 9] = (U8[r32(p + 264) + 9] + 4) % 8;
     }
     m = U8[p + 132] & 127;
     if (((I8[p + 270] === 0) && (U8[r32(p + 264) + 19] === 1)) && ((m === 0) || (m > 102))) {
-      U8[p + 132] = r16(r32(141151) + 1420) + 128;
+      U8[p + 132] = r16(r32(227037) + 1420) + 128;
     }
     p = r32(p + 260);
   }
@@ -759,15 +759,15 @@ export function QuadFullyOff(qx: number, qy: number) {
 export function TryPlaceAt(team: number, slot: number, qx: number, qy: number, bqx: number, bqy: number, ring: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let $r0: number = 0;
-  if (((((qx < 0) || (qy < 0)) || (qx > 10)) || (qy > 5)) || (U8[team * 264 + ring * 66 + qy * 11 + qx + 249972] === 0)) {
+  if (((((qx < 0) || (qy < 0)) || (qx > 10)) || (qy > 5)) || (U8[team * 264 + ring * 66 + qy * 11 + qx + 258164] === 0)) {
     $r0 = 0;
   } else {
-    U8[slot * 4 + 144004] = ((qx + (bqx * 6)) + (bqy * 5)) + 22;
-    U8[slot * 4 + 144005] = (qy + (bqy * 5)) + 10;
-    CbtMap.ProbeDirection(r32(slot * 4 + 144292), 8, $f0, $f0 + 1);
-    if (((U8[$f0] === 0) && (U8[$f0 + 1] > 0)) && (U8[U8[$f0 + 1] * 3 + 132942] < 255)) {
+    U8[slot * 4 + 229890] = ((qx + (bqx * 6)) + (bqy * 5)) + 22;
+    U8[slot * 4 + 229891] = (qy + (bqy * 5)) + 10;
+    CbtMap.ProbeDirection(r32(slot * 4 + 230178), 8, $f0, $f0 + 1);
+    if (((U8[$f0] === 0) && (U8[$f0 + 1] > 0)) && (U8[U8[$f0 + 1] * 3 + 218828] < 255)) {
       $r0 = 1;
-      U8[team * 264 + ring * 66 + qy * 11 + qx + 249972] = 0;
+      U8[team * 264 + ring * 66 + qy * 11 + qx + 258164] = 0;
     } else {
       $r0 = 0;
     }
@@ -784,16 +784,16 @@ export function FindPlacement(team: number, slot: number) {
   state = 1;
   legShift = 0;
   ring = 0;
-  baseQx = I8[team + 250500];
-  baseQy = I8[team + 250502];
+  baseQx = I8[team + 258692];
+  baseQy = I8[team + 258694];
   do {
-    quad = Math.trunc(U8[I8[team + 250506] * 4 + ring + 250524] / 2);
+    quad = Math.trunc(U8[I8[team + 258698] * 4 + ring + 258716] / 2);
     switch (state) {
       case 1: {
-        stepX = I8[U8[((quad + 2) % 4) + 249967] + 132927];
-        stepY = I8[U8[((quad + 2) % 4) + 249967] + 132936];
-        legX = (I8[(ring > 0 ? 1 : 0) * 4 + quad + 250540] + (stepX * legShift)) << 24 >> 24;
-        legY = (I8[(ring > 0 ? 1 : 0) * 4 + quad + 250548] + (stepY * legShift)) << 24 >> 24;
+        stepX = I8[U8[((quad + 2) % 4) + 258159] + 218813];
+        stepY = I8[U8[((quad + 2) % 4) + 258159] + 218822];
+        legX = (I8[(ring > 0 ? 1 : 0) * 4 + quad + 258732] + (stepX * legShift)) << 24 >> 24;
+        legY = (I8[(ring > 0 ? 1 : 0) * 4 + quad + 258740] + (stepY * legShift)) << 24 >> 24;
         qx = legX;
         qy = legY;
         legLen = 1;
@@ -802,8 +802,8 @@ export function FindPlacement(team: number, slot: number) {
         break;
       }
       case 2: {
-        stepX = I8[U8[((quad + 1) % 4) + 249967] + 132927];
-        stepY = I8[U8[((quad + 1) % 4) + 249967] + 132936];
+        stepX = I8[U8[((quad + 1) % 4) + 258159] + 218813];
+        stepY = I8[U8[((quad + 1) % 4) + 258159] + 218822];
         qx = (legX + (stepX * legLen)) << 24 >> 24;
         qy = (legY + (stepY * legLen)) << 24 >> 24;
         state = 3;
@@ -811,8 +811,8 @@ export function FindPlacement(team: number, slot: number) {
         break;
       }
       case 3: {
-        stepX = I8[U8[((quad + 3) % 4) + 249967] + 132927];
-        stepY = I8[U8[((quad + 3) % 4) + 249967] + 132936];
+        stepX = I8[U8[((quad + 3) % 4) + 258159] + 218813];
+        stepY = I8[U8[((quad + 3) % 4) + 258159] + 218822];
         qx = (legX + (stepX * legLen)) << 24 >> 24;
         qy = (legY + (stepY * legLen)) << 24 >> 24;
         state = 2;
@@ -827,16 +827,16 @@ export function FindPlacement(team: number, slot: number) {
       offGrid = 0;
     }
     if (state > 1) {
-      if ((((offGrid !== 0) && !QuadFullyOff(qx, qy)) || ((firstPass !== 0) && (tries >= I8[team + 250504]))) || ((firstPass === 0) && (tries > 11))) {
+      if ((((offGrid !== 0) && !QuadFullyOff(qx, qy)) || ((firstPass !== 0) && (tries >= I8[team + 258696]))) || ((firstPass === 0) && (tries > 11))) {
         legShift = (legShift + 1) & 255;
-        if ((((team === 0) && ((I8[250506] & 1) !== 0)) && (ring === 0)) && (legShift === 1)) {
-          wallX = (I8[team + 250500] + I8[145546]) << 24 >> 24;
-          wallY = (I8[team + 250502] + I8[145547]) << 24 >> 24;
+        if ((((team === 0) && ((I8[258698] & 1) !== 0)) && (ring === 0)) && (legShift === 1)) {
+          wallX = (I8[team + 258692] + I8[231432]) << 24 >> 24;
+          wallY = (I8[team + 258694] + I8[231433]) << 24 >> 24;
           open = 0;
           for (let $i2 = 1; $i2 <= 3; $i2++) {
             k = $i2;
-            dir = U8[I8[team + 250506] * 4 + k + 250508];
-            if ((U8[141223] > 1) || (WallBetween(wallX, wallY, dir) !== 1)) {
+            dir = U8[I8[team + 258698] * 4 + k + 258700];
+            if ((U8[227109] > 1) || (WallBetween(wallX, wallY, dir) !== 1)) {
               open = 1;
             }
           }
@@ -852,12 +852,12 @@ export function FindPlacement(team: number, slot: number) {
       state = 0;
       while ((ring < 3) && (state !== 1)) {
         ring = (ring + 1) & 255;
-        wallX = (I8[team + 250500] + I8[145546]) << 24 >> 24;
-        wallY = (I8[team + 250502] + I8[145547]) << 24 >> 24;
-        dir = U8[I8[team + 250506] * 4 + ring + 250508];
-        if ((U8[141223] > 1) || (WallBetween(wallX, wallY, dir) !== 1)) {
-          baseQx = (I8[team + 250500] + I8[dir + 132927]) << 24 >> 24;
-          baseQy = (I8[team + 250502] + I8[dir + 132936]) << 24 >> 24;
+        wallX = (I8[team + 258692] + I8[231432]) << 24 >> 24;
+        wallY = (I8[team + 258694] + I8[231433]) << 24 >> 24;
+        dir = U8[I8[team + 258698] * 4 + ring + 258700];
+        if ((U8[227109] > 1) || (WallBetween(wallX, wallY, dir) !== 1)) {
+          baseQx = (I8[team + 258692] + I8[dir + 218813]) << 24 >> 24;
+          baseQy = (I8[team + 258694] + I8[dir + 218822]) << 24 >> 24;
           legShift = 0;
           state = 1;
         }
@@ -883,19 +883,19 @@ export async function PlaceAllCreatures() {
   CharHlp.CountTeams();
   for (let $i1 = 1; $i1 <= 72; $i1++) {
     slot = $i1;
-    U8[slot * 4 + 144007] = 0;
+    U8[slot * 4 + 229893] = 0;
   }
   CbtMap.BuildArenaArrays();
-  U8[250500] = 0;
-  U8[250502] = 0;
-  facing = U8[145548] & 6;
-  U8[250506] = Math.trunc(facing / 2);
-  U8[250501] = (I8[facing + 132927] * r16(r32(141151) + 1410)) + I8[250500];
-  U8[250503] = (I8[facing + 132936] * r16(r32(141151) + 1410)) + I8[250502];
-  U8[250507] = Math.trunc(((facing + 4) % 8) / 2);
+  U8[258692] = 0;
+  U8[258694] = 0;
+  facing = U8[231434] & 6;
+  U8[258698] = Math.trunc(facing / 2);
+  U8[258693] = (I8[facing + 218813] * r16(r32(227037) + 1410)) + I8[258692];
+  U8[258695] = (I8[facing + 218822] * r16(r32(227037) + 1410)) + I8[258694];
+  U8[258699] = Math.trunc(((facing + 4) % 8) / 2);
   for (let $i2 = 0; $i2 <= 1; $i2++) {
     team = $i2;
-    U8[team + 250504] = Math.trunc((U8[team + 144894] + 1) / 2);
+    U8[team + 258696] = Math.trunc((U8[team + 230780] + 1) / 2);
   }
   for (let $i3 = 0; $i3 <= 1; $i3++) {
     team = $i3;
@@ -904,55 +904,55 @@ export async function PlaceAllCreatures() {
       if (g === 1) {
         d = 4;
       } else {
-        d = I8[team + 250506] & 255;
+        d = I8[team + 258698] & 255;
       }
       for (let $i5 = 0; $i5 <= 5; $i5++) {
         y = $i5;
         for (let $i6 = 0; $i6 <= 10; $i6++) {
           x = $i6;
-          if ((I8[d * 12 + y * 2 + 250556] > x) || (I8[d * 12 + y * 2 + 250557] < x)) {
-            U8[team * 264 + g * 66 + y * 11 + x + 249972] = 0;
+          if ((I8[d * 12 + y * 2 + 258748] > x) || (I8[d * 12 + y * 2 + 258749] < x)) {
+            U8[team * 264 + g * 66 + y * 11 + x + 258164] = 0;
           } else {
-            U8[team * 264 + g * 66 + y * 11 + x + 249972] = 1;
+            U8[team * 264 + g * 66 + y * 11 + x + 258164] = 1;
           }
         }
       }
     }
   }
   slot = 1;
-  U8[144007] = 1;
+  U8[229893] = 1;
   prev = 0;
-  p = r32(143753);
+  p = r32(229639);
   while ((p !== 0) && (slot <= 72)) {
     (await GameIo.DiscardPendingKeys());
     next = r32(p + 260);
-    w32(slot * 4 + 144292, p);
+    w32(slot * 4 + 230178, p);
     team = CharHlp.Team(p) << 24 >> 24;
-    U8[slot * 4 + 144006] = slot;
-    U8[slot * 4 + 144007] = U8[p + 108] & 7;
+    U8[slot * 4 + 229892] = slot;
+    U8[slot * 4 + 229893] = U8[p + 108] & 7;
     if (FindPlacement(team, slot)) {
       prev = p;
       if (U8[p + 269] === 0) {
-        U8[slot * 4 + 144007] = 0;
-        if (!(U8[146746] !== 0) && (U8[r32(p + 264) + 19] === 0)) {
-          x = I8[slot * 4 + 144004];
-          y = I8[slot * 4 + 144005];
+        U8[slot * 4 + 229893] = 0;
+        if (!(U8[232632] !== 0) && (U8[r32(p + 264) + 19] === 0)) {
+          x = I8[slot * 4 + 229890];
+          y = I8[slot * 4 + 229891];
           CbtMap.RegisterDowned(p, x, y);
         }
       }
       CbtMap.BuildArenaArrays();
       slot = (slot + 1) & 255;
-      U8[144007] = U8[144007] + 1;
+      U8[229893] = U8[229893] + 1;
     } else {
-      U8[slot * 4 + 144007] = 0;
+      U8[slot * 4 + 229893] = 0;
       if (U8[r32(p + 264) + 19] === 1) {
-        w32(slot * 4 + 144292, 0);
-        w32(143749, p);
+        w32(slot * 4 + 230178, 0);
+        w32(229635, p);
         SaveLoad.RemoveCreature(true, false);
       } else {
         prev = p;
         slot = (slot + 1) & 255;
-        U8[144007] = U8[144007] + 1;
+        U8[229893] = U8[229893] + 1;
       }
     }
     p = next;

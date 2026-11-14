@@ -66,8 +66,16 @@ function sigKey(params: Param[], result: Ty | null): string {
 export class Gen {
   /** caller id -> callee ids (negative: an indirect call of that signature) */
   edges = new Map<number, Set<number>>();
-  sigIds = new Map<string, number>();
+  /** each procedural type's own number, for its indirect calls */
+  sigIds = new Map<Ty, number>();
+  /** the routines assigned to variables of a procedural type; and those whose address went somewhere untyped */
+  assigned = new Map<Ty, Set<FuncSym>>();
+  wild = new Set<FuncSym>();
+  links: [Ty, Ty][] = [];
+  loose = new Set<Ty>();
   asyncRoots = new Set<number>();
+  hooks = new Set<string>();
+  taps = new Set<string>();
 
   // per top-level routine
   private memVars = new Set<VarSym>();
@@ -118,6 +126,7 @@ export class Gen {
     for (const x of used) out.push(`import * as ${this.unitNs.get(x)} from './${x.name.toLowerCase()}';`);
     const hasExt = u.funcs.some((f) => f.external);
     if (hasExt) out.push(`import * as $ext from '../host/x_${u.name.toLowerCase()}';`);
+    if (u.funcs.some((f) => this.hooks.has(`${u.name}.${f.name}`.toLowerCase()) || this.taps.has(`${u.name}.${f.name}`.toLowerCase()))) out.push(`import * as $hooks from '../host/hooks';`);
     out.push('');
     const seen = new Set<string>();
     for (const k of u.consts) {
@@ -140,6 +149,26 @@ export class Gen {
         continue;
       }
       if (!f.body) throw new CompileError(`${u.file}: ${f.name} is declared but has no body`);
+      const hookName = `${u.name}.${f.name}`;
+      if (this.hooks.has(hookName.toLowerCase())) {
+        // the page's interface is told when this routine is entered and left (host/hooks.ts)
+        const body = this.genTop(f, false).replace(`function ${f.jsName}(`, `function ${f.jsName}$impl(`);
+        out.push(body);
+        this.edges.get(f.id)!.add(f.id);
+        out.push(
+          `export ${ASYNC}${f.id};function ${f.jsName}(...a) {\n  $hooks.enter("${hookName}", a);\n  try {\n    return ${OPEN}${f.id};${f.jsName}$impl(...a)${CLOSE}${f.id};;\n  } finally {\n    $hooks.leave("${hookName}");\n  }\n}`,
+        );
+        out.push('');
+        continue;
+      }
+      if (this.taps.has(hookName.toLowerCase())) {
+        // the page's interface is told of each call, with its arguments
+        out.push(this.genTop(f, false).replace(`function ${f.jsName}(`, `function ${f.jsName}$impl(`));
+        this.edges.get(f.id)!.add(f.id);
+        out.push(`export ${ASYNC}${f.id};function ${f.jsName}(...a) {\n  $hooks.tap("${hookName}", a);\n  return ${OPEN}${f.id};${f.jsName}$impl(...a)${CLOSE}${f.id};;\n}`);
+        out.push('');
+        continue;
+      }
       out.push(this.genTop(f, true));
       out.push('');
     }
@@ -422,6 +451,12 @@ export class Gen {
   private coerce(v: Value, to: Ty | null, e: { line: number }): string {
     if (!to) return v.c;
     const from = v.ty;
+    if (to.k === 'proc' && from !== to && v.cv === undefined) {
+      // a procedure value from a variable of another type: what that type holds, this one may hold; from a plain
+      // pointer, anything of this shape
+      if (from.k === 'proc') this.links.push([from, to]);
+      else if (from.k === 'pointer' && !/^\d+$/.test(v.c)) this.loose.add(to);
+    }
     switch (to.k) {
       case 'string':
         if (from.k === 'char') return typeof v.cv === 'number' ? jsStr(String.fromCharCode(v.cv)) : `String.fromCharCode(${v.c})`;
@@ -660,7 +695,7 @@ export class Gen {
       }
       case 'func':
         // a routine's name where a procedure variable is wanted is the routine; anywhere else it is a call
-        if (want && want.k === 'proc') return { c: num(this.c.procIndex(d.f)), ty: T.pointer, atom: true };
+        if (want && want.k === 'proc') return { c: num(this.takeProc(d.f, want)), ty: T.pointer, atom: true };
         return this.callFunc(d.f, [], e);
       case 'builtin':
         return this.builtin(d.name, [], e, want);
@@ -704,6 +739,15 @@ export class Gen {
     return out;
   }
 
+  /** A routine's place in the procedure table, noting the procedural type it is being given to. */
+  private takeProc(f: FuncSym, want?: Ty | null): number {
+    if (want && want.k === 'proc') {
+      if (!this.assigned.has(want)) this.assigned.set(want, new Set());
+      this.assigned.get(want)!.add(f);
+    } else this.wild.add(f);
+    return this.c.procIndex(f);
+  }
+
   private resultOwner(f: FuncSym): boolean {
     for (let p: FuncSym | null = this.cur; p; p = p.parent) if (p === f) return !!f.resultSym;
     return false;
@@ -724,11 +768,10 @@ export class Gen {
   private callIndirect(pv: Value, t: Ty, args: Arg[], e: { line: number }): Value {
     const a = this.args(t.params!, args, e, 'procedure variable');
     if (t.result && isStructured(t.result)) a.unshift(this.addr(this.allocTemp(t.result.size) as any));
-    const key = sigKey(t.params!, t.result ?? null);
-    let id = this.sigIds.get(key);
+    let id = this.sigIds.get(t);
     if (id === undefined) {
       id = -(this.sigIds.size + 1);
-      this.sigIds.set(key, id);
+      this.sigIds.set(t, id);
     }
     return this.resultValue(this.mark(id, `rt.FT[${pv.c}](${a.join(', ')})`), t.result ?? null);
   }
@@ -849,7 +892,7 @@ export class Gen {
         return this.setLit(e, want);
       case 'addr': {
         const d = this.des(e.e);
-        if (d.k === 'func') return { c: num(this.c.procIndex(d.f)), ty: T.pointer, atom: true };
+        if (d.k === 'func') return { c: num(this.takeProc(d.f, want)), ty: T.pointer, atom: true };
         if (d.k === 'lv' && d.lv.ty?.k === 'proc') return { ...this.load(d.lv), ty: T.pointer };
         const lv = this.desLV(d, e);
         return { c: this.addr(lv), ty: { k: 'pointer', size: 4, target: lv.ty }, atom: lv.base === null || lv.off === 0 };
@@ -1654,11 +1697,35 @@ export class Gen {
   solveAsync(): Set<number> {
     const isAsync = new Set<number>(this.asyncRoots);
     const bySig = new Map<number, FuncSym[]>();
-    for (const f of this.c.procTable) {
-      const id = this.sigIds.get(sigKey(f.params, f.result));
-      if (id === undefined) continue;
-      if (!bySig.has(id)) bySig.set(id, []);
-      bySig.get(id)!.push(f);
+    for (const [f, t] of this.c.procTyped) {
+      if (!t) this.wild.add(f);
+      else {
+        if (!this.assigned.has(t)) this.assigned.set(t, new Set());
+        this.assigned.get(t)!.add(f);
+      }
+    }
+    const holds = (t: Ty): Set<FuncSym> => {
+      if (!this.assigned.has(t)) this.assigned.set(t, new Set());
+      return this.assigned.get(t)!;
+    };
+    for (let grew = true; grew; ) {
+      grew = false;
+      for (const [from, to] of this.links) {
+        const dst = holds(to);
+        for (const f of holds(from)) {
+          if (!dst.has(f)) {
+            dst.add(f);
+            grew = true;
+          }
+        }
+      }
+    }
+    for (const [t, id] of this.sigIds) {
+      const key = sigKey(t.params!, t.result ?? null);
+      const fs = [...holds(t)];
+      for (const f of this.wild) if (sigKey(f.params, f.result) === key) fs.push(f);
+      if (this.loose.has(t)) for (const f of this.c.procTable) if (sigKey(f.params, f.result) === key) fs.push(f);
+      bySig.set(id, fs);
     }
     for (let changed = true; changed; ) {
       changed = false;

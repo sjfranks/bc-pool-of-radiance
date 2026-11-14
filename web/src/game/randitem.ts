@@ -8,7 +8,7 @@ import * as Dice from './dice';
 
 export const TEMPLATE_LAST = 19;
 
-export const $at = { randomItemTemplates: 248714 };
+export const $at = { randomItemTemplates: 256906 };
 
 export function GenerateRandomItem(kind: number, item: number) {
   let r: number = 0, n: number = 0, j: number = 0, template: number = 0, spell: number = 0;
@@ -367,7 +367,7 @@ export function GenerateRandomItem(kind: number, item: number) {
 export function ApplyTemplate(item: number, template: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 16);
   let j: number = 0;
-  mv($f0, template * 16 + 248698, 16);
+  mv($f0, template * 16 + 256890, 16);
   {
     const $w1 = item;
     for (let $i2 = 1; $i2 <= 3; $i2++) {

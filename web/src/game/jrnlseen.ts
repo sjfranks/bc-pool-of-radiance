@@ -15,35 +15,35 @@ export const PENDING_ENTRY = 1;
 export const PENDING_TALE = 2;
 export const MAP_COUNT = 5;
 
-export const $at = { MAPS: 240414, rec: 240429, pending: 240448 };
+export const $at = { MAPS: 248606, rec: 248621, pending: 248640 };
 
 export function Clear() {
-  rt.fill(240429, 19, 0);
-  wS(240429, 4, SIG);
-  U8[240434] = 1;
-  U8[240448] = 0;
+  rt.fill(248621, 19, 0);
+  wS(248621, 4, SIG);
+  U8[248626] = 1;
+  U8[248640] = 0;
 }
 
 export function FindAll() {
   Clear();
-  rt.fill(240435, 13, 255);
+  rt.fill(248627, 13, 255);
 }
 
 export function Mark(index: number) {
   if ((index >= 1) && (index <= 99)) {
-    U8[Math.trunc(index / 8) + 240435] = U8[Math.trunc(index / 8) + 240435] | (1 << (index % 8));
+    U8[Math.trunc(index / 8) + 248627] = U8[Math.trunc(index / 8) + 248627] | (1 << (index % 8));
   }
 }
 
 export function Found(index: number) {
   let $r0: boolean = false;
-  $r0 = ((index >= 1) && (index <= 99)) && ((U8[Math.trunc(index / 8) + 240435] & (1 << (index % 8))) !== 0);
+  $r0 = ((index >= 1) && (index <= 99)) && ((U8[Math.trunc(index / 8) + 248627] & (1 << (index % 8))) !== 0);
   return $r0;
 }
 
 export function Listed(index: number) {
   let $r0: boolean = false;
-  $r0 = ((index >= 1) && (index <= 99)) && ((U8[141186] === 0) || Found(index));
+  $r0 = ((index >= 1) && (index <= 99)) && ((U8[227072] === 0) || Found(index));
   return $r0;
 }
 
@@ -54,15 +54,15 @@ export function Scan(text: string) {
     w16($f0 + 256, $i1);
     U8[$f0 + ri16($f0 + 256)] = rt.UpCase(U8[$f0 + ri16($f0 + 256)]);
   }
-  if (U8[240448] !== 0) {
+  if (U8[248640] !== 0) {
     w16($f0 + 256, 1);
     while ((ri16($f0 + 256) <= U8[$f0]) && (U8[$f0 + ri16($f0 + 256)] === 32)) {
       w16($f0 + 256, ri16($f0 + 256) + 1);
     }
     if (ReadNumber($f0, $f0 + 256, $f0 + 258)) {
-      MarkNumber(ri16($f0 + 258), U8[240448] === 2);
+      MarkNumber(ri16($f0 + 258), U8[248640] === 2);
     }
-    U8[240448] = 0;
+    U8[248640] = 0;
   }
   for (let $i3 = 1, $e3 = U8[$f0]; $i3 <= $e3; $i3++) {
     w16($f0 + 256, $i3);
@@ -82,10 +82,10 @@ export function Scan(text: string) {
 
 export function AreaMapAllowed() {
   let i: number = 0, allowed: boolean = false, $r0: boolean = false;
-  allowed = r16(r32(141147) + 502) === 0;
+  allowed = r16(r32(227033) + 502) === 0;
   for (let $i1 = 1; $i1 <= 5; $i1++) {
     i = $i1;
-    if (((U8[i * 3 + 240412] === U8[146747]) && (U8[i * 3 + 240413] === U8[r32(141147) + 394])) && Found(18 + U8[i * 3 + 240411])) {
+    if (((U8[i * 3 + 248604] === U8[232633]) && (U8[i * 3 + 248605] === U8[r32(227033) + 394])) && Found(18 + U8[i * 3 + 248603])) {
       allowed = true;
     }
   }
@@ -95,13 +95,13 @@ export function AreaMapAllowed() {
 
 export function WriteSlot(s: number, name_: string) {
   let $r0: boolean = false;
-  $r0 = FileUtil.WriteToSet(s, name_, 240429, 19);
+  $r0 = FileUtil.WriteToSet(s, name_, 248621, 19);
   return $r0;
 }
 
 export function ReadSlot(fn: string) {
-  U8[240448] = 0;
-  if ((!FileUtil.ReadRecord(fn, 240429, 19) || (rS(240429) !== SIG)) || (U8[240434] !== 1)) {
+  U8[248640] = 0;
+  if ((!FileUtil.ReadRecord(fn, 248621, 19) || (rS(248621) !== SIG)) || (U8[248626] !== 1)) {
     FindAll();
   }
 }
@@ -159,9 +159,9 @@ export function TakeNumbers(text: number, p: number, len: number, tale: boolean,
   w16($f0, ri16($f0) + 1);
   if (ri16($f0) > U8[text]) {
     if (tale) {
-      U8[240448] = 2;
+      U8[248640] = 2;
     } else {
-      U8[240448] = 1;
+      U8[248640] = 1;
     }
     { S.sp = $sp; return; }
   }

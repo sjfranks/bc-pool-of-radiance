@@ -15,7 +15,7 @@ export const OUTPUT_DISABLED = 0;
 export const OUTPUT_ENABLED = 1;
 export const MAX_CLOCK_PASSES = 60000;
 
-export const $at = { soundSaved: 146752, soundAutoStop: 146753, soundExitSaved: 224315, musicTune: 224319 };
+export const $at = { soundSaved: 232638, soundAutoStop: 232639, soundExitSaved: 232641, musicTune: 232645 };
 
 export function SoundTime() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
@@ -26,14 +26,14 @@ export function SoundTime() {
   return $r0;
 }
 
-export async function SoundDelay(centiseconds: number) {
+export function SoundDelay(centiseconds: number) {
   let target: number = 0, now: number = 0, passes: number = 0, ticks: number = 0, elapsed: number = 0, last: number = 0, sample: number = 0;
   if (SoundTimerHooked()) {
     ticks = Math.trunc(((centiseconds * 11931) + 2520) / 5041);
     elapsed = 0;
-    last = (await SoundTimerTicks()) & 65535;
+    last = SoundTimerTicks() & 65535;
     while (elapsed < ticks) {
-      sample = (await SoundTimerTicks()) & 65535;
+      sample = SoundTimerTicks() & 65535;
       elapsed = (elapsed + ((sample - last) & 65535)) | 0;
       last = sample;
     }
@@ -53,87 +53,87 @@ export async function SoundDelay(centiseconds: number) {
   } while (!(now >= target));
 }
 
-export async function SoundCommand(cmd: number) {
-  if (U8[143233] === 2) {
+export function SoundCommand(cmd: number) {
+  if (U8[229119] === 2) {
     return;
   }
-  (await SetSoundDevice(U8[141140]));
+  SetSoundDevice(U8[227026]);
   if (cmd !== 1) {
-    w16(224319, 0);
+    w16(232645, 0);
   }
-  if (r16(146753) > 0) {
-    (await InstallSoundTimer());
+  if (r16(232639) > 0) {
+    InstallSoundTimer();
   }
   switch (cmd) {
     case 0: {
-      (await SilenceAll());
-      (await SetSoundOutputEnabled(0));
+      SilenceAll();
+      SetSoundOutputEnabled(0);
       break;
     }
     case 1: {
-      (await SetSoundOutputEnabled(1));
+      SetSoundOutputEnabled(1);
       break;
     }
     case 255: {
-      (await SilenceAll());
+      SilenceAll();
       break;
     }
     default: {
-      (await rt.FT[r32(141141)](cmd - 1));
+      rt.FT[r32(227027)](cmd - 1);
     }
   }
-  if ((r16(146753) > 0) && !(await MusicPlaying())) {
-    (await SoundDelay(10));
-    (await SilenceAll());
-    (await UninstallSoundTimer());
+  if ((r16(232639) > 0) && !MusicPlaying()) {
+    SoundDelay(10);
+    SilenceAll();
+    UninstallSoundTimer();
   }
 }
 
-export async function SoundEffect(cmd: number, group: number) {
-  if ((U8[141182] & group) !== 0) {
-    (await SoundCommand(cmd));
+export function SoundEffect(cmd: number, group: number) {
+  if ((U8[227068] & group) !== 0) {
+    SoundCommand(cmd);
   }
 }
 
-export async function SoundSuspend() {
-  U8[146752] = U8[143233];
-  if (U8[143233] === 2) {
+export function SoundSuspend() {
+  U8[232638] = U8[229119];
+  if (U8[229119] === 2) {
     return;
   }
-  w16(224319, 0);
-  (await SetSoundDevice(U8[141140]));
-  (await InstallSoundTimer());
-  (await SilenceAll());
-  (await UninstallSoundTimer());
+  w16(232645, 0);
+  SetSoundDevice(U8[227026]);
+  InstallSoundTimer();
+  SilenceAll();
+  UninstallSoundTimer();
 }
 
-export async function PlayMusic(tune: number) {
-  if ((U8[143233] === 2) || !TuneAllowed(tune)) {
+export function PlayMusic(tune: number) {
+  if ((U8[229119] === 2) || !TuneAllowed(tune)) {
     return;
   }
-  (await SetSoundDevice(U8[141140]));
-  (await InstallSoundTimer());
-  w16(224319, tune);
-  (await rt.FT[r32(141141)](tune));
+  SetSoundDevice(U8[227026]);
+  InstallSoundTimer();
+  w16(232645, tune);
+  rt.FT[r32(227027)](tune);
 }
 
-export async function StopMusic() {
-  if (r16(224319) === 0) {
+export function StopMusic() {
+  if (r16(232645) === 0) {
     return;
   }
-  w16(224319, 0);
-  if (U8[143233] === 2) {
+  w16(232645, 0);
+  if (U8[229119] === 2) {
     return;
   }
-  (await rt.FT[r32(141141)](0));
-  if (r16(146753) > 0) {
-    (await UninstallSoundTimer());
+  rt.FT[r32(227027)](0);
+  if (r16(232639) > 0) {
+    UninstallSoundTimer();
   }
 }
 
-export async function MusicPlaying() {
+export function MusicPlaying() {
   let $r0: boolean = false;
-  $r0 = ((r16(224319) !== 0) && SoundTimerHooked()) && ((await SoundVoiceTune(0)) === r16(224319));
+  $r0 = ((r16(232645) !== 0) && SoundTimerHooked()) && (SoundVoiceTune(0) === r16(232645));
   return $r0;
 }
 
@@ -143,32 +143,32 @@ export function SoundTimerHooked() {
   return $r0;
 }
 
-export async function ApplyMusicSettings() {
-  if ((r16(224319) !== 0) && !TuneAllowed(r16(224319))) {
-    (await StopMusic());
+export function ApplyMusicSettings() {
+  if ((r16(232645) !== 0) && !TuneAllowed(r16(232645))) {
+    StopMusic();
   }
 }
 
-export async function SoundSetAutoStop(autoStop: number) {
-  if (U8[143233] === 2) {
+export function SoundSetAutoStop(autoStop: number) {
+  if (U8[229119] === 2) {
     return;
   }
   if (autoStop > 0) {
-    if ((r16(146753) === 0) && !(await MusicPlaying())) {
-      (await UninstallSoundTimer());
+    if ((r16(232639) === 0) && !MusicPlaying()) {
+      UninstallSoundTimer();
     }
   } else {
-    (await InstallSoundTimer());
+    InstallSoundTimer();
   }
-  w16(146753, autoStop);
+  w16(232639, autoStop);
 }
 
-export async function ProgramSpeakerVoices(tuneId: number) {
-  (await SndSeq.ProgramSpeakerVoices(tuneId));
+export function ProgramSpeakerVoices(tuneId: number) {
+  SndSeq.ProgramSpeakerVoices(tuneId);
 }
 
-export async function ProgramTandyVoices(tuneId: number) {
-  (await SndSeq.ProgramTandyVoices(tuneId));
+export function ProgramTandyVoices(tuneId: number) {
+  SndSeq.ProgramTandyVoices(tuneId);
 }
 
 export function OplWrite(reg: number, value: number) {
@@ -179,37 +179,37 @@ export function OplReset() {
   SndSeq.OplReset();
 }
 
-export async function SetSoundDevice(mode: number) {
-  (await SndSeq.SetSoundDevice(mode));
+export function SetSoundDevice(mode: number) {
+  SndSeq.SetSoundDevice(mode);
 }
 
-export async function InstallSoundTimer() {
-  (await SndSeq.InstallSoundTimer());
+export function InstallSoundTimer() {
+  SndSeq.InstallSoundTimer();
 }
 
-export async function UninstallSoundTimer() {
-  (await SndSeq.UninstallSoundTimer());
+export function UninstallSoundTimer() {
+  SndSeq.UninstallSoundTimer();
 }
 
-export async function SetSoundOutputEnabled(enabledValue: number) {
-  (await SndSeq.SetSoundOutputEnabled(enabledValue));
+export function SetSoundOutputEnabled(enabledValue: number) {
+  SndSeq.SetSoundOutputEnabled(enabledValue);
 }
 
-export async function SoundTimerTicks() {
+export function SoundTimerTicks() {
   let $r0: number = 0;
-  $r0 = (await SndSeq.SoundTimerTicks()) & 65535;
+  $r0 = SndSeq.SoundTimerTicks() & 65535;
   return $r0;
 }
 
-export async function SoundVoiceTune(voice: number) {
+export function SoundVoiceTune(voice: number) {
   let $r0: number = 0;
-  $r0 = (await SndSeq.SoundVoiceTune(voice)) & 65535;
+  $r0 = SndSeq.SoundVoiceTune(voice) & 65535;
   return $r0;
 }
 
-export async function SilenceAll() {
-  (await ProgramTandyVoices(0));
-  (await ProgramSpeakerVoices(0));
+export function SilenceAll() {
+  ProgramTandyVoices(0);
+  ProgramSpeakerVoices(0);
 }
 
 export function TuneGroup(tune: number) {
@@ -232,18 +232,18 @@ export function TuneGroup(tune: number) {
 
 export function TuneAllowed(tune: number) {
   let $r0: boolean = false;
-  $r0 = (U8[141180] !== 0) && ((TuneGroup(tune) === 0) || ((U8[141181] & TuneGroup(tune)) !== 0));
+  $r0 = (U8[227066] !== 0) && ((TuneGroup(tune) === 0) || ((U8[227067] & TuneGroup(tune)) !== 0));
   return $r0;
 }
 
-export async function SoundExit() {
-  w32(65544, r32(224315));
-  (await UninstallSoundTimer());
+export function SoundExit() {
+  w32(65544, r32(232641));
+  UninstallSoundTimer();
 }
 
 export function $init() {
-  w32(224315, r32(65544));
-  w32(65544, 1);
-  U8[146752] = 0;
-  w16(146753, 0);
+  w32(232641, r32(65544));
+  w32(65544, 2);
+  U8[232638] = 0;
+  w16(232639, 0);
 }

@@ -21,7 +21,7 @@ export function CopperValue(m: number) {
   total = 0;
   for (let $i1 = 0; $i1 <= 4; $i1++) {
     i = $i1;
-    total = (total + rt.mul(ri32(i * 4 + 131922), ri32(m + i * 4))) | 0;
+    total = (total + rt.mul(ri32(i * 4 + 217808), ri32(m + i * 4))) | 0;
   }
   $r0 = total;
   return $r0;
@@ -31,7 +31,7 @@ export function CoinValueInGold(m: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 28);
   mv($f0 + 0, m, 28);
   let $r0: number = 0;
-  $r0 = Math.trunc(CopperValue($f0) / ri32(131934)) | 0;
+  $r0 = Math.trunc(CopperValue($f0) / ri32(217820)) | 0;
   S.sp = $sp;
   return $r0;
 }
@@ -62,7 +62,7 @@ export function CreatureCopper(creature: number) {
 
 export function CreatureGold(creature: number) {
   let $r0: number = 0;
-  $r0 = Math.trunc(CreatureCopper(creature) / ri32(131934)) | 0;
+  $r0 = Math.trunc(CreatureCopper(creature) / ri32(217820)) | 0;
   return $r0;
 }
 
@@ -73,12 +73,12 @@ export function MakeChange(rem: number, cap: number, m: number) {
   }
   for (let $i1 = 4; $i1 >= 0; $i1--) {
     i = $i1;
-    n = Math.trunc(rem / ri32(i * 4 + 131922)) | 0;
+    n = Math.trunc(rem / ri32(i * 4 + 217808)) | 0;
     if (n > cap) {
       n = cap;
     }
     w32(m + i * 4, n);
-    rem = (rem - rt.mul(n, ri32(i * 4 + 131922))) | 0;
+    rem = (rem - rt.mul(n, ri32(i * 4 + 217808))) | 0;
   }
 }
 
@@ -90,7 +90,7 @@ export function WhoPays(buyer: number, gp: number) {
   let $r0: number = 0;
   if (gp <= CreatureGold(buyer)) {
     $r0 = 1;
-  } else if (gp <= CoinValueInGold(144862)) {
+  } else if (gp <= CoinValueInGold(230748)) {
     $r0 = 2;
   } else {
     $r0 = 0;

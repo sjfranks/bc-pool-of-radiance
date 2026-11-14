@@ -12,7 +12,7 @@ export const LAST_ROW = 24;
 export const JOIN_COL = 16;
 export const JOIN_ROW = 16;
 
-export const $at = { joinCorner: 226100 };
+export const $at = { joinCorner: 234426 };
 
 export async function DrawBorder(ulCol: number, ulRow: number, lrCol: number, lrRow: number, corner: number) {
   let i: number = 0, symBase: number = 0;
@@ -36,13 +36,13 @@ export async function DrawBorder(ulCol: number, ulRow: number, lrCol: number, lr
     (await Sym8x8.Put8x8Sym(lrCol, i, symBase + 1, false, false));
   }
   if (((ulCol === 16) || (lrCol === 16)) && ((ulRow === 16) || (lrRow === 16))) {
-    U8[226100] = true ? 1 : 0;
-  } else if ((U8[226100] !== 0) && (((((ulRow === 16) || (lrRow === 16)) && (ulCol < 16)) && (lrCol > 16)) || ((((ulCol === 16) || (lrCol === 16)) && (ulRow < 16)) && (lrRow > 16)))) {
+    U8[234426] = true ? 1 : 0;
+  } else if ((U8[234426] !== 0) && (((((ulRow === 16) || (lrRow === 16)) && (ulCol < 16)) && (lrCol > 16)) || ((((ulCol === 16) || (lrCol === 16)) && (ulRow < 16)) && (lrRow > 16)))) {
     (await PutCorner(16, 16, corner));
   }
 }
 
-export async function ClearBox(ulCol: number, ulRow: number, lrCol: number, lrRow: number) {
+export function ClearBox(ulCol: number, ulRow: number, lrCol: number, lrRow: number) {
   if (ulCol < 0) {
     ulCol = 0;
   }
@@ -56,13 +56,13 @@ export async function ClearBox(ulCol: number, ulRow: number, lrCol: number, lrRo
     lrRow = 24;
   }
   if ((((ulCol <= 16) && (lrCol >= 16)) && (ulRow <= 16)) && (lrRow >= 16)) {
-    U8[226100] = false ? 1 : 0;
+    U8[234426] = false ? 1 : 0;
   }
-  (await TextRend.ClearRect(ulCol, ulRow, lrCol, lrRow));
+  TextRend.ClearRect(ulCol, ulRow, lrCol, lrRow);
 }
 
 export async function DrawWindow(ulCol: number, ulRow: number, lrCol: number, lrRow: number, corner: number, color: number, title: string) {
-  (await ClearBox(ulCol, ulRow, lrCol, lrRow));
+  ClearBox(ulCol, ulRow, lrCol, lrRow);
   (await DrawBorder(ulCol, ulRow, lrCol, lrRow, corner));
   if (title.length !== 0) {
     TextRend.DisplayCentered(ulCol, lrCol - 1, ulRow, color, title);
@@ -74,5 +74,5 @@ export async function PutCorner(col: number, row: number, corner: number) {
 }
 
 export function ForgetJoin() {
-  U8[226100] = false ? 1 : 0;
+  U8[234426] = false ? 1 : 0;
 }

@@ -25,12 +25,12 @@ export const VALUE_COL = 15;
 export const VALUE_WIDTH = 24;
 export const CASTER_AREA = "THE CASTER";
 
-export const $at = { saveResults: 247303, saveNames: 247431 };
+export const $at = { saveResults: 255495, saveNames: 255623 };
 
 export function SaveResult(spell: number) {
   let $r0: number = 0;
   if ((spell >= 1) && (spell <= 128)) {
-    $r0 = U8[spell + 247302];
+    $r0 = U8[spell + 255494];
   } else {
     $r0 = 0;
   }
@@ -43,7 +43,7 @@ export function RangeText(line: number, long: boolean) {
   spell = UseLine(line, $f0) & 255;
   wS($f0 + 2, 40, "");
   {
-    const $w1 = spell * 16 + 136506;
+    const $w1 = spell * 16 + 222392;
     if (spell === 31) {
       if (long) {
         wS($f0 + 2, 40, "TOUCH");
@@ -72,7 +72,7 @@ export function RangeText(line: number, long: boolean) {
     wS($f0 + 2, 40, "RNG " + rS($f0 + 2));
   }
   $r0 = rS($f0 + 2);
-  U8[146457] = (U8[$f0] !== 0) ? 1 : 0;
+  U8[232343] = (U8[$f0] !== 0) ? 1 : 0;
   S.sp = $sp;
   return $r0;
 }
@@ -90,7 +90,7 @@ export function AreaText(line: number, long: boolean) {
   }
   aura = 0;
   {
-    const $w1 = spell * 16 + 136506;
+    const $w1 = spell * 16 + 222392;
     if (U8[$w1 + 10] > 0) {
       aura = FxEngine.AuraRange(U8[$w1 + 10]) & 255;
     }
@@ -175,7 +175,7 @@ export function AreaText(line: number, long: boolean) {
   } else {
     $r0 = rS($f0 + 2);
   }
-  U8[146457] = (U8[$f0] !== 0) ? 1 : 0;
+  U8[232343] = (U8[$f0] !== 0) ? 1 : 0;
   S.sp = $sp;
   return $r0;
 }
@@ -230,7 +230,7 @@ export function DurationText(line: number, long: boolean) {
   } else {
     m = (r16($f0 + 3) * U8[$f0 + 5]) & 65535;
     {
-      const $w1 = spell * 16 + 136506;
+      const $w1 = spell * 16 + 222392;
       if (U8[$f0 + 5] > 1) {
         u = U8[$f0 + 5];
       } else if (((U8[$w1 + 4] % 60) === 0) && ((U8[$w1 + 5] % 60) === 0)) {
@@ -241,8 +241,8 @@ export function DurationText(line: number, long: boolean) {
         u = 1;
       }
     }
-    if ((m === 0) || ((U8[spell * 16 + 136516] === 0) && (spell !== 91))) {
-      if ((m === 0) && (U8[spell * 16 + 136516] > 0)) {
+    if ((m === 0) || ((U8[spell * 16 + 222402] === 0) && (spell !== 91))) {
+      if ((m === 0) && (U8[spell * 16 + 222402] > 0)) {
         if (long) {
           wS($f0 + 6, 40, "PERMANENT");
         } else {
@@ -275,7 +275,7 @@ export function DurationText(line: number, long: boolean) {
     wS($f0 + 6, 40, "DUR " + rS($f0 + 6));
   }
   $r0 = rS($f0 + 6);
-  U8[146457] = (U8[$f0] !== 0) ? 1 : 0;
+  U8[232343] = (U8[$f0] !== 0) ? 1 : 0;
   S.sp = $sp;
   return $r0;
 }
@@ -286,7 +286,7 @@ export function SaveText(spell: number, long: boolean) {
   spell = spell & 127;
   wS($f0 + 41, 20, "");
   if ((spell >= 1) && (spell <= 128)) {
-    wS($f0 + 41, 20, " (VS " + rS((U8[spell * 16 + 136515] % 5) * 10 + 247431) + ")");
+    wS($f0 + 41, 20, " (VS " + rS((U8[spell * 16 + 222401] % 5) * 10 + 255623) + ")");
   }
   switch (SaveResult(spell)) {
     case 1: {
@@ -337,7 +337,7 @@ export function WhenText(spell: number, long: boolean) {
       wS($f0, 40, "DOORS");
     }
   } else {
-    switch (U8[spell * 16 + 136517]) {
+    switch (U8[spell * 16 + 222403]) {
       case 0: {
         if (long) {
           wS($f0, 40, "IN CAMP");
@@ -387,7 +387,7 @@ export function CasterLevelText(line: number) {
     wS($f0 + 1, 40, StrUtil.NumStr(CharHlp.GetCasterLevel(spell)));
   }
   $r0 = rS($f0 + 1);
-  U8[146457] = (U8[$f0] !== 0) ? 1 : 0;
+  U8[232343] = (U8[$f0] !== 0) ? 1 : 0;
   S.sp = $sp;
   return $r0;
 }
@@ -395,7 +395,7 @@ export function CasterLevelText(line: number) {
 export function CastTimeText(line: number) {
   let spell: number = 0, n: number = 0, $r0: string = "";
   spell = line & 255;
-  n = Math.trunc(U8[spell * 16 + 136518] / 3);
+  n = Math.trunc(U8[spell * 16 + 222404] / 3);
   if ((line & 256) !== 0) {
     n = 0;
   }
@@ -502,15 +502,15 @@ export async function ShowItemPage(items: number, count: number, cur: number) {
 
 export function UseLine(line: number, old: number) {
   let $r0: number = 0;
-  U8[old] = (U8[146457] !== 0) ? 1 : 0;
-  U8[146457] = (line & 256) !== 0 ? 1 : 0;
+  U8[old] = (U8[232343] !== 0) ? 1 : 0;
+  U8[232343] = (line & 256) !== 0 ? 1 : 0;
   $r0 = line & 255;
   return $r0;
 }
 
 export function CampOnly(spell: number) {
   let $r0: boolean = false;
-  $r0 = U8[spell * 16 + 136517] === 0;
+  $r0 = U8[spell * 16 + 222403] === 0;
   return $r0;
 }
 
@@ -608,8 +608,8 @@ export async function DrawPage(line: number, item: number) {
   wS($f0, 40, CasterLevelText(line));
   (await Border.DrawWindow(1, 3, 38, 22, 0, 0, ""));
   if (CharHlp.IsSpell(spell)) {
-    TextRend.DisplayCentered(1, 38, 3, 15, rS(spell * 33 + 133189));
-    switch (U8[spell * 16 + 136506]) {
+    TextRend.DisplayCentered(1, 38, 3, 15, rS(spell * 33 + 219075));
+    switch (U8[spell * 16 + 222392]) {
       case 0: {
         wS($f0 + 41, 40, "CLERIC");
         break;
@@ -622,7 +622,7 @@ export async function DrawPage(line: number, item: number) {
         wS($f0 + 41, 40, "MAGIC-USER");
       }
     }
-    wS($f0 + 41, 40, rS($f0 + 41) + " LEVEL " + StrUtil.NumStr(I8[spell * 16 + 136507]));
+    wS($f0 + 41, 40, rS($f0 + 41) + " LEVEL " + StrUtil.NumStr(I8[spell * 16 + 222393]));
   } else {
     if (item !== 0) {
       TextRend.DisplayCentered(1, 38, 3, 15, ItemName(item));
@@ -640,8 +640,8 @@ export async function DrawPage(line: number, item: number) {
   } else if ((line & 256) !== 0) {
     TextRend.DisplayString(15, 6, 15, "A SCROLL, LEVEL " + rS($f0));
   } else {
-    CharDisp.DisplayCreatureName(r32(143749), 15, 6, false);
-    TextRend.DisplayString(15 + U8[r32(143749)], 6, 15, LevelAfter(U8[r32(143749)], rS($f0)));
+    CharDisp.DisplayCreatureName(r32(229635), 15, 6, false);
+    TextRend.DisplayString(15 + U8[r32(229635)], 6, 15, LevelAfter(U8[r32(229635)], rS($f0)));
   }
   row = 7;
   Figure(row, "RANGE", RangeText(line, true));
@@ -683,7 +683,7 @@ export async function Browse(lines: number, items: number, count: number, cur: n
     }
     (await DrawPage(r16(lines + ri16(cur) * 2), item));
     step = 0;
-    U8[145643] = 1;
+    U8[231529] = 1;
     do {
       ch = (await MenuCore.MenuHorizontal(query, rS($f0 + 1), 13, 10, 15, true, false, $f0)) & 255;
       if ((U8[$f0] !== 0)) {

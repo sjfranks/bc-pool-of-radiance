@@ -23,7 +23,7 @@ export function ExpandChunk(chunk: number, mask: number, pic: number, at: number
       color = VidOps.ChunkPixel(chunk, k) & 255;
       for (let $i3 = 0; $i3 <= 3; $i3++) {
         plane = $i3;
-        if ((U8[plane + 132841] & color) > 0) {
+        if ((U8[plane + 218727] & color) > 0) {
           U8[$w1 + (plane + at) + 27] = U8[$w1 + (plane + at) + 27] | bit;
         }
       }
@@ -70,7 +70,7 @@ export function RemapColour(pic: number, scratch: number, srcOff: number, nFrame
     const $w1 = scratch;
     for (let $i2 = 0; $i2 <= 3; $i2++) {
       plane = $i2;
-      if ((fromC & U8[plane + 132841]) > 0) {
+      if ((fromC & U8[plane + 218727]) > 0) {
         U8[$f0 + plane] = 0;
       } else {
         U8[$f0 + plane] = 255;
@@ -93,7 +93,7 @@ export function RemapColour(pic: number, scratch: number, srcOff: number, nFrame
           }
           for (let $i7 = 0; $i7 <= 3; $i7++) {
             plane = $i7;
-            if ((toC & U8[plane + 132841]) > 0) {
+            if ((toC & U8[plane + 218727]) > 0) {
               U8[$w1 + (plane + dstOff) + 27] = U8[$w1 + (plane + dstOff) + 27] | match;
             } else {
               U8[$w1 + (plane + dstOff) + 27] = U8[$w1 + (plane + dstOff) + 27] & (~match & 255);
@@ -144,7 +144,7 @@ export function PutPixelRow(pic: number, at: number, y: number, px: number) {
     b = 0;
     for (let $i2 = 0; $i2 <= 7; $i2++) {
       k = $i2;
-      if ((U8[px + k] & U8[plane + 132841]) !== 0) {
+      if ((U8[px + k] & U8[plane + 218727]) !== 0) {
         b = b | (128 >>> k);
       }
     }
@@ -156,6 +156,6 @@ export function InitRowTables() {
   let i: number = 0;
   for (let $i1 = 0; $i1 <= 199; $i1++) {
     i = $i1;
-    w16(i * 2 + 142833, i * 40);
+    w16(i * 2 + 228719, i * 40);
   }
 }

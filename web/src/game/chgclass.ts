@@ -87,7 +87,7 @@ export async function AnnounceWoken(creature: number, wasResting: number) {
       if (I8[creature + cls + 150] === 1) {
         ClassCal.StartCasterClass(creature, cls);
       }
-      (await CharDisp.MessageText(rS(creature) + " can again use the skills of a " + rS(cls * 26 + 131942) + ".", 10, true));
+      (await CharDisp.MessageText(rS(creature) + " can again use the skills of a " + rS(cls * 26 + 217828) + ".", 10, true));
       (await CharDisp.MessageWait());
     }
   }
@@ -135,22 +135,22 @@ export async function ChangeClassMenu(freeTraining: boolean) {
     DrawListed(sel, true);
     (await ShowClassStatus(creature, I8[$f0 + sel - 1], freeTraining));
   }
-  creature = r32(143749);
+  creature = r32(229635);
   old = I8[creature + 47];
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   TextRend.DisplayCentered(2, 37, 1, 11, "Dual Class " + rS(creature));
   TextRend.DisplayString(2, 3, 10, "Now");
-  TextRend.DisplayString(14, 3, 15, "Level " + StrUtil.NumStr(I8[creature + old + 150]) + " " + rS(old * 26 + 131942));
+  TextRend.DisplayString(14, 3, 15, "Level " + StrUtil.NumStr(I8[creature + old + 150]) + " " + rS(old * 26 + 217828));
   TextRend.DisplayString(2, 5, 10, "New Class");
   TextRend.DisplayString(14, 5, 10, "Needs");
   TextRend.DisplayString(29, 5, 10, "Has");
   (await TextRend.DisplayMessageWindow(2, 15, 37, 19, 10, true, "To dual class a character must have " + StrUtil.NumStr(15) + " or more in the prime requisites of their current class, and " + StrUtil.NumStr(17) + " or more in their new class' prime requisites."));
   count = 0;
   row = 6;
-  for (let $i1 = 1, $e1 = I8[230003]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = I8[238195]; $i1 <= $e1; $i1++) {
     i = $i1;
-    cls = I8[i + 230003];
+    cls = I8[i + 238195];
     if (((cls !== old) && (count < 5)) && (((row + PrimeCount(cls)) - 1) <= 13)) {
       count = (count + 1) & 255;
       U8[$f0 + count - 1] = cls;
@@ -177,9 +177,9 @@ export async function ChangeClassMenu(freeTraining: boolean) {
   }
   done = false;
   do {
-    U8[227081] = true ? 1 : 0;
+    U8[235273] = true ? 1 : 0;
     if ((sel > 0) && Qualifies(creature, I8[$f0 + sel - 1], freeTraining)) {
-      U8[227082] = true ? 1 : 0;
+      U8[235274] = true ? 1 : 0;
       ch = (await MenuCore.MenuHorizontal("Change class: ", "Choose Exit", 13, 10, 15, true, false, $f0 + 10)) & 255;
     } else {
       ch = (await MenuCore.MenuHorizontal("Change class: ", "Exit", 13, 10, 15, true, false, $f0 + 10)) & 255;
@@ -199,13 +199,13 @@ export async function ChangeClassMenu(freeTraining: boolean) {
       }
     } else if (((sel > 0) && ((ch === 67) || (ch === 13))) && Qualifies(creature, I8[$f0 + sel - 1], freeTraining)) {
       cls = I8[$f0 + sel - 1];
-      if ((await MenuCore.YesNoMenu("Change " + rS(creature) + " to a " + rS(cls * 26 + 131942) + "? ", 13, 10, 15)) === 89) {
+      if ((await MenuCore.YesNoMenu("Change " + rS(creature) + " to a " + rS(cls * 26 + 217828) + "? ", 13, 10, 15)) === 89) {
         if (!freeTraining) {
           Money.PayFromCreature(creature, 2500);
         }
         ClassCal.ChangeClass(creature, cls);
         (await SyncClassPowers(creature));
-        (await CharDisp.PrintBottomLine(rS(creature) + " is now a " + rS(cls * 26 + 131942) + "."));
+        (await CharDisp.PrintBottomLine(rS(creature) + " is now a " + rS(cls * 26 + 217828) + "."));
         done = true;
       }
     } else if ((ch === 69) || (ch === 0)) {
@@ -230,10 +230,10 @@ export function OwnWard(creature: number) {
 
 export async function ShowStatus(color: number, s: string) {
   let delayFlag: number = 0;
-  delayFlag = U8[141225];
-  U8[141225] = 0;
+  delayFlag = U8[227111];
+  U8[227111] = 0;
   (await TextRend.DisplayMessageWindow(2, 21, 37, 22, color, true, s));
-  U8[141225] = delayFlag;
+  U8[227111] = delayFlag;
 }
 
 export function PrimeCount(cls: number) {
@@ -241,7 +241,7 @@ export function PrimeCount(cls: number) {
   n = 0;
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     ab = $i1;
-    if ((U8[cls + 230195] & (1 << ab)) !== 0) {
+    if ((U8[cls + 238387] & (1 << ab)) !== 0) {
       n = (n + 1) & 255;
     }
   }
@@ -252,19 +252,19 @@ export function PrimeCount(cls: number) {
 export function DrawClassLines(creature: number, cls: number, row: number, color: number, highlighted: boolean) {
   let ab: number = 0, score: number = 0;
   if (highlighted) {
-    TextRend.DisplayStringOn(2, row, 0, color, rS(cls * 26 + 131942));
+    TextRend.DisplayStringOn(2, row, 0, color, rS(cls * 26 + 217828));
   } else {
-    TextRend.DisplayString(2, row, color, rS(cls * 26 + 131942));
+    TextRend.DisplayString(2, row, color, rS(cls * 26 + 217828));
   }
   for (let $i1 = 0; $i1 <= 5; $i1++) {
     ab = $i1;
-    if ((U8[cls + 230195] & (1 << ab)) !== 0) {
+    if ((U8[cls + 238387] & (1 << ab)) !== 0) {
       if (ab === 0) {
         score = CharHlp.PermanentStrength(creature) & 255;
       } else {
         score = U8[creature + ab + 16];
       }
-      TextRend.DisplayString(14, row, color, rS(ab * 4 + 132384) + " " + StrUtil.NumStr(17));
+      TextRend.DisplayString(14, row, color, rS(ab * 4 + 218270) + " " + StrUtil.NumStr(17));
       TextRend.DisplayString(29, row, color, StrUtil.NumStr(score));
       row = (row + 1) & 255;
     }
@@ -277,7 +277,7 @@ export function Obstacle(creature: number, cls: number, freeTraining: boolean) {
     $r0 = 1;
   } else if (freeTraining) {
     $r0 = 0;
-  } else if ((U8[cls + 131902] & CharHlp.HallMask()) === 0) {
+  } else if ((U8[cls + 217788] & CharHlp.HallMask()) === 0) {
     $r0 = 2;
   } else if (MoneyCal.CreatureGold(creature) < 2500) {
     $r0 = 3;
@@ -295,7 +295,7 @@ export function Qualifies(creature: number, cls: number, freeTraining: boolean) 
 
 export async function ShowClassStatus(creature: number, cls: number, freeTraining: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
-  wS($f0, 40, rS(cls * 26 + 131942));
+  wS($f0, 40, rS(cls * 26 + 217828));
   switch (Obstacle(creature, cls, freeTraining)) {
     case 1: {
       (await ShowStatus(14, rS(creature) + " does not meet " + rS($f0) + " requirements."));

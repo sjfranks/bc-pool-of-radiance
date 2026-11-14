@@ -16,23 +16,23 @@ export const ITEM_POINTERS = 1;
 export const EFFECT_POINTERS = 1;
 export const DRAINED_FILLER = 255;
 
-export const $at = { charMem: 240670, itemMem: 240672, charPtrs: 240674, itemPtrs: 240708, effectPtrs: 240742 };
+export const $at = { charMem: 248862, itemMem: 248864, charPtrs: 248866, itemPtrs: 248900, effectPtrs: 248934 };
 
 export function CharToDisk(c: number, disk: number) {
-  Pack(c, r16(240670), disk, 240674, 17);
+  Pack(c, r16(248862), disk, 248866, 17);
 }
 
 export function ItemToDisk(it: number, disk: number) {
-  Pack(it, r16(240672), disk, 240708, 1);
+  Pack(it, r16(248864), disk, 248900, 1);
 }
 
 export function EffectToDisk(ef: number, disk: number) {
-  Pack(ef, 9, disk, 240742, 1);
+  Pack(ef, 9, disk, 248934, 1);
 }
 
 export function CharFromDisk(disk: number, c: number) {
   let ok: boolean = false;
-  Unpack(disk, c, r16(240670), 240674, 17);
+  Unpack(disk, c, r16(248862), 248866, 17);
   rt.fill(c + 285, 93, 0);
   ok = StrUtil.FitLength(c, 15);
   if (U8[c + 116] === 255) {
@@ -43,7 +43,7 @@ export function CharFromDisk(disk: number, c: number) {
 
 export function ItemFromDisk(disk: number, it: number) {
   let ok: boolean = false;
-  Unpack(disk, it, r16(240672), 240708, 1);
+  Unpack(disk, it, r16(248864), 248900, 1);
   U8[it + 63] = 0;
   ok = StrUtil.FitLength(it, 40);
   if ((U8[it + 61] === 81) && (HasNamePart(it, 111) || HasNamePart(it, 181))) {
@@ -54,36 +54,36 @@ export function ItemFromDisk(disk: number, it: number) {
 }
 
 export function EffectFromDisk(disk: number, ef: number) {
-  Unpack(disk, ef, 9, 240742, 1);
+  Unpack(disk, ef, 9, 248934, 1);
 }
 
 export function CharDiskOfs(memOfs: number) {
   let $r0: number = 0;
-  $r0 = DiskOfs(memOfs, 240674, 17) & 65535;
+  $r0 = DiskOfs(memOfs, 248866, 17) & 65535;
   return $r0;
 }
 
 export function ItemDiskOfs(memOfs: number) {
   let $r0: number = 0;
-  $r0 = DiskOfs(memOfs, 240708, 1) & 65535;
+  $r0 = DiskOfs(memOfs, 248900, 1) & 65535;
   return $r0;
 }
 
 export function EffectDiskOfs(memOfs: number) {
   let $r0: number = 0;
-  $r0 = DiskOfs(memOfs, 240742, 1) & 65535;
+  $r0 = DiskOfs(memOfs, 248934, 1) & 65535;
   return $r0;
 }
 
 export function CharDiskSize() {
   let $r0: number = 0;
-  $r0 = r16(240670) - 0;
+  $r0 = r16(248862) - 0;
   return $r0;
 }
 
 export function ItemDiskSize() {
   let $r0: number = 0;
-  $r0 = r16(240672) - 0;
+  $r0 = r16(248864) - 0;
   return $r0;
 }
 
@@ -142,18 +142,18 @@ export function DiskOfs(memOfs: number, ptrs: number, n: number) {
 export function FindPointers() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 451);
   let i: number = 0;
-  w16(240670, (($f0 + 285) >>> 0) - ($f0 >>> 0));
-  w16(240674, (($f0 + 127) >>> 0) - ($f0 >>> 0));
-  w16(240676, (($f0 + 200) >>> 0) - ($f0 >>> 0));
+  w16(248862, (($f0 + 285) >>> 0) - ($f0 >>> 0));
+  w16(248866, (($f0 + 127) >>> 0) - ($f0 >>> 0));
+  w16(248868, (($f0 + 200) >>> 0) - ($f0 >>> 0));
   for (let $i1 = 0; $i1 <= 12; $i1++) {
     i = $i1;
-    w16(((2 + i) - 0) * 2 + 240674, (($f0 + i * 4 + 204) >>> 0) - ($f0 >>> 0));
+    w16(((2 + i) - 0) * 2 + 248866, (($f0 + i * 4 + 204) >>> 0) - ($f0 >>> 0));
   }
-  w16(240704, (($f0 + 260) >>> 0) - ($f0 >>> 0));
-  w16(240706, (($f0 + 264) >>> 0) - ($f0 >>> 0));
-  w16(240672, (($f0 + 441) >>> 0) - (($f0 + 378) >>> 0));
-  w16(240708, (($f0 + 420) >>> 0) - (($f0 + 378) >>> 0));
-  w16(240742, (($f0 + 447) >>> 0) - (($f0 + 442) >>> 0));
+  w16(248896, (($f0 + 260) >>> 0) - ($f0 >>> 0));
+  w16(248898, (($f0 + 264) >>> 0) - ($f0 >>> 0));
+  w16(248864, (($f0 + 441) >>> 0) - (($f0 + 378) >>> 0));
+  w16(248900, (($f0 + 420) >>> 0) - (($f0 + 378) >>> 0));
+  w16(248934, (($f0 + 447) >>> 0) - (($f0 + 442) >>> 0));
   S.sp = $sp;
 }
 

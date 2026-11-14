@@ -41,32 +41,32 @@ export function Available() {
 export async function Run() {
   let savedDelay: number = 0, savedSeed: number = 0;
   if (!Available()) {
-    U8[141212] = false ? 1 : 0;
+    U8[227098] = false ? 1 : 0;
     return;
   }
-  savedDelay = U8[141163];
-  savedSeed = ri32(226105);
-  U8[141211] = false ? 1 : 0;
-  U8[141212] = true ? 1 : 0;
-  U8[141213] = false ? 1 : 0;
-  U8[141163] = 2;
-  w32(226105, 1);
-  U8[143234] = 1;
-  U8[141222] = 1;
-  U8[141223] = 1;
-  U8[141176] = 4;
-  (await TextRend.ClearScreen());
+  savedDelay = U8[227049];
+  savedSeed = ri32(234431);
+  U8[227097] = false ? 1 : 0;
+  U8[227098] = true ? 1 : 0;
+  U8[227099] = false ? 1 : 0;
+  U8[227049] = 2;
+  w32(234431, 1);
+  U8[229120] = 1;
+  U8[227108] = 1;
+  U8[227109] = 1;
+  U8[227062] = 4;
+  TextRend.ClearScreen();
   (await CharDisp.DrawNoncombatWindows(false));
   (await EclVm.RunDemo());
   SaveLoad.FreeParty();
-  Portrait.FreeAnimation(145563);
+  Portrait.FreeAnimation(231449);
   (await GameInit.ResetGameState());
-  U8[141163] = savedDelay;
-  w32(226105, savedSeed);
-  U8[141212] = false ? 1 : 0;
-  U8[141213] = false ? 1 : 0;
+  U8[227049] = savedDelay;
+  w32(234431, savedSeed);
+  U8[227098] = false ? 1 : 0;
+  U8[227099] = false ? 1 : 0;
   while ((await Crt.KeyPressed())) {
     (await GameIo.DiscardPendingKeys());
   }
-  (await TextRend.ClearScreen());
+  TextRend.ClearScreen();
 }

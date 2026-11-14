@@ -57,43 +57,43 @@ export const CMD_SET = 255;
 export const LAST_FLAG = 128;
 export const PITCH_MASK = 127;
 
-export const $at = { PortWrite: 146755, Lock: 146759, Unlock: 146763, Rendered: 146767, SND_IMAGE: 146768, TANDY_SILENCE: 158726, mem: 158730, voiceLeft: 224266, curTune: 224267, seqVoice: 224269, voiceBase: 224271, freqBase: 224273, seqRet: 224275, voiceTune: 224277, outputOn: 224281, device: 224282, spkrVoice: 224283, hooked: 224285, drvTicks: 224286, seqBusy: 224288, gate: 224289, traceBuf: 224290, traceCap: 224294, traceLen: 224296, tracing: 224298, clockStart: 224299, clockRun: 224307 };
+export const $at = { PortWrite: 65792, Lock: 65796, Unlock: 65800, Rendered: 65804, SND_IMAGE: 65805, TANDY_SILENCE: 77763, mem: 77767, voiceLeft: 143303, curTune: 143304, seqVoice: 143306, voiceBase: 143308, freqBase: 143310, seqRet: 143312, voiceTune: 143314, outputOn: 143318, device: 143319, spkrVoice: 143320, hooked: 143322, drvTicks: 143323, seqBusy: 143325, gate: 143326, traceBuf: 143327, traceCap: 143331, traceLen: 143333, tracing: 143335, clockStart: 143336, clockRun: 143344 };
 
-export async function InstallSoundTimer() {
-  (await EnterSeq());
-  if (!(U8[224285] !== 0)) {
-    U8[224285] = true ? 1 : 0;
-    rt.w64(224299, SysUtils.GetTickCount64());
-    rt.w64(224307, 0);
+export function InstallSoundTimer() {
+  EnterSeq();
+  if (!(U8[143322] !== 0)) {
+    U8[143322] = true ? 1 : 0;
+    rt.w64(143336, SysUtils.GetTickCount64());
+    rt.w64(143344, 0);
   }
-  (await LeaveSeq());
+  LeaveSeq();
 }
 
-export async function UninstallSoundTimer() {
+export function UninstallSoundTimer() {
   let i: number = 0, saved: boolean = false;
-  (await EnterSeq());
-  if ((U8[224285] !== 0)) {
-    U8[224285] = false ? 1 : 0;
-    saved = (U8[224298] !== 0);
-    U8[224298] = false ? 1 : 0;
-    (await PortOut(97, U8[224289] & 252));
-    if (U8[224282] === 0) {
+  EnterSeq();
+  if ((U8[143322] !== 0)) {
+    U8[143322] = false ? 1 : 0;
+    saved = (U8[143335] !== 0);
+    U8[143335] = false ? 1 : 0;
+    PortOut(97, U8[143326] & 252);
+    if (U8[143319] === 0) {
       for (let $i1 = 0; $i1 <= 3; $i1++) {
         i = $i1;
-        (await PortOut(192, U8[i + 158726]));
+        PortOut(192, U8[i + 77763]);
       }
     }
-    U8[224298] = saved ? 1 : 0;
+    U8[143335] = saved ? 1 : 0;
   }
-  (await LeaveSeq());
+  LeaveSeq();
 }
 
-export async function ProgramSpeakerVoices(tuneId: number) {
-  (await ProgramVoices(tuneId, 1466, 29, 1056));
+export function ProgramSpeakerVoices(tuneId: number) {
+  ProgramVoices(tuneId, 1466, 29, 1056);
 }
 
-export async function ProgramTandyVoices(tuneId: number) {
-  (await ProgramVoices(tuneId, 7124, 29, 6716));
+export function ProgramTandyVoices(tuneId: number) {
+  ProgramVoices(tuneId, 7124, 29, 6716);
 }
 
 export function OplWrite(reg: number, value: number) {
@@ -102,124 +102,124 @@ export function OplWrite(reg: number, value: number) {
 export function OplReset() {
 }
 
-export async function SetSoundOutputEnabled(enabledValue: number) {
-  (await EnterSeq());
-  U8[224281] = enabledValue & 255;
-  (await LeaveSeq());
+export function SetSoundOutputEnabled(enabledValue: number) {
+  EnterSeq();
+  U8[143318] = enabledValue & 255;
+  LeaveSeq();
 }
 
-export async function SoundTimerTicks() {
+export function SoundTimerTicks() {
   let $r0: number = 0;
-  (await CatchUp());
-  $r0 = r16(224286);
+  CatchUp();
+  $r0 = r16(143323);
   return $r0;
 }
 
 export function SoundTimerHooked() {
   let $r0: boolean = false;
-  $r0 = (U8[224285] !== 0);
+  $r0 = (U8[143322] !== 0);
   return $r0;
 }
 
-export async function SetSoundDevice(mode: number) {
+export function SetSoundDevice(mode: number) {
   let dev: number = 0;
-  (await EnterSeq());
+  EnterSeq();
   dev = mode & 255;
   if (dev > 3) {
     dev = 2;
   }
-  if ((dev !== U8[224282]) && (U8[224282] === 1)) {
-    (await PortOut(97, GateIn() & 252));
+  if ((dev !== U8[143319]) && (U8[143319] === 1)) {
+    PortOut(97, GateIn() & 252);
   }
-  U8[224282] = dev;
-  (await LeaveSeq());
+  U8[143319] = dev;
+  LeaveSeq();
 }
 
-export async function SoundVoiceTune(voice: number) {
+export function SoundVoiceTune(voice: number) {
   let $r0: number = 0;
-  (await CatchUp());
-  $r0 = U8[(voice & 3) + 224277];
+  CatchUp();
+  $r0 = U8[(voice & 3) + 143314];
   return $r0;
 }
 
-export async function Tick() {
-  if (!(U8[224285] !== 0)) {
+export function Tick() {
+  if (!(U8[143322] !== 0)) {
     return;
   }
-  w16(224286, (r16(224286) + 1) & 65535);
-  (await DeviceTick());
+  w16(143323, (r16(143323) + 1) & 65535);
+  DeviceTick();
 }
 
 export function SetTraceBuffer(buf: number, capacity: number) {
-  w32(224290, buf);
-  w16(224294, capacity);
-  w16(224296, 0);
-  U8[224298] = true ? 1 : 0;
+  w32(143327, buf);
+  w16(143331, capacity);
+  w16(143333, 0);
+  U8[143335] = true ? 1 : 0;
 }
 
 export function TraceCount() {
   let $r0: number = 0;
-  $r0 = r16(224296);
+  $r0 = r16(143333);
   return $r0;
 }
 
-export async function TraceTick() {
-  (await DeviceTick());
+export function TraceTick() {
+  DeviceTick();
 }
 
 export function W(a: number) {
   let $r0: number = 0;
-  $r0 = (U8[a + 158730] | (U8[((a + 1) & 65535) + 158730] << 8)) & 65535;
+  $r0 = (U8[a + 77767] | (U8[((a + 1) & 65535) + 77767] << 8)) & 65535;
   return $r0;
 }
 
 export function SetW(a: number, v: number) {
-  U8[a + 158730] = v & 255;
-  U8[((a + 1) & 65535) + 158730] = v >> 8 & 255;
+  U8[a + 77767] = v & 255;
+  U8[((a + 1) & 65535) + 77767] = v >> 8 & 255;
 }
 
-export async function EnterSeq() {
-  if (r32(146759) !== 0) {
-    (await rt.FT[r32(146759)]());
+export function EnterSeq() {
+  if (r32(65796) !== 0) {
+    rt.FT[r32(65796)]();
   }
 }
 
-export async function LeaveSeq() {
-  if (r32(146763) !== 0) {
-    (await rt.FT[r32(146763)]());
+export function LeaveSeq() {
+  if (r32(65800) !== 0) {
+    rt.FT[r32(65800)]();
   }
 }
 
-export async function PortOut(port: number, value: number) {
-  if ((U8[224298] !== 0)) {
-    if (r16(224296) < r16(224294)) {
-      w16(r32(224290) + r16(224296) * 2, (port << 8) | value);
-      w16(224296, r16(224296) + 1);
+export function PortOut(port: number, value: number) {
+  if ((U8[143335] !== 0)) {
+    if (r16(143333) < r16(143331)) {
+      w16(r32(143327) + r16(143333) * 2, (port << 8) | value);
+      w16(143333, r16(143333) + 1);
     }
   } else {
     if (port === 97) {
-      U8[224289] = value;
+      U8[143326] = value;
     }
-    if (r32(146755) !== 0) {
-      (await rt.FT[r32(146755)](port, value));
+    if (r32(65792) !== 0) {
+      rt.FT[r32(65792)](port, value);
     }
   }
 }
 
 export function GateIn() {
   let $r0: number = 0;
-  if ((U8[224298] !== 0)) {
+  if ((U8[143335] !== 0)) {
     $r0 = 0;
   } else {
-    $r0 = U8[224289];
+    $r0 = U8[143326];
   }
   return $r0;
 }
 
 export function SeqEnd(si: number, di: number) {
-  w16(si, r16(224269));
+  w16(si, r16(143306));
   if (W(r16(si) + 0) === 0) {
-    U8[((4 - U8[224266]) & 3) + 224277] = 0;
+    U8[((4 - U8[143303]) & 3) + 143314] = 0;
     di = 0;
   }
   SetW(r16(si) + 2, di);
@@ -231,22 +231,22 @@ export function SeqProc(si: number) {
   if (di === 0) {
     return;
   }
-  w16(224269, r16(si));
+  w16(143306, r16(si));
   while (true) {
-    bl = U8[di + 158730];
+    bl = U8[di + 77767];
     di = (di + 1) & 65535;
     if (bl < 250) {
       while (true) {
-        target = ((((bl >>> 5) * 48) + r16(224271)) & 65535) & 65535;
+        target = ((((bl >>> 5) * 48) + r16(143308)) & 65535) & 65535;
         bx = di;
         ax = W(r16(si) + 14) & 65535;
         if ((ax & 255) > 1) {
-          ax = (ax & 255) * U8[((bx + 1) & 65535) + 158730];
+          ax = (ax & 255) * U8[((bx + 1) & 65535) + 77767];
         } else {
-          ax = U8[((bx + 1) & 65535) + 158730];
+          ax = U8[((bx + 1) & 65535) + 77767];
         }
         SetW(r16(si) + 0, ax);
-        ax = U8[bx + 158730] & 127;
+        ax = U8[bx + 77767] & 127;
         if (ax !== 127) {
           cx = W(r16(si) + 0) & 65535;
           SetW(target + 0, cx);
@@ -266,7 +266,7 @@ export function SeqProc(si: number) {
             ax = ((ax - 12) & 65535) & 65535;
           } while (!(borrow));
           ax = ((ax + 12) & 65535) & 65535;
-          ax = W((r16(224273) + ((ax + ax) & 65535)) & 65535) & 65535;
+          ax = W((r16(143310) + ((ax + ax) & 65535)) & 65535) & 65535;
           if ((cl & 31) >= 16) {
             ax = 0;
           } else {
@@ -276,19 +276,19 @@ export function SeqProc(si: number) {
           SetW(target + 8, ax);
         }
         di = bx;
-        bl = U8[di + 158730];
+        bl = U8[di + 77767];
         di = ((di + 2) & 65535) & 65535;
         if ((bl & 128) !== 0) {
           SeqEnd(si, di);
           return;
         }
-        bl = U8[di + 158730];
+        bl = U8[di + 77767];
         di = (di + 1) & 65535;
       }
     }
     switch (bl) {
       case 254: {
-        bx = U8[di + 158730];
+        bx = U8[di + 77767];
         di = (di + 1) & 65535;
         ax = W(di) & 65535;
         di = ((di + 2) & 65535) & 65535;
@@ -304,7 +304,7 @@ export function SeqProc(si: number) {
       }
       case 253: case 250: {
         if (bl === 253) {
-          w16(si, (W(di) + r16(224271)) & 65535);
+          w16(si, (W(di) + r16(143308)) & 65535);
           di = ((di + 2) & 65535) & 65535;
         }
         SetW(r16(si) + 4, 0);
@@ -325,7 +325,7 @@ export function SeqProc(si: number) {
         break;
       }
       case 255: {
-        bx = U8[di + 158730];
+        bx = U8[di + 77767];
         di = (di + 1) & 65535;
         ax = W(di) & 65535;
         di = ((di + 2) & 65535) & 65535;
@@ -337,10 +337,10 @@ export function SeqProc(si: number) {
         break;
       }
       case 251: {
-        di = r16(224275);
-        w16(224275, 0);
+        di = r16(143312);
+        w16(143312, 0);
         if (di === 0) {
-          w16(si, r16(224269));
+          w16(si, r16(143306));
           SetW(r16(si) + 0, 0);
           SeqEnd(si, di);
           return;
@@ -350,7 +350,7 @@ export function SeqProc(si: number) {
       case 252: {
         ax = W(di) & 65535;
         di = ((di + 2) & 65535) & 65535;
-        w16(224275, di);
+        w16(143312, di);
         di = ax;
         break;
       }
@@ -370,7 +370,7 @@ export function VoiceStep(si: number) {
     }
     SetW(r16(si) + 30, ax);
     ax = ((((((ax << 16 >> 16) << 16 >> 16) >> 4) & 65535) + W(r16(si) + 28)) & 65535) & 65535;
-    product = rt.mul(((U8[ax + 158730] << 8) << 16 >> 16) | 0, W(r16(si) + 34) << 16 >> 16) | 0;
+    product = rt.mul(((U8[ax + 77767] << 8) << 16 >> 16) | 0, W(r16(si) + 34) << 16 >> 16) | 0;
     dx = (((product >>> 0) >>> 16) & 65535) & 65535;
   }
   SetW(r16(si) + 8, (dx + W(r16(si) + 4)) & 65535);
@@ -407,135 +407,135 @@ export function VoiceStep(si: number) {
   }
 }
 
-export async function TickSpeaker() {
+export function TickSpeaker() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let bl: number = 0, ax: number = 0;
   bl = 0;
-  if (r16(224267) !== 0) {
-    w16(224283, 0);
-    U8[224266] = 4;
-    w16(224273, 1440);
+  if (r16(143304) !== 0) {
+    w16(143320, 0);
+    U8[143303] = 4;
+    w16(143310, 1440);
     w16($f0, 1056);
-    w16(224271, r16($f0));
+    w16(143308, r16($f0));
     do {
       if (W(r16($f0) + 0) !== 0) {
         VoiceStep($f0);
-        if (((r16(224283) === 0) && (W(r16($f0) + 10) !== 0)) && (W(r16($f0) + 0) !== 0)) {
-          w16(224283, r16($f0));
+        if (((r16(143320) === 0) && (W(r16($f0) + 10) !== 0)) && (W(r16($f0) + 0) !== 0)) {
+          w16(143320, r16($f0));
         }
       }
       w16($f0, (r16($f0) + 48) & 65535);
-      U8[224266] = U8[224266] - 1;
-    } while (!(U8[224266] === 0));
-    if ((U8[224281] !== 0) && (r16(224283) !== 0)) {
-      w16($f0, r16(224283));
+      U8[143303] = U8[143303] - 1;
+    } while (!(U8[143303] === 0));
+    if ((U8[143318] !== 0) && (r16(143320) !== 0)) {
+      w16($f0, r16(143320));
       ax = W(r16($f0) + 8) & 65535;
-      (await PortOut(66, ax & 255));
-      (await PortOut(66, ax >> 8 & 255));
+      PortOut(66, ax & 255);
+      PortOut(66, ax >> 8 & 255);
       bl = W(r16($f0) + 10) & 3;
     }
   }
-  (await PortOut(97, (GateIn() & 252) | bl));
+  PortOut(97, (GateIn() & 252) | bl);
   S.sp = $sp;
 }
 
-export async function TickTandy() {
+export function TickTandy() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 2);
   let ax: number = 0, al: number = 0, dl: number = 0, i: number = 0;
-  if (r16(224267) !== 0) {
-    U8[224266] = 4;
-    w16(224273, 7100);
+  if (r16(143304) !== 0) {
+    U8[143303] = 4;
+    w16(143310, 7100);
     w16($f0, 6716);
-    w16(224271, r16($f0));
+    w16(143308, r16($f0));
     do {
       if (W(r16($f0) + 0) !== 0) {
         VoiceStep($f0);
       }
       w16($f0, (r16($f0) + 48) & 65535);
-      U8[224266] = U8[224266] - 1;
-    } while (!(U8[224266] === 0));
-    if (U8[224281] !== 0) {
-      U8[224266] = 4;
+      U8[143303] = U8[143303] - 1;
+    } while (!(U8[143303] === 0));
+    if (U8[143318] !== 0) {
+      U8[143303] = 4;
       w16($f0, 6716);
       dl = 128;
       do {
         ax = (W(r16($f0) + 8) >>> 2) & 65535;
         al = (ax & 255) >>> 4;
-        (await PortOut(192, al ^ dl));
+        PortOut(192, al ^ dl);
         if (dl !== 224) {
-          (await PortOut(192, ax >> 8 & 255));
+          PortOut(192, ax >> 8 & 255);
         }
         ax = ((65535 - W(r16($f0) + 10)) & 65535) & 65535;
-        (await PortOut(192, ((((ax >> 8 & 255) >>> 4) ^ dl) + 16) & 255));
+        PortOut(192, ((((ax >> 8 & 255) >>> 4) ^ dl) + 16) & 255);
         dl = ((dl + 32) & 255) & 255;
         w16($f0, (r16($f0) + 48) & 65535);
-        U8[224266] = U8[224266] - 1;
-      } while (!(U8[224266] === 0));
+        U8[143303] = U8[143303] - 1;
+      } while (!(U8[143303] === 0));
       { S.sp = $sp; return; }
     }
   }
   for (let $i3 = 0; $i3 <= 3; $i3++) {
     i = $i3;
-    (await PortOut(192, U8[i + 158726]));
+    PortOut(192, U8[i + 77763]);
   }
   S.sp = $sp;
 }
 
-export async function DeviceTick() {
-  if ((U8[224288] !== 0)) {
+export function DeviceTick() {
+  if ((U8[143325] !== 0)) {
     return;
   }
-  U8[224288] = true ? 1 : 0;
-  switch (U8[224282]) {
+  U8[143325] = true ? 1 : 0;
+  switch (U8[143319]) {
     case 0: {
-      (await TickTandy());
+      TickTandy();
       break;
     }
     case 1: {
-      (await TickSpeaker());
+      TickSpeaker();
       break;
     }
   }
-  U8[224288] = false ? 1 : 0;
+  U8[143325] = false ? 1 : 0;
 }
 
-export async function CatchUp() {
+export function CatchUp() {
   let due: number = 0;
-  if ((U8[146767] !== 0) || !(U8[224285] !== 0)) {
+  if ((U8[65804] !== 0) || !(U8[143322] !== 0)) {
     return;
   }
-  due = Math.trunc(Math.trunc(rt.mul(SysUtils.GetTickCount64() - rt.r64(224299), 1193182) / 5041000));
-  while (rt.r64(224307) < due) {
-    rt.w64(224307, rt.r64(224307) + 1);
-    (await Tick());
+  due = Math.trunc(Math.trunc(rt.mul(SysUtils.GetTickCount64() - rt.r64(143336), 1193182) / 5041000));
+  while (rt.r64(143344) < due) {
+    rt.w64(143344, rt.r64(143344) + 1);
+    Tick();
   }
 }
 
-export async function ProgramVoices(tuneId: number, table: number, rows: number, blocks: number) {
+export function ProgramVoices(tuneId: number, table: number, rows: number, blocks: number) {
   let v: number = 0, stream: number = 0, di: number = 0;
-  (await EnterSeq());
+  EnterSeq();
   if (tuneId >= rows) {
     tuneId = 0;
   }
-  w16(224267, tuneId);
+  w16(143304, tuneId);
   di = blocks;
   for (let $i1 = 0; $i1 <= 3; $i1++) {
     v = $i1;
     stream = W(((table + (tuneId * 8)) + (v * 2)) & 65535) & 65535;
     if (stream !== 0) {
-      rt.fill(di + 158730, 48, 0);
+      rt.fill(di + 77767, 48, 0);
       SetW(di + 2, stream);
-      U8[v + 224277] = r16(224267) & 255;
+      U8[v + 143314] = r16(143304) & 255;
       SetW(di + 0, 1);
     }
     di = ((di + 48) & 65535) & 65535;
   }
-  (await LeaveSeq());
+  LeaveSeq();
 }
 
 export function $init() {
-  rt.fill(158730, 65536, 0);
-  mv(158986, 146768, 11958);
-  U8[224281] = 1;
-  U8[224282] = 2;
+  rt.fill(77767, 65536, 0);
+  mv(78023, 65805, 11958);
+  U8[143318] = 1;
+  U8[143319] = 2;
 }

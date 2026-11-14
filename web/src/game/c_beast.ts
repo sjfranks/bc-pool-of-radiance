@@ -63,4 +63,4 @@ export const AC_NO_LOW = -128;
 export const AC_NO_HIGH = 127;
 export const EFFECT_FACTS_COUNT = 63;
 
-export const $at = { EFFECT_FACTS: 228373 };
+export const $at = { EFFECT_FACTS: 236565 };

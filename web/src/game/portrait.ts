@@ -15,15 +15,15 @@ import * as StrUtil from './strutil';
 
 export const BODY_ROW_OFFSET = 5;
 
-export const $at = { picArcName: 227117, picArcId: 227127 };
+export const $at = { picArcName: 235309, picArcId: 235319 };
 
-export async function DisplayImageBuf(col: number, row: number, anim: boolean, pic: number) {
+export function DisplayImageBuf(col: number, row: number, anim: boolean, pic: number) {
   if (pic !== 0) {
     if (anim) {
-      Blit.BlitTileClipped(col - 1, row - 1, 0, 1, pic, r32(141249));
-      (await Blit.FlushView());
+      Blit.BlitTileClipped(col - 1, row - 1, 0, 1, pic, r32(227135));
+      Blit.FlushView();
     } else {
-      (await Blit.ShowPic(col, row, pic));
+      Blit.ShowPic(col, row, pic);
     }
   }
 }
@@ -47,8 +47,8 @@ export async function LoadAnimation(name_: string, picId: number, transp: number
     $r1 = need;
     return $r1;
   }
-  wS($f0 + 10, 9, name_ + StrUtil.NumStr(U8[143234]));
-  if (((U8[a] > 0) && (rS($f0 + 10) === rS(227117))) && (picId === U8[227127])) {
+  wS($f0 + 10, 9, name_ + StrUtil.NumStr(U8[229120]));
+  if (((U8[a] > 0) && (rS($f0 + 10) === rS(235309))) && (picId === U8[235319])) {
     { S.sp = $sp; return; }
   }
   FreeAnimation(a);
@@ -120,9 +120,9 @@ export async function LoadAnimation(name_: string, picId: number, transp: number
             }
           }
         }
-        (await VidOps.ExpandPicFrames(r32($f0 + 2), offset, 0, r32($w1 + loaded * 8 - 2)));
+        VidOps.ExpandPicFrames(r32($f0 + 2), offset, 0, r32($w1 + loaded * 8 - 2));
         if (((transp & 1) > 0) && (Blit.ColourCount() === 16)) {
-          (await Blit.RemapPic(132853, 132869, 0, false, r32($w1 + loaded * 8 - 2)));
+          (await Blit.RemapPic(218739, 218755, 0, false, r32($w1 + loaded * 8 - 2)));
         }
         offset = (offset + (planeSz + 1)) & 65535;
       } else if (f === 1) {
@@ -135,8 +135,8 @@ export async function LoadAnimation(name_: string, picId: number, transp: number
     U8[$w1] = loaded;
   }
   if (loaded > 0) {
-    wS(227117, 9, rS($f0 + 10));
-    U8[227127] = picId;
+    wS(235309, 9, rS($f0 + 10));
+    U8[235319] = picId;
   }
   if (isPic && gotXor) {
     rt.freeMem(xorBuf);
@@ -155,28 +155,28 @@ export function FreeAnimation(a: number) {
     }
   }
   rt.fill(a, 66, 0);
-  U8[227117] = 0;
-  U8[227127] = 255;
+  U8[235309] = 0;
+  U8[235319] = 255;
 }
 
 export async function DisplayCharPortrait() {
   {
-    const $w1 = r32(143749);
+    const $w1 = r32(229635);
     if ((((U8[$w1 + 187] === 0) || (U8[$w1 + 188] === 0)) || (U8[$w1 + 187] > 41)) || (U8[$w1 + 188] > 21)) {
       return;
     }
   }
   (await Border.DrawWindow(28, 1, 38, 11, 0, 0, ""));
   {
-    const $w2 = r32(143749);
-    (await LoadPortraitBufs(U8[U8[$w2 + 187] + 133146], U8[U8[$w2 + 188] + 133187]));
-    (await DisplayPortraitBufs(28, 1, true));
+    const $w2 = r32(229635);
+    (await LoadPortraitBufs(U8[U8[$w2 + 187] + 219032], U8[U8[$w2 + 188] + 219073]));
+    DisplayPortraitBufs(28, 1, true);
   }
 }
 
 export async function PlayerPortraitsHere() {
   let $r0: boolean = false;
-  $r0 = (U8[143234] === 3) || (await MergedPortraits());
+  $r0 = (U8[229120] === 3) || (await MergedPortraits());
   return $r0;
 }
 
@@ -196,10 +196,10 @@ export async function PlayerPortraitCount(body: boolean) {
   return $r0;
 }
 
-export async function DisplayPortraitBufs(col: number, row: number, both: boolean) {
-  (await DisplayImageBuf(col, row, false, r32(145630)));
+export function DisplayPortraitBufs(col: number, row: number, both: boolean) {
+  DisplayImageBuf(col, row, false, r32(231516));
   if (both) {
-    (await DisplayImageBuf(col, row + 5, false, r32(145636)));
+    DisplayImageBuf(col, row + 5, false, r32(231522));
   }
 }
 
@@ -209,12 +209,12 @@ export async function LoadPortraitBufs(headId: number, bodyId: number) {
       return;
     }
     {
-      const $w1 = slot * 6 + 145623;
-      if ((U8[$w1] !== id) || (U8[$w1 + 5] !== U8[143234])) {
-        (await Blit.LoadPic(archive + StrUtil.NumStr(U8[143234]), id, false, 0, $w1 + 1));
+      const $w1 = slot * 6 + 231509;
+      if ((U8[$w1] !== id) || (U8[$w1 + 5] !== U8[229120])) {
+        (await Blit.LoadPic(archive + StrUtil.NumStr(U8[229120]), id, false, 0, $w1 + 1));
         if (r32($w1 + 1) !== 0) {
           U8[$w1] = id;
-          U8[$w1 + 5] = U8[143234];
+          U8[$w1 + 5] = U8[229120];
         } else {
           U8[$w1] = 255;
         }
@@ -232,19 +232,19 @@ export async function Show3DSprite(dist: number, a: number) {
   if (r32(a + dist * 8 - 2) !== 0) {
     {
       const $w1 = r32(a + dist * 8 - 2);
-      Blit.BlitTileClipped((r16($w1 + 4) + 3) - 1, (r16($w1 + 6) + 3) - 1, 0, 1, r32(a + dist * 8 - 2), r32(141249));
+      Blit.BlitTileClipped((r16($w1 + 4) + 3) - 1, (r16($w1 + 6) + 3) - 1, 0, 1, r32(a + dist * 8 - 2), r32(227135));
     }
-    (await Blit.FlushView());
+    Blit.FlushView();
   }
 }
 
 export function ResetGame() {
-  U8[227117] = 0;
-  U8[227127] = 255;
+  U8[235309] = 0;
+  U8[235319] = 255;
 }
 
 export async function MergedPortraits() {
   let $r0: boolean = false;
-  $r0 = ((await DaxIo.ArchiveName("HEAD" + StrUtil.NumStr(U8[143234]))) === "HEAD") && ((await DaxIo.ArchiveName("BODY" + StrUtil.NumStr(U8[143234]))) === "BODY");
+  $r0 = ((await DaxIo.ArchiveName("HEAD" + StrUtil.NumStr(U8[229120]))) === "HEAD") && ((await DaxIo.ArchiveName("BODY" + StrUtil.NumStr(U8[229120]))) === "BODY");
   return $r0;
 }

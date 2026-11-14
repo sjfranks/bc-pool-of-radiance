@@ -14,7 +14,7 @@ import * as Host from './host';
 import * as NatFile from './natfile';
 
 
-export const $at = { saveSettings: 224321, showMemory: 224325, beforeExit: 224329, debugFile: 224333, memShown: 224341, scanPending: 224342 };
+export const $at = { saveSettings: 232647, showMemory: 232651, beforeExit: 232655, debugFile: 232659, memShown: 232667, scanPending: 232668 };
 
 export async function ReadGameKey() {
   let key: number = 0, $r0: number = 0;
@@ -31,54 +31,54 @@ export async function ReadGameKey() {
       }
     }
   }
-  if ((U8[141212] !== 0)) {
-    U8[141213] = true ? 1 : 0;
+  if ((U8[227098] !== 0)) {
+    U8[227099] = true ? 1 : 0;
     key = 27;
     (await DropTypeAhead());
-    U8[224342] = false ? 1 : 0;
+    U8[232668] = false ? 1 : 0;
     $r0 = 27;
     return $r0;
   }
   key = (await Crt.ReadKey()) & 255;
-  if ((U8[224342] !== 0)) {
-    U8[224342] = false ? 1 : 0;
+  if ((U8[232668] !== 0)) {
+    U8[232668] = false ? 1 : 0;
     (await DropTypeAhead());
     $r0 = key;
     return $r0;
   }
-  U8[224342] = (key === 0) && (await Crt.KeyPressed()) ? 1 : 0;
+  U8[232668] = (key === 0) && (await Crt.KeyPressed()) ? 1 : 0;
   if (key === 19) {
-    (await SetSound(U8[143233] === 2));
-    if (r32(224321) !== 0) {
-      (await rt.FT[r32(224321)]());
+    SetSound(U8[229119] === 2);
+    if (r32(232647) !== 0) {
+      (await rt.FT[r32(232647)]());
     }
   }
-  if ((U8[141208] !== 0)) {
+  if ((U8[227094] !== 0)) {
     if (key === 4) {
-      U8[141207] = (U8[141207] === 0 ? 1 : 0);
+      U8[227093] = (U8[227093] === 0 ? 1 : 0);
     }
     if (key === 3) {
       (await ExitGame());
     }
     if (key === 12) {
-      U8[141214] = !(U8[141214] !== 0) ? 1 : 0;
-      if ((U8[141214] !== 0)) {
-        rt.Assign(224333, "debug.txt");
-        rt.RewriteT(224333);
+      U8[227100] = !(U8[227100] !== 0) ? 1 : 0;
+      if ((U8[227100] !== 0)) {
+        rt.Assign(232659, "debug.txt");
+        rt.RewriteT(232659);
         if (rt.IOResult() !== 0) {
-          U8[141214] = false ? 1 : 0;
+          U8[227100] = false ? 1 : 0;
         }
       } else {
-        rt.Close(224333);
+        rt.Close(232659);
       }
     }
-    if ((key === 26) && (U8[141214] !== 0)) {
+    if ((key === 26) && (U8[227100] !== 0)) {
       DumpEffects();
     }
-    if (((key === 25) && !(U8[224341] !== 0)) && (r32(224325) !== 0)) {
-      U8[224341] = true ? 1 : 0;
-      (await rt.FT[r32(224325)]());
-      U8[224341] = false ? 1 : 0;
+    if (((key === 25) && !(U8[232667] !== 0)) && (r32(232651) !== 0)) {
+      U8[232667] = true ? 1 : 0;
+      (await rt.FT[r32(232651)]());
+      U8[232667] = false ? 1 : 0;
     }
   }
   if (key !== 0) {
@@ -90,38 +90,38 @@ export async function ReadGameKey() {
 
 export async function DemoEnding() {
   let $r0: boolean = false;
-  if (((U8[141212] !== 0) && !(U8[141213] !== 0)) && (await Crt.KeyPressed())) {
-    U8[141213] = true ? 1 : 0;
+  if (((U8[227098] !== 0) && !(U8[227099] !== 0)) && (await Crt.KeyPressed())) {
+    U8[227099] = true ? 1 : 0;
   }
-  $r0 = (U8[141212] !== 0) && (U8[141213] !== 0);
+  $r0 = (U8[227098] !== 0) && (U8[227099] !== 0);
   return $r0;
 }
 
 export async function ReadAnyKey() {
   let key: number = 0, scan: number = 0, $r0: number = 0;
   key = (await ReadGameKey()) & 255;
-  if ((key === 0) && (U8[224342] !== 0)) {
+  if ((key === 0) && (U8[232668] !== 0)) {
     scan = (await Crt.ReadKey()) & 255;
-    U8[224342] = false ? 1 : 0;
+    U8[232668] = false ? 1 : 0;
   }
   $r0 = key;
   return $r0;
 }
 
-export async function SetSound(turnOn: boolean) {
-  if (U8[141140] === 2) {
+export function SetSound(turnOn: boolean) {
+  if (U8[227026] === 2) {
     return;
   }
   if (!turnOn) {
-    if (U8[143233] !== 2) {
-      (await SoundDrv.SoundCommand(r16(132885)));
-      U8[143233] = 2;
+    if (U8[229119] !== 2) {
+      SoundDrv.SoundCommand(r16(218771));
+      U8[229119] = 2;
     }
-  } else if (U8[143233] === 2) {
-    U8[143233] = U8[146752];
-    (await SoundDrv.SoundSuspend());
+  } else if (U8[229119] === 2) {
+    U8[229119] = U8[232638];
+    SoundDrv.SoundSuspend();
   }
-  U8[141183] = (turnOn ? 1 : 0);
+  U8[227069] = (turnOn ? 1 : 0);
 }
 
 export async function DiscardPendingKeys() {
@@ -133,16 +133,16 @@ export async function DiscardPendingKeys() {
 
 export async function ExitGame() {
   let hook: number = 0;
-  hook = r32(224329);
-  w32(224329, 0);
+  hook = r32(232655);
+  w32(232655, 0);
   if (hook !== 0) {
     (await rt.FT[hook]());
   }
-  if ((U8[141214] !== 0)) {
-    rt.Close(224333);
+  if ((U8[227100] !== 0)) {
+    rt.Close(232659);
   }
-  U8[143233] = U8[146752];
-  (await SoundDrv.SoundCommand(r16(132885)));
+  U8[229119] = U8[232638];
+  SoundDrv.SoundCommand(r16(218771));
   SetStartMode();
   rt.Halt(0);
 }
@@ -156,18 +156,18 @@ export async function FatalError(msg: string) {
 }
 
 export function SetStartMode() {
-  U8[141227] = 0;
-  U8[141226] = U8[141247];
-  Host.Intr(16, 141226);
+  U8[227113] = 0;
+  U8[227112] = U8[227133];
+  Host.Intr(16, 227112);
 }
 
 export function DumpEffects() {
   let p: number = 0, e: number = 0;
-  p = r32(143753);
+  p = r32(229639);
   while (p !== 0) {
     e = r32(p + 127);
     while (e !== 0) {
-      rt.WriteT(224333, "who: " + rS(p) + "  sp#: " + rt.fmtI(U8[e], 0) + "\n");
+      rt.WriteT(232659, "who: " + rS(p) + "  sp#: " + rt.fmtI(U8[e], 0) + "\n");
       e = r32(e + 5);
     }
     p = r32(p + 260);
@@ -175,9 +175,9 @@ export function DumpEffects() {
 }
 
 export function $init() {
-  U8[224341] = false ? 1 : 0;
-  U8[224342] = false ? 1 : 0;
-  w32(224321, 0);
-  w32(224325, 0);
-  w32(224329, 0);
+  U8[232667] = false ? 1 : 0;
+  U8[232668] = false ? 1 : 0;
+  w32(232647, 0);
+  w32(232651, 0);
+  w32(232655, 0);
 }

@@ -1,0 +1,298 @@
+/* The page: the game's screen over the touch bar, in the game's own colours (black, the frame's red and gold, the
+   menu's green and white). */
+:root {
+  --red: #aa0000;
+  --gold: #ffff55;
+  --green: #55ff55;
+  --white: #ffffff;
+  --dim: #555555;
+  --bar-h: clamp(176px, 31dvh, 270px);
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  background: #000;
+  color: var(--green);
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: manipulation;
+  -webkit-text-size-adjust: 100%;
+  font: 600 15px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+}
+#app {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  height: 100dvh;
+  box-sizing: border-box;
+}
+#screen {
+  flex: 1 1 0;
+  min-height: 0;
+  width: 100%;
+  display: block;
+  outline: none;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#bar {
+  flex: 0 0 var(--bar-h);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-top: 3px solid var(--red);
+  box-shadow: inset 0 1px 0 #550000;
+  padding: 6px 6px 8px;
+  gap: 6px;
+  min-height: 0;
+  -webkit-user-select: none;
+  user-select: none;
+}
+#bar canvas {
+  image-rendering: pixelated;
+  display: block;
+  pointer-events: none;
+  flex: none;
+}
+.query {
+  min-height: 16px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  color: #ff55ff;
+  white-space: nowrap;
+}
+.body {
+  flex: 1 1 0;
+  min-height: 0;
+  display: flex;
+  gap: 6px;
+}
+.opts {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: stretch;
+  gap: 6px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+}
+.opts.rows {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-content: normal;
+}
+.opts.keys .opt {
+  flex: 1 1 14%;
+}
+button {
+  font: inherit;
+  color: inherit;
+  margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.opt,
+.pad,
+.sysb {
+  background: #0b0b0b;
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #3a0000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  min-height: 40px;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.opt {
+  flex: 1 1 calc(100% / var(--across, 3) - 6px);
+  overflow: hidden;
+  padding: 0 4px;
+}
+.opt.wide {
+  flex: 1 1 100%;
+}
+.opt.row {
+  flex: 0 0 auto;
+  justify-content: flex-start;
+  min-height: 38px;
+}
+.opt.ok {
+  border-color: var(--gold);
+  color: var(--white);
+}
+.opt.num {
+  font-size: 20px;
+  color: var(--white);
+}
+.down {
+  background: #3a0000;
+  border-color: var(--gold);
+}
+.dpad {
+  flex: 0 0 auto;
+  display: grid;
+  gap: 5px;
+  align-self: stretch;
+}
+.dpad.eight,
+.dpad.four {
+  grid-template-columns: repeat(3, minmax(40px, 1fr));
+  width: min(36vw, 138px);
+}
+.dpad.eight {
+  grid-template-rows: repeat(3, 1fr);
+}
+.dpad.four {
+  grid-template-rows: repeat(2, 1fr);
+}
+.dpad.list {
+  grid-template-columns: repeat(2, 52px);
+  grid-template-rows: repeat(2, 1fr);
+}
+.pad {
+  padding: 0;
+  font-size: 24px;
+  color: var(--white);
+  min-height: 0;
+}
+.pad.gap {
+  border-color: transparent;
+  box-shadow: none;
+  background: none;
+}
+.pad.pg {
+  color: var(--green);
+}
+.sys {
+  flex: 0 0 44px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.sysb {
+  flex: 1 1 0;
+  padding: 0;
+  min-height: 0;
+  border-color: var(--dim);
+  box-shadow: none;
+  color: #aaaaaa;
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0;
+}
+#typer {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  border: 0;
+  padding: 0;
+  font-size: 16px;
+}
+#veil {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  z-index: 10;
+  text-align: center;
+  padding: 24px;
+  line-height: 1.5;
+}
+#veil[hidden],
+#menu[hidden] {
+  display: none;
+}
+#notice button,
+#menu button {
+  display: block;
+  width: 100%;
+  margin: 10px 0 0;
+  padding: 12px 14px;
+  background: #0b0b0b;
+  border: 2px solid var(--red);
+  border-radius: 4px;
+  color: var(--green);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+}
+#menu {
+  position: fixed;
+  inset: 0;
+  z-index: 9;
+  background: rgba(0, 0, 0, 0.82);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+#menu .sheet {
+  width: min(100%, 460px);
+  max-height: 86dvh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  background: #000;
+  border: 3px solid var(--red);
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  padding: 12px 12px calc(14px + env(safe-area-inset-bottom));
+}
+#menu h2 {
+  margin: 2px 0 4px;
+  font-size: 15px;
+  color: var(--gold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+#menu .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0 8px;
+}
+#menu p {
+  margin: 10px 0 0;
+  color: #aaaaaa;
+  font-weight: 400;
+  line-height: 1.4;
+  text-wrap: pretty;
+}
+/* a wide display: the bar beside the screen */
+@media (min-aspect-ratio: 11/10) {
+  #app {
+    flex-direction: row;
+  }
+  #bar {
+    flex: 0 0 clamp(220px, 30vw, 340px);
+    border-top: 0;
+    border-left: 3px solid var(--red);
+  }
+  .dpad.eight,
+  .dpad.four {
+    width: 132px;
+  }
+  .body {
+    flex-wrap: wrap;
+    align-content: flex-start;
+  }
+  .opts {
+    flex: 1 1 100%;
+    order: 3;
+  }
+}

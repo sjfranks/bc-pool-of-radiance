@@ -17,9 +17,13 @@ const argv = process.argv.slice(2);
 const dirs: string[] = [];
 const incs: string[] = [];
 const pos: string[] = [];
+const hookNames: string[] = [];
+const tapNames: string[] = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--dir') dirs.push(argv[++i]);
   else if (argv[i] === '--inc') incs.push(argv[++i]);
+  else if (argv[i] === '--hook') hookNames.push(argv[++i].toLowerCase());
+  else if (argv[i] === '--tap') tapNames.push(argv[++i].toLowerCase());
   else pos.push(argv[i]);
 }
 const [program, outDir] = pos;
@@ -32,6 +36,8 @@ try {
   const c = new Compiler(dirs, incs, ['FPC', 'WEB']);
   const prog = c.loadFile(program);
   const gen = new Gen(c);
+  for (const h of hookNames) gen.hooks.add(h);
+  for (const h of tapNames) gen.taps.add(h);
   const texts = new Map<string, string>();
   for (const u of c.order) texts.set(u.name, gen.genUnit(u));
   const isAsync = gen.solveAsync();

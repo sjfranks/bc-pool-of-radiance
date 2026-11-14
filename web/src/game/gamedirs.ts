@@ -9,21 +9,21 @@ export const OS_WINDOWS = 2;
 export const THIS_OS = 0;
 export const GAME_FOLDER = "C:\\POOLRAD\\";
 
-export const $at = { dataFolder: 224638, writeFolder: 224894 };
+export const $at = { dataFolder: 232964, writeFolder: 233220 };
 
 export function OwnFolder(name_: string) {
   let $r0: string = "";
-  $r0 = rS(224638);
+  $r0 = rS(232964);
   return $r0;
 }
 
 export function ReadName(name_: string) {
   let $r0: string = "";
-  $r0 = rS(224894) + name_;
+  $r0 = rS(233220) + name_;
   return $r0;
 }
 
 export function $init() {
-  wS(224638, 255, GAME_FOLDER);
-  wS(224894, 255, GAME_FOLDER);
+  wS(232964, 255, GAME_FOLDER);
+  wS(233220, 255, GAME_FOLDER);
 }

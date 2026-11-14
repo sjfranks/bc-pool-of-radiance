@@ -32,7 +32,7 @@ export const QUESTS_LEFT = 1;
 export const QUESTS_RIGHT = 38;
 export const QUESTS_TOP = 3;
 
-export const $at = { items: 250892, count: 250991, sel: 250993, top_: 250995, shown: 250997, lines: 250999, page: 251001, pages: 251003, previewDue: 251005, movedAt: 251006 };
+export const $at = { items: 259084, count: 259183, sel: 259185, top_: 259187, shown: 259189, lines: 259191, page: 259193, pages: 259195, previewDue: 259197, movedAt: 259198 };
 
 export async function JournalMenu() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 42);
@@ -53,49 +53,49 @@ export async function JournalMenu() {
     }
     return $r1;
   }
-  savedChoice = U8[145643];
+  savedChoice = U8[231529];
   CollectItems();
-  w16(250993, 1);
-  w16(250995, 1);
-  w16(250997, 0);
-  w16(250999, 0);
-  w16(251001, 1);
-  w16(251003, 1);
+  w16(259185, 1);
+  w16(259187, 1);
+  w16(259189, 0);
+  w16(259191, 0);
+  w16(259193, 1);
+  w16(259195, 1);
   reading = false;
   lastKey = 83;
   (await DrawJournal());
-  U8[251005] = ri16(250991) > 0 ? 1 : 0;
-  w32(251006, (await TextRend.GetTicks()));
-  w32(227110, 33);
+  U8[259197] = ri16(259183) > 0 ? 1 : 0;
+  w32(259198, (await TextRend.GetTicks()));
+  w32(235302, 34);
   do {
-    if (ri16(250991) === 0) {
+    if (ri16(259183) === 0) {
       wS($f0, 40, "Quests Exit");
     } else {
       wS($f0, 40, "Select");
-      if (reading && (ri16(251001) < ri16(251003))) {
+      if (reading && (ri16(259193) < ri16(259195))) {
         wS($f0, 40, rS($f0) + " Next");
       }
-      if (reading && (ri16(251001) > 1)) {
+      if (reading && (ri16(259193) > 1)) {
         wS($f0, 40, rS($f0) + " Prev");
       }
       wS($f0, 40, rS($f0) + " Quests Exit");
     }
-    U8[145643] = OptionOf(lastKey);
+    U8[231529] = OptionOf(lastKey);
     ch = (await MenuCore.MenuHorizontal(PROMPT, rS($f0), 13, 10, 15, true, false, $f0 + 41)) & 255;
     if ((U8[$f0 + 41] !== 0)) {
-      if (ri16(250991) > 0) {
+      if (ri16(259183) > 0) {
         switch (ch) {
           case 72: case 71: {
-            if (ri16(250993) > 1) {
-              (await MoveTo(ri16(250993) - 1));
+            if (ri16(259185) > 1) {
+              (await MoveTo(ri16(259185) - 1));
             } else {
-              (await MoveTo(ri16(250991)));
+              (await MoveTo(ri16(259183)));
             }
             break;
           }
           case 80: case 79: {
-            if (ri16(250993) < ri16(250991)) {
-              (await MoveTo(ri16(250993) + 1));
+            if (ri16(259185) < ri16(259183)) {
+              (await MoveTo(ri16(259185) + 1));
             } else {
               (await MoveTo(1));
             }
@@ -111,7 +111,7 @@ export async function JournalMenu() {
           }
         }
       }
-      if ((U8[251005] !== 0)) {
+      if ((U8[259197] !== 0)) {
         reading = false;
         lastKey = 83;
       }
@@ -119,72 +119,72 @@ export async function JournalMenu() {
       lastKey = ch;
       switch (ch) {
         case 83: {
-          (await ShowSelected());
+          ShowSelected();
           reading = true;
           break;
         }
         case 78: {
-          if (ri16(251001) < ri16(251003)) {
-            w16(251001, ri16(251001) + 1);
-            (await DrawPage());
+          if (ri16(259193) < ri16(259195)) {
+            w16(259193, ri16(259193) + 1);
+            DrawPage();
           }
           break;
         }
         case 80: {
-          if (ri16(251001) > 1) {
-            w16(251001, ri16(251001) - 1);
-            (await DrawPage());
+          if (ri16(259193) > 1) {
+            w16(259193, ri16(259193) - 1);
+            DrawPage();
           }
           break;
         }
         case 81: {
-          w32(227110, 0);
+          w32(235302, 0);
           if ((await ShowQuests())) {
             ch = 69;
           } else {
             (await DrawJournal());
-            w32(227110, 33);
+            w32(235302, 34);
           }
           break;
         }
       }
     }
   } while (!(!(U8[$f0 + 41] !== 0) && (ch === 0 || ch === 69)));
-  w32(227110, 0);
-  U8[145643] = savedChoice;
+  w32(235302, 0);
+  U8[231529] = savedChoice;
   (await CharDisp.DisplayNoncombatInterface());
   S.sp = $sp;
 }
 
 export function CollectItems() {
   let i: number = 0;
-  w16(250991, 0);
+  w16(259183, 0);
   for (let $i1 = 1; $i1 <= 99; $i1++) {
     i = $i1;
     if (JrnlSeen.Listed(i)) {
-      w16(250991, ri16(250991) + 1);
-      U8[ri16(250991) + 250891] = i;
+      w16(259183, ri16(259183) + 1);
+      U8[ri16(259183) + 259083] = i;
     }
   }
 }
 
 export function DrawLabel(n: number, highlighted: boolean) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
-  wS($f0, 40, rt.Copy(JrnlList.EntryLabel(U8[n + 250891]), 1, 10));
+  wS($f0, 40, rt.Copy(JrnlList.EntryLabel(U8[n + 259083]), 1, 10));
   if (highlighted) {
-    TextRend.DisplayStringOn(1, (1 + n) - ri16(250995), 0, 15, rS($f0));
+    TextRend.DisplayStringOn(1, (1 + n) - ri16(259187), 0, 15, rS($f0));
   } else {
-    TextRend.DisplayString(1, (1 + n) - ri16(250995), 10, rS($f0));
+    TextRend.DisplayString(1, (1 + n) - ri16(259187), 10, rS($f0));
   }
   S.sp = $sp;
 }
 
-export async function DrawList() {
+export function DrawList() {
   let n: number = 0;
-  (await Border.ClearBox(1, 1, 10, 22));
-  n = ri16(250995);
-  while ((n <= ri16(250991)) && ((n - ri16(250995)) <= 21)) {
-    DrawLabel(n, n === ri16(250993));
+  Border.ClearBox(1, 1, 10, 22);
+  n = ri16(259187);
+  while ((n <= ri16(259183)) && ((n - ri16(259187)) <= 21)) {
+    DrawLabel(n, n === ri16(259185));
     n = (n + 1) << 16 >> 16;
   }
 }
@@ -199,83 +199,83 @@ export function PageStart(p: number) {
   return $r0;
 }
 
-export async function DrawPage() {
+export function DrawPage() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 256);
   let line: number = 0, row: number = 0, lastRow: number = 0;
-  (await Border.ClearBox(12, 1, 38, 1));
-  (await Border.ClearBox(12, 3, 38, 22));
-  wS($f0, 255, rt.Copy(JrnlList.EntryTitle(U8[ri16(250997) + 250891]), 1, 27));
+  Border.ClearBox(12, 1, 38, 1);
+  Border.ClearBox(12, 3, 38, 22);
+  wS($f0, 255, rt.Copy(JrnlList.EntryTitle(U8[ri16(259189) + 259083]), 1, 27));
   TextRend.DisplayCentered(12, 38, 1, 15, rS($f0));
   row = 3;
   lastRow = 22;
-  if (ri16(251001) > 1) {
+  if (ri16(259193) > 1) {
     MenuCore.DrawMore(12, 38, 3);
     row = (row + 1) << 16 >> 16;
   }
-  if (ri16(251001) < ri16(251003)) {
+  if (ri16(259193) < ri16(259195)) {
     MenuCore.DrawMore(12, 38, 22);
     lastRow = (lastRow - 1) << 16 >> 16;
   }
-  line = PageStart(ri16(251001)) << 16 >> 16;
-  while ((row <= lastRow) && (line <= ri16(250999))) {
-    TextRend.DisplayString(12, row, 10, rt.Copy(JrnlList.TextLine(U8[ri16(250997) + 250891], line), 1, 27));
+  line = PageStart(ri16(259193)) << 16 >> 16;
+  while ((row <= lastRow) && (line <= ri16(259191))) {
+    TextRend.DisplayString(12, row, 10, rt.Copy(JrnlList.TextLine(U8[ri16(259189) + 259083], line), 1, 27));
     line = (line + 1) << 16 >> 16;
     row = (row + 1) << 16 >> 16;
   }
   S.sp = $sp;
 }
 
-export async function ShowSelected() {
-  U8[251005] = false ? 1 : 0;
-  if (ri16(250991) === 0) {
+export function ShowSelected() {
+  U8[259197] = false ? 1 : 0;
+  if (ri16(259183) === 0) {
     return;
   }
-  if (ri16(250997) !== ri16(250993)) {
-    w16(250997, ri16(250993));
-    w16(250999, JrnlList.LineCount(U8[ri16(250997) + 250891]));
-    if (ri16(250999) <= 20) {
-      w16(251003, 1);
+  if (ri16(259189) !== ri16(259185)) {
+    w16(259189, ri16(259185));
+    w16(259191, JrnlList.LineCount(U8[ri16(259189) + 259083]));
+    if (ri16(259191) <= 20) {
+      w16(259195, 1);
     } else {
-      w16(251003, 2);
-      while (ri16(250999) > ((PageStart(ri16(251003)) + 20) - 2)) {
-        w16(251003, ri16(251003) + 1);
+      w16(259195, 2);
+      while (ri16(259191) > ((PageStart(ri16(259195)) + 20) - 2)) {
+        w16(259195, ri16(259195) + 1);
       }
     }
-    w16(251001, 1);
-    (await DrawPage());
-  } else if (ri16(251001) !== 1) {
-    w16(251001, 1);
-    (await DrawPage());
+    w16(259193, 1);
+    DrawPage();
+  } else if (ri16(259193) !== 1) {
+    w16(259193, 1);
+    DrawPage();
   }
 }
 
 export async function Moved(old: number) {
-  if (ri16(250993) !== old) {
-    U8[251005] = true ? 1 : 0;
-    w32(251006, (await TextRend.GetTicks()));
+  if (ri16(259185) !== old) {
+    U8[259197] = true ? 1 : 0;
+    w32(259198, (await TextRend.GetTicks()));
   }
 }
 
 export async function TickPreview() {
   let now: number = 0;
-  if ((U8[251005] !== 0) && !(await Crt.KeyPressed())) {
+  if ((U8[259197] !== 0) && !(await Crt.KeyPressed())) {
     now = (await TextRend.GetTicks()) | 0;
-    if ((now < ri32(251006)) || ((now - ri32(251006)) >= 25)) {
-      (await ShowSelected());
+    if ((now < ri32(259198)) || ((now - ri32(259198)) >= 25)) {
+      ShowSelected();
     }
   }
 }
 
 export async function DrawJournal() {
-  (await Border.ClearBox(1, 1, 38, 22));
+  Border.ClearBox(1, 1, 38, 22);
   (await Border.DrawBorder(1, 1, 10, 22, 0));
   (await Border.DrawBorder(12, 3, 38, 22, 0));
   (await Border.DrawBorder(12, 1, 38, 1, 0));
-  (await DrawList());
-  if (ri16(250991) === 0) {
+  DrawList();
+  if (ri16(259183) === 0) {
     TextRend.DisplayString(12, 3, 10, "Your journal is empty.");
-  } else if (ri16(250997) !== 0) {
-    (await DrawPage());
+  } else if (ri16(259189) !== 0) {
+    DrawPage();
   }
 }
 
@@ -298,9 +298,9 @@ export function QuestLine(n: number) {
 export async function ShowQuests() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 69);
   let ch: number = 0, n: number = 0, count: number = 0, top_: number = 0, lastKey: number = 0, $r0: boolean = false;
-  async function DrawQuestPage() {
+  function DrawQuestPage() {
     let k: number = 0;
-    (await Border.ClearBox(1, 3, 38, 22));
+    Border.ClearBox(1, 3, 38, 22);
     k = top_;
     while ((k < count) && ((k - top_) < 20)) {
       TextRend.DisplayString(1, (3 + k) - top_, 10, QuestLine(U8[$f0 + k + 48]));
@@ -315,12 +315,12 @@ export async function ShowQuests() {
       count = (count + 1) << 16 >> 16;
     }
   }
-  (await Border.ClearBox(1, 1, 38, 22));
+  Border.ClearBox(1, 1, 38, 22);
   (await Border.DrawBorder(1, 3, 38, 22, 0));
   (await Border.DrawBorder(1, 1, 38, 1, 0));
   TextRend.DisplayCentered(1, 38, 1, 15, "QUESTS");
   top_ = 0;
-  (await DrawQuestPage());
+  DrawQuestPage();
   lastKey = 81;
   do {
     wS($f0 + 1, 40, "Entries Quests");
@@ -336,12 +336,12 @@ export async function ShowQuests() {
     wS($f0 + 1, 40, rS($f0 + 1) + " Exit");
     wS($f0 + 42, 5, rS($f0 + 42) + "X");
     if (rt.Pos(String.fromCharCode(lastKey), rS($f0 + 42)) > 0) {
-      U8[145643] = rt.Pos(String.fromCharCode(lastKey), rS($f0 + 42));
+      U8[231529] = rt.Pos(String.fromCharCode(lastKey), rS($f0 + 42));
     } else {
-      U8[145643] = 2;
+      U8[231529] = 2;
     }
-    rt.wSet(227100, 0, 3, rt.setR(U8[$f0 + 42], U8[$f0 + 42]));
-    U8[227082] = true ? 1 : 0;
+    rt.wSet(235292, 0, 3, rt.setR(U8[$f0 + 42], U8[$f0 + 42]));
+    U8[235274] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal(PROMPT, rS($f0 + 1), 13, 10, 15, true, false, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
       switch (ch) {
@@ -361,12 +361,12 @@ export async function ShowQuests() {
         ch = 32;
       }
     } else if (ch === 13) {
-      ch = U8[$f0 + U8[145643] + 42];
+      ch = U8[$f0 + U8[231529] + 42];
     }
     switch (ch) {
       case 78: {
         top_ = (top_ + 20) << 16 >> 16;
-        (await DrawQuestPage());
+        DrawQuestPage();
         break;
       }
       case 80: {
@@ -374,7 +374,7 @@ export async function ShowQuests() {
         if (top_ < 0) {
           top_ = 0;
         }
-        (await DrawQuestPage());
+        DrawQuestPage();
         break;
       }
     }
@@ -389,48 +389,48 @@ export async function ShowQuests() {
 
 export async function MoveTo(n: number) {
   let old: number = 0;
-  old = ri16(250993);
-  if (n > ri16(250991)) {
-    n = ri16(250991);
+  old = ri16(259185);
+  if (n > ri16(259183)) {
+    n = ri16(259183);
   }
   if (n < 1) {
     n = 1;
   }
-  if ((n < ri16(250995)) || (n > ((ri16(250995) + 22) - 1))) {
-    if (n < ri16(250995)) {
-      w16(250995, n);
+  if ((n < ri16(259187)) || (n > ((ri16(259187) + 22) - 1))) {
+    if (n < ri16(259187)) {
+      w16(259187, n);
     } else {
-      w16(250995, n - 21);
+      w16(259187, n - 21);
     }
-    w16(250993, n);
-    (await DrawList());
+    w16(259185, n);
+    DrawList();
   } else {
-    DrawLabel(ri16(250993), false);
-    w16(250993, n);
-    DrawLabel(ri16(250993), true);
+    DrawLabel(ri16(259185), false);
+    w16(259185, n);
+    DrawLabel(ri16(259185), true);
   }
   (await Moved(old));
 }
 
 export async function ScrollColumn(down: boolean) {
   let row: number = 0, old: number = 0;
-  old = ri16(250993);
-  row = (ri16(250993) - ri16(250995)) << 16 >> 16;
+  old = ri16(259185);
+  row = (ri16(259185) - ri16(259187)) << 16 >> 16;
   if (down) {
-    w16(250995, ((ri16(250995) + 22) - 1) + 1);
+    w16(259187, ((ri16(259187) + 22) - 1) + 1);
   } else {
-    w16(250995, ri16(250995) - 22);
+    w16(259187, ri16(259187) - 22);
   }
-  if (ri16(250995) > (ri16(250991) - 21)) {
-    w16(250995, ri16(250991) - 21);
+  if (ri16(259187) > (ri16(259183) - 21)) {
+    w16(259187, ri16(259183) - 21);
   }
-  if (ri16(250995) < 1) {
-    w16(250995, 1);
+  if (ri16(259187) < 1) {
+    w16(259187, 1);
   }
-  w16(250993, ri16(250995) + row);
-  if (ri16(250993) > ri16(250991)) {
-    w16(250993, ri16(250991));
+  w16(259185, ri16(259187) + row);
+  if (ri16(259185) > ri16(259183)) {
+    w16(259185, ri16(259183));
   }
-  (await DrawList());
+  DrawList();
   (await Moved(old));
 }

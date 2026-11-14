@@ -45,163 +45,163 @@ export const TITLE_COLOR = 15;
 export const LINE_COLOR = 10;
 export const OFF_COLOR = 8;
 
-export const $at = { stepChoice: 249073, cur: 249074, unchangeable: 249135, noDevice: 249140 };
+export const $at = { stepChoice: 257265, cur: 257266, unchangeable: 257327, noDevice: 257332 };
 
-export async function LoadOptions() {
+export function LoadOptions() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 1);
   let found: number = 0;
-  Collect(249074);
-  found = CfgFile.ReadOptions(rS(143235), 249074, $f0) & 255;
-  Apply(249074);
-  (await GameIo.SetSound(U8[141183] !== 0));
-  w32(224321, 19);
+  Collect(257266);
+  found = CfgFile.ReadOptions(rS(229121), 257266, $f0) & 255;
+  Apply(257266);
+  GameIo.SetSound(U8[227069] !== 0);
+  w32(232647, 20);
   S.sp = $sp;
 }
 
 export function SaveOptions() {
   let written: boolean = false;
-  Collect(249074);
-  written = CfgFile.WriteOptions(rS(143235), 249074);
+  Collect(257266);
+  written = CfgFile.WriteOptions(rS(229121), 257266);
 }
 
 export function Apply(s: number) {
   let opt: number = 0;
-  U8[141163] = U8[s];
-  U8[141206] = U8[s + 1];
-  U8[141181] = 0;
-  U8[141182] = 0;
+  U8[227049] = U8[s];
+  U8[227092] = U8[s + 1];
+  U8[227067] = 0;
+  U8[227068] = 0;
   for (let $i1 = 2; $i1 <= 35; $i1++) {
     opt = $i1;
     switch (opt) {
       case 2: {
-        U8[141177] = U8[s + opt];
+        U8[227063] = U8[s + opt];
         break;
       }
       case 3: {
-        U8[141179] = U8[s + opt];
+        U8[227065] = U8[s + opt];
         break;
       }
       case 4: {
-        U8[141178] = U8[s + opt];
+        U8[227064] = U8[s + opt];
         break;
       }
       case 5: {
-        U8[141184] = U8[s + opt];
+        U8[227070] = U8[s + opt];
         break;
       }
       case 6: {
-        U8[141185] = U8[s + opt];
+        U8[227071] = U8[s + opt];
         break;
       }
       case 7: {
-        U8[141186] = U8[s + opt];
+        U8[227072] = U8[s + opt];
         break;
       }
       case 8: {
-        U8[141187] = U8[s + opt];
+        U8[227073] = U8[s + opt];
         break;
       }
       case 9: {
-        U8[141188] = U8[s + opt];
+        U8[227074] = U8[s + opt];
         break;
       }
       case 10: {
-        U8[141189] = U8[s + opt];
+        U8[227075] = U8[s + opt];
         break;
       }
       case 13: {
-        U8[141180] = U8[s + opt];
+        U8[227066] = U8[s + opt];
         break;
       }
       case 14: case 15: {
         if (U8[s + opt] !== 0) {
-          U8[141181] = U8[141181] | GroupBit(opt);
+          U8[227067] = U8[227067] | GroupBit(opt);
         }
         break;
       }
       case 16: {
-        U8[141183] = U8[s + opt];
+        U8[227069] = U8[s + opt];
         break;
       }
       case 17: case 18: case 19: case 20: case 21: case 22: {
         if (U8[s + opt] !== 0) {
-          U8[141182] = U8[141182] | GroupBit(opt);
+          U8[227068] = U8[227068] | GroupBit(opt);
         }
         break;
       }
       case 28: {
-        U8[141191] = U8[s + opt];
+        U8[227077] = U8[s + opt];
         break;
       }
       case 29: {
-        U8[141192] = U8[s + opt];
+        U8[227078] = U8[s + opt];
         break;
       }
       case 30: {
-        U8[141193] = U8[s + opt];
+        U8[227079] = U8[s + opt];
         break;
       }
       case 31: {
-        U8[141194] = U8[s + opt];
+        U8[227080] = U8[s + opt];
         break;
       }
       case 32: {
-        U8[141195] = U8[s + opt];
+        U8[227081] = U8[s + opt];
         break;
       }
       case 33: {
-        U8[141196] = U8[s + opt];
+        U8[227082] = U8[s + opt];
         break;
       }
       case 34: {
-        U8[141197] = U8[s + opt];
+        U8[227083] = U8[s + opt];
         break;
       }
       case 11: {
-        U8[141198] = U8[s + opt];
+        U8[227084] = U8[s + opt];
         break;
       }
       case 12: {
-        U8[141199] = U8[s + opt];
+        U8[227085] = U8[s + opt];
         break;
       }
       case 23: {
-        U8[141200] = U8[s + opt];
+        U8[227086] = U8[s + opt];
         break;
       }
       case 24: {
-        U8[141201] = U8[s + opt];
+        U8[227087] = U8[s + opt];
         break;
       }
       case 25: {
-        U8[141202] = U8[s + opt];
+        U8[227088] = U8[s + opt];
         break;
       }
       case 26: {
-        U8[141203] = U8[s + opt];
+        U8[227089] = U8[s + opt];
         break;
       }
       case 27: {
-        U8[141204] = U8[s + opt];
+        U8[227090] = U8[s + opt];
         break;
       }
       case 35: {
-        U8[141205] = U8[s + opt];
+        U8[227091] = U8[s + opt];
         break;
       }
     }
   }
-  wS(249110, 24, rS(s + 36));
+  wS(257302, 24, rS(s + 36));
 }
 
 export function AdvisedVersion() {
   let $r0: string = "";
-  $r0 = rS(249110);
+  $r0 = rS(257302);
   return $r0;
 }
 
 export function SetAdvised(version: string) {
-  wS(249110, 24, CfgFile.Tidy(version));
+  wS(257302, 24, CfgFile.Tidy(version));
   SaveOptions();
 }
 
@@ -213,16 +213,16 @@ export async function OptionsMenu() {
     sel = n;
     DrawSetting(sel, 15);
   }
-  async function Arrow(choice: number) {
+  function Arrow(choice: number) {
     const $sp = S.sp, $f1 = (S.sp = $sp - 50);
-    if (rt.inM(249135, 0, 5, sel)) {
+    if (rt.inM(257327, 0, 5, sel)) {
       { S.sp = $sp; return; }
     }
     if (CfgFile.StepNames(sel, $f1, $f1 + 25)) {
-      U8[249073] = choice;
+      U8[257265] = choice;
       DrawSetting(sel, 15);
     } else {
-      (await ChangeSetting(sel));
+      ChangeSetting(sel);
       touched = true;
     }
     S.sp = $sp;
@@ -238,27 +238,27 @@ export async function OptionsMenu() {
         }
       }
     }
-    U8[249073] = 0;
+    U8[257265] = 0;
     (await DrawPage(page, sel));
   }
-  savedChoice = U8[145643];
+  savedChoice = U8[231529];
   if (CbtLog.Usable()) {
-    rt.wSet(249135, 0, 5, rt.setR());
+    rt.wSet(257327, 0, 5, rt.setR());
   } else {
-    rt.wSet(249135, 0, 5, rt.setR(35, 35, 36, 36));
+    rt.wSet(257327, 0, 5, rt.setR(35, 35, 36, 36));
   }
-  U8[249140] = U8[141140] === 2 ? 1 : 0;
-  CfgFile.Silenced((U8[249140] !== 0), 249135);
+  U8[257332] = U8[227026] === 2 ? 1 : 0;
+  CfgFile.Silenced((U8[257332] !== 0), 257327);
   sel = 1;
-  U8[249073] = 0;
+  U8[257265] = 0;
   changed = false;
   (await ShowPage(1));
   do {
-    soundState = U8[143233];
+    soundState = U8[229119];
     touched = false;
-    U8[145643] = page;
-    U8[227081] = true ? 1 : 0;
-    U8[227082] = true ? 1 : 0;
+    U8[231529] = page;
+    U8[235273] = true ? 1 : 0;
+    U8[235274] = true ? 1 : 0;
     ch = (await MenuCore.MenuHorizontal("", "Game Sound Camp coMbat sYstem Exit", 13, 10, 15, true, false, $f0)) & 255;
     if ((U8[$f0] !== 0)) {
       if (rt.inS(SETTINGS_PAGES, page)) {
@@ -273,11 +273,11 @@ export async function OptionsMenu() {
             break;
           }
           case 75: {
-            (await Arrow(0));
+            Arrow(0);
             break;
           }
           case 77: {
-            (await Arrow(1));
+            Arrow(1);
             break;
           }
         }
@@ -285,8 +285,8 @@ export async function OptionsMenu() {
     } else {
       switch (ch) {
         case 13: {
-          if (rt.inS(SETTINGS_PAGES, page) && !rt.inM(249135, 0, 5, sel)) {
-            (await ChangeSetting(sel));
+          if (rt.inS(SETTINGS_PAGES, page) && !rt.inM(257327, 0, 5, sel)) {
+            ChangeSetting(sel);
             touched = true;
           }
           break;
@@ -326,7 +326,7 @@ export async function OptionsMenu() {
     if (touched) {
       changed = true;
     }
-    if (rt.inS(SETTINGS_PAGES, page) && (touched || (U8[143233] !== soundState))) {
+    if (rt.inS(SETTINGS_PAGES, page) && (touched || (U8[229119] !== soundState))) {
       if ((page === 2) && (sel !== 16)) {
         DrawSetting(16, 10);
       }
@@ -336,7 +336,7 @@ export async function OptionsMenu() {
   if (changed) {
     SaveOptions();
   }
-  U8[145643] = savedChoice;
+  U8[231529] = savedChoice;
   S.sp = $sp;
 }
 
@@ -384,121 +384,121 @@ export function GroupBit(opt: number) {
 
 export function Collect(s: number) {
   let opt: number = 0;
-  U8[s] = U8[141163];
-  U8[s + 1] = U8[141206];
+  U8[s] = U8[227049];
+  U8[s + 1] = U8[227092];
   for (let $i1 = 2; $i1 <= 35; $i1++) {
     opt = $i1;
     switch (opt) {
       case 2: {
-        U8[s + opt] = U8[141177];
+        U8[s + opt] = U8[227063];
         break;
       }
       case 3: {
-        U8[s + opt] = U8[141179];
+        U8[s + opt] = U8[227065];
         break;
       }
       case 4: {
-        U8[s + opt] = U8[141178];
+        U8[s + opt] = U8[227064];
         break;
       }
       case 5: {
-        U8[s + opt] = U8[141184];
+        U8[s + opt] = U8[227070];
         break;
       }
       case 6: {
-        U8[s + opt] = U8[141185];
+        U8[s + opt] = U8[227071];
         break;
       }
       case 7: {
-        U8[s + opt] = U8[141186];
+        U8[s + opt] = U8[227072];
         break;
       }
       case 8: {
-        U8[s + opt] = U8[141187];
+        U8[s + opt] = U8[227073];
         break;
       }
       case 9: {
-        U8[s + opt] = U8[141188];
+        U8[s + opt] = U8[227074];
         break;
       }
       case 10: {
-        U8[s + opt] = U8[141189];
+        U8[s + opt] = U8[227075];
         break;
       }
       case 13: {
-        U8[s + opt] = U8[141180];
+        U8[s + opt] = U8[227066];
         break;
       }
       case 14: case 15: {
-        U8[s + opt] = ((U8[141181] & GroupBit(opt)) !== 0 ? 1 : 0);
+        U8[s + opt] = ((U8[227067] & GroupBit(opt)) !== 0 ? 1 : 0);
         break;
       }
       case 16: {
-        U8[s + opt] = U8[141183];
+        U8[s + opt] = U8[227069];
         break;
       }
       case 17: case 18: case 19: case 20: case 21: case 22: {
-        U8[s + opt] = ((U8[141182] & GroupBit(opt)) !== 0 ? 1 : 0);
+        U8[s + opt] = ((U8[227068] & GroupBit(opt)) !== 0 ? 1 : 0);
         break;
       }
       case 28: {
-        U8[s + opt] = U8[141191];
+        U8[s + opt] = U8[227077];
         break;
       }
       case 29: {
-        U8[s + opt] = U8[141192];
+        U8[s + opt] = U8[227078];
         break;
       }
       case 30: {
-        U8[s + opt] = U8[141193];
+        U8[s + opt] = U8[227079];
         break;
       }
       case 31: {
-        U8[s + opt] = U8[141194];
+        U8[s + opt] = U8[227080];
         break;
       }
       case 32: {
-        U8[s + opt] = U8[141195];
+        U8[s + opt] = U8[227081];
         break;
       }
       case 33: {
-        U8[s + opt] = U8[141196];
+        U8[s + opt] = U8[227082];
         break;
       }
       case 34: {
-        U8[s + opt] = U8[141197];
+        U8[s + opt] = U8[227083];
         break;
       }
       case 11: {
-        U8[s + opt] = U8[141198];
+        U8[s + opt] = U8[227084];
         break;
       }
       case 12: {
-        U8[s + opt] = U8[141199];
+        U8[s + opt] = U8[227085];
         break;
       }
       case 23: {
-        U8[s + opt] = U8[141200];
+        U8[s + opt] = U8[227086];
         break;
       }
       case 24: {
-        U8[s + opt] = U8[141201];
+        U8[s + opt] = U8[227087];
         break;
       }
       case 25: {
-        U8[s + opt] = U8[141202];
+        U8[s + opt] = U8[227088];
         break;
       }
       case 26: {
-        U8[s + opt] = U8[141203];
+        U8[s + opt] = U8[227089];
         break;
       }
       case 27: {
-        U8[s + opt] = U8[141204];
+        U8[s + opt] = U8[227090];
         break;
       }
       case 35: {
-        U8[s + opt] = U8[141205];
+        U8[s + opt] = U8[227091];
         break;
       }
     }
@@ -513,7 +513,7 @@ export function SettingRow(opt: number) {
 
 export function Passed(page: number, skip: number) {
   let opt: number = 0;
-  rt.wSet(skip, 0, 5, rt.rSet(249135, 0, 5));
+  rt.wSet(skip, 0, 5, rt.rSet(257327, 0, 5));
   for (let $i1 = 1; $i1 <= 36; $i1++) {
     opt = $i1;
     if (CfgFile.SettingPage(opt) !== page) {
@@ -524,12 +524,12 @@ export function Passed(page: number, skip: number) {
 
 export function ShownValue(opt: number) {
   let $r0: string = "";
-  if ((opt === 16) && !(U8[249140] !== 0)) {
-    $r0 = CfgFile.OnOff((U8[143233] !== 2 ? 1 : 0));
+  if ((opt === 16) && !(U8[257332] !== 0)) {
+    $r0 = CfgFile.OnOff((U8[229119] !== 2 ? 1 : 0));
   } else if ((opt === 35) && !CbtLog.Usable()) {
     $r0 = "Needs EMS";
   } else {
-    $r0 = CfgFile.ShownValue(249074, opt, (U8[249140] !== 0));
+    $r0 = CfgFile.ShownValue(257266, opt, (U8[257332] !== 0));
   }
   return $r0;
 }
@@ -547,20 +547,20 @@ export function DrawSetting(opt: number, color: number) {
   if ((opt < 1) || (opt > 36)) {
     { S.sp = $sp; return; }
   }
-  if (rt.inM(249135, 0, 5, opt)) {
+  if (rt.inM(257327, 0, 5, opt)) {
     color = 8;
   }
   highlighted = color === 15;
   row = SettingRow(opt) & 255;
   TextRend.PrintSpaces(2, row, 0, 37);
-  Collect(249074);
-  TextRend.DisplayString(2, row, color, CfgFile.SettingLabel(249074, opt));
+  Collect(257266);
+  TextRend.DisplayString(2, row, color, CfgFile.SettingLabel(257266, opt));
   if (CfgFile.StepNames(opt, $f0, $f0 + 25)) {
     if (highlighted) {
       color = 10;
     }
-    DrawValue(24, rS($f0), U8[249073] !== 1, color);
-    DrawValue((24 + U8[$f0]) + 1, rS($f0 + 25), U8[249073] === 1, color);
+    DrawValue(24, rS($f0), U8[257265] !== 1, color);
+    DrawValue((24 + U8[$f0]) + 1, rS($f0 + 25), U8[257265] === 1, color);
   } else {
     DrawValue(24, ShownValue(opt), true, color);
   }
@@ -599,7 +599,7 @@ export async function CountMerged(merged: number, present: number) {
       for (let $i2 = 1; $i2 <= 8; $i2++) {
         disk = $i2;
         if (!found) {
-          found = DataArc.FileLength(rS(143491) + DataArc.SourceFile(fam, disk)) >= 0;
+          found = DataArc.FileLength(rS(229377) + DataArc.SourceFile(fam, disk)) >= 0;
         }
       }
       if (found) {
@@ -624,7 +624,7 @@ export function DrawSettingsPage(page: number, sel: number) {
       }
     }
   }
-  if ((page === 2) && (U8[249140] !== 0)) {
+  if ((page === 2) && (U8[257332] !== 0)) {
     TextRend.DisplayString(2, SettingRow(22) + 2, 10, "No sound device in POOL.CFG");
   }
 }
@@ -632,8 +632,8 @@ export function DrawSettingsPage(page: number, sel: number) {
 export async function DrawSystemPage() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 23);
   DrawInfo(2, "Video", VidOps.ModeName());
-  DrawInfo(3, "Sound Device", rS(141119));
-  DrawInfo(4, "Version", rS(131605));
+  DrawInfo(3, "Sound Device", rS(227005));
+  DrawInfo(4, "Version", rS(217491));
   DrawInfo(5, "Commit", BUILD_COMMIT);
   (await CountMerged($f0, $f0 + 1));
   DrawInfo(7, "Data", "V" + StrUtil.Grouped(46));
@@ -644,13 +644,13 @@ export async function DrawSystemPage() {
   DrawInfo(13, "Speed Check", Advisory.SpeedText());
   DrawInfo(14, "Cycles", Advisory.CyclesText());
   wS($f0 + 2, 20, "");
-  if ((U8[141208] !== 0)) {
+  if ((U8[227094] !== 0)) {
     wS($f0 + 2, 20, "STING ");
   }
-  if ((U8[141209] !== 0)) {
+  if ((U8[227095] !== 0)) {
     wS($f0 + 2, 20, rS($f0 + 2) + "NORAND ");
   }
-  if ((U8[141210] !== 0)) {
+  if ((U8[227096] !== 0)) {
     wS($f0 + 2, 20, rS($f0 + 2) + "ADVISE");
   }
   if (rS($f0 + 2) !== "") {
@@ -665,7 +665,7 @@ export async function DrawSystemPage() {
 }
 
 export async function DrawPage(page: number, sel: number) {
-  (await Border.ClearBox(0, 0, 39, 23));
+  Border.ClearBox(0, 0, 39, 23);
   (await Border.DrawBorder(1, 1, 38, 22, 0));
   switch (page) {
     case 1: {
@@ -696,15 +696,15 @@ export async function DrawPage(page: number, sel: number) {
   }
 }
 
-export async function ChangeSetting(opt: number) {
+export function ChangeSetting(opt: number) {
   if (opt === 16) {
-    (await GameIo.SetSound(U8[143233] === 2));
+    GameIo.SetSound(U8[229119] === 2);
   } else {
-    Collect(249074);
-    CfgFile.ChangeSetting(249074, opt, U8[249073] === 1);
-    Apply(249074);
+    Collect(257266);
+    CfgFile.ChangeSetting(257266, opt, U8[257265] === 1);
+    Apply(257266);
     if (opt === 13 || opt === 14 || opt === 15) {
-      (await SoundDrv.ApplyMusicSettings());
+      SoundDrv.ApplyMusicSettings();
     }
   }
 }

@@ -35,7 +35,7 @@ export const ROSTER_ROW = 4;
 export const LIST_LAST = 11;
 export const LIST_KEYS = "C D M T V A R L S B G E J";
 
-export const $at = { cmdKeys: 249141, cmdNames: 249155, cmdRows: 249389, cmdCols: 249402, leftCmds: 249415, listCmds: 249417, listNames: 249429 };
+export const $at = { cmdKeys: 257333, cmdNames: 257347, cmdRows: 257581, cmdCols: 257594, leftCmds: 257607, listCmds: 257609, listNames: 257621 };
 
 export function OfferedCmds(hasChar: boolean, atHall: boolean, inGame: boolean, anywhere: boolean, offered: number) {
   if (anywhere) {
@@ -71,8 +71,8 @@ export function MenuTop(members: number) {
   if (top_ < 10) {
     top_ = 10;
   }
-  if ((top_ + U8[249394]) > 22) {
-    top_ = (22 - U8[249394]) & 255;
+  if ((top_ + U8[257586]) > 22) {
+    top_ = (22 - U8[257586]) & 255;
   }
   $r0 = top_;
   return $r0;
@@ -80,7 +80,7 @@ export function MenuTop(members: number) {
 
 export function CmdRow(cmd: number, top_: number) {
   let $r0: number = 0;
-  $r0 = (top_ + U8[cmd + 249389]) & 255;
+  $r0 = (top_ + U8[cmd + 257581]) & 255;
   return $r0;
 }
 
@@ -106,7 +106,7 @@ export function OtherColumn(offered: Uint8Array, cmd: number, top_: number) {
   row = CmdRow(cmd, top_) << 16 >> 16;
   for (let $i1 = 0; $i1 <= 12; $i1++) {
     c = $i1;
-    if (rt.inS(offered, c) && (rt.inM(249415, 0, 2, c) !== rt.inM(249415, 0, 2, cmd))) {
+    if (rt.inS(offered, c) && (rt.inM(257607, 0, 2, c) !== rt.inM(257607, 0, 2, cmd))) {
       dist = Math.abs(CmdRow(c, top_) - row) << 16 >> 16;
       if (dist < best) {
         best = dist;
@@ -132,10 +132,10 @@ export async function ChooseCmd(offered: Uint8Array, top_: number, cur: number, 
   let ch: number = 0, was: number = 0, cmd: number = 0, $r0: number = 0;
   do {
     was = U8[cur];
-    U8[227081] = true ? 1 : 0;
-    U8[227082] = true ? 1 : 0;
-    wS(227083, 16, rS(249141) + "J");
-    ch = (await MenuCore.MenuHorizontal(StrUtil.PadLeft(rS(131605), 40), "", 3, 0, 15, true, false, ext)) & 255;
+    U8[235273] = true ? 1 : 0;
+    U8[235274] = true ? 1 : 0;
+    wS(235275, 16, rS(257333) + "J");
+    ch = (await MenuCore.MenuHorizontal(StrUtil.PadLeft(rS(217491), 40), "", 3, 0, 15, true, false, ext)) & 255;
     if ((U8[ext] !== 0)) {
       switch (ch) {
         case 72: {
@@ -156,16 +156,16 @@ export async function ChooseCmd(offered: Uint8Array, top_: number, cur: number, 
         }
       }
     } else if (ch === 13) {
-      $r0 = U8[(U8[cur] + 1) + 249141];
+      $r0 = U8[(U8[cur] + 1) + 257333];
       return $r0;
     } else if (ch === 74) {
       $r0 = ch;
       return $r0;
     } else if ((ch === 0) && ExitLeaves(offered)) {
-      $r0 = U8[249154];
+      $r0 = U8[257346];
       return $r0;
     } else {
-      cmd = rt.Pos(String.fromCharCode(ch), rS(249141));
+      cmd = rt.Pos(String.fromCharCode(ch), rS(257333));
       if (((ch !== 0) && (cmd > 0)) && rt.inS(offered, cmd - 1)) {
         U8[cur] = cmd - 1;
         DrawCmd(offered, top_, was, U8[cur]);
@@ -197,16 +197,16 @@ export function DrawList(offered: Uint8Array) {
   count = 0;
   for (let $i1 = 0; $i1 <= 11; $i1++) {
     i = $i1;
-    if (rt.inS(offered, U8[i + 249417])) {
+    if (rt.inS(offered, U8[i + 257609])) {
       count = (count + 1) & 255;
     }
   }
   row = ListTop(count) & 255;
   for (let $i2 = 0; $i2 <= 11; $i2++) {
     i = $i2;
-    if (rt.inS(offered, U8[i + 249417])) {
-      TextRend.DisplayString(2, row, 15, String.fromCharCode(U8[i * 28 + 249430]));
-      TextRend.DisplayString(3, row, 10, rt.Copy(rS(i * 28 + 249429), 2, U8[i * 28 + 249429] - 1));
+    if (rt.inS(offered, U8[i + 257609])) {
+      TextRend.DisplayString(2, row, 15, String.fromCharCode(U8[i * 28 + 257622]));
+      TextRend.DisplayString(3, row, 10, rt.Copy(rS(i * 28 + 257621), 2, U8[i * 28 + 257621] - 1));
       row = (row + 1) & 255;
     }
   }
@@ -216,14 +216,14 @@ export async function ChooseListed(offered: Uint8Array, idle: boolean, ext: numb
   let ch: number = 0, i: number = 0, $r0: number = 0;
   do {
     if (idle) {
-      if ((U8[141211] !== 0)) {
-        w16(227114, 300);
+      if ((U8[227097] !== 0)) {
+        w16(235306, 300);
       } else {
-        w16(227114, 3000);
+        w16(235306, 3000);
       }
-      U8[227116] = 33;
+      U8[235308] = 33;
     }
-    ch = (await MenuCore.MenuHorizontal("pool of radiance " + rS(131605), LIST_KEYS, 3, 0, 0, true, false, ext)) & 255;
+    ch = (await MenuCore.MenuHorizontal("pool of radiance " + rS(217491), LIST_KEYS, 3, 0, 0, true, false, ext)) & 255;
     if (((U8[ext] !== 0) || (ch === 74)) || (ch === 33)) {
       $r0 = ch;
       return $r0;
@@ -231,8 +231,8 @@ export async function ChooseListed(offered: Uint8Array, idle: boolean, ext: numb
     if (ch !== 0) {
       for (let $i2 = 0; $i2 <= 11; $i2++) {
         i = $i2;
-        if (rt.inS(offered, U8[i + 249417]) && (U8[i * 28 + 249430] === ch)) {
-          $r0 = U8[(U8[i + 249417] + 1) + 249141];
+        if (rt.inS(offered, U8[i + 257609]) && (U8[i * 28 + 257622] === ch)) {
+          $r0 = U8[(U8[i + 257609] + 1) + 257333];
           return $r0;
         }
       }
@@ -244,12 +244,12 @@ export async function ChooseListed(offered: Uint8Array, idle: boolean, ext: numb
 export function DrawCmd(offered: Uint8Array, top_: number, cmd: number, cur: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 18);
   let col: number = 0, row: number = 0, i: number = 0;
-  wS($f0, 17, rS(cmd * 18 + 249155));
+  wS($f0, 17, rS(cmd * 18 + 257347));
   if ((cmd === 12) && ExitLeaves(offered)) {
     wS($f0, 17, "Exit");
   }
   row = CmdRow(cmd, top_) & 255;
-  col = U8[cmd + 249402];
+  col = U8[cmd + 257594];
   if (!rt.inS(offered, cmd)) {
     TextRend.DisplayString(col, row, 8, rS($f0));
   } else if (cmd === cur) {
@@ -257,7 +257,7 @@ export function DrawCmd(offered: Uint8Array, top_: number, cmd: number, cur: num
   } else {
     TextRend.DisplayString(col, row, 10, rS($f0));
     i = 1;
-    while (rt.UpCase(U8[$f0 + i]) !== U8[(cmd + 1) + 249141]) {
+    while (rt.UpCase(U8[$f0 + i]) !== U8[(cmd + 1) + 257333]) {
       i = (i + 1) & 255;
     }
     TextRend.DisplayString((col + i) - 1, row, 15, String.fromCharCode(U8[$f0 + i]));

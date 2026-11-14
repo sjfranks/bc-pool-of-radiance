@@ -19,7 +19,7 @@ import * as C_DEMO from './c_demo';
 
 export const MAX_REMAPS = 224;
 
-export const $at = { savedDiskIndex: 224343, daxCompressedFilePtr: 225150, familyState: 225154, familyDisks: 225168, remapCount: 225182, remapFamily: 225183, remapDisk: 225407, remapFrom: 225631, remapTo: 225855 };
+export const $at = { savedDiskIndex: 232669, daxCompressedFilePtr: 233476, familyState: 233480, familyDisks: 233494, remapCount: 233508, remapFamily: 233509, remapDisk: 233733, remapFrom: 233957, remapTo: 234181 };
 
 export function FreeRounded(p: number, n: number) {
   rt.freeMem(r32(p));
@@ -30,21 +30,21 @@ export function AllocRounded(p: number, n: number) {
 }
 
 export function WriteChar(col: number, row: number, attr: number, count: number, ch: number) {
-  rt.FT[r32(141087)](col, row, attr, count, ch);
+  rt.FT[r32(226973)](col, row, attr, count, ch);
 }
 
 export function BiosWriteChar(page: number, col: number, row: number, attr: number, count: number, ch: number) {
-  U8[141227] = 2;
-  U8[141229] = page;
-  U8[141233] = row;
-  U8[141232] = col;
-  Host.Intr(16, 141226);
-  U8[141227] = 9;
-  U8[141226] = ch;
-  U8[141229] = page;
-  U8[141228] = attr;
-  w16(141230, count);
-  Host.Intr(16, 141226);
+  U8[227113] = 2;
+  U8[227115] = page;
+  U8[227119] = row;
+  U8[227118] = col;
+  Host.Intr(16, 227112);
+  U8[227113] = 9;
+  U8[227112] = ch;
+  U8[227115] = page;
+  U8[227114] = attr;
+  w16(227116, count);
+  Host.Intr(16, 227112);
 }
 
 export function WriteString(col: number, row: number, attr: number, source: string) {
@@ -98,8 +98,8 @@ export function DataDiskMsg() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 41);
   let $r0: string = "";
   wS($f0, 40, "");
-  if ((U8[143234] >= 1) && (U8[143234] <= 8)) {
-    wS($f0, 40, String.fromCharCode((48 + U8[143234]) & 255) + " ");
+  if ((U8[229120] >= 1) && (U8[229120] <= 8)) {
+    wS($f0, 40, String.fromCharCode((48 + U8[229120]) & 255) + " ");
   }
   $r0 = "Insert disk " + rS($f0) + "in drive " + String.fromCharCode(DataDrive()) + ": (Esc quits)";
   S.sp = $sp;
@@ -140,8 +140,8 @@ export async function OpenWithRetry(fileName: string, promptMsg: string, noPromp
 export function DataDrive() {
   const $sp = S.sp, $f0 = (S.sp = $sp - 256);
   let $r0: number = 0;
-  if (U8[143491] > 0) {
-    $r0 = rt.UpCase(U8[143492]);
+  if (U8[229377] > 0) {
+    $r0 = rt.UpCase(U8[229378]);
   } else {
     wS($f0, 255, rt.GetDir());
     $r0 = rt.UpCase(U8[$f0 + 1]);
@@ -156,7 +156,7 @@ export function SanitizeFileName(name_: string) {
   let i: number = 0, $r0: string = "";
   for (let $i1 = 1; $i1 <= 10; $i1++) {
     i = $i1;
-    wS($f0, 255, StrUtil.RemoveAll(rS($f0), String.fromCharCode(U8[i + 226078])));
+    wS($f0, 255, StrUtil.RemoveAll(rS($f0), String.fromCharCode(U8[i + 234404])));
   }
   wS($f0, 255, rt.Copy(rS($f0), 1, 8));
   for (let $i2 = 1, $e2 = U8[$f0]; $i2 <= $e2; $i2++) {
@@ -209,7 +209,7 @@ export function DecompressDax(src: number, dst: number, lenCompressed: number, l
 
 export async function OpenDax(dirName: string, ext: string, headerSize: number, f1: number, f2: number) {
   let nread: number = 0, $r0: boolean = false;
-  if ((await OpenWithRetry(dirName + ext, DataDiskMsg(), (U8[143747] !== 0), true, f1))) {
+  if ((await OpenWithRetry(dirName + ext, DataDiskMsg(), (U8[229633] !== 0), true, f1))) {
     if (!FileUtil.OpenReadOnly(f2, dirName + ext)) {
       rt.Close(f1);
       $r0 = false;
@@ -288,14 +288,14 @@ export function ReadBlock(f: number, hdrSize: number, offset: number, compSize: 
   }
   if (ok) {
     w16($f0 + 2, 0);
-    AllocRounded(225150, compSize);
-    w16($f0 + 2, rt.BlockRead(f, r32(225150), compSize, true));
+    AllocRounded(233476, compSize);
+    w16($f0 + 2, rt.BlockRead(f, r32(233476), compSize, true));
     ok = rt.IOResult() === 0;
     if (ok) {
       w32(data, rt.getMem(r16($f0)));
-      DecompressDax(225150, data, $f0 + 2, $f0);
+      DecompressDax(233476, data, $f0 + 2, $f0);
     }
-    FreeRounded(225150, compSize);
+    FreeRounded(233476, compSize);
   }
   $r0 = ok;
   S.sp = $sp;
@@ -305,9 +305,9 @@ export function ReadBlock(f: number, hdrSize: number, offset: number, compSize: 
 export async function FamilyUsable(family: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 6);
   let i: number = 0, first: number = 0, $r0: boolean = false;
-  if (U8[family + 225153] === 0) {
-    U8[family + 225153] = 2;
-    if (DataArc.ArchiveIntact(rS(224894) + DataArc.MergedName(family) + ".DAX")) {
+  if (U8[family + 233479] === 0) {
+    U8[family + 233479] = 2;
+    if (DataArc.ArchiveIntact(rS(233220) + DataArc.MergedName(family) + ".DAX")) {
       (await LoadDax(DataArc.MergedName(family), ".dax", 255, $f0, $f0 + 2));
       if (r32($f0 + 2) !== 0) {
         if ((r16($f0) >= 1) && ((I8[r32($f0 + 2)] & 255) === 46)) {
@@ -315,7 +315,7 @@ export async function FamilyUsable(family: number) {
           (await LoadDax(DataArc.MergedName(family), ".dax", 253, $f0, $f0 + 2));
           if (r32($f0 + 2) !== 0) {
             if (SourcesMatch(family, r32($f0 + 2), r16($f0))) {
-              U8[family + 225153] = 1;
+              U8[family + 233479] = 1;
             }
           }
         }
@@ -324,23 +324,23 @@ export async function FamilyUsable(family: number) {
         }
       }
     }
-    if (U8[family + 225153] === 1) {
+    if (U8[family + 233479] === 1) {
       (await LoadDax(DataArc.MergedName(family), ".dax", 254, $f0, $f0 + 2));
       if (r32($f0 + 2) !== 0) {
-        first = U8[225182];
+        first = U8[233508];
         i = 0;
-        while (((i + 2) < r16($f0)) && (U8[family + 225153] === 1)) {
+        while (((i + 2) < r16($f0)) && (U8[family + 233479] === 1)) {
           let $t2;
           if ((($t2 = I8[r32($f0 + 2) + i] & 255, ($t2 >= 1 && $t2 <= 8)) && ((I8[r32($f0 + 2) + (i + 1)] & 255) < 253)) && ((I8[r32($f0 + 2) + (i + 2)] & 255) < 253)) {
-            if (U8[225182] === 224) {
-              U8[family + 225153] = 2;
-              U8[225182] = first;
+            if (U8[233508] === 224) {
+              U8[family + 233479] = 2;
+              U8[233508] = first;
             } else {
-              U8[225182] = U8[225182] + 1;
-              U8[U8[225182] + 225182] = family;
-              U8[U8[225182] + 225406] = I8[r32($f0 + 2) + i] & 255;
-              U8[U8[225182] + 225630] = I8[r32($f0 + 2) + (i + 1)] & 255;
-              U8[U8[225182] + 225854] = I8[r32($f0 + 2) + (i + 2)] & 255;
+              U8[233508] = U8[233508] + 1;
+              U8[U8[233508] + 233508] = family;
+              U8[U8[233508] + 233732] = I8[r32($f0 + 2) + i] & 255;
+              U8[U8[233508] + 233956] = I8[r32($f0 + 2) + (i + 1)] & 255;
+              U8[U8[233508] + 234180] = I8[r32($f0 + 2) + (i + 2)] & 255;
             }
           }
           i = (i + 3) & 65535;
@@ -349,15 +349,15 @@ export async function FamilyUsable(family: number) {
       }
     }
   }
-  $r0 = U8[family + 225153] === 1;
+  $r0 = U8[family + 233479] === 1;
   S.sp = $sp;
   return $r0;
 }
 
 export function ResetArchiveCache() {
-  rt.fill(225154, 14, 0);
-  rt.fill(225168, 14, 0);
-  U8[225182] = 0;
+  rt.fill(233480, 14, 0);
+  rt.fill(233494, 14, 0);
+  U8[233508] = 0;
 }
 
 export async function ArchiveName(fileName: string) {
@@ -377,10 +377,10 @@ export async function ArchiveName(fileName: string) {
 export function RemapId(family: number, disk: number, id: number) {
   let i: number = 0, $r0: number = 0;
   $r0 = id;
-  for (let $i1 = 1, $e1 = U8[225182]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[233508]; $i1 <= $e1; $i1++) {
     i = $i1;
-    if (((U8[i + 225182] === family) && (U8[i + 225406] === disk)) && (U8[i + 225630] === id)) {
-      $r0 = U8[i + 225854];
+    if (((U8[i + 233508] === family) && (U8[i + 233732] === disk)) && (U8[i + 233956] === id)) {
+      $r0 = U8[i + 234180];
     }
   }
   return $r0;
@@ -388,17 +388,17 @@ export function RemapId(family: number, disk: number, id: number) {
 
 export function DiskHasBlock(fileName: string, fileID: number) {
   let $r0: boolean = false;
-  $r0 = DataArc.HasBlock(rS(143491) + fileName + ".DAX", fileID);
+  $r0 = DataArc.HasBlock(rS(229377) + fileName + ".DAX", fileID);
   return $r0;
 }
 
 export function PushState(v: number) {
-  U8[224343] = U8[143234];
-  U8[143234] = v;
+  U8[232669] = U8[229120];
+  U8[229120] = v;
 }
 
 export function PopState() {
-  U8[143234] = U8[224343];
+  U8[229120] = U8[232669];
 }
 
 export function FolderOf(name_: string) {
@@ -418,11 +418,11 @@ export function FolderOf(name_: string) {
     built = built || (rS($f0) === DataArc.MergedName(family));
   }
   if (built) {
-    $r0 = rS(224894);
+    $r0 = rS(233220);
   } else if (rS($f0) === C_DEMO.ARCHIVE) {
     $r0 = GameDirs.OwnFolder("DEMO.DAX");
   } else {
-    $r0 = rS(143491);
+    $r0 = rS(229377);
   }
   S.sp = $sp;
   return $r0;
@@ -430,14 +430,14 @@ export function FolderOf(name_: string) {
 
 export function DiskHasSource(family: number, disk: number) {
   let $r0: boolean = false;
-  $r0 = (U8[family + 225167] & (1 << (disk - 1))) !== 0;
+  $r0 = (U8[family + 233493] & (1 << (disk - 1))) !== 0;
   return $r0;
 }
 
 export function SourcesMatch(family: number, data: number, size: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 4);
   let i: number = 0, d: number = 0, ok: boolean = false, $r0: boolean = false;
-  U8[family + 225167] = 0;
+  U8[family + 233493] = 0;
   ok = (size % 9) === 0;
   i = 0;
   while (ok && (i < size)) {
@@ -445,15 +445,15 @@ export function SourcesMatch(family: number, data: number, size: number) {
     ok = (d >= 1) && (d <= 8);
     if (ok) {
       mv($f0, data + (i + 1), 4);
-      U8[family + 225167] = U8[family + 225167] | (1 << (d - 1));
-      ok = DataArc.FileLength(rS(143491) + DataArc.SourceFile(family, d)) === ri32($f0);
+      U8[family + 233493] = U8[family + 233493] | (1 << (d - 1));
+      ok = DataArc.FileLength(rS(229377) + DataArc.SourceFile(family, d)) === ri32($f0);
     }
     i = (i + 9) & 65535;
   }
   for (let $i2 = 1; $i2 <= 8; $i2++) {
     d = $i2;
     if (ok && !DiskHasSource(family, d)) {
-      ok = DataArc.FileLength(rS(143491) + DataArc.SourceFile(family, d)) < 0;
+      ok = DataArc.FileLength(rS(229377) + DataArc.SourceFile(family, d)) < 0;
     }
   }
   $r0 = ok;
@@ -463,5 +463,5 @@ export function SourcesMatch(family: number, data: number, size: number) {
 
 export function $init() {
   ResetArchiveCache();
-  U8[224343] = 0;
+  U8[232669] = 0;
 }

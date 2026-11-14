@@ -2,6 +2,7 @@
 // @ts-nocheck
 import { U8, I8, S, r16, ri16, r32, ri32, w16, w32, rF64, wF64, rF32, wF32, rS, wS, mv } from '../rt/mem';
 import * as rt from '../rt/sys';
+import * as SdlSound from './sdlsound';
 import * as Types from './types';
 import * as Crt from './crt';
 import * as Dos from './dos';
@@ -91,26 +92,26 @@ import * as WideView from './wideview';
 export async function $init() {
   (await GameInit.GameInit2());
   (await DataBld.BuildDataFiles());
-  if (!(U8[141208] !== 0)) {
+  if (!(U8[227094] !== 0)) {
     (await Intro.Introduction());
     while ((await Crt.KeyPressed())) {
       (await GameIo.DiscardPendingKeys());
     }
   }
-  (await SoundDrv.StopMusic());
+  SoundDrv.StopMusic();
   Advisory.Measure();
   (await Advisory.Show());
   Vault.ForgetSessionVault();
   while (true) {
     (await CharGen.MainMenu(false, false));
-    if ((U8[141212] !== 0)) {
+    if ((U8[227098] !== 0)) {
       (await Demo.Run());
     } else {
       View3D.SetView3DColors(11, 0, 7, 6);
       (await EclVm.GameLoop());
-      while ((U8[250681] !== 0) || (U8[141221] !== 0)) {
-        if ((U8[250681] !== 0)) {
-          U8[250681] = false ? 1 : 0;
+      while ((U8[258873] !== 0) || (U8[227107] !== 0)) {
+        if ((U8[258873] !== 0)) {
+          U8[258873] = false ? 1 : 0;
           (await SaveLoad.QuickLoad());
         }
         (await EclVm.GameLoop());

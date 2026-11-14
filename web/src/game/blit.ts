@@ -13,7 +13,7 @@ import * as Host from './host';
 
 export const MAX_BLOCK = 65520;
 
-export const $at = { picBytes: 226092, picPeak: 226096 };
+export const $at = { picBytes: 234418, picPeak: 234422 };
 
 export function SrcNibble(color: number, map: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 8);
@@ -29,15 +29,15 @@ export function SrcNibble(color: number, map: number) {
 }
 
 export function SetVideoMode(mode: number) {
-  U8[141247] = U8[141248];
-  U8[141227] = 0;
-  U8[141226] = mode;
-  Host.Intr(16, 141226);
-  U8[141248] = mode;
+  U8[227133] = U8[227134];
+  U8[227113] = 0;
+  U8[227112] = mode;
+  Host.Intr(16, 227112);
+  U8[227134] = mode;
 }
 
 export function RestoreVideoMode() {
-  SetVideoMode(U8[141247]);
+  SetVideoMode(U8[227133]);
 }
 
 export async function LoadPic(name_: string, fileId: number, hasMask: boolean, transpColor: number, pic: number) {
@@ -68,7 +68,7 @@ export async function LoadPicBlocks(name_: string, fileId: number, hasMask: bool
     mv($w1 + 9, $f0 + 9, 8);
   }
   readOfs = 17;
-  (await VidOps.ExpandPicFrames(r32($f0 + 19), readOfs, transpColor, r32(pic)));
+  VidOps.ExpandPicFrames(r32($f0 + 19), readOfs, transpColor, r32(pic));
   rt.freeMem(r32($f0 + 19));
   S.sp = $sp;
 }
@@ -81,30 +81,30 @@ export function BlitTileClipped(screenX: number, screenY: number, tileIdx: numbe
   BlitTile(screenX, screenY, tileIdx, flag, gfx, dest, true);
 }
 
-export async function MirrorPic(src: number, dst: number) {
+export function MirrorPic(src: number, dst: number) {
   if ((src === 0) || (dst === 0)) {
     return;
   }
   mv(dst + 9, src + 9, 8);
-  (await rt.FT[r32(141095)](src, dst));
+  rt.FT[r32(226981)](src, dst);
 }
 
-export async function ShowPic(screenX: number, screenY: number, pic: number) {
+export function ShowPic(screenX: number, screenY: number, pic: number) {
   if (pic === 0) {
     return;
   }
-  (await rt.FT[r32(141071)](screenX, screenY, pic));
+  rt.FT[r32(226957)](screenX, screenY, pic);
 }
 
-export async function FlushView() {
-  (await rt.FT[r32(141067)]());
+export function FlushView() {
+  rt.FT[r32(226953)]();
   ClearSpans();
 }
 
 export function ClearSpans() {
-  rt.fill(141257, 168, 0);
-  rt.fill(141761, 336, 255);
-  rt.fill(142097, 336, 0);
+  rt.fill(227143, 168, 0);
+  rt.fill(227647, 336, 255);
+  rt.fill(227983, 336, 0);
 }
 
 export async function RemapPic(fromColors: number, toColors: number, frame: number, isDithered: boolean, pic: number) {
@@ -141,7 +141,7 @@ export async function RemapPic(fromColors: number, toColors: number, frame: numb
   for (let $i2 = 0; $i2 <= 15; $i2++) {
     pairIdx = $i2;
     if (U8[$f0 + pairIdx] !== U8[$f0 + pairIdx + 16]) {
-      rt.FT[r32(141099)](r32($f0 + 32), r32($f0 + 36), srcOff, nFrames, U8[$f0 + pairIdx], U8[$f0 + pairIdx + 16], isDithered);
+      rt.FT[r32(226985)](r32($f0 + 32), r32($f0 + 36), srcOff, nFrames, U8[$f0 + pairIdx], U8[$f0 + pairIdx + 16], isDithered);
     }
   }
   {
@@ -171,7 +171,7 @@ export async function AllocPicBlocks(height: number, width: number, count: numbe
     }
   }
   if ((fit < 1) && (frameSize > 0)) {
-    (await GameIo.FatalError("A picture of " + StrUtil.NumStr(height) + " rows and " + StrUtil.NumStr(width) + " cells is too large for the " + rS(141029) + " video mode."));
+    (await GameIo.FatalError("A picture of " + StrUtil.NumStr(height) + " rows and " + StrUtil.NumStr(width) + " cells is too large for the " + rS(226915) + " video mode."));
   }
   rest = 0;
   if (count > fit) {
@@ -189,12 +189,12 @@ export async function AllocPicBlocks(height: number, width: number, count: numbe
     w32(r32(pic) + 19, rt.getMem(MaskBytes(totalSize)));
     rt.fill(r32(r32(pic) + 19), MaskBytes(totalSize), 0);
   }
-  w32(226092, ri32(226092) + (totalSize + 27));
+  w32(234418, ri32(234418) + (totalSize + 27));
   if ((flag & 1) > 0) {
-    w32(226092, ri32(226092) + MaskBytes(totalSize));
+    w32(234418, ri32(234418) + MaskBytes(totalSize));
   }
-  if (ri32(226092) > ri32(226096)) {
-    w32(226096, ri32(226092));
+  if (ri32(234418) > ri32(234422)) {
+    w32(234422, ri32(234418));
   }
   if (rest > 0) {
     (await AllocPicBlocks(height, width, rest, flag, blockBytes, r32(pic) + 23));
@@ -212,15 +212,15 @@ export function FreePic(pic: number) {
     nBytes = (U8[$w1 + 8] * r16($w1 + 17)) & 65535;
     if (r32($w1 + 19) !== 0) {
       rt.freeMem(r32($w1 + 19));
-      w32(226092, ri32(226092) - MaskBytes(nBytes));
+      w32(234418, ri32(234418) - MaskBytes(nBytes));
     }
   }
-  w32(226092, ri32(226092) - (nBytes + 27));
+  w32(234418, ri32(234418) - (nBytes + 27));
   rt.freeMem(r32(pic));
   w32(pic, 0);
 }
 
-export async function FillPicRect(x: number, y: number, width: number, height: number, color: number, colorMap: number, pic: number) {
+export function FillPicRect(x: number, y: number, width: number, height: number, color: number, colorMap: number, pic: number) {
   const $sp = S.sp, $f0 = (S.sp = $sp - 16);
   mv($f0 + 0, colorMap, 8);
   let clipLeft: number = 0, clipRight: number = 0, clampedX: number = 0, rightMargin: number = 0, runLen: number = 0, lastRow: number = 0, dstOff: number = 0, row: number = 0, absRow: number = 0, screenOfs: number = 0, i: number = 0, cellLen: number = 0, cells: number = 0, uniform: boolean = false, firstOfs: number = 0;
@@ -263,14 +263,14 @@ export async function FillPicRect(x: number, y: number, width: number, height: n
       lastRow = (height - 1) & 65535;
     }
   }
-  screenOfs = (clampedX << U8[141054]) & 65535;
+  screenOfs = (clampedX << U8[226940]) & 65535;
   cells = ((width - clipLeft) - clipRight) & 65535;
-  runLen = (cells << U8[141053]) & 65535;
-  clampedX = (clampedX << U8[141053]) & 65535;
-  rightMargin = (rightMargin << U8[141053]) & 65535;
-  dstOff = (dstOff << U8[141053]) & 65535;
-  (await rt.FT[r32(141056)](color, $f0, $f0 + 8));
-  cellLen = (1 << U8[141053]) & 255;
+  runLen = (cells << U8[226939]) & 65535;
+  clampedX = (clampedX << U8[226939]) & 65535;
+  rightMargin = (rightMargin << U8[226939]) & 65535;
+  dstOff = (dstOff << U8[226939]) & 65535;
+  rt.FT[r32(226942)](color, $f0, $f0 + 8);
+  cellLen = (1 << U8[226939]) & 255;
   uniform = true;
   for (let $i1 = 1, $e1 = cellLen - 1; $i1 <= $e1; $i1++) {
     i = $i1;
@@ -305,33 +305,33 @@ export async function FillPicRect(x: number, y: number, width: number, height: n
   S.sp = $sp;
 }
 
-export async function SetPaletteRegister(registerIndex: number, color: number) {
+export function SetPaletteRegister(registerIndex: number, color: number) {
   if (HasPalette()) {
-    (await rt.FT[r32(141115)](registerIndex, color));
+    rt.FT[r32(227001)](registerIndex, color);
   }
 }
 
 export function FrameBytes(height: number, width: number) {
   let $r0: number = 0;
-  $r0 = ((height * width) << U8[141053]) & 65535;
+  $r0 = ((height * width) << U8[226939]) & 65535;
   return $r0;
 }
 
 export function MaskBytes(imageBytes: number) {
   let $r0: number = 0;
-  $r0 = imageBytes >>> U8[141055];
+  $r0 = imageBytes >>> U8[226941];
   return $r0;
 }
 
 export function ColourCount() {
   let $r0: number = 0;
-  $r0 = U8[141050];
+  $r0 = U8[226936];
   return $r0;
 }
 
 export function HasPalette() {
   let $r0: boolean = false;
-  $r0 = (U8[141051] !== 0);
+  $r0 = (U8[226937] !== 0);
   return $r0;
 }
 
@@ -340,7 +340,7 @@ export function ClearPic(pic: number) {
   if (pic === 0) {
     return;
   }
-  if ((U8[141052] !== 0)) {
+  if ((U8[226938] !== 0)) {
     clear = 255;
   } else {
     clear = 0;
@@ -370,13 +370,13 @@ export function FrameCount(pic: number) {
 }
 
 export function MarkSpan(row: number, first: number, last: number, screenOfs: number) {
-  U8[row + 141257] = 1;
-  if (r16(row * 2 + 141761) > first) {
-    w16(row * 2 + 141425, screenOfs);
-    w16(row * 2 + 141761, first);
+  U8[row + 227143] = 1;
+  if (r16(row * 2 + 227647) > first) {
+    w16(row * 2 + 227311, screenOfs);
+    w16(row * 2 + 227647, first);
   }
-  if (last > r16(row * 2 + 142097)) {
-    w16(row * 2 + 142097, last);
+  if (last > r16(row * 2 + 227983)) {
+    w16(row * 2 + 227983, last);
   }
 }
 
@@ -449,9 +449,9 @@ export function BlitTile(screenX: number, screenY: number, tileIdx: number, flag
     leftSkip = screenX & 65535;
     rightSkip = (r16(dest + 2) - (screenX + r16(r32($f0) + 2))) & 65535;
   }
-  cs = U8[141053];
-  ms = U8[141055];
-  screenOff = (leftSkip << U8[141054]) & 65535;
+  cs = U8[226939];
+  ms = U8[226941];
+  screenOff = (leftSkip << U8[226940]) & 65535;
   rowBytes = (((r16(r32($f0) + 2) - clipLeft) - clipRight) << cs) & 65535;
   clipLeft = (clipLeft << cs) & 65535;
   clipRight = (clipRight << cs) & 65535;
@@ -474,10 +474,10 @@ export function BlitTile(screenX: number, screenY: number, tileIdx: number, flag
     destOff = (destOff + leftSkip) & 65535;
     firstOfs = destOff;
     if (saveRequested) {
-      mv(r32(141253) + saveOff + 27, dest + destOff + 27, rowBytes);
+      mv(r32(227139) + saveOff + 27, dest + destOff + 27, rowBytes);
     }
     saveOff = (saveOff + rowBytes) & 65535;
-    if (useMask && (U8[141052] !== 0)) {
+    if (useMask && (U8[226938] !== 0)) {
       for (let $i2 = 1, $e2 = rowBytes; $i2 <= $e2; $i2++) {
         i = $i2;
         if (U8[r32($f0) + srcOff + 27] !== 255) {
@@ -522,6 +522,6 @@ export function BlitTile(screenX: number, screenY: number, tileIdx: number, flag
 }
 
 export function $init() {
-  w32(226092, 0);
-  w32(226096, 0);
+  w32(234418, 0);
+  w32(234422, 0);
 }

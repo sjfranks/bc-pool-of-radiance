@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>Pool of Radiance</title>
+    <meta name="description" content="Pool of Radiance (SSI, 1988) in the browser, with a portrait touch interface for phones." />
+    <meta name="theme-color" content="#000000" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="Pool of Radiance" />
+    <link rel="icon" href="icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="icon-180.png" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="stylesheet" href="/src/ui/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <canvas id="screen" width="320" height="200" tabindex="0"></canvas>
+      <div id="bar"></div>
+    </div>
+    <input id="typer" type="text" autocomplete="off" autocorrect="off" autocapitalize="characters" spellcheck="false" aria-label="Type to the game" />
+    <div id="veil"><div id="notice">Loading...</div></div>
+    <div id="menu" hidden></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -10,12 +10,12 @@ export const NOTE_LEN = 30;
 export const SIG = "NOTE";
 export const VERSION = 1;
 
-export const $at = { rec: 242745 };
+export const $at = { rec: 250937 };
 
 export function Clear() {
-  rt.fill(242745, 4487, 0);
-  wS(242745, 4, SIG);
-  U8[242750] = 1;
+  rt.fill(250937, 4487, 0);
+  wS(250937, 4, SIG);
+  U8[250942] = 1;
 }
 
 export function Note(script: number, map: number, x: number, y: number) {
@@ -26,7 +26,7 @@ export function Note(script: number, map: number, x: number, y: number) {
   }
   i = Find(script, map, x, y) & 255;
   if (i !== 0) {
-    $r0 = rS(i * 35 + 242721);
+    $r0 = rS(i * 35 + 250913);
   }
   return $r0;
 }
@@ -43,18 +43,18 @@ export function SetNote(script: number, map: number, x: number, y: number, text:
   }
   i = Find(script, map, x, y) & 255;
   if (i === 0) {
-    if (U8[242751] >= 128) {
+    if (U8[250943] >= 128) {
       $r0 = false;
       return $r0;
     }
-    U8[242751] = U8[242751] + 1;
-    i = U8[242751];
-    U8[i * 35 + 242717] = script;
-    U8[i * 35 + 242718] = map;
-    U8[i * 35 + 242719] = x;
-    U8[i * 35 + 242720] = y;
+    U8[250943] = U8[250943] + 1;
+    i = U8[250943];
+    U8[i * 35 + 250909] = script;
+    U8[i * 35 + 250910] = map;
+    U8[i * 35 + 250911] = x;
+    U8[i * 35 + 250912] = y;
   }
-  wS(i * 35 + 242721, 30, text);
+  wS(i * 35 + 250913, 30, text);
   return $r0;
 }
 
@@ -65,41 +65,41 @@ export function ClearNote(script: number, map: number, x: number, y: number) {
   }
   i = Find(script, map, x, y) & 255;
   if (i !== 0) {
-    mv(i * 35 + 242717, U8[242751] * 35 + 242717, 35);
-    U8[242751] = U8[242751] - 1;
+    mv(i * 35 + 250909, U8[250943] * 35 + 250909, 35);
+    U8[250943] = U8[250943] - 1;
   }
 }
 
 export function WriteSlot(s: number, name_: string) {
   let $r0: boolean = false;
-  $r0 = FileUtil.WriteToSet(s, name_, 242745, 4487);
+  $r0 = FileUtil.WriteToSet(s, name_, 250937, 4487);
   return $r0;
 }
 
 export function ReadSlot(fn: string) {
   let i: number = 0, kept: number = 0;
-  if (((!FileUtil.ReadRecord(fn, 242745, 4487) || (rS(242745) !== SIG)) || (U8[242750] !== 1)) || (U8[242751] > 128)) {
+  if (((!FileUtil.ReadRecord(fn, 250937, 4487) || (rS(250937) !== SIG)) || (U8[250942] !== 1)) || (U8[250943] > 128)) {
     Clear();
   } else {
     kept = 0;
-    for (let $i1 = 1, $e1 = U8[242751]; $i1 <= $e1; $i1++) {
+    for (let $i1 = 1, $e1 = U8[250943]; $i1 <= $e1; $i1++) {
       i = $i1;
-      if (Types.OnMap(U8[i * 35 + 242719], U8[i * 35 + 242720]) && (U8[i * 35 + 242721] <= 30)) {
+      if (Types.OnMap(U8[i * 35 + 250911], U8[i * 35 + 250912]) && (U8[i * 35 + 250913] <= 30)) {
         kept = (kept + 1) & 255;
-        mv(kept * 35 + 242717, i * 35 + 242717, 35);
+        mv(kept * 35 + 250909, i * 35 + 250909, 35);
       }
     }
-    U8[242751] = kept;
+    U8[250943] = kept;
   }
 }
 
 export function Find(s: number, m: number, nx: number, ny: number) {
   let i: number = 0, $r0: number = 0;
   $r0 = 0;
-  for (let $i1 = 1, $e1 = U8[242751]; $i1 <= $e1; $i1++) {
+  for (let $i1 = 1, $e1 = U8[250943]; $i1 <= $e1; $i1++) {
     i = $i1;
     {
-      const $w2 = i * 35 + 242717;
+      const $w2 = i * 35 + 250909;
       if ((((U8[$w2] === s) && (U8[$w2 + 1] === m)) && (U8[$w2 + 2] === nx)) && (U8[$w2 + 3] === ny)) {
         $r0 = i;
         return $r0;

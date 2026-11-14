@@ -10,10 +10,10 @@ import * as StrUtil from './strutil';
 
 
 export async function PrintHpDebug(msg: string, maximumHitPoints: number, currentHitPoints: number, drainedHitPoints: number) {
-  if (U8[141207] !== 0) {
-    (await TextRend.ClearRect(0, 0, 39, 0));
+  if (U8[227093] !== 0) {
+    TextRend.ClearRect(0, 0, 39, 0);
     TextRend.DisplayString(0, 0, 14, StrUtil.NumStr(maximumHitPoints) + " , " + StrUtil.NumStr(currentHitPoints) + " , " + StrUtil.NumStr(drainedHitPoints));
     (await TextRend.DisplayAndPause(14, msg));
-    (await TextRend.ClearRect(0, 0, 39, 0));
+    TextRend.ClearRect(0, 0, 39, 0);
   }
 }
