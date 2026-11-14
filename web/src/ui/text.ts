@@ -80,20 +80,47 @@ export function color(index: number): string {
   return `rgb(${c(U8[dac])},${c(U8[dac + 1])},${c(U8[dac + 2])})`;
 }
 
-/** A line of text drawn in the game's font, each character in the colour colors gives it; null without the font. */
-export function label(text: string, colors: (i: number) => string, scale = 1): HTMLCanvasElement | null {
+/** How large the interface's own text is: CSS pixels to a pixel of the game's font. One size for all of it. */
+export const ui = { scale: 2 };
+
+/**
+ * A line of text drawn in the game's font at the interface's size, each character in the colour colors gives it (and
+ * on the paper paper gives it, where it gives one); null before the game has loaded its font. Drawn at a whole number
+ * of device pixels to the font's pixel and shown at the size asked, so the letters' pixels stay even.
+ */
+export function label(text: string, colors: (i: number) => string, paper?: (i: number) => string | null): HTMLCanvasElement | null {
   if (!glyph('A')) return null;
+  const k = Math.max(1, Math.ceil(ui.scale * Math.min(window.devicePixelRatio || 1, 3)));
   const cv = document.createElement('canvas');
-  cv.width = Math.max(1, text.length * 8);
-  cv.height = 8;
-  cv.style.width = `${cv.width * scale}px`;
-  cv.style.height = `${8 * scale}px`;
+  cv.width = Math.max(1, text.length * 8 * k);
+  cv.height = 8 * k;
+  cv.style.width = `${text.length * 8 * ui.scale}px`;
+  cv.style.height = `${8 * ui.scale}px`;
   const ctx = cv.getContext('2d')!;
   for (let i = 0; i < text.length; i++) {
+    const bg = paper?.(i);
+    if (bg) {
+      ctx.fillStyle = bg;
+      ctx.fillRect(i * 8 * k, 0, 8 * k, 8 * k);
+    }
     const g = glyph(text[i]);
     if (!g || text[i] === ' ') continue;
     ctx.fillStyle = colors(i);
-    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) if (g[y] & (0x80 >> x)) ctx.fillRect(i * 8 + x, y, 1, 1);
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) if (g[y] & (0x80 >> x)) ctx.fillRect((i * 8 + x) * k, y * k, k, k);
   }
+  return cv;
+}
+
+/** A small picture from rows of bits (an arrow), at the interface's size times by. */
+export function bitmap(rows: number[], color: string, by = 1): HTMLCanvasElement {
+  const k = Math.max(1, Math.ceil(ui.scale * by * Math.min(window.devicePixelRatio || 1, 3)));
+  const cv = document.createElement('canvas');
+  cv.width = 8 * k;
+  cv.height = 8 * k;
+  cv.style.width = `${8 * ui.scale * by}px`;
+  cv.style.height = `${8 * ui.scale * by}px`;
+  const ctx = cv.getContext('2d')!;
+  ctx.fillStyle = color;
+  for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) if (rows[y] & (0x80 >> x)) ctx.fillRect(x * k, y * k, k, k);
   return cv;
 }

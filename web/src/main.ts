@@ -176,7 +176,7 @@ function openMenu(): void {
   item('Back to the game', () => {});
   const p = document.createElement('p');
   p.textContent =
-    'Tap the buttons under the screen, a line of a list, or an option’s own word. In the 3D view, tap the middle to step ahead and the sides to turn. Saved games are kept on this device.';
+    'Touch an option on the line under the screen, or step to it with the arrows and press OK. Tap the 3D view to walk and turn, and a square of the battlefield to move there or strike. Saved games are kept on this device.';
   sheet.appendChild(p);
   menu.hidden = false;
 }
@@ -211,7 +211,7 @@ async function main(): Promise<void> {
 }
 
 // for looking into the game from the browser's console
-(window as unknown as Record<string, unknown>).por = { units, hooks, U8 };
+(window as unknown as Record<string, unknown>).por = { units, hooks, U8, where: screen.fromScreen };
 
 if ('serviceWorker' in navigator && import.meta.env.PROD) void navigator.serviceWorker.register(`${import.meta.env.BASE_URL}sw.js`).catch(() => {});
 

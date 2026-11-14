@@ -2,13 +2,16 @@
  * controls.ts
  *
  * Playing with a finger. The game is a keyboard game: a line of options along the foot of the screen, each chosen by
- * its capital letter, and the arrow keys. Here the option line becomes buttons under the screen, named as the game
- * names them, with a direction pad beside them where the game takes the arrows (walking, a list, aiming), and the
- * screen itself answers a tap: a line of a list, an option's own word, the 3D view to walk and turn.
+ * its capital letter or stepped to with the arrows and taken with Enter. On a phone that line is too small to touch,
+ * so it is shown again under the screen, in the game's own letters and colours at a size a finger can hit: touch an
+ * option to choose it. Under it are the keys, which never change or move: the arrows, OK (Enter) and Back (Escape).
+ * Everything the game can be asked, it can be asked with those.
  *
- * What to offer comes from the game itself: the translator has the menu routines report their arguments
- * (host/hooks.ts), so the buttons are always the options the game is waiting on. A keyboard still plays as it does on
- * a PC.
+ * The screen itself answers a tap as well: a line of a list, a line that starts with an option's letter, the 3D view
+ * to walk and turn, and the battlefield to walk a fighter to a square or into a foe.
+ *
+ * What to show comes from the game: the translator has the menu routines report their arguments (host/hooks.ts), so
+ * the line under the screen is always the line the game is waiting on. A keyboard still plays as it does on a PC.
  */
 import { U8, rS } from '../rt/mem';
 import * as hooks from '../host/hooks';
@@ -17,7 +20,8 @@ import { units } from '../boot';
 import * as text from './text';
 import * as screen from './screen';
 
-const bar = document.getElementById('bar') as HTMLDivElement;
+const strip = document.getElementById('strip') as HTMLDivElement;
+const pad = document.getElementById('pad') as HTMLDivElement;
 const canvas = document.getElementById('screen') as HTMLCanvasElement;
 const typer = document.getElementById('typer') as HTMLInputElement;
 
@@ -31,8 +35,14 @@ const END = 79;
 const PGUP = 73;
 const PGDN = 81;
 
+// the game's colours (EGA numbers)
+const GREEN = 10;
+const WHITE = 15;
+const MAGENTA = 13;
+const GRAY = 7;
+
 export const settings = {
-  /** Called for the pause menu's own entries. */
+  /** Called for the pause menu. */
   onMenu: (() => {}) as () => void,
   /** Called at the first touch or key, so sound may start. */
   onGesture: (() => {}) as () => void,
@@ -91,8 +101,7 @@ export function parseMenu(menu: string): Option[] {
         break;
       }
     }
-    const label = menu.slice(start, end).trimEnd();
-    out.push({ label, key: menu[h], at: h - start });
+    out.push({ label: menu.slice(start, end).trimEnd(), key: menu[h], at: h - start });
   });
   return out;
 }
@@ -117,58 +126,16 @@ function ifcState(): number {
   return U8[units.GameVars.$at.ifcState];
 }
 
-// ---- the bar
+const IN_COMBAT = 5;
 
-let shown = '';
-let timer = 0;
-
-function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent?: HTMLElement): HTMLElementTagNameMap[K] {
-  const e = document.createElement(tag);
-  e.className = cls;
-  if (parent) parent.appendChild(e);
-  return e;
-}
-
-/** A button: press runs at once, and again and again while held when repeat is set. */
-function button(parent: HTMLElement, cls: string, press: () => void, repeat = false): HTMLButtonElement {
-  const b = el('button', cls, parent);
-  b.type = 'button';
-  let hold = 0;
-  const stop = () => {
-    window.clearTimeout(hold);
-    hold = 0;
-    b.classList.remove('down');
-  };
-  b.addEventListener('pointerdown', (e) => {
-    e.preventDefault();
-    settings.onGesture();
-    b.classList.add('down');
-    press();
-    if (repeat) {
-      const again = () => {
-        press();
-        hold = window.setTimeout(again, 140);
-      };
-      hold = window.setTimeout(again, 380);
-    }
-  });
-  for (const ev of ['pointerup', 'pointercancel', 'pointerleave'] as const) b.addEventListener(ev, stop);
-  b.addEventListener('contextmenu', (e) => e.preventDefault());
-  return b;
-}
-
-function put(b: HTMLElement, s: string, colors: (i: number) => string, scale: number): void {
-  const cv = text.label(s, colors, scale);
-  if (cv) b.appendChild(cv);
-  else b.textContent = s.toUpperCase();
-}
-
-const GREEN = 10;
-const WHITE = 15;
-
-function optionButton(parent: HTMLElement, o: Option, cls: string, scale: number, press: () => void): void {
-  const b = button(parent, cls, press);
-  put(b, o.label, (i) => text.color(i === o.at ? WHITE : GREEN), scale);
+/** True when the cell holds a hotkey's letter: in the menu's highlight colour, or (a menu whose own line is not
+    shown has none) in a colour the letter after it is not. */
+function isLit(col: number, row: number, hl: number): boolean {
+  const c = text.cellAt(col, row);
+  if (!c || c.bg !== 0 || c.ch === ' ') return false;
+  if (hl) return c.fg === hl;
+  const next = text.cellAt(col + 1, row);
+  return !!next && next.ch !== ' ' && next.fg !== c.fg;
 }
 
 /** Where on the screen the game shows what a one-letter option does: the line that starts with its lit letter. */
@@ -187,163 +154,171 @@ function screenLabel(k: string, hl: number): string | null {
   return null;
 }
 
-/** True when the cell holds a hotkey's letter: in the menu's highlight colour, or (a menu whose own line is not
-    shown has none) in a colour the letter after it is not. */
-function isLit(col: number, row: number, hl: number): boolean {
-  const c = text.cellAt(col, row);
-  if (!c || c.bg !== 0 || c.ch === ' ') return false;
-  const next = text.cellAt(col + 1, row);
-  if (hl) return c.fg === hl && !(next && next.ch !== ' ' && next.fg === hl && row !== 24 && false);
-  return !!next && next.ch !== ' ' && next.fg !== c.fg;
+// ---- the menu line under the screen
+
+function el<K extends keyof HTMLElementTagNameMap>(tag: K, cls: string, parent?: HTMLElement): HTMLElementTagNameMap[K] {
+  const e = document.createElement(tag);
+  e.className = cls;
+  if (parent) parent.appendChild(e);
+  return e;
 }
 
-function arrow(parent: HTMLElement, cls: string, glyph: string, press: () => void): void {
-  const b = button(parent, 'pad ' + cls, press, true);
-  b.textContent = glyph;
+function put(parent: HTMLElement, s: string, ink: (i: number) => string, paper?: (i: number) => string | null): void {
+  const cv = text.label(s, ink, paper);
+  if (cv) parent.appendChild(cv);
+  else parent.appendChild(document.createTextNode(s));
 }
 
-function pad8(parent: HTMLElement): void {
-  const p = el('div', 'dpad eight', parent);
-  const keys: [string, string, number][] = [
-    ['nw', '↖', HOME],
-    ['n', '↑', UP],
-    ['ne', '↗', PGUP],
-    ['w', '←', LEFT],
-    ['c', '', 0],
-    ['e', '→', RIGHT],
-    ['sw', '↙', END],
-    ['s', '↓', DOWN],
-    ['se', '↘', PGDN],
-  ];
-  for (const [cls, g, scan] of keys) {
-    if (!scan) el('div', 'pad gap', p);
-    else arrow(p, cls, g, () => ext(scan));
+/** Something on the line to touch. */
+function item(parent: HTMLElement, s: string, ink: (i: number) => string, press: () => void, paper?: (i: number) => string | null): void {
+  const b = el('button', 'item', parent);
+  b.type = 'button';
+  // a line longer than the width goes on a second row
+  const cols = Math.max(8, Math.floor((strip.clientWidth - 8) / (8 * text.ui.scale)) - 1);
+  if (s.length > cols && !paper) {
+    b.classList.add('tall');
+    const inner = el('div', 'lines', b);
+    wrapped(inner, Array.from(s, (ch, i) => ({ ch, ink: ink(i) })));
+  } else put(b, s, ink, paper);
+  b.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    settings.onGesture();
+    b.classList.add('down');
+    press();
+  });
+  for (const ev of ['pointerup', 'pointercancel', 'pointerleave'] as const) b.addEventListener(ev, () => b.classList.remove('down'));
+  b.addEventListener('contextmenu', (e) => e.preventDefault());
+}
+
+/** Text wrapped to the line's width, word by word; cells keeps each character's own colours. */
+function wrapped(parent: HTMLElement, cells: { ch: string; ink: string }[]): void {
+  const cols = Math.max(8, Math.floor((strip.clientWidth - 20) / (8 * text.ui.scale)));
+  let line: { ch: string; ink: string }[] = [];
+  const flush = () => {
+    while (line.length && line[line.length - 1].ch === ' ') line.pop();
+    if (line.length) {
+      const l = line;
+      put(parent, l.map((c) => c.ch).join(''), (i) => l[i].ink);
+    }
+    line = [];
+  };
+  let i = 0;
+  while (i < cells.length) {
+    let j = i;
+    while (j < cells.length && cells[j].ch !== ' ') j++;
+    const word = cells.slice(i, j);
+    if (line.length && line.length + word.length > cols) flush();
+    line.push(...word);
+    if (j < cells.length) line.push(cells[j]);
+    i = j + 1;
   }
+  flush();
 }
 
-function pad4(parent: HTMLElement): void {
-  const p = el('div', 'dpad four', parent);
-  el('div', 'pad gap', p);
-  arrow(p, 'n', '↑', () => ext(UP));
-  el('div', 'pad gap', p);
-  arrow(p, 'w', '←', () => ext(LEFT));
-  arrow(p, 's', '↓', () => ext(DOWN));
-  arrow(p, 'e', '→', () => ext(RIGHT));
+function plain(s: string, ink: string): { ch: string; ink: string }[] {
+  return Array.from(s, (ch) => ({ ch, ink }));
 }
 
-function padSmall(parent: HTMLElement): void {
-  const p = el('div', 'dpad list', parent);
-  arrow(p, 'n', '\u2191', () => ext(UP));
-  arrow(p, 'w', '\u2190', () => ext(LEFT));
-  arrow(p, 's', '\u2193', () => ext(DOWN));
-  arrow(p, 'e', '\u2192', () => ext(RIGHT));
+/** The game's bottom line as it stands on its screen, for when no menu is up (a message, a prompt for a key). */
+function bottomLine(): { ch: string; ink: string }[] {
+  const out: { ch: string; ink: string }[] = [];
+  for (let col = 0; col < 40; col++) {
+    const c = text.cellAt(col, 24);
+    out.push(c ? { ch: c.ch, ink: text.color(c.bg !== 0 ? c.bg : c.fg) } : { ch: ' ', ink: '' });
+  }
+  while (out.length && out[out.length - 1].ch === ' ') out.pop();
+  while (out.length && out[0].ch === ' ') out.shift();
+  return out;
 }
 
-function padList(parent: HTMLElement): void {
-  const p = el('div', 'dpad list', parent);
-  arrow(p, 'n', '↑', () => ext(UP));
-  arrow(p, 'pg', '⇞', () => ext(PGUP));
-  arrow(p, 's', '↓', () => ext(DOWN));
-  arrow(p, 'pg', '⇟', () => ext(PGDN));
-}
-
-function system(parent: HTMLElement): void {
-  const s = el('div', 'sys', parent);
-  button(s, 'sysb', () => settings.onMenu()).textContent = '☰';
-  button(s, 'sysb', () => openTyper()).textContent = 'Abc';
-  button(s, 'sysb', () => key(27)).textContent = 'Esc';
-}
-
-/** The prompt's letters: twice the game's size, or what fits the bar's width. */
-function headScale(s: string): number {
-  return Math.max(1, Math.min(2, Math.floor((bar.clientWidth - 16) / (s.length * 8) / 0.25) * 0.25));
-}
+let shown = '';
+let timer = 0;
 
 function render(): void {
   const { menu, list, typing } = frames();
   const state = ifcState();
   const haveFont = text.glyph('A') !== null;
-  const sig = JSON.stringify([menu?.args.slice(0, 6), menu?.info, list ? 1 : 0, typing, state, haveFont, hooks.stack.length, screenSig(menu), screen.findSplit()]);
+  if (haveFont !== padLabelled) labelPad();
+  // twenty-two letters across an upright phone (the main menu's longest line); no larger on anything wider
+  const scale = Math.max(1.5, Math.min(3, Math.floor(strip.clientWidth / 184 / 0.125) * 0.125));
+  if (scale !== text.ui.scale) {
+    text.ui.scale = scale;
+    document.documentElement.style.setProperty('--cell', `${8 * scale}px`);
+    labelPad();
+    shown = '';
+  }
+  setDiagonals(state === IN_COMBAT);
+  const choice = U8[units.GameVars.$at.horizChoice];
+  const loose = menu || typing ? '' : bottomLine().map((c) => c.ch).join('');
+  const sig = JSON.stringify([menu?.args.slice(0, 6), menu?.info, list ? 1 : 0, typing, haveFont, hooks.stack.length, screenSig(menu), choice, loose, typing ? bottomLine().length : 0]);
   if (sig === shown) return;
   shown = sig;
-  bar.textContent = '';
-  const head = el('div', 'query', bar);
-  const body = el('div', 'body', bar);
-  const opts = el('div', 'opts', body);
+  strip.textContent = '';
 
   if (typing) {
-    const q = String(hooks.stack.find((f) => f.name.startsWith('TextRend.Read'))?.args[0] ?? '');
-    put(head, q.trim(), () => text.color(13), headScale(q.trim()));
+    // the question and what has been typed, as the game's bottom line has them
+    const prompt = el('div', 'prompt', strip);
+    wrapped(prompt, bottomLine());
+    const items = el('div', 'items', strip);
     if (typing === 'number') {
-      opts.classList.add('keys');
-      for (const d of '1234567890') button(opts, 'opt num', () => letter(d)).textContent = d;
-      button(opts, 'opt num', () => key(8)).textContent = '⌫';
-      button(opts, 'opt num ok', () => key(13)).textContent = 'OK';
+      for (const d of '1234567890') item(items, d, () => text.color(WHITE), () => letter(d));
+      item(items, 'DEL', () => text.color(GREEN), () => key(8));
     } else {
-      button(opts, 'opt wide', () => openTyper()).textContent = 'Tap to type';
-      button(opts, 'opt', () => key(8)).textContent = '⌫';
-      button(opts, 'opt ok', () => key(13)).textContent = 'OK';
+      item(items, 'KEYBOARD', (i) => text.color(i === 0 ? WHITE : GREEN), openTyper);
+      item(items, 'DEL', () => text.color(GREEN), () => key(8));
     }
-    system(body);
     return;
   }
 
   if (!menu) {
-    // the game is busy, or waits for any key
-    button(opts, 'opt wide ok', () => key(13)).textContent = 'Continue';
-    system(body);
+    // the game is busy, or waits for any key: what its bottom line says, if anything
+    if (screen.showsBottomLine()) return;
+    const cells = bottomLine();
+    if (cells.length) wrapped(el('div', 'prompt', strip), cells);
     return;
   }
 
-  const [query, menuText, , , hlCol, reinterpret] = menu.args as [string, string, number, number, number, boolean];
+  const [query, menuText, qCol, mCol, hlCol] = menu.args as [string, string, number, number, number];
   const info = menu.info as MenuInfo;
   const options = parseMenu(menuText);
-  if (query.trim()) put(head, query.trim(), () => text.color(menu.args[2] || 13), headScale(query.trim()));
+  const letters = options.length > 0 && options.every((o) => o.label.length === 1);
+  const named = letters ? options.map((o) => screenLabel(o.key, hlCol)) : [];
+  const rows = letters && named.filter((n) => n).length >= 2;
+  // (a menu of the screen's own lines has a heading for its question: the lines say enough)
+  if (query.trim() && !rows) wrapped(el('div', 'prompt', strip), plain(query.trim(), text.color(qCol || MAGENTA)));
+  const items = el('div', 'items', strip);
+  const ink = text.color(mCol || GREEN);
+  const lit = text.color(hlCol || WHITE);
 
-  // the arrows, where the game takes them: all eight ways in a fight, the large four to walk the 3D view, and a small
-  // four elsewhere (they step through the party, a list, a value)
-  const walking = (state === 3 || state === 4) && screen.findSplit() !== null;
-  if (list) padList(body);
-  else if (reinterpret && state === 5) pad8(body);
-  else if (reinterpret && walking) pad4(body);
-  else if (reinterpret) padSmall(body);
-  if (body.lastChild !== opts) body.insertBefore(body.lastChild!, opts);
-
-  system(body);
-  // letters as large as the room allows: a list's line across the buttons' width, other options two or three abreast
-  const room = opts.clientWidth || 200;
-  const fit = (len: number, across: number) => Math.max(1, Math.min(2, Math.floor(((room - 6 * (across - 1)) / across - 10) / (len * 8) / 0.25) * 0.25));
   if (!options.length) {
-    // "press enter to continue", or a list with nothing on its line
-    // a prompt with no line of options (walking a fighter about, aiming) is ended with Enter
-    button(opts, 'opt wide ok', () => key(13)).textContent = list ? 'Select' : menuText.trim() === '' && query.trim() ? 'Done' : 'Continue';
+    // a line with no options: "press enter to continue". OK takes it; so does touching it.
+    if (menuText.trim()) item(items, menuText.trim(), () => text.color(mCol || WHITE), () => key(13));
   } else {
-    const letters = options.every((o) => o.label.length === 1);
-    const named = letters ? options.map((o) => screenLabel(o.key, hlCol)) : [];
-    if (letters && named.filter((n) => n).length >= 2) {
-      // the options are letters, and the screen says what each is: a list of those it shows (a letter it does not
-      // show is an option that is not open now)
-      opts.classList.add('rows');
+    if (rows) {
+      // the options are letters and the screen says what each is: those lines, one to a row (a letter the screen
+      // does not show is an option that is not open now)
+      items.classList.add('rows');
       options.forEach((o, i) => {
         const n = named[i];
-        if (n) optionButton(opts, { label: n, key: o.key, at: 0 }, 'opt row', fit(n.length, 1), () => letter(o.key));
+        if (n) item(items, n, (c) => (c === 0 ? lit : ink), () => letter(o.key));
       });
     } else {
-      const longest = Math.max(...options.map((o) => o.label.length));
-      const across = options.length <= 2 ? options.length : room / 3 >= longest * 12 + 18 && options.length > 4 ? 3 : 2;
-      const scale = fit(longest, across);
-      opts.style.setProperty('--across', String(across));
-      for (const o of options) optionButton(opts, o, 'opt', scale, () => letter(o.key));
+      options.forEach((o, i) => {
+        // the option the arrows are on is in inverse video, as on the game's own line
+        const cur = hlCol !== 0 && i + 1 === choice;
+        if (cur) item(items, o.label, () => '#000', () => letter(o.key), () => lit);
+        else item(items, o.label, (c) => (c === o.at ? lit : ink), () => letter(o.key));
+      });
     }
-    if (list || info.enterToCaller) button(opts, 'opt ok', () => key(13)).textContent = 'Select';
   }
-  for (const k of info.extraKeys) {
-    if (options.some((o) => o.key === k.toUpperCase())) continue;
-    button(opts, 'opt', () => letter(k)).textContent = k.toUpperCase();
+  // keys the game takes that its line does not show (a save's letter, a list's own choices)
+  for (const k of info.extraKeys.toUpperCase()) {
+    if (options.some((o) => o.key === k)) continue;
+    item(items, k, () => text.color(GRAY), () => letter(k));
   }
 }
 
-/** What of the screen the bar's labels were read from: the bar is drawn again when it changes. */
+/** What of the screen the line's labels were read from: the line is drawn again when it changes. */
 function screenSig(menu: hooks.Frame | null): string {
   if (!menu) return '';
   const options = parseMenu(String(menu.args[1]));
@@ -356,7 +331,115 @@ hooks.listeners.change = () => {
   window.clearTimeout(timer);
   timer = window.setTimeout(render, 30);
 };
-window.setInterval(render, 400);
+window.setInterval(render, 250);
+window.addEventListener('resize', () => {
+  shown = '';
+  render();
+});
+
+// ---- the keys: built once, never rearranged
+
+const ARROW = [0x18, 0x3c, 0x7e, 0xff, 0x18, 0x18, 0x18, 0x00];
+const CORNER = [0xf8, 0xf0, 0xf8, 0xdc, 0x8e, 0x07, 0x03, 0x00];
+
+function turned(rows: number[], quarter: number): number[] {
+  let r = rows;
+  for (let q = 0; q < quarter; q++) {
+    const out = new Array<number>(8).fill(0);
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 8; x++) if (r[y] & (0x80 >> x)) out[x] |= 0x80 >> (7 - y);
+    r = out;
+  }
+  return r;
+}
+
+interface PadKey {
+  el: HTMLButtonElement;
+  art?: number[];
+  word?: string;
+  diagonal?: boolean;
+}
+
+const padKeys: PadKey[] = [];
+let padLabelled: boolean | null = null;
+let held = 0;
+
+function release(): void {
+  window.clearTimeout(held);
+  held = 0;
+  for (const k of padKeys) k.el.classList.remove('down');
+}
+// a finger lifted anywhere ends a held key, whatever became of the key under it
+for (const ev of ['pointerup', 'pointercancel', 'blur'] as const) window.addEventListener(ev, release);
+document.addEventListener('visibilitychange', release);
+
+function padKey(parent: HTMLElement, cls: string, press: () => void, repeat: boolean, look: Partial<PadKey>): PadKey {
+  const b = el('button', 'key ' + cls, parent);
+  b.type = 'button';
+  const k: PadKey = { el: b, ...look };
+  padKeys.push(k);
+  b.addEventListener('pointerdown', (e) => {
+    e.preventDefault();
+    settings.onGesture();
+    release();
+    b.classList.add('down');
+    press();
+    if (repeat) {
+      const again = () => {
+        press();
+        held = window.setTimeout(again, 150);
+      };
+      held = window.setTimeout(again, 420);
+    }
+  });
+  b.addEventListener('pointerleave', release);
+  b.addEventListener('contextmenu', (e) => e.preventDefault());
+  return k;
+}
+
+function buildPad(): void {
+  const d = el('div', 'dpad', pad);
+  const dirs: [number, number[], boolean][] = [
+    [HOME, CORNER, true],
+    [UP, ARROW, false],
+    [PGUP, turned(CORNER, 1), true],
+    [LEFT, turned(ARROW, 3), false],
+    [0, [], false],
+    [RIGHT, turned(ARROW, 1), false],
+    [END, turned(CORNER, 3), true],
+    [DOWN, turned(ARROW, 2), false],
+    [PGDN, turned(CORNER, 2), true],
+  ];
+  for (const [scan, art, diagonal] of dirs) {
+    if (!scan) el('div', 'hub', d);
+    else padKey(d, '', () => ext(scan), true, { art, diagonal });
+  }
+  const side = el('div', 'side', pad);
+  padKey(side, '', () => settings.onMenu(), false, { word: 'MENU' });
+  padKey(side, '', () => openTyper(), false, { word: 'KEYS' });
+  padKey(side, 'ok', () => key(13), false, { word: 'OK' });
+  padKey(side, 'back', () => key(27), false, { word: 'BACK' });
+  labelPad();
+}
+
+/** The keys' faces, in the game's letters once it has loaded them. */
+function labelPad(): void {
+  padLabelled = text.glyph('A') !== null;
+  for (const k of padKeys) {
+    k.el.textContent = '';
+    if (k.art) k.el.appendChild(text.bitmap(k.art, '#fff', 1));
+    else if (k.word) {
+      const w = k.word;
+      const cv = text.label(w, () => (w === 'OK' ? '#fff' : text.color(GREEN)));
+      if (cv) k.el.appendChild(cv);
+      else k.el.textContent = w;
+    }
+  }
+}
+
+/** The four slanting arrows are a fight's: elsewhere the game has no use for them. */
+function setDiagonals(on: boolean): void {
+  for (const k of padKeys) if (k.diagonal) k.el.classList.toggle('off', !on);
+}
 
 // ---- typing on a phone: a field off the screen brings the keyboard up
 
@@ -371,6 +454,9 @@ typer.addEventListener('input', (e) => {
   else if (ev.inputType === 'insertLineBreak') key(13);
   else if (ev.data) for (const c of ev.data) if (c.charCodeAt(0) < 127) letter(c);
   typer.value = '';
+});
+typer.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') typer.blur();
 });
 
 // ---- a keyboard, as on a PC
@@ -432,10 +518,84 @@ canvas.addEventListener('pointerup', (e) => {
   if (!d || d.id !== e.pointerId || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 14) return;
   const r = canvas.getBoundingClientRect();
   const p = screen.toScreen(e.clientX - r.left, e.clientY - r.top);
-  if (p) tap(p.x, p.y, p.pane);
+  if (p) tap(p.x, p.y);
 });
 
-function tap(px: number, py: number, pane: number): void {
+/** The battlefield's squares: seven by seven of 24 pixels, inside the frame. */
+const FIELD = { x: 8, y: 8, cell: 24, cells: 7 };
+const STEP_KEYS: Record<string, number> = { '-1,-1': HOME, '0,-1': UP, '1,-1': PGUP, '-1,0': LEFT, '1,0': RIGHT, '-1,1': END, '0,1': DOWN, '1,1': PGDN };
+
+/**
+ * The steps from one arena cell to another, the shortest way round walls and the fighter's own side; into the target
+ * itself whatever stands there (a foe is struck by walking into it). Empty when there is no way within a turn's reach.
+ */
+function fieldPath(ax: number, ay: number, tx: number, ty: number): number[] {
+  const peek = units.WebPeek;
+  const REACH = 12;
+  const id = (x: number, y: number) => `${x},${y}`;
+  const from = new Map<string, [number, number, number] | null>([[id(ax, ay), null]]);
+  let edge: [number, number][] = [[ax, ay]];
+  // straight steps before slanting ones, so a way of equal length looks the plainer
+  const dirs: [number, number][] = [[0, -1], [1, 0], [0, 1], [-1, 0], [1, -1], [1, 1], [-1, 1], [-1, -1]];
+  for (let depth = 0; depth < REACH && edge.length && !from.has(id(tx, ty)); depth++) {
+    const next: [number, number][] = [];
+    for (const [x, y] of edge) {
+      for (const [dx, dy] of dirs) {
+        const nx = x + dx;
+        const ny = y + dy;
+        if (from.has(id(nx, ny))) continue;
+        const goal = nx === tx && ny === ty;
+        if (!goal && peek.CellKind(nx, ny) !== 0) continue;
+        // the square asked for may hold a foe (walking into it strikes), not a wall or a friend
+        if (goal && peek.CellKind(nx, ny) !== 0 && peek.CellKind(nx, ny) !== 3) continue;
+        from.set(id(nx, ny), [x, y, STEP_KEYS[`${dx},${dy}`]]);
+        next.push([nx, ny]);
+      }
+    }
+    edge = next;
+  }
+  const steps: number[] = [];
+  for (let at = from.get(id(tx, ty)); at; at = from.get(id(at[0], at[1]))) steps.unshift(at[2]);
+  return steps;
+}
+
+/** A tap on the battlefield while a fighter may walk: steps toward the square, the last into a foe an attack. */
+function fieldTap(px: number, py: number, menu: hooks.Frame, options: Option[]): boolean {
+  const split = screen.findSplit();
+  if (ifcState() !== IN_COMBAT || !split) return false;
+  const cx = Math.floor((px - FIELD.x) / FIELD.cell);
+  const cy = Math.floor((py - FIELD.y) / FIELD.cell);
+  if (px < FIELD.x || py < FIELD.y || cx >= FIELD.cells || cy >= FIELD.cells) return false;
+  const walking = String(menu.args[0]).startsWith('Move/Attack');
+  const canMove = options.find((o) => o.label === 'Move');
+  if (!walking && !canMove) return false;
+  const peek = units.WebPeek;
+  const ox = peek.ViewX();
+  const ax = peek.ActorX();
+  if (ox < 0 || ax < 0) return false;
+  const ay = peek.ActorY();
+  const tx = ox + cx;
+  const ty = peek.ViewY() + cy;
+  if (tx === ax && ty === ay) return true;
+  const steps = fieldPath(ax, ay, tx, ty);
+  if (!steps.length) return true;
+  const go = () => steps.forEach(ext);
+  if (walking) go();
+  else {
+    // choose Move first, and step once the game is asking where (it drops keys typed before it asks)
+    letter(canMove!.key);
+    let tries = 0;
+    const wait = () => {
+      const top = hooks.top();
+      if (top && top.name === 'MenuCore.HorizontalMenu' && String(top.args[0]).startsWith('Move/Attack')) go();
+      else if (++tries < 40) window.setTimeout(wait, 50);
+    };
+    window.setTimeout(wait, 50);
+  }
+  return true;
+}
+
+function tap(px: number, py: number): void {
   const cx = px >> 3;
   const cy = py >> 3;
   const { menu, list, typing } = frames();
@@ -469,18 +629,16 @@ function tap(px: number, py: number, pane: number): void {
     }
   }
 
-  // an option's own word, or a line that starts with its letter
+  if (fieldTap(px, py, menu, options)) return;
+
+  // an option's own word on the game's line, or a line that starts with an option's letter
   const hot = new Set([...options.map((o) => o.key), ...info.extraKeys.toUpperCase()]);
   let best = -1;
   let bestCol = -1;
   for (let col = 0; col < 40; col++) {
     const c = text.cellAt(col, cy);
     if (!c) continue;
-    if (c.bg !== 0 && c.bg === hl && cy === 24 && Math.abs(col - cx) <= 1) {
-      key(13);
-      return;
-    }
-    if (isLit(col, cy, hl) && hot.has(c.ch) && hl !== (menu.args[3] as number || -1)) {
+    if (isLit(col, cy, hl) && hot.has(c.ch) && hl !== ((menu.args[3] as number) || -1)) {
       // the option reaches from its letter to the next one: the nearest letter at or before the finger
       if (col <= cx + 1 && col > bestCol) {
         bestCol = col;
@@ -508,10 +666,10 @@ function tap(px: number, py: number, pane: number): void {
     else ext(UP);
     return;
   }
-  void pane;
-  if (!options.length) key(13);
+  if (!options.length && String(menu.args[1]).trim()) key(13);
 }
 
 export function start(): void {
+  buildPad();
   render();
 }
