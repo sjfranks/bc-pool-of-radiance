@@ -21,6 +21,8 @@ for (const s of steps) {
     const box = await b.boundingBox();
     if (box) await page.touchscreen.tap(box.x + box.width / 2, box.y + box.height / 2); else console.log('no button ' + i);
   }
+  else if (s === 'reload:') await page.reload();
+  else if (s.startsWith('view:')) { const [w, h] = s.slice(5).split('x').map(Number); await page.setViewportSize({ width: w, height: h }); }
   else if (s.startsWith('eval:')) console.log(await page.evaluate(s.slice(5)));
   await page.waitForTimeout(250);
 }

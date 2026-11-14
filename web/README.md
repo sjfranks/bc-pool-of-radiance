@@ -18,7 +18,7 @@ screens and its saved games are the Pascal's.
   `☰` > *Screen: whole* shows the screen as one picture instead. Held sideways, or on a desktop, the screen is whole
   with the buttons beside it.
 - **`☰`** opens a short menu: the game's function keys by name (command keys, bestiary, quick save and load,
-  minimap, combat log), sound, the screen's arrangement, and backing up or restoring everything saved. **`⌨`** brings
+  minimap, combat log), sound, the screen's arrangement, and backing up or restoring everything saved. **Abc** brings
   up the phone's keyboard, for a name or any key the buttons do not offer. **Esc** backs out.
 - A keyboard plays as it does on a PC.
 

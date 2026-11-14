@@ -295,4 +295,12 @@ button {
     flex: 1 1 100%;
     order: 3;
   }
+  .sys {
+    flex: 1 1 0;
+    flex-direction: row;
+    align-self: flex-start;
+  }
+  .sysb {
+    min-height: 40px;
+  }
 }
