@@ -1,0 +1,40 @@
+// Generated from src/includes/c_keys.pas by web/tools/pas2ts. Do not edit: change the Pascal and run "npm run gen".
+// @ts-nocheck
+import { U8, I8, S, r16, ri16, r32, ri32, w16, w32, rF64, wF64, rF32, wF32, rS, wS, mv } from '../rt/mem';
+import * as rt from '../rt/sys';
+
+export const ENTER = 13;
+export const ESCAPE = 27;
+export const BACKSPACE = 8;
+export const TAB = 9;
+export const CTRL_C = 3;
+export const CTRL_D = 4;
+export const CTRL_L = 12;
+export const CTRL_S = 19;
+export const CTRL_Y = 25;
+export const CTRL_Z = 26;
+export const UP = 72;
+export const DOWN = 80;
+export const LEFT = 75;
+export const RIGHT = 77;
+export const HOME = 71;
+export const END_KEY = 79;
+export const NONE = 0;
+export const PAGE_UP = 73;
+export const PAGE_DOWN = 81;
+export const ALT_Q = 16;
+export const ALT_X = 45;
+export const ALT_M = 50;
+export const ALT_1 = 120;
+export const ALT_8 = 127;
+export const F1 = 59;
+export const F2 = 60;
+export const F3 = 61;
+export const F4 = 62;
+export const F5 = 63;
+export const F6 = 64;
+export const F7 = 65;
+export const F8 = 66;
+export const F10 = 68;
+export const INS = 82;
+export const DEL = 83;

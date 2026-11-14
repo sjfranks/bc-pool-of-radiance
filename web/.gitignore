@@ -1,0 +1,6 @@
+node_modules/
+dist/
+.cache/
+shots/
+# the game's data, packed from ../POOLRAD and ../src/binaries by tools/pack.mjs
+public/gamedata.bin
