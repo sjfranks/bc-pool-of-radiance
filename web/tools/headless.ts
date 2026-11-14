@@ -28,11 +28,17 @@ let outDir = 'shots';
 const steps: string[] = [];
 let trace = false;
 const puts: string[] = [];
+// --monkey N: after the steps, N keys chosen at random from what the game is offering, to shake out crashes
+let monkey = 0;
+let seed = 1;
+const recent: string[] = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--arg') gameArgs.push(argv[++i]);
   else if (argv[i] === '--out') outDir = argv[++i];
   else if (argv[i] === '--trace') trace = true;
   else if (argv[i] === '--put') puts.push(argv[++i]);
+  else if (argv[i] === '--monkey') monkey = Number(argv[++i]);
+  else if (argv[i] === '--seed') seed = Number(argv[++i]);
   else steps.push(argv[i]);
 }
 fs.mkdirSync(outDir, { recursive: true });
@@ -117,6 +123,11 @@ let idleSince = -1;
 
 /** Take script steps until one puts a key in the buffer or asks for time to pass; false when the script is done. */
 function step(): boolean {
+  if (!steps.length && monkey > 0) {
+    monkey--;
+    monkeyKey();
+    return true;
+  }
   while (steps.length) {
     if (waitUntil >= 0) {
       if (now < waitUntil) return true;
@@ -178,17 +189,66 @@ function step(): boolean {
   return false;
 }
 
+function rnd(n: number): number {
+  seed = (Math.imul(seed, 1103515245) + 12345) & 0x7fffffff;
+  return seed % n;
+}
+
+/** One random key the game might take where it is. */
+const deadline = Date.now() + Number(process.env.GUARD ?? 120000) - 5000;
+let calls = 0;
+/** Called from every wait: the harness's own timers never run while the game does not truly wait. */
+function watchdog(where: string): void {
+  if ((++calls & 1023) === 0 && Date.now() > deadline) {
+    console.log(`[out of time in ${where} at ${Math.round(now)} ms of game time; ${monkey} monkey keys left]`);
+    console.log('[hooks] ' + hooks.stack.map((f) => f.name + '(' + f.args.filter((a) => typeof a === 'string').join('|') + ')').join(' > '));
+    if (recent.length) console.log('[the last keys]\n  ' + recent.join('\n  '));
+    png('timeout');
+    process.exit(3);
+  }
+}
+
+function monkeyKey(): void {
+  if (monkey % 500 === 0) console.log(`[monkey: ${monkey} keys left at ${Math.round(now)} ms]`);
+  const top = hooks.top();
+  let what = '';
+  const r = rnd(100);
+  if (top && top.name.startsWith('TextRend.Read')) {
+    if (r < 50) { pushKey(0, 49 + rnd(3)); what = 'digit'; } else if (r < 90) { pushKey(0x1c, 13); what = 'enter'; } else { pushKey(0, 65 + rnd(26)); what = 'letter'; }
+  } else if (top && top.name === 'MenuCore.HorizontalMenu') {
+    const menu = String(top.args[1]);
+    // never out of the game: not Quit, and No where it asks
+    if (/to DOS|Quit/i.test(String(top.args[0]))) {
+      pushKey(0, 78);
+      recent.push('N @ ' + String(top.args[0]));
+      return;
+    }
+    const hot = [...menu].filter((c) => /[0-9A-Z]/.test(c)).filter((c) => !(/Quit/.test(menu) && c === 'Q'));
+    if (hot.length && r < 60) { const c = hot[rnd(hot.length)]; pushKey(0, c.charCodeAt(0)); what = c; }
+    else if (r < 75 && !/Quit/.test(menu)) { pushKey(0x1c, 13); what = 'enter'; }
+    else if (r < 95) { const k = [72, 80, 75, 77, 71, 79, 73, 81][rnd(8)]; pushKey(k, 0); what = 'arrow' + k; }
+    else { pushKey(1, 27); what = 'esc'; }
+    what += ' @ ' + String(top.args[0]) + '|' + menu;
+  } else { pushKey(0x1c, 13); what = 'enter (no menu)'; }
+  if (process.env.MONKEYLOG) fs.appendFileSync(process.env.MONKEYLOG, `${monkey} ${Math.round(now)} ${what}\n`);
+  recent.push(what);
+  if (recent.length > 12) recent.shift();
+}
+
 function finish(): never {
   png('final');
   process.exit(0);
 }
 
 host.platform = {
-  now: () => now,
+  // each look at the clock moves it a little: the game has loops that only watch it
+  now: () => (now += 0.02),
   sleep: async (ms) => {
+    watchdog('sleep');
     now += Math.max(ms, 0);
   },
   waitKey: async () => {
+    watchdog('waitKey');
     if (waitUntil >= 0 && now < waitUntil) now = waitUntil;
     if (!keys.length && !step()) finish();
     if (!keys.length && waitUntil >= 0) now = waitUntil;
@@ -196,6 +256,7 @@ host.platform = {
     if (!keys.length && steps.length && steps[0].startsWith('menu:')) pushKey(0, 0xff);
   },
   idle: async () => {
+    watchdog('idle');
     // the game polls: a millisecond passes each time, and after a fifth of a second of polling the next step is due
     now += 1;
     if (idleSince < 0) idleSince = now;
@@ -218,7 +279,7 @@ const guard = setTimeout(() => {
   console.log('[timed out]');
   png('timeout');
   process.exit(3);
-}, 120000);
+}, Number(process.env.GUARD ?? 120000));
 
 start(gameArgs)
   .then((code) => {
@@ -229,6 +290,7 @@ start(gameArgs)
   })
   .catch((e) => {
     console.error(e);
+    if (recent.length) console.log('[the last keys]\n  ' + recent.join('\n  '));
     try {
       png('crash');
     } catch {

@@ -19,11 +19,14 @@ const incs: string[] = [];
 const pos: string[] = [];
 const hookNames: string[] = [];
 const tapNames: string[] = [];
+/** Units the program does not use, translated with it for the page's own use. */
+const extraUnits: string[] = [];
 for (let i = 0; i < argv.length; i++) {
   if (argv[i] === '--dir') dirs.push(argv[++i]);
   else if (argv[i] === '--inc') incs.push(argv[++i]);
   else if (argv[i] === '--hook') hookNames.push(argv[++i].toLowerCase());
   else if (argv[i] === '--tap') tapNames.push(argv[++i].toLowerCase());
+  else if (argv[i] === '--unit') extraUnits.push(argv[++i]);
   else pos.push(argv[i]);
 }
 const [program, outDir] = pos;
@@ -35,6 +38,7 @@ if (!program || !outDir) {
 try {
   const c = new Compiler(dirs, incs, ['FPC', 'WEB']);
   const prog = c.loadFile(program);
+  for (const u of extraUnits) c.loadUnit(u, 'the command line');
   const gen = new Gen(c);
   for (const h of hookNames) gen.hooks.add(h);
   for (const h of tapNames) gen.taps.add(h);
