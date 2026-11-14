@@ -250,7 +250,7 @@ function padList(parent: HTMLElement): void {
 function system(parent: HTMLElement): void {
   const s = el('div', 'sys', parent);
   button(s, 'sysb', () => settings.onMenu()).textContent = '☰';
-  button(s, 'sysb', () => openTyper()).textContent = '⌨';
+  button(s, 'sysb', () => openTyper()).textContent = 'Abc';
   button(s, 'sysb', () => key(27)).textContent = 'Esc';
 }
 
