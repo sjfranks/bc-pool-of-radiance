@@ -90,7 +90,12 @@ function open(): void {
   if (ctx || !running || !state.on) return;
   try {
     const AC = window.AudioContext ?? (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-    ctx = new AC({ sampleRate: RATE, latencyHint: 'interactive' });
+    try {
+      ctx = new AC({ sampleRate: RATE, latencyHint: 'interactive' });
+    } catch {
+      // a browser that will not take a rate: its own
+      ctx = new AC();
+    }
   } catch {
     ctx = null;
     return;

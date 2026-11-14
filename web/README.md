@@ -6,20 +6,25 @@ screens and its saved games are the Pascal's.
 
 ## Playing
 
-- **The buttons under the screen** are the options the game is waiting on, named as the game names them. Where the
-  game's options are single letters and the screen says what each is (the main menu), the buttons carry those lines.
-- **The arrows** stand beside the buttons where the game takes them: four to walk the 3D view, all eight in a fight,
-  up and down (and a page at a time) in a list.
-- **The screen answers a tap.** A line of a list moves the highlight there, and a tap on the highlighted line takes
-  it. An option's own word, or a line that starts with its lit letter, chooses it. In the 3D view the middle steps
-  ahead, the sides turn, the foot turns about. Where the game waits for any key, a tap anywhere goes on.
+The page is the game's screen, the game's menu line under it, and a keypad under that. All of it is in the game's own
+letters and colours, at one size.
+
+- **The menu line** is the game's own bottom line, shown large enough to touch: touch an option to choose it. The
+  option the arrows are on is in inverse video, as on a PC. Where the game's options are single letters and the screen
+  says what each is (the main menu), the line carries those lines instead.
+- **The keypad** never changes: the arrows, **OK** (Enter) and **Back** (Escape). The arrows walk the 3D view, step
+  through a list or the menu line, and move a fighter; in a fight the four slanting arrows join them. **Menu** opens
+  a short menu of the game's function keys by name (command keys, bestiary, quick save and load, minimap, combat
+  log), sound, the screen's arrangement, and backing up or restoring everything saved. **Keys** brings up the
+  phone's keyboard, for a name or any key not offered.
+- **The screen answers a tap.** In the 3D view the middle steps ahead, the sides turn, the foot turns about. In a
+  fight, a tap on a square walks the fighter there, round walls and friends, and a tap on a foe walks into it and
+  strikes. A line of a list moves the highlight there, and a tap on the highlighted line takes it. Where the game
+  waits for any key, a tap anywhere goes on.
 - **Held upright**, a screen the game divides into panes is taken apart and stacked: the 3D view (or the
   battlefield) as large as the width allows, the party (or the fighter's panel) under it, the text under both.
-  `☰` > *Screen: whole* shows the screen as one picture instead. Held sideways, or on a desktop, the screen is whole
-  with the buttons beside it.
-- **`☰`** opens a short menu: the game's function keys by name (command keys, bestiary, quick save and load,
-  minimap, combat log), sound, the screen's arrangement, and backing up or restoring everything saved. **Abc** brings
-  up the phone's keyboard, for a name or any key the buttons do not offer. **Esc** backs out.
+  *Menu > Screen: whole* shows the screen as one picture instead. Held sideways, or on a desktop, the screen is whole
+  with the menu line and keypad beside it.
 - A keyboard plays as it does on a PC.
 
 Saved games, characters and settings are kept in the browser's storage on the device (IndexedDB) and are there on the
@@ -60,6 +65,8 @@ Pages > Source* to *GitHub Actions* once).
 | `src/ui/` | The page: the screen and its panes, the touch bar, storage, sound. |
 | `tools/headless.mjs` | The game under Node with a scripted keyboard, saving its screen as PNG files. |
 | `tools/runtests.mjs` | Translates and runs the unit tests of `tests/`. |
+
+`node tools/headless.mjs --arg STING --monkey 8000 --seed 1 "<enter>" l "<enter>"` plays a loaded game with keys chosen at random from what the game offers, to shake out crashes.
 
 **The translation.** The game's data lives in one block of memory laid out exactly as Turbo Pascal lays it out
 (packed records, 4-byte pointers, length-prefixed strings), so records read straight from the game's files, variant

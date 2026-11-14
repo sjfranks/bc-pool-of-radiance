@@ -1,12 +1,15 @@
-/* The page: the game's screen over the touch bar, in the game's own colours (black, the frame's red and gold, the
-   menu's green and white). */
+/* The page: the game's screen, under it the game's menu line shown large, and under that the keys. All of it black,
+   in the game's own letters and colours; nothing here that an EGA screen of 1988 could not have drawn. */
 :root {
   --red: #aa0000;
   --gold: #ffff55;
   --green: #55ff55;
   --white: #ffffff;
   --dim: #555555;
-  --bar-h: clamp(176px, 31dvh, 270px);
+  /* a letter's size, set from the width by the page: twenty-two letters across an upright phone */
+  --cell: 19px;
+  --row: calc(var(--cell) + 20px);
+  --pad-h: clamp(148px, 21dvh, 184px);
 }
 html,
 body {
@@ -19,6 +22,22 @@ body {
   touch-action: manipulation;
   -webkit-text-size-adjust: 100%;
   font: 600 15px/1 ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+button {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  color: inherit;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
 }
 #app {
   position: fixed;
@@ -42,157 +61,146 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 #bar {
-  flex: 0 0 var(--bar-h);
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  box-sizing: border-box;
-  border-top: 3px solid var(--red);
-  box-shadow: inset 0 1px 0 #550000;
-  padding: 6px 6px 8px;
-  gap: 6px;
-  min-height: 0;
   -webkit-user-select: none;
   user-select: none;
 }
 #bar canvas {
-  image-rendering: pixelated;
   display: block;
   pointer-events: none;
   flex: none;
 }
-.query {
-  min-height: 16px;
-  display: flex;
-  align-items: center;
-  overflow: hidden;
-  color: #ff55ff;
-  white-space: nowrap;
+
+/* the menu line: room for three rows is always kept, so the screen above never moves; a longer menu grows upward
+   over the foot of the screen */
+#slot {
+  position: relative;
+  height: calc(var(--row) * 3 + 6px);
 }
-.body {
-  flex: 1 1 0;
-  min-height: 0;
-  display: flex;
-  gap: 6px;
-}
-.opts {
-  flex: 1 1 0;
-  min-width: 0;
-  display: flex;
-  flex-wrap: wrap;
-  align-content: stretch;
-  gap: 6px;
+#strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  min-height: 100%;
+  max-height: calc(var(--row) * 9);
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
+  box-sizing: border-box;
+  background: #000;
+  padding: 3px 4px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
-.opts.rows {
+.prompt {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: var(--row);
+  padding: 0 6px;
+  row-gap: 4px;
+}
+.items {
+  display: flex;
+  flex-wrap: wrap;
+}
+.items.rows {
   flex-direction: column;
   flex-wrap: nowrap;
-  align-content: normal;
 }
-.opts.keys .opt {
-  flex: 1 1 14%;
-}
-button {
-  font: inherit;
-  color: inherit;
-  margin: 0;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.opt,
-.pad,
-.sysb {
-  background: #0b0b0b;
-  border: 2px solid var(--red);
-  border-radius: 4px;
-  box-shadow: inset 0 0 0 1px #000, inset 0 0 0 2px #3a0000;
+.item {
+  height: var(--row);
+  padding: 0 calc(var(--cell) * 0.5);
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 8px;
-  min-height: 40px;
-  color: var(--green);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
 }
-.opt {
-  flex: 1 1 calc(100% / var(--across, 3) - 6px);
-  overflow: hidden;
-  padding: 0 4px;
+.item.tall {
+  height: auto;
+  min-height: var(--row);
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
-.opt.wide {
-  flex: 1 1 100%;
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
-.opt.row {
-  flex: 0 0 auto;
-  justify-content: flex-start;
-  min-height: 38px;
+.item.down canvas {
+  filter: brightness(1.6);
 }
-.opt.ok {
-  border-color: var(--gold);
-  color: var(--white);
-}
-.opt.num {
-  font-size: 20px;
-  color: var(--white);
-}
-.down {
-  background: #3a0000;
-  border-color: var(--gold);
+
+/* the keys: always the same, always in the same place */
+#pad {
+  height: var(--pad-h);
+  display: flex;
+  gap: 10px;
+  padding: 6px 8px 8px;
+  box-sizing: border-box;
+  border-top: 2px solid var(--red);
 }
 .dpad {
   flex: 0 0 auto;
+  height: 100%;
+  aspect-ratio: 1;
   display: grid;
-  gap: 5px;
-  align-self: stretch;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  gap: 4px;
 }
-.dpad.eight,
-.dpad.four {
-  grid-template-columns: repeat(3, minmax(40px, 1fr));
-  width: min(36vw, 138px);
-}
-.dpad.eight {
-  grid-template-rows: repeat(3, 1fr);
-}
-.dpad.four {
-  grid-template-rows: repeat(2, 1fr);
-}
-.dpad.list {
-  grid-template-columns: repeat(2, 52px);
-  grid-template-rows: repeat(2, 1fr);
-}
-.pad {
-  padding: 0;
-  font-size: 24px;
-  color: var(--white);
-  min-height: 0;
-}
-.pad.gap {
-  border-color: transparent;
-  box-shadow: none;
-  background: none;
-}
-.pad.pg {
-  color: var(--green);
-}
-.sys {
-  flex: 0 0 44px;
+.key {
+  position: relative;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
-}
-.sysb {
-  flex: 1 1 0;
-  padding: 0;
+  align-items: center;
+  justify-content: center;
+  background: #000;
+  border: 2px solid var(--red);
+  color: var(--white);
+  min-width: 0;
   min-height: 0;
-  border-color: var(--dim);
-  box-shadow: none;
-  color: #aaaaaa;
-  font-size: 13px;
-  text-transform: none;
-  letter-spacing: 0;
 }
+/* the frame's gold corner pieces */
+.key::before,
+.key::after {
+  content: '';
+  position: absolute;
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  top: -3px;
+}
+.key::before {
+  left: -3px;
+}
+.key::after {
+  right: -3px;
+}
+.key.down {
+  background: var(--red);
+}
+.key.off {
+  visibility: hidden;
+}
+.dpad .hub {
+  border: 0;
+}
+.side {
+  flex: 1 1 0;
+  min-width: 0;
+  display: grid;
+  grid-template: 1fr 1.5fr 1fr / 1fr 1fr;
+  gap: 8px;
+}
+.side .ok {
+  grid-column: 1 / 3;
+  border-color: var(--gold);
+}
+.side .back {
+  grid-column: 1 / 3;
+}
+
 #typer {
   position: fixed;
   left: 0;
@@ -214,7 +222,7 @@ button {
   z-index: 10;
   text-align: center;
   padding: 24px;
-  line-height: 1.5;
+  line-height: 1.6;
 }
 #veil[hidden],
 #menu[hidden] {
@@ -225,41 +233,40 @@ button {
   display: block;
   width: 100%;
   margin: 10px 0 0;
-  padding: 12px 14px;
-  background: #0b0b0b;
+  padding: 13px 12px;
+  background: #000;
   border: 2px solid var(--red);
-  border-radius: 4px;
   color: var(--green);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
   text-align: left;
+}
+#menu button:active,
+#notice button:active {
+  background: var(--red);
+  color: var(--white);
 }
 #menu {
   position: fixed;
   inset: 0;
   z-index: 9;
-  background: rgba(0, 0, 0, 0.82);
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
   align-items: flex-end;
   justify-content: center;
 }
 #menu .sheet {
   width: min(100%, 460px);
-  max-height: 86dvh;
+  max-height: 88dvh;
   overflow-y: auto;
   box-sizing: border-box;
   background: #000;
-  border: 3px solid var(--red);
+  border: 2px solid var(--red);
   border-bottom: 0;
-  border-radius: 6px 6px 0 0;
   padding: 12px 12px calc(14px + env(safe-area-inset-bottom));
 }
 #menu h2 {
-  margin: 2px 0 4px;
+  margin: 4px 0 2px;
   font-size: 15px;
   color: var(--gold);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
 }
 #menu .cols {
   display: grid;
@@ -267,40 +274,35 @@ button {
   gap: 0 8px;
 }
 #menu p {
-  margin: 10px 0 0;
+  margin: 12px 0 0;
   color: #aaaaaa;
   font-weight: 400;
-  line-height: 1.4;
+  line-height: 1.5;
+  text-transform: none;
+  letter-spacing: 0;
   text-wrap: pretty;
 }
-/* a wide display: the bar beside the screen */
+
+/* a wide display: the screen whole, the menu line and the keys beside it */
 @media (min-aspect-ratio: 11/10) {
   #app {
     flex-direction: row;
   }
   #bar {
-    flex: 0 0 clamp(220px, 30vw, 340px);
-    border-top: 0;
-    border-left: 3px solid var(--red);
+    flex: 0 0 clamp(250px, 32vw, 360px);
+    border-left: 2px solid var(--red);
   }
-  .dpad.eight,
-  .dpad.four {
-    width: 132px;
-  }
-  .body {
-    flex-wrap: wrap;
-    align-content: flex-start;
-  }
-  .opts {
-    flex: 1 1 100%;
-    order: 3;
-  }
-  .sys {
+  #slot {
     flex: 1 1 0;
-    flex-direction: row;
-    align-self: flex-start;
+    height: auto;
+    min-height: 0;
   }
-  .sysb {
-    min-height: 40px;
+  #strip {
+    position: static;
+    height: 100%;
+    max-height: none;
+  }
+  #pad {
+    --pad-h: clamp(120px, 34dvh, 170px);
   }
 }
