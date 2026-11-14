@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pool of Radiance: Native Port</title>
+<meta name="description" content="SSI's Pool of Radiance rebuilt as a native Windows, macOS and Linux program, with fixes and extra features. Bring your own GOG or Steam game data.">
+<style>
+  :root {
+    --bg: #fbf7ef;
+    --ink: #231c14;
+    --muted: #6b5f50;
+    --card: #fffdf8;
+    --line: #e2d8c4;
+    --accent: #a4161a;
+    --accent-ink: #fff;
+    --gold: #b8860b;
+    --shot-bg: #000;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #14100c;
+      --ink: #f1e8d6;
+      --muted: #b3a58f;
+      --card: #1e1812;
+      --line: #3a2f23;
+      --accent: #e04a4e;
+      --accent-ink: #14100c;
+      --gold: #e0b84a;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #14100c; --ink: #f1e8d6; --muted: #b3a58f; --card: #1e1812;
+    --line: #3a2f23; --accent: #e04a4e; --accent-ink: #14100c; --gold: #e0b84a;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 17px/1.6 Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  }
+  a { color: var(--accent); }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 16px; }
+  header.hero { padding: 56px 0 40px; border-bottom: 1px solid var(--line); }
+  .eyebrow {
+    font: 600 13px/1 ui-monospace, Menlo, Consolas, monospace;
+    letter-spacing: .12em; text-transform: uppercase; color: var(--gold);
+  }
+  h1 { font-size: clamp(34px, 7vw, 56px); line-height: 1.05; margin: 12px 0 16px; letter-spacing: -.01em; }
+  .lede { font-size: 20px; max-width: 40em; color: var(--muted); margin: 0 0 28px; }
+  .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+  .btn {
+    display: inline-block; padding: 12px 20px; border-radius: 8px; text-decoration: none;
+    font: 600 16px/1.2 system-ui, sans-serif; border: 2px solid var(--accent);
+    background: var(--accent); color: var(--accent-ink);
+  }
+  .btn.alt { background: transparent; color: var(--accent); }
+  .hero-shot { margin-top: 36px; }
+  .shot { display: block; width: 100%; height: auto; background: var(--shot-bg); image-rendering: pixelated; border: 3px solid var(--line); border-radius: 6px; }
+  section { padding: 48px 0; border-bottom: 1px solid var(--line); }
+  section:last-of-type { border-bottom: 0; }
+  h2 { font-size: 28px; margin: 0 0 8px; }
+  .sub { color: var(--muted); margin: 0 0 24px; max-width: 42em; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; }
+  .card h3 { margin: 0 0 6px; font-size: 18px; }
+  .card p { margin: 0; color: var(--muted); font-size: 16px; }
+  .gallery { display: grid; gap: 20px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+  figure { margin: 0; }
+  figcaption { font-size: 15px; color: var(--muted); margin-top: 8px; }
+  table { border-collapse: collapse; width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 10px; overflow: hidden; font: 15px/1.4 system-ui, sans-serif; }
+  th, td { text-align: left; padding: 12px 14px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:last-child td { border-bottom: 0; }
+  th { color: var(--muted); font-weight: 600; }
+  ol.steps { padding-left: 1.2em; }
+  ol.steps li { margin-bottom: 10px; }
+  code { font: 14px ui-monospace, Menlo, Consolas, monospace; background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; }
+  .note { border-left: 4px solid var(--gold); background: var(--card); padding: 12px 16px; border-radius: 0 8px 8px 0; font-size: 16px; }
+  footer { padding: 32px 0 56px; color: var(--muted); font-size: 15px; }
+  @media (max-width: 560px) { .table-wrap { overflow-x: auto; } table { min-width: 460px; } }
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">Gold Box · 1988 · reconstructed</div>
+    <h1>Pool of Radiance, native on your machine</h1>
+    <p class="lede">SSI's classic, rebuilt from Turbo Pascal source as a native Windows, macOS and Linux program. It keeps the game as it was and adds fixes, a settings screen, a bestiary, a vault, game statistics and more.</p>
+    <div class="cta">
+      <a class="btn" href="https://github.com/sjfranks/bc-pool-of-radiance/releases">Download a release</a>
+      <a class="btn alt" href="https://github.com/sjfranks/bc-pool-of-radiance">View the source</a>
+    </div>
+    <div class="hero-shot">
+      <img class="shot" src="screenshots/bestiary.png" width="640" height="400" alt="The Bestiary screen for the orc, listing times seen, times killed, size, armor class, hit dice and most damage done in one blow.">
+    </div>
+  </div>
+</header>
+
+<main>
+<section id="what">
+  <div class="wrap">
+    <h2>What this is</h2>
+    <p class="sub">A reconstruction of SSI's version 1.3 in Turbo Pascal 6, built to run natively. The repository also rebuilds the original v1.1, v1.2 and v1.3 releases and compares them with SSI's own, so the port stays faithful to the game.</p>
+    <div class="note"><strong>Bring your own game.</strong> The original game data is not included. The port reads the files from your own GOG or Steam copy and will usually find them for you. The game only needs to be installed; you don't have to run it first.</div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <h2>What's new</h2>
+    <p class="sub">A few of the additions players notice most. The full list is in the <a href="https://github.com/sjfranks/bc-pool-of-radiance/blob/main/docs/DETAILED-CHANGES.md">detailed changes</a>.</p>
+    <div class="grid">
+      <div class="card"><h3>Settings screen</h3><p>Game speed, monster pictures, portraits, music, sound and quick-combat options, saved for every game in <code>POOLOPT.CFG</code>.</p></div>
+      <div class="card"><h3>The Bestiary (F2)</h3><p>Records what your party has learned about each creature: armor class, hit dice, size, defenses and attacks. A sage in New Phlan will fill in entries for a fee.</p></div>
+      <div class="card"><h3>Statistics</h3><p>Kills by kind, damage dealt and taken, healing, loot, spells cast and deaths, for each character and for the whole game.</p></div>
+      <div class="card"><h3>Paladins and rangers</h3><p>Both can now be created, with Curse of the Azure Bonds' party rules.</p></div>
+      <div class="card"><h3>More Info pages</h3><p>Saving throws, game stats, kill count, thief skills and a turn undead table for clerics and paladins.</p></div>
+      <div class="card"><h3>Quick save and load</h3><p>F5 saves and F8 loads, plus a full-screen Load/Save menu.</p></div>
+      <div class="card"><h3>The Hoarder's Respite</h3><p>A vault in New Phlan for stashing what you can't carry.</p></div>
+      <div class="card"><h3>Many fixes</h3><p>Rules, combat AI, scripts and data fixes, including SSI quirks, with every change documented.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="shots">
+  <div class="wrap">
+    <h2>Screenshots</h2>
+    <p class="sub">Captured from the port.</p>
+    <div class="gallery">
+      <figure><img class="shot" loading="lazy" src="screenshots/settings-screen-gives-players-control.png" width="640" height="400" alt="The Settings screen."><figcaption>The Settings screen gives players control.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/in-game-area-map.png" width="640" height="400" alt="The in-game area map of New Phlan."><figcaption>An in-game area map of New Phlan.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/in-game-journal.png" width="640" height="400" alt="The in-game journal."><figcaption>The in-game journal.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/aiming-fireball.png" width="1280" height="400" alt="Aiming a fireball in combat."><figcaption>Aiming a fireball.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/new-memorize-ui-includes-basic-spell-info.png" width="640" height="400" alt="The memorize screen with basic spell information."><figcaption>Memorizing spells, with basic spell info.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/game-statistics.png" width="640" height="400" alt="A character's game statistics page."><figcaption>Game statistics.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/new-portrait-picker-ui.png" width="640" height="400" alt="The portrait picker."><figcaption>The portrait picker.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/dual-class-ui.png" width="640" height="400" alt="The dual-class screen."><figcaption>Dual-classing.</figcaption></figure>
+      <figure><img class="shot" loading="lazy" src="screenshots/the-turn-undead-table-is-visible-for-clerics-and-paladins.png" width="640" height="400" alt="The turn undead table."><figcaption>The turn undead table for clerics and paladins.</figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="install">
+  <div class="wrap">
+    <h2>Get started</h2>
+    <p class="sub">Native builds are published on the releases page.</p>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Platform</th><th>Archive</th></tr></thead>
+      <tbody>
+        <tr><td>Windows</td><td>64-bit (x64) and 32-bit (x86) zips. The x86 build also runs on 32-bit Windows.</td></tr>
+        <tr><td>macOS</td><td>Apple Silicon.</td></tr>
+        <tr><td>Linux</td><td>x86_64 and i386 tarballs.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ol class="steps">
+      <li>Install Pool of Radiance from GOG or Steam (Forgotten Realms: The Archives, Collection Two).</li>
+      <li>Download the archive for your system from <a href="https://github.com/sjfranks/bc-pool-of-radiance/releases">Releases</a> and unpack it anywhere.</li>
+      <li>Run <code>poolrad</code>. The game looks for your data folder (GEO1.DAX) and remembers it. To choose another copy, run it with <code>--choose-data-folder</code> or <code>--data-folder "path"</code>.</li>
+      <li>Optional: run <code>poolcfg</code> for video, sound, introduction and folder options. No <code>POOL.CFG</code> is needed to play.</li>
+    </ol>
+    <p>Keep the files that ship with a release (RAVFULL.DAX, SBSFX.DAT and DEMO.DAX) beside the program. On Windows, keep SDL3.dll beside it too. On a Mac, Option is the game's Alt key.</p>
+    <p>Each release's README, in <a href="https://github.com/sjfranks/bc-pool-of-radiance/tree/main/docs/dist-readmes">docs/dist-readmes</a>, has the details for your platform, including where saved games live.</p>
+  </div>
+</section>
+
+<section id="docs">
+  <div class="wrap">
+    <h2>Documentation</h2>
+    <div class="grid">
+      <div class="card"><h3><a href="https://github.com/sjfranks/bc-pool-of-radiance/blob/main/docs/README.md">Documentation index</a></h3><p>Build instructions, release notes, and text mockups of every screen.</p></div>
+      <div class="card"><h3><a href="https://github.com/sjfranks/bc-pool-of-radiance/blob/main/docs/DETAILED-CHANGES.md">Detailed changes</a></h3><p>The engineering record: what changed, why, and which issue and commit it came from.</p></div>
+      <div class="card"><h3><a href="https://github.com/sjfranks/bc-pool-of-radiance/tree/main/docs/screen-mocks">Screen mockups</a></h3><p>Plain-text specifications of the new screens, with colors and keys.</p></div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p>This is a modified version of the game. GOG, Steam and SNEG can't help with it; questions and bug reports go to the project's maintainer, whose address is in the release READMEs. Pool of Radiance is a trademark of its respective owners. This project doesn't distribute the original game data.</p>
+  </div>
+</footer>
+</body>
+</html>
