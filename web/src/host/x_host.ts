@@ -10,7 +10,9 @@ export function Service(): Promise<void> {
 }
 
 export async function WaitKey(): Promise<void> {
+  host.waiting = true;
   while (!keys.length) await host.platform.waitKey();
+  host.waiting = false;
 }
 
 export function Idle(): Promise<void> {

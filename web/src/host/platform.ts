@@ -18,7 +18,9 @@ export interface Platform {
   service(): Promise<void>;
 }
 
-export const host: { platform: Platform } = {
+/** waiting: true while the game waits for a key and nothing else (the interface can say so). */
+export const host: { platform: Platform; waiting: boolean } = {
+  waiting: false,
   platform: {
     now: () => Date.now(),
     sleep: (ms) => new Promise((r) => setTimeout(r, ms)),
