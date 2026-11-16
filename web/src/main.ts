@@ -139,10 +139,10 @@ function openMenu(): void {
     audio.setOn(!audio.state.on);
     snd.textContent = audio.state.on ? 'Sound: on' : 'Sound: off';
   }, true);
-  const lay = item(screen.options.split ? 'Screen: panes' : 'Screen: whole', () => {
+  const lay = item(screen.options.split ? 'Screen: apart' : 'Screen: whole', () => {
     screen.options.split = !screen.options.split;
     localStorage.setItem('por.split', screen.options.split ? '1' : '0');
-    lay.textContent = screen.options.split ? 'Screen: panes' : 'Screen: whole';
+    lay.textContent = screen.options.split ? 'Screen: apart' : 'Screen: whole';
   }, true);
   item('Full screen', () => {
     if (document.fullscreenElement) void document.exitFullscreen();
@@ -171,12 +171,13 @@ function openMenu(): void {
     });
     input.click();
   });
+  item('Keyboard', () => controls.openTyper());
   item('Restart the game', () => location.reload());
   cols = sheet;
   item('Back to the game', () => {});
   const p = document.createElement('p');
   p.textContent =
-    'Touch an option on the line under the screen, or step to it with the arrows and press OK. Tap the 3D view to walk and turn, and a square of the battlefield to move there or strike. Saved games are kept on this device.';
+    'Menu lists what you can do where you are. Tap the 3D view to walk and turn, and a square of the battlefield to move there or strike. Text and Party switch the pane under the picture. Saved games are kept on this device.';
   sheet.appendChild(p);
   menu.hidden = false;
 }

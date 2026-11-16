@@ -6,26 +6,32 @@ screens and its saved games are the Pascal's.
 
 ## Playing
 
-The page is the game's screen, the game's menu line under it, and a keypad under that. All of it is in the game's own
-letters and colours, at one size.
+Held upright, the page is three parts, all in the game's own letters and colours:
 
-- **The menu line** is the game's own bottom line, shown large enough to touch: touch an option to choose it. The
-  option the arrows are on is in inverse video, as on a PC. Where the game's options are single letters and the screen
-  says what each is (the main menu), the line carries those lines instead.
-- **The keypad** never changes: the arrows, **OK** (Enter) and **Back** (Escape). The arrows walk the 3D view, step
-  through a list or the menu line, and move a fighter; in a fight the four slanting arrows join them. **Menu** opens
-  a short menu of the game's function keys by name (command keys, bestiary, quick save and load, minimap, combat
-  log), sound, the screen's arrangement, and backing up or restoring everything saved. **Keys** brings up the
-  phone's keyboard, for a name or any key not offered.
-- **The screen answers a tap.** In the 3D view the middle steps ahead, the sides turn, the foot turns about. In a
-  fight, a tap on a square walks the fighter there, round walls and friends, and a tap on a foe walks into it and
-  strikes. A line of a list moves the highlight there, and a tap on the highlighted line takes it. Where the game
-  waits for any key, a tap anywhere goes on.
-- **Held upright**, a screen the game divides into panes is taken apart and stacked: the 3D view (or the
-  battlefield) as large as the width allows, the party (or the fighter's panel) under it, the text under both.
-  *Menu > Screen: whole* shows the screen as one picture instead. Held sideways, or on a desktop, the screen is whole
-  with the menu line and keypad beside it.
-- A keyboard plays as it does on a PC.
+- **The picture, across the whole width at the top**: the 3D view, or the battlefield. It answers a tap. In the 3D
+  view the middle steps ahead, the sides turn, the foot turns about. In a fight a tap on a square walks the fighter
+  there, round walls and friends, and a tap on a foe walks into it and strikes.
+- **One pane under it**: the party, or the game's words (its text window again, at a size to read). The game's words
+  come up by themselves when it says something and give way to the party when it wipes them; the **Text / Party**
+  key switches by hand. In a fight the pane is the fighter's panel.
+- **The keys at the foot**, which never move: the arrows (all eight in a fight), **Menu**, **Text / Party**, **OK**
+  (Enter), **Back** (Escape) and a gear.
+
+**What the game asks is a framed list.** Where the game puts a question (Combat, Wait, Flee or Advance; Yes or No; a
+shop's choices) the list is simply there, under the game's words where they leave room, else over the foot of the
+picture: touch an option, or step to it with the arrows and press OK. Where the options are the standing commands
+(Area, Cast, View, Encamp... while walking; Move, Aim, Use... on a fighter's turn) the list stays out of the way
+until **Menu** is pressed, and opens over the foot of the picture. Where the game's options are single letters and
+the screen says what each is (the main menu), the list carries those lines.
+
+Screens the game does not divide (a character's sheet, a shop's lists, the title) are shown whole across the top,
+with the list under them.
+
+**The gear** is the page's own settings: the game's function keys by name (command keys, bestiary, quick save and
+load, minimap, combat log), sound, whether the screen is taken apart, the phone's keyboard, and backing up or
+restoring everything saved.
+
+Held sideways, or on a desktop, the screen is whole with the keys beside it, and a keyboard plays as it does on a PC.
 
 Saved games, characters and settings are kept in the browser's storage on the device (IndexedDB) and are there on the
 next visit. *Back up saves* downloads them as one file; *Restore a backup* takes it back, on this device or another.
