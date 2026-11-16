@@ -48,7 +48,7 @@ let blits: Blit[] = [];
 let layoutKey = '';
 let ready = false;
 /** Set by the page's settings: take the screen apart on an upright phone. */
-export const options = { split: true };
+export const options = { split: true, pane: 'party' as 'party' | 'text' };
 
 function cellEq(scr: number, ax: number, ay: number, bx: number, by: number): boolean {
   const a = scr + ay * 8 * W + ax * 8;
@@ -78,41 +78,64 @@ export function findSplit(): Split | null {
   return null;
 }
 
+/** Where things stand on an upright phone, for the interface's own parts (controls.ts). */
+export const place = {
+  /** True when the screen is taken apart: the picture pane across the top, the middle pane under it. */
+  apart: false,
+  /** True on an upright display at all. */
+  upright: false,
+  /** The middle region, under the picture (or under the whole screen): CSS pixels from the canvas's top. */
+  midY: 0,
+  midH: 0,
+  /** The game's rows of text under its panes (the text window), where the screen is taken apart. */
+  textTop: 0,
+  /** True in a fight: the middle is the fighter's panel, and there is no text window to switch to. */
+  fight: false,
+};
+
 function layout(cw: number, ch: number, split: Split | null): Blit[] {
   const portrait = ch > cw * 0.9;
-  // upright, the game's bottom line (its menu and prompts) is not shown: the interface shows it, larger, under the
-  // screen
+  place.upright = portrait;
+  place.apart = false;
+  // upright, the game's bottom line (its menu and prompts) is not shown: the interface shows it
   const h = portrait ? H - 8 : H;
   const t = Math.min(cw / W, ch / h);
   if (portrait && split && options.split) {
     const aW = (split.col + 1) * 8;
     const bW = (40 - split.col) * 8;
     const hA = (split.row + 1) * 8;
-    const cY = hA;
-    const hC = h - cY;
+    const hC = h - hA;
     const tc = cw / W;
-    const room = ch - hC * tc;
-    // the picture pane as large as the width allows, leaving the pane beside it letters at least a little larger than
-    // the text's (a fight's tall panel, mostly empty, gets by with less); what is left over goes to that pane
-    const least = tc * (hA > 150 ? 0.9 : 1.25);
-    let vA = Math.min(cw / aW, (room - hA * least) / hA);
-    let vB = Math.min(cw / bW, (room - hA * vA) / hA);
-    if (vA < vB) vA = vB = Math.min(room / (2 * hA), cw / Math.max(aW, bW));
+    const fight = U8[units.GameVars.$at.ifcState] === 5;
+    // The picture across the whole width, at the top; under it the middle pane: the party (or in a fight the
+    // fighter's panel, with the game's line of text under it), or the game's words. On a short display the picture
+    // gives up some width so that the middle keeps room for the party at letters a little larger than the screen's.
+    const midLeast = fight ? hA * tc * 1.05 + hC * tc : hA * tc * 1.25;
+    const vA = Math.min(cw / aW, (ch - midLeast) / hA);
     if (vA >= tc * 1.1) {
-      const total = hA * vA + hA * vB + hC * tc;
-      let y = ch - total;
       const out: Blit[] = [];
-      out.push({ sx: 0, sy: 0, sw: aW, sh: hA, dx: (cw - aW * vA) / 2, dy: y, dw: aW * vA, dh: hA * vA });
-      y += hA * vA;
-      out.push({ sx: split.col * 8, sy: 0, sw: bW, sh: hA, dx: (cw - bW * vB) / 2, dy: y, dw: bW * vB, dh: hA * vB });
-      y += hA * vB;
-      if (hC > 0) out.push({ sx: 0, sy: cY, sw: W, sh: hC, dx: 0, dy: y, dw: cw, dh: hC * tc });
+      out.push({ sx: 0, sy: 0, sw: aW, sh: hA, dx: (cw - aW * vA) / 2, dy: 0, dw: aW * vA, dh: hA * vA });
+      const midY = hA * vA;
+      const midH = ch - midY;
+      place.apart = true;
+      place.midY = midY;
+      place.midH = midH;
+      place.textTop = split.row + 1;
+      place.fight = fight;
+      if (fight || options.pane === 'party') {
+        const room = midH - (fight ? hC * tc : 0);
+        const vB = Math.min(cw / bW, room / hA);
+        out.push({ sx: split.col * 8, sy: 0, sw: bW, sh: hA, dx: (cw - bW * vB) / 2, dy: midY, dw: bW * vB, dh: hA * vB });
+        if (fight && hC > 0) out.push({ sx: 0, sy: hA, sw: W, sh: hC, dx: 0, dy: midY + hA * vB, dw: cw, dh: hC * tc });
+      }
       return out;
     }
   }
   const dw = W * t;
   const dh = h * t;
-  return [{ sx: 0, sy: 0, sw: W, sh: h, dx: (cw - dw) / 2, dy: portrait ? ch - dh : (ch - dh) / 2, dw, dh }];
+  place.midY = portrait ? dh : 0;
+  place.midH = portrait ? ch - dh : 0;
+  return [{ sx: 0, sy: 0, sw: W, sh: h, dx: (cw - dw) / 2, dy: portrait ? 0 : (ch - dh) / 2, dw, dh }];
 }
 
 /** True when the game's own bottom line is on the canvas (a wide display); upright the interface shows it. */
@@ -157,7 +180,7 @@ function frame(): void {
   const ch = canvas.clientHeight;
   if (!cw || !ch) return;
   const split = findSplit();
-  const key = `${cw}x${ch}@${dpr}:${split ? split.col + ',' + split.row : '-'}:${options.split}`;
+  const key = `${cw}x${ch}@${dpr}:${split ? split.col + ',' + split.row : '-'}:${options.split}:${options.pane}:${U8[units.GameVars.$at.ifcState] === 5}`;
   let dirty = key !== layoutKey;
   const live = U8.subarray(scr, scr + W * H);
   const liveDac = U8.subarray(dac, dac + 768);

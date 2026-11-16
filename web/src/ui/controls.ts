@@ -1,17 +1,18 @@
 /**
  * controls.ts
  *
- * Playing with a finger. The game is a keyboard game: a line of options along the foot of the screen, each chosen by
- * its capital letter or stepped to with the arrows and taken with Enter. On a phone that line is too small to touch,
- * so it is shown again under the screen, in the game's own letters and colours at a size a finger can hit: touch an
- * option to choose it. Under it are the keys, which never change or move: the arrows, OK (Enter) and Back (Escape).
- * Everything the game can be asked, it can be asked with those.
+ * Playing with a finger, on a phone held upright. From the top: the picture (the 3D view, the battlefield) across the
+ * whole width; under it one pane, the party or the game's words, switched with a key (the words come up by themselves
+ * when the game says something); and at the foot the keys, which never move: the arrows, Menu, OK and Back.
  *
- * The screen itself answers a tap as well: a line of a list, a line that starts with an option's letter, the 3D view
- * to walk and turn, and the battlefield to walk a fighter to a square or into a foe.
+ * The game is a keyboard game: a line of options along the foot of its screen, each chosen by its capital letter.
+ * Here that line is a framed list over the foot of the picture, in the game's own letters: touch an option to choose
+ * it. Where the game is asking a question the list is simply there. Where the line is the standing list of commands
+ * (walking about, a fighter's turn) it stays out of the way until Menu is pressed, since the picture itself takes
+ * taps there: the 3D view to walk and turn, the battlefield to walk a fighter to a square or into a foe.
  *
  * What to show comes from the game: the translator has the menu routines report their arguments (host/hooks.ts), so
- * the line under the screen is always the line the game is waiting on. A keyboard still plays as it does on a PC.
+ * the list is always the line the game is waiting on. A keyboard still plays as it does on a PC.
  */
 import { U8, rS } from '../rt/mem';
 import * as hooks from '../host/hooks';
@@ -21,6 +22,8 @@ import * as text from './text';
 import * as screen from './screen';
 
 const strip = document.getElementById('strip') as HTMLDivElement;
+const words = document.getElementById('words') as HTMLDivElement;
+const stage = document.getElementById('stage') as HTMLDivElement;
 const pad = document.getElementById('pad') as HTMLDivElement;
 const canvas = document.getElementById('screen') as HTMLCanvasElement;
 const typer = document.getElementById('typer') as HTMLInputElement;
@@ -42,7 +45,7 @@ const MAGENTA = 13;
 const GRAY = 7;
 
 export const settings = {
-  /** Called for the pause menu. */
+  /** Called for the page's own settings (the gear). */
   onMenu: (() => {}) as () => void,
   /** Called at the first touch or key, so sound may start. */
   onGesture: (() => {}) as () => void,
@@ -72,12 +75,14 @@ interface Option {
 interface MenuInfo {
   extraKeys: string;
   enterToCaller: boolean;
+  /** The map's own menu: the one that takes the quick save and load keys. */
+  map: boolean;
 }
 
 hooks.listeners.enter = (f) => {
   if (f.name === 'MenuCore.HorizontalMenu' || f.name === 'MenuCore.MenuVertical') {
     const at = units.MenuCore.$at;
-    f.info = { extraKeys: rS(at.extraKeys), enterToCaller: U8[at.enterToCaller] !== 0 } satisfies MenuInfo;
+    f.info = { extraKeys: rS(at.extraKeys), enterToCaller: U8[at.enterToCaller] !== 0, map: U8[at.quickKeysToCaller] !== 0 } satisfies MenuInfo;
   }
 };
 
@@ -174,7 +179,7 @@ function item(parent: HTMLElement, s: string, ink: (i: number) => string, press:
   const b = el('button', 'item', parent);
   b.type = 'button';
   // a line longer than the width goes on a second row
-  const cols = Math.max(8, Math.floor((strip.clientWidth - 8) / (8 * text.ui.scale)) - 1);
+  const cols = Math.max(8, Math.floor((strip.clientWidth - 12) / (8 * text.ui.scale)) - 1);
   if (s.length > cols && !paper) {
     b.classList.add('tall');
     const inner = el('div', 'lines', b);
@@ -191,8 +196,8 @@ function item(parent: HTMLElement, s: string, ink: (i: number) => string, press:
 }
 
 /** Text wrapped to the line's width, word by word; cells keeps each character's own colours. */
-function wrapped(parent: HTMLElement, cells: { ch: string; ink: string }[]): void {
-  const cols = Math.max(8, Math.floor((strip.clientWidth - 20) / (8 * text.ui.scale)));
+function wrapped(parent: HTMLElement, cells: { ch: string; ink: string }[], width = strip.clientWidth - 12): void {
+  const cols = Math.max(8, Math.floor(width / (8 * text.ui.scale)) - 1);
   let line: { ch: string; ink: string }[] = [];
   const flush = () => {
     while (line.length && line[line.length - 1].ch === ' ') line.pop();
@@ -233,6 +238,104 @@ function bottomLine(): { ch: string; ink: string }[] {
 
 let shown = '';
 let timer = 0;
+/** The standing list of commands, opened with Menu. */
+let menuOpen = false;
+/** The pane under the picture: the player's own choice, and what is shown now. */
+let paneChoice: 'party' | 'text' = localStorage.getItem('por.pane') === 'text' ? 'text' : 'party';
+let wordsSig = '';
+let wordsShown = '';
+
+/** True for a menu that is the standing list of commands where the picture itself is played on. */
+function standing(menu: hooks.Frame, options: Option[]): boolean {
+  // on a wide display the game's own line is on the screen, large enough to touch: every list waits behind Menu
+  if (!screen.place.upright) return true;
+  if (!screen.place.apart) return false;
+  if ((menu.info as MenuInfo).map) return true;
+  return ifcState() === IN_COMBAT && options.some((o) => o.label === 'Move' || o.label === 'Done');
+}
+
+/** The game's text window as lines of cells: its rows, joined where the game broke a line only for want of room. */
+function windowText(): { ch: string; ink: string }[][] {
+  const rows: { ch: string; ink: string }[][] = [];
+  for (let row = screen.place.textTop; row < 24; row++) {
+    const cells: { ch: string; ink: string }[] = [];
+    for (let col = 1; col < 39; col++) {
+      const c = text.cellAt(col, row);
+      cells.push(c ? { ch: c.ch, ink: text.color(c.bg !== 0 ? c.bg : c.fg) } : { ch: ' ', ink: '' });
+    }
+    while (cells.length && cells[cells.length - 1].ch === ' ') cells.pop();
+    while (cells.length && cells[0].ch === ' ' && cells.length > 1 && cells[1].ch === ' ') cells.shift();
+    rows.push(cells);
+  }
+  while (rows.length && !rows[rows.length - 1].length) rows.pop();
+  const out: { ch: string; ink: string }[][] = [];
+  let para: { ch: string; ink: string }[] = [];
+  rows.forEach((cells, i) => {
+    if (!cells.length) {
+      if (para.length) out.push(para);
+      para = [];
+      if (out.length && out[out.length - 1].length) out.push([]);
+      return;
+    }
+    if (para.length) para.push({ ch: ' ', ink: '' });
+    para.push(...cells);
+    // the next row carries this sentence on only if its first word would not have fitted here
+    const next = rows[i + 1];
+    const firstWord = next ? next.map((c) => c.ch).join('').trim().split(' ')[0].length : 0;
+    if (!next || !next.length || cells.length + 1 + firstWord <= 38) {
+      out.push(para);
+      para = [];
+    }
+  });
+  if (para.length) out.push(para);
+  return out;
+}
+
+/** The pane under the picture: which it is, and the words when it is theirs. */
+function renderPane(): void {
+  const p = screen.place;
+  if (!p.apart || p.fight) {
+    words.style.display = 'none';
+    setPaneKey(null);
+    wordsSig = '';
+    return;
+  }
+  const lines = windowText();
+  const sig = JSON.stringify(lines.map((l) => l.map((c) => c.ch).join('')));
+  if (sig !== wordsSig) {
+    // the game has said something: its words come up; said nothing more and wiped it: the player's choice again
+    wordsSig = sig;
+    screen.options.pane = lines.length ? 'text' : paneChoice;
+  }
+  const pane = screen.options.pane;
+  setPaneKey(pane === 'text' ? 'PARTY' : 'TEXT');
+  if (pane !== 'text') {
+    words.style.display = 'none';
+    wordsShown = '';
+    return;
+  }
+  words.style.display = 'flex';
+  words.style.top = `${p.midY}px`;
+  words.style.height = `${p.midH}px`;
+  const key = sig + text.ui.scale + words.clientWidth;
+  if (key === wordsShown) return;
+  wordsShown = key;
+  words.textContent = '';
+  for (const line of lines) {
+    if (!line.length) el('div', 'gap', words);
+    else wrapped(words, line, words.clientWidth - 24);
+  }
+  words.scrollTop = words.scrollHeight;
+}
+
+function togglePane(): void {
+  const to = screen.options.pane === 'text' ? 'party' : 'text';
+  screen.options.pane = to;
+  paneChoice = to;
+  localStorage.setItem('por.pane', to);
+  renderPane();
+  placeStrip();
+}
 
 function render(): void {
   const { menu, list, typing } = frames();
@@ -240,26 +343,40 @@ function render(): void {
   const haveFont = text.glyph('A') !== null;
   if (haveFont !== padLabelled) labelPad();
   // twenty-two letters across an upright phone (the main menu's longest line); no larger on anything wider
-  const scale = Math.max(1.5, Math.min(3, Math.floor(strip.clientWidth / 184 / 0.125) * 0.125));
+  const scale = Math.max(1.5, Math.min(3, Math.floor(Math.min(stage.clientWidth, 520) / 184 / 0.125) * 0.125));
   if (scale !== text.ui.scale) {
     text.ui.scale = scale;
     document.documentElement.style.setProperty('--cell', `${8 * scale}px`);
     labelPad();
     shown = '';
+    wordsShown = '';
   }
   setDiagonals(state === IN_COMBAT);
+  renderPane();
+  const p = screen.place;
+  const options = menu ? parseMenu(String(menu.args[1])) : [];
+  const isStanding = !!menu && standing(menu, options);
+  if (!isStanding) menuOpen = false;
+  setMenuKey(isStanding);
   const choice = U8[units.GameVars.$at.horizChoice];
   const loose = menu || typing ? '' : bottomLine().map((c) => c.ch).join('');
-  const sig = JSON.stringify([menu?.args.slice(0, 6), menu?.info, list ? 1 : 0, typing, haveFont, hooks.stack.length, screenSig(menu), choice, loose, typing ? bottomLine().length : 0]);
+  const sig = JSON.stringify([menu?.args.slice(0, 6), menu?.info, list ? 1 : 0, typing, haveFont, hooks.stack.length, screenSig(menu), choice, loose, typing ? bottomLine().length : 0, menuOpen, p.apart, Math.round(p.midY), p.upright, stage.clientHeight]);
   if (sig === shown) return;
   shown = sig;
   strip.textContent = '';
+  strip.className = '';
+  // over the foot of the picture where the screen is taken apart; under the whole screen where it is not
+  strip.style.top = strip.style.bottom = '';
+  if (!p.upright) strip.style.top = '6px';
+  else if (p.apart) strip.style.bottom = `${stage.clientHeight - p.midY + 4}px`;
+  else strip.style.top = `${p.midY + 6}px`;
+  const show = (on: boolean) => (strip.style.display = on ? 'flex' : 'none');
 
   if (typing) {
     // the question and what has been typed, as the game's bottom line has them
-    const prompt = el('div', 'prompt', strip);
-    wrapped(prompt, bottomLine());
-    const items = el('div', 'items', strip);
+    show(true);
+    wrapped(el('div', 'prompt', strip), bottomLine());
+    const items = el('div', 'items flow', strip);
     if (typing === 'number') {
       for (const d of '1234567890') item(items, d, () => text.color(WHITE), () => letter(d));
       item(items, 'DEL', () => text.color(GREEN), () => key(8));
@@ -272,49 +389,61 @@ function render(): void {
 
   if (!menu) {
     // the game is busy, or waits for any key: what its bottom line says, if anything
-    if (screen.showsBottomLine()) return;
     const cells = bottomLine();
+    show(cells.length > 0 && !screen.showsBottomLine());
     if (cells.length) wrapped(el('div', 'prompt', strip), cells);
     return;
   }
 
   const [query, menuText, qCol, mCol, hlCol] = menu.args as [string, string, number, number, number];
   const info = menu.info as MenuInfo;
-  const options = parseMenu(menuText);
   const letters = options.length > 0 && options.every((o) => o.label.length === 1);
   const named = letters ? options.map((o) => screenLabel(o.key, hlCol)) : [];
   const rows = letters && named.filter((n) => n).length >= 2;
+  const ink = text.color(mCol || GREEN);
+  const lit = text.color(hlCol || WHITE);
+  const extra = [...info.extraKeys.toUpperCase()].filter((k) => !options.some((o) => o.key === k));
+  const pick = (act: () => void) => () => {
+    menuOpen = false;
+    act();
+  };
+
+  if (isStanding && !menuOpen) {
+    // the commands wait behind Menu; a prompt with them (a fighter's moves left) still shows, as a line
+    show(query.trim() !== '' && p.upright);
+    strip.classList.add('bare');
+    if (query.trim()) wrapped(el('div', 'prompt', strip), plain(query.trim(), text.color(qCol || MAGENTA)));
+    return;
+  }
+  const bare = !options.length && !extra.length && !menuText.trim();
+  show(!bare || query.trim() !== '');
   // (a menu of the screen's own lines has a heading for its question: the lines say enough)
   if (query.trim() && !rows) wrapped(el('div', 'prompt', strip), plain(query.trim(), text.color(qCol || MAGENTA)));
   const items = el('div', 'items', strip);
-  const ink = text.color(mCol || GREEN);
-  const lit = text.color(hlCol || WHITE);
-
   if (!options.length) {
     // a line with no options: "press enter to continue". OK takes it; so does touching it.
     if (menuText.trim()) item(items, menuText.trim(), () => text.color(mCol || WHITE), () => key(13));
+  } else if (rows) {
+    // the options are letters and the screen says what each is: those lines (a letter the screen does not show is
+    // an option that is not open now)
+    options.forEach((o, i) => {
+      const n = named[i];
+      if (n) item(items, n, (c) => (c === 0 ? lit : ink), pick(() => letter(o.key)));
+    });
   } else {
-    if (rows) {
-      // the options are letters and the screen says what each is: those lines, one to a row (a letter the screen
-      // does not show is an option that is not open now)
-      items.classList.add('rows');
-      options.forEach((o, i) => {
-        const n = named[i];
-        if (n) item(items, n, (c) => (c === 0 ? lit : ink), () => letter(o.key));
-      });
-    } else {
-      options.forEach((o, i) => {
-        // the option the arrows are on is in inverse video, as on the game's own line
-        const cur = hlCol !== 0 && i + 1 === choice;
-        if (cur) item(items, o.label, () => '#000', () => letter(o.key), () => lit);
-        else item(items, o.label, (c) => (c === o.at ? lit : ink), () => letter(o.key));
-      });
-    }
+    // many short options go side by side; a few, or long ones, one to a row
+    if (options.length > 6 || options.every((o) => o.label.length <= 3)) items.classList.add('flow');
+    options.forEach((o, i) => {
+      // the option the arrows are on is in inverse video, as on the game's own line
+      const cur = hlCol !== 0 && i + 1 === choice;
+      if (cur) item(items, o.label, () => '#000', pick(() => letter(o.key)), () => lit);
+      else item(items, o.label, (c) => (c === o.at ? lit : ink), pick(() => letter(o.key)));
+    });
   }
   // keys the game takes that its line does not show (a save's letter, a list's own choices)
-  for (const k of info.extraKeys.toUpperCase()) {
-    if (options.some((o) => o.key === k)) continue;
-    item(items, k, () => text.color(GRAY), () => letter(k));
+  if (extra.length) {
+    const more = el('div', 'items flow', strip);
+    for (const k of extra) item(more, k, () => text.color(GRAY), pick(() => letter(k)));
   }
 }
 
@@ -326,15 +455,33 @@ function screenSig(menu: hooks.Frame | null): string {
   return options.map((o) => screenLabel(o.key, menu.args[4]) ?? '').join('|');
 }
 
+/**
+ * Where the list stands. A list opened with Menu is over the foot of the picture, the party in sight under it. A
+ * question the game asks goes under its own words where they leave room, so the picture it is about stays whole;
+ * over the picture's foot where they do not.
+ */
+function placeStrip(): void {
+  const p = screen.place;
+  if (strip.style.display === 'none' || !p.upright || !p.apart) return;
+  const used = screen.options.pane === 'text' && words.style.display !== 'none' ? Array.from(words.children).reduce((h, c) => h + (c as HTMLElement).offsetHeight + 6, 20) : p.midH;
+  const fits = !menuOpen && !p.fight && used + strip.offsetHeight + 8 <= p.midH;
+  strip.style.bottom = fits ? '6px' : `${stage.clientHeight - p.midY + 4}px`;
+}
+
+function renderAll(): void {
+  render();
+  placeStrip();
+}
+
 hooks.listeners.change = () => {
   // after the game has drawn what it is asking about
   window.clearTimeout(timer);
-  timer = window.setTimeout(render, 30);
+  timer = window.setTimeout(renderAll, 30);
 };
-window.setInterval(render, 250);
+window.setInterval(renderAll, 250);
 window.addEventListener('resize', () => {
   shown = '';
-  render();
+  renderAll();
 });
 
 // ---- the keys: built once, never rearranged
@@ -396,6 +543,10 @@ function padKey(parent: HTMLElement, cls: string, press: () => void, repeat: boo
   return k;
 }
 
+const GEAR = [0x5a, 0xff, 0x66, 0xc3, 0xc3, 0x66, 0xff, 0x5a];
+let menuKey: PadKey | null = null;
+let paneKey: PadKey | null = null;
+
 function buildPad(): void {
   const d = el('div', 'dpad', pad);
   const dirs: [number, number[], boolean][] = [
@@ -414,11 +565,35 @@ function buildPad(): void {
     else padKey(d, '', () => ext(scan), true, { art, diagonal });
   }
   const side = el('div', 'side', pad);
-  padKey(side, '', () => settings.onMenu(), false, { word: 'MENU' });
-  padKey(side, '', () => openTyper(), false, { word: 'KEYS' });
+  menuKey = padKey(side, 'menu', () => {
+    menuOpen = !menuOpen;
+    renderAll();
+  }, false, { word: 'MENU' });
+  paneKey = padKey(side, 'pane', togglePane, false, { word: 'TEXT' });
   padKey(side, 'ok', () => key(13), false, { word: 'OK' });
-  padKey(side, 'back', () => key(27), false, { word: 'BACK' });
+  padKey(side, 'back', () => {
+    if (menuOpen) {
+      menuOpen = false;
+      render();
+    } else key(27);
+  }, false, { word: 'BACK' });
+  padKey(side, 'gear', () => settings.onMenu(), false, { art: GEAR });
   labelPad();
+}
+
+/** Menu is lit where there is a list of commands behind it. */
+function setMenuKey(on: boolean): void {
+  menuKey?.el.classList.toggle('idle', !on);
+}
+
+/** The pane's key names the pane it would bring up; idle where there is one pane only. */
+function setPaneKey(word: string | null): void {
+  if (!paneKey) return;
+  paneKey.el.classList.toggle('idle', word === null);
+  if (word !== null && paneKey.word !== word) {
+    paneKey.word = word;
+    labelPad();
+  }
 }
 
 /** The keys' faces, in the game's letters once it has loaded them. */
@@ -443,7 +618,7 @@ function setDiagonals(on: boolean): void {
 
 // ---- typing on a phone: a field off the screen brings the keyboard up
 
-function openTyper(): void {
+export function openTyper(): void {
   typer.value = '';
   typer.focus();
 }
@@ -596,6 +771,11 @@ function fieldTap(px: number, py: number, menu: hooks.Frame, options: Option[]):
 }
 
 function tap(px: number, py: number): void {
+  if (menuOpen) {
+    menuOpen = false;
+    render();
+    return;
+  }
   const cx = px >> 3;
   const cy = py >> 3;
   const { menu, list, typing } = frames();
