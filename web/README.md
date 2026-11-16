@@ -6,32 +6,35 @@ screens and its saved games are the Pascal's.
 
 ## Playing
 
-Held upright, the page is three parts, all in the game's own letters and colours:
+Held upright, the page is three parts:
 
-- **The picture, across the whole width at the top**: the 3D view, or the battlefield. It answers a tap. In the 3D
-  view the middle steps ahead, the sides turn, the foot turns about. In a fight a tap on a square walks the fighter
-  there, round walls and friends, and a tap on a foe walks into it and strikes.
-- **One pane under it**: the party, or the game's words (its text window again, at a size to read). The game's words
-  come up by themselves when it says something and give way to the party when it wipes them; the **Text / Party**
-  key switches by hand. In a fight the pane is the fighter's panel.
+- **The picture, across the whole width at the top**: the 3D view, an encounter's portrait, the battlefield. Only the
+  picture: the game's frames and margins round it are left off, so all of the width is art. Nothing is ever drawn
+  over it. It answers a finger. In the 3D view a tap on the middle steps ahead, the sides turn, the foot turns about,
+  and a swipe turns or steps the way it goes. In a fight a tap on a square walks the fighter there, round walls and
+  friends, a tap on a foe walks into it and strikes, and a swipe steps one square.
+- **The middle**, in the game's letters at one size: the party, or the game's words (its text window, re-set to the
+  width), and under them whatever the game is asking. The words come up by themselves when the game says something
+  and give way to the party when it wipes them; the **Text / Party** key switches by hand. In a fight the middle is
+  the fighter's panel and the game's line together. Where the game waits for any key, it says **Continue**.
 - **The keys at the foot**, which never move: the arrows (all eight in a fight), **Menu**, **Text / Party**, **OK**
   (Enter), **Back** (Escape) and a gear.
 
-**What the game asks is a framed list.** Where the game puts a question (Combat, Wait, Flee or Advance; Yes or No; a
-shop's choices) the list is simply there, under the game's words where they leave room, else over the foot of the
-picture: touch an option, or step to it with the arrows and press OK. Where the options are the standing commands
-(Area, Cast, View, Encamp... while walking; Move, Aim, Use... on a fighter's turn) the list stays out of the way
-until **Menu** is pressed, and opens over the foot of the picture. Where the game's options are single letters and
-the screen says what each is (the main menu), the list carries those lines.
+**What the game asks is a list in the middle.** A question (Combat, Wait, Flee or Parlay; Yes or No; a shop's
+choices) is simply there under the game's words: touch an option, or step to it with the arrows and press OK. The
+standing commands (Area, Cast, View, Encamp... while walking; Move, Aim, Use... on a fighter's turn) wait behind
+**Menu**, and take the middle's place while open. Where the game's options are single letters and the screen says
+what each is (the main menu), the list carries those lines.
 
 Screens the game does not divide (a character's sheet, a shop's lists, the title) are shown whole across the top,
 with the list under them.
 
-**The gear** is the page's own settings: the game's function keys by name (command keys, bestiary, quick save and
-load, minimap, combat log), sound, whether the screen is taken apart, the phone's keyboard, and backing up or
-restoring everything saved.
+**The gear** is the page's own settings: speed (how much of each of the game's pauses is taken), sound, the game's
+function keys by name (command keys, bestiary, quick save and load, minimap, combat log), whether the screen is
+taken apart, the phone's keyboard, and backing up or restoring everything saved.
 
-Held sideways, or on a desktop, the screen is whole with the keys beside it, and a keyboard plays as it does on a PC.
+Held sideways, or on a desktop, the screen is whole with the list and the keys beside it, and a keyboard plays as it
+does on a PC.
 
 Saved games, characters and settings are kept in the browser's storage on the device (IndexedDB) and are there on the
 next visit. *Back up saves* downloads them as one file; *Restore a backup* takes it back, on this device or another.
