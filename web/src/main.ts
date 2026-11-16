@@ -32,6 +32,9 @@ function say(text: string, buttons: [string, () => void][] = []): void {
 
 const t0 = performance.now();
 let debt = 0;
+/** How much of each wait the game asks for is taken: the page's Speed setting. */
+const SPEEDS: [string, number][] = [['normal', 1], ['fast', 0.5], ['faster', 0.25]];
+let speed = Math.min(SPEEDS.length - 1, Number(localStorage.getItem('por.speed') ?? 1) || 0);
 let lastYield = performance.now();
 let lastIdle = 0;
 
@@ -63,7 +66,7 @@ host.platform = {
   // A browser's shortest wait is some four milliseconds, and the game often asks for one: the waits asked for are
   // added up and taken when they come to that much.
   sleep: async (ms) => {
-    debt += ms;
+    debt += ms * SPEEDS[speed][1];
     if (debt < 4) {
       if (performance.now() - lastYield > 12) await turn();
       return;
@@ -139,6 +142,11 @@ function openMenu(): void {
     audio.setOn(!audio.state.on);
     snd.textContent = audio.state.on ? 'Sound: on' : 'Sound: off';
   }, true);
+  const spd = item(`Speed: ${SPEEDS[speed][0]}`, () => {
+    speed = (speed + 1) % SPEEDS.length;
+    localStorage.setItem('por.speed', String(speed));
+    spd.textContent = `Speed: ${SPEEDS[speed][0]}`;
+  }, true);
   const lay = item(screen.options.split ? 'Screen: apart' : 'Screen: whole', () => {
     screen.options.split = !screen.options.split;
     localStorage.setItem('por.split', screen.options.split ? '1' : '0');
@@ -177,7 +185,7 @@ function openMenu(): void {
   item('Back to the game', () => {});
   const p = document.createElement('p');
   p.textContent =
-    'Menu lists what you can do where you are. Tap the 3D view to walk and turn, and a square of the battlefield to move there or strike. Text and Party switch the pane under the picture. Saved games are kept on this device.';
+    'Menu lists what you can do where you are. Tap or swipe the picture to walk and turn; in a fight, tap a square to move there or a foe to strike. Text and Party switch what is under the picture. Saved games are kept on this device.';
   sheet.appendChild(p);
   menu.hidden = false;
 }

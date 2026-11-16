@@ -37,16 +37,22 @@ export interface Cell {
   bg: number;
 }
 
-/** The character at a cell, or null where the screen no longer shows one. */
+/**
+ * The character at a cell, or null where the screen no longer shows one: the cell's pixels must still be that
+ * character's own, ink on paper (a box cleared by a filled rectangle, or a picture drawn over, shows none).
+ */
 export function cellAt(col: number, row: number): Cell | null {
   if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return null;
   const k = row * COLS + col;
   if (!ch[k]) return null;
+  const font = r32(units.GameVars.$at.gameFont);
+  if (!font) return null;
+  const g = font + (ch[k] % 64) * 8;
   const scr = screenAt() + row * 8 * 320 + col * 8;
   for (let y = 0; y < 8; y++) {
+    const bits = U8[g + y];
     for (let x = 0; x < 8; x++) {
-      const p = U8[scr + y * 320 + x];
-      if (p !== fg[k] && p !== bg[k]) return null;
+      if (U8[scr + y * 320 + x] !== (bits & (0x80 >> x) ? fg[k] : bg[k])) return null;
     }
   }
   return { ch: String.fromCharCode(ch[k]), fg: fg[k], bg: bg[k] };

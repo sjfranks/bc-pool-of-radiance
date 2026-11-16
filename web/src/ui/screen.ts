@@ -48,7 +48,7 @@ let blits: Blit[] = [];
 let layoutKey = '';
 let ready = false;
 /** Set by the page's settings: take the screen apart on an upright phone. */
-export const options = { split: true, pane: 'party' as 'party' | 'text' };
+export const options = { split: true };
 
 function cellEq(scr: number, ax: number, ay: number, bx: number, by: number): boolean {
   const a = scr + ay * 8 * W + ax * 8;
@@ -78,20 +78,31 @@ export function findSplit(): Split | null {
   return null;
 }
 
-/** Where things stand on an upright phone, for the interface's own parts (controls.ts). */
+/** Where things stand, for the interface's own parts (controls.ts). */
 export const place = {
-  /** True when the screen is taken apart: the picture pane across the top, the middle pane under it. */
+  /** True when the screen is taken apart: the picture alone on the canvas, everything else the interface's. */
   apart: false,
   /** True on an upright display at all. */
   upright: false,
   /** The middle region, under the picture (or under the whole screen): CSS pixels from the canvas's top. */
   midY: 0,
   midH: 0,
-  /** The game's rows of text under its panes (the text window), where the screen is taken apart. */
-  textTop: 0,
-  /** True in a fight: the middle is the fighter's panel, and there is no text window to switch to. */
+  /** The frame's dividing column and row, in cells, where the screen is taken apart. */
+  col: 0,
+  row: 0,
+  /** The picture, in the game's pixels. */
+  pic: { x: 0, y: 0, w: W, h: H },
+  /** True in a fight. */
   fight: false,
 };
+
+/** The least room kept under the picture for the party, the game's words and its questions (CSS pixels). */
+const MID_LEAST = 196;
+
+function innerFrame(split: Split): boolean {
+  // the 3D view has a frame of its own inside the pane's
+  return cellEq(screenAt(), 0, 0, 2, 2) && split.col > 4;
+}
 
 function layout(cw: number, ch: number, split: Split | null): Blit[] {
   const portrait = ch > cw * 0.9;
@@ -101,40 +112,29 @@ function layout(cw: number, ch: number, split: Split | null): Blit[] {
   const h = portrait ? H - 8 : H;
   const t = Math.min(cw / W, ch / h);
   if (portrait && split && options.split) {
-    const aW = (split.col + 1) * 8;
-    const bW = (40 - split.col) * 8;
-    const hA = (split.row + 1) * 8;
-    const hC = h - hA;
-    const tc = cw / W;
-    const fight = U8[units.GameVars.$at.ifcState] === 5;
-    // The picture across the whole width, at the top; under it the middle pane: the party (or in a fight the
-    // fighter's panel, with the game's line of text under it), or the game's words. On a short display the picture
-    // gives up some width so that the middle keeps room for the party at letters a little larger than the screen's.
-    const midLeast = fight ? hA * tc * 1.05 + hC * tc : hA * tc * 1.25;
-    const vA = Math.min(cw / aW, (ch - midLeast) / hA);
-    if (vA >= tc * 1.1) {
-      const out: Blit[] = [];
-      out.push({ sx: 0, sy: 0, sw: aW, sh: hA, dx: (cw - aW * vA) / 2, dy: 0, dw: aW * vA, dh: hA * vA });
-      const midY = hA * vA;
-      const midH = ch - midY;
+    // The picture alone, across the whole width: the pane's own frame is left off (and the empty margin round the
+    // 3D view's inner frame), so all of the width is picture. On a short display it gives up some width to keep
+    // room under it.
+    const edge = innerFrame(split) ? 16 : 8;
+    const pic = { x: edge, y: edge, w: (split.col + 1) * 8 - 2 * edge, h: (split.row + 1) * 8 - 2 * edge };
+    const wide = Math.min(cw, ((ch - MID_LEAST) * pic.w) / pic.h);
+    if (wide >= cw * 0.55) {
+      const tall = (wide * pic.h) / pic.w;
       place.apart = true;
-      place.midY = midY;
-      place.midH = midH;
-      place.textTop = split.row + 1;
-      place.fight = fight;
-      if (fight || options.pane === 'party') {
-        const room = midH - (fight ? hC * tc : 0);
-        const vB = Math.min(cw / bW, room / hA);
-        out.push({ sx: split.col * 8, sy: 0, sw: bW, sh: hA, dx: (cw - bW * vB) / 2, dy: midY, dw: bW * vB, dh: hA * vB });
-        if (fight && hC > 0) out.push({ sx: 0, sy: hA, sw: W, sh: hC, dx: 0, dy: midY + hA * vB, dw: cw, dh: hC * tc });
-      }
-      return out;
+      place.midY = tall;
+      place.midH = ch - tall;
+      place.col = split.col;
+      place.row = split.row;
+      place.pic = pic;
+      place.fight = U8[units.GameVars.$at.ifcState] === 5;
+      return [{ sx: pic.x, sy: pic.y, sw: pic.w, sh: pic.h, dx: (cw - wide) / 2, dy: 0, dw: wide, dh: tall }];
     }
   }
   const dw = W * t;
   const dh = h * t;
   place.midY = portrait ? dh : 0;
   place.midH = portrait ? ch - dh : 0;
+  place.pic = { x: 0, y: 0, w: W, h };
   return [{ sx: 0, sy: 0, sw: W, sh: h, dx: (cw - dw) / 2, dy: portrait ? 0 : (ch - dh) / 2, dw, dh }];
 }
 
@@ -180,7 +180,7 @@ function frame(): void {
   const ch = canvas.clientHeight;
   if (!cw || !ch) return;
   const split = findSplit();
-  const key = `${cw}x${ch}@${dpr}:${split ? split.col + ',' + split.row : '-'}:${options.split}:${options.pane}:${U8[units.GameVars.$at.ifcState] === 5}`;
+  const key = `${cw}x${ch}@${dpr}:${split ? split.col + ',' + split.row + ',' + innerFrame(split) : '-'}:${options.split}:${U8[units.GameVars.$at.ifcState] === 5}`;
   let dirty = key !== layoutKey;
   const live = U8.subarray(scr, scr + W * H);
   const liveDac = U8.subarray(dac, dac + 768);
